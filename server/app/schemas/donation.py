@@ -8,63 +8,56 @@ from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from app.models.donation import Donation # Import your User model
 from app.utils.constants import CurrencyCode
-from app.schemas.private_payment import PrivatePaymentTransactionSchema
-from app.schemas.user import PrivateDonorSchema
 
 
 
-class PrivateDonationSchema(SQLAlchemyAutoSchema):
+class DonationSchema(SQLAlchemyAutoSchema):
+    from app.schemas.payment_transaction import PaymentTransactionSchema
+    from app.schemas.user import DonorSchema
+
     class Meta:
         model = Donation
-        load_instance=False
+        load_instance = True
+        include_fk = False
 
-        fields = {
+        fields = (
             "id",
             "donor_id",
+            "campaign_id",
             "amount",
             "currency",
-            "latitude",
-            "longitude",
+            "notes",
             "donor",
             "payment_transaction",
-            "created_at"
-        }
-
-
-    id = fields.Integer()
-    donor_id = fields.Integer()
-    amount = fields.Decimal(as_string=True, places=2)
-    currency = fields.Decimal(as_string=True, places=2)
-    latitiude = mapped_column(db.Float, nullable=False)
-    longitude = mapped_column(db.Float, nullable=False)
-    donor  = fields.Nested(PrivateDonorSchema)
-    payment_transaction = fields.Nested(PrivatePaymentTransactionSchema)
-    created_at = fields.DateTime(format='%Y-%m-%dT%H:%M:%SZ')
-
-
-class CreateDonationSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Donation
-        load_instance = True # Builds the paymentTransaction object for me 
-        fields = (
-            "donor_id", 
-            "amount", 
-            "currency",
-            "latitude", 
-            "longitude", 
-            "donor",
-            "payment_transaction",
-            "created_at"
+            "created_at",
+            "updated_at"
         )
 
-    donor_id = fields.Integer()
-    amount = fields.Decimal(
-        required=True, as_string=True, places=2, validate=validate.Range(min=0.01)
-    )
-    currency = fields.EnumField(CurrencyCode, required=True)
-    latitude = fields.String(required=True, validate=validate.Length(min=3, max=200))
-    longitude = fields.String(required=True, validate=validate.Length(min=3, max=200))
-    donor = fields.Nested(PrivateDonorSchema)
-    payment_transaction = fields.Nested(PrivateDonorSchema)
-    created_at = fields.DateTime(required=True, format='%Y-%m-%dT%H:%M:%SZ')
+    id = fields.Integer(dump_only=True)
 
+    donor_id = fields.Integer(required=True)
+    campaign_id = fields.Integer(required=True)
+
+
+    amount = fields.Decimal(
+        places=2,
+        as_string=True,
+        validate=[
+            validate.Range(min=0.01, max=1_000_000),
+            validate.Regexp(r'^\d+\.\d{2}$', error="Must have exactly 2 decimal places")
+        ],
+        required=True
+    )
+
+    currency = fields.Enum(CurrencyCode, required=True)
+
+
+    notes = fields.String(allow_none=True)
+
+    donor = fields.Nested(DonorSchema, dump_only=True)
+    payment_transaction = fields.Nested(PaymentTransactionSchema, dump_only=True)
+
+    created_at = fields.AwareDateTime(format='iso', dump_only=True)
+    updated_at = fields.AwareDateTime(format='iso', dump_only=True)
+
+donation_schema = DonationSchema()

@@ -6,7 +6,7 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from app.database import db
 from sqlalchemy.orm.exc import StaleDataError
-from server.app.schemas.user import admin_login_schema
+from app.schemas.user import admin_schema
 
 
 
@@ -15,8 +15,9 @@ logger = logging.getLogger(__name__)
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
+    data = request.get_json()
     jwt_token = create_access_token(identity=str(user.id))
-    validate_admin_login_schema = admin_login_schema.load(request_json_data)
+    admin = admin_schema.load(data)
     
     return jsonify({
         "message": f"Welcome back, {user.username}!",

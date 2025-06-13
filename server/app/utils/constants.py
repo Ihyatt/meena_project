@@ -10,12 +10,6 @@ class PaymentStatus(enum.Enum):
 class EmailStatus(enum.Enum):
     QUEUED = 'queued'
     SENT = 'sent'
-    DELIVERED = 'delivered'
-    BOUNCED = 'bounce'
-    BLOCKED = 'blocked'
-    SPAM = 'spam'
-    OPENED = 'open'
-    CLICKED = 'click'
     FAILED = 'failed'
 
 class CurrencyCode(enum.Enum):

@@ -19,6 +19,7 @@ from app.config import Config
 from app.routes.auth import auth_bp
 from app.routes.admin  import admin_bp
 from app.routes.campaign import campaign_bp
+from app.routes.donor import landing_bp
 
 
 from app.models.user import User
@@ -37,6 +38,7 @@ audit_logger = AuditLogger(db)
 ma = Marshmallow(app)
 
 def create_app():
+    
     dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
     load_dotenv(dotenv_path)
 
@@ -54,7 +56,9 @@ def create_app():
 
     app.register_blueprint(campaign_bp)
     admin_bp.register_blueprint(campaign_bp)
+    
     app.register_blueprint(auth_bp)
+    app.register_blueprint(landing_bp)
     app.register_blueprint(admin_bp)
 
     make_versioned(user_cls=User)

@@ -23,6 +23,7 @@ class Config:
 
     MAIL_JET_API_KEY = os.environ.get('MAIL_JET_API_KEY')
     MAIL_JET_SECRET_KEY =  os.environ.get('MAIL_JET_SECRET_KEY')
+    STATIC_SALT = os.getenv("STATIC_SALT")
 
 
     HOST = os.environ.get('HOST', 'localhost')

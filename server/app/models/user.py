@@ -40,7 +40,7 @@ class User(db.Model, SoftDeleteMixin):
     admin_campaigns = relationship(
         "Campaign",
         back_populates="admin",
-        foreign_keys="[Campaign.user_id]"
+        foreign_keys="[Campaign.admin_id]"
     )
     
 

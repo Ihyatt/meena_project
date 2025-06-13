@@ -18,13 +18,14 @@ class Donation(db.Model, SoftDeleteMixin):
     version_uuid = mapped_column(db.String(32), nullable=False)
 
     donor_id = mapped_column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+    
+    
     campaign_id = mapped_column(db.Integer, db.ForeignKey('campaigns.id'), nullable=False)
 
-    amount = mapped_column(db.Numeric(10, 2), nullable=False)
+    amount = mapped_column(db.Numeric(10, 2),default=0.0,  nullable=False)
     currency = mapped_column(db.Enum(CurrencyCode), nullable=False)
     notes = mapped_column(db.Text, nullable=True)
-    latitude = mapped_column(db.Float, nullable=True)
-    longitude = mapped_column(db.Float, nullable=True)
 
     created_at = mapped_column(
         db.DateTime(timezone=True),

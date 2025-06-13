@@ -29,9 +29,9 @@ class SentEmail(db.Model, SoftDeleteMixin):
     mailjet_message_id = mapped_column(db.String(100), nullable=True, unique=True)
     bounce_details = mapped_column(db.Text, nullable=True)
 
-   	campaign_id = Column(	
-        Integer, 
-        ForeignKey('campaigns.id'), 
+    campaign_id = mapped_column(	
+        db.Integer, 
+        db.ForeignKey('campaigns.id'), 
         nullable=False
 
     )

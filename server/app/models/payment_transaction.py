@@ -25,12 +25,10 @@ class PaymentTransaction(db.Model, SoftDeleteMixin):
 
     amount = mapped_column(db.Numeric(10, 2), nullable=False)
     status = mapped_column(db.Enum(PaymentStatus), default=PaymentStatus.PENDING, nullable=False)
-    processor_fee = mapped_column(db.Numeric(10, 2), nullable=True) 
 
-    processor_id = mapped_column(db.String(100), nullable=True) 
-    idempotency_key = mapped_column(db.String(64), unique=True, nullable=False)
+    idempotency_key = mapped_column(db.String(300), unique=True, nullable=False)
 
-    processed_at = mapped_column(db.DateTime(timezone=True), server_default=db.func.now(), nullable=False)
+    created_at = mapped_column(db.DateTime(timezone=True), server_default=db.func.now(), nullable=False)
     updated_at = mapped_column(db.DateTime(timezone=True), server_default=db.func.now(), onupdate=db.func.now(), nullable=False)
     
     donor = relationship("User", back_populates="payment_transactions")

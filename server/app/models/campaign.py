@@ -10,10 +10,10 @@ class Campaign(db.Model, SoftDeleteMixin):
     __tablename__ = 'campaigns'
     __versioned__ = {} 
     __table_args__ = (
-        Index('uq_global_active_campaign', 
+        db.Index('uq_global_active_campaign', 
             'is_active',
             unique=True, 
-            postgresql_where=(Column('is_active') == True)),
+            postgresql_where=(mapped_column('is_active') == True)),
         {"info": {"versioned": {}}}
     )
     id = mapped_column(db.Integer, primary_key=True, nullable=False)
@@ -21,7 +21,8 @@ class Campaign(db.Model, SoftDeleteMixin):
 
     title = mapped_column(db.String(200), unique=True,nullable=False)
     description = mapped_column(db.Text, unique=True, nullable=False)
-    target_amount = mapped_column(db.Numeric(10, 2), nullable=False)
+    target_amount = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
+    current_amount = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
     start_date = mapped_column(db.DateTime(timezone=True), nullable=False)
     end_date = mapped_column(db.DateTime(timezone=True), nullable=False)
     is_active = mapped_column(db.Boolean, default=False, nullable=False)
@@ -45,12 +46,10 @@ class Campaign(db.Model, SoftDeleteMixin):
         back_populates='admin_campaigns',
         foreign_keys=[admin_id]
     )
-
-   	sent_emails = relationship(
+    sent_emails = relationship(
         'SentEmail', 
         back_populates='campaign'
     )
-
 
 
     donations = relationship('Donation', back_populates='campaign')
@@ -65,3 +64,4 @@ class Campaign(db.Model, SoftDeleteMixin):
         if self.end_date < datetime.now(timezone.utc):
             raise ValueError("Cannot delete past campaigns")
         super().delete()
+

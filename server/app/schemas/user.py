@@ -4,80 +4,76 @@ from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow import ValidationError
 
+from marshmallow import (
+    Schema,
+    pre_load,
+    pre_dump,
+    post_load,
+    validates_schema,
+    validates,
+    fields,
+    ValidationError,
+)
+
 from app.models.user import User
 
 
-
-class PrivateDonorSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = User
-        load_instance = False
-
-        fields = (
-            "first_name",
-            "last_name",
-            "email" 
-        )
-
-    first_name = fields.String(allow_none=True)
-    last_name = fields.String(allow_none=True)
-    email = fields.Email(allow_none=True)
-
-private_donor_schema = PrivateDonorSchema()
-
-
-class AdminLoginSchema(Schema):
-    email = fields.Email( 
-        required=True,
-        load_only=True
-    )
-    password = fields.String(
-        required=True,
-        load_only=True #only for when data is comming in from client
-    )
-
-admin_login_schema = AdminLoginSchema()
-
-
-class PrivateAdminSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = User 
-        fields = (
-            "id"
-            "email",
-            "first_name",
-            "last_name",
-            "is_admin"
-        )
-
-    id = fields.Integer()
-    email = fields.Email(required=True)
-    first_name = fields.String(required=True)
-    last_name = fields.String(required=True)
-    is_admin = fields.Boolean(required=True, dump_only=True)
-
-private_admin_schema = PrivateAdminSchema()
-
-class CreateDonorSchema(SQLAlchemyAutoSchema):
+class AdminSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
         load_instance = True
 
         fields = (
+            "id",
             "email",
             "first_name",
-            "last_name", 
-            "anonymous_session_hash"
+            "last_name",
+            "is_admin"
+        )
+    id = fields.Integer(dump_only=True)
+    email = fields.Email(required=True)
+    first_name = fields.String(required=True)
+    last_name = fields.String(required=True)
+    is_admin = fields.Boolean(required=True)
+
+    @post_load
+    def lowerstrip_email(self, data, **kwargs):
+        data["email"] = data["email"].lower().strip()
+        return data
+
+admin_schema = AdminSchema()
+
+
+class DonorSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+
+        fields = (
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "anonymous_user_id"
         )
 
+    id = fields.Integer(dump_only=True)
     first_name = fields.String(allow_none=True, validate=validate.Length(max=100))
-    last_name = fields.String(allow_none=True,  validate=validate.Length(max=100))
+    last_name = fields.String(allow_none=True, validate=validate.Length(max=100))
+    anonymous_user_id = fields.String(allow_none=True, validate=validate.Length(max=200))
+
     email = fields.Email(
-        required=False,
         allow_none=True,
         validate=validate.Length(max=255)
     )
-    anonymous_session_hash = fields.String(dump_only=True)
+    anonymous_id = fields.String(
+        validate=validate.Length(max=1000)
+    )
 
+    @post_load
+    def lowerstrip_email(self, data, **kwargs):
+        if data.get("email") is not None:
+            data["email"] = data["email"].lower().strip()
+        return data 
 
-create_donor_schema = CreateDonorSchema()
+donor_schema = DonorSchema()
