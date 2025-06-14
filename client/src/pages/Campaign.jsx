@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLoaderData } from "react-router-dom";
 import './Campaign.css'; // Import the CSS file
+import  useCampaignStore  from '../stores/Campaign'
 
 
 const Campaign = () => {
+  const { setCampaign } = useCampaignStore();
+
   const campaign = useLoaderData();
-  
   
   if (campaign.isLoading) {
     return <div>Loading...</div>;
@@ -14,10 +16,12 @@ const Campaign = () => {
   if (campaign.isError) {
     return <div>Error loading posts.</div>;
   }
-
+  useEffect(() => {
+    console.log("Campaign page mounted");
+    setCampaign(campaign.id)
+  }, []);
 
   const handleDonateClick = (campaignId) => {
-    
     useNavigate(`/campaigns/${campaignId}/checkout`);
   };
 
