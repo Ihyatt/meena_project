@@ -18,10 +18,9 @@ from marshmallow import (
 """
 ********************************************
     This is a read-only schema
-    that will be used when donors
-    navigate to landing page and 
-    this schema will desirialize data
-    to client
+    that will be used to serialize
+    camaign data for when donors navigate to 
+    landing page
 ********************************************
 """"
 class PublicCampaignSchema(SQLAlchemyAutoSchema):
@@ -35,15 +34,15 @@ class PublicCampaignSchema(SQLAlchemyAutoSchema):
     target_amount = fields.Decimal(dump_only=True)
     current_amount = fields.Decimal(dump_only=True)
 
+#Import me :) 
 public_campaign_schema = PublicCampaignSchema()
-
 
 
 """
 ********************************************
     This is a write-only schema
-    that will be used for
-    serializing/deserializing data to non-admin
+    that will be used when Admins
+    create/update a campaign
 ********************************************
 """"
 class WriteOnlyCampaignSchema(SQLAlchemyAutoSchema):
@@ -56,18 +55,15 @@ class WriteOnlyCampaignSchema(SQLAlchemyAutoSchema):
         required=True,
         validate=validate.Length(min=3, max=200)
     )
-
     description = fields.String(
         validate=validate.Length(max=5000)
     )
-
     target_amount = fields.Decimal(
         places=2,
         as_string=True,
         validate=validate.Range(min=0.01, max=1_000_000)
         required=True
     )
-
     start_date = fields.AwareDateTime(
         format='iso',
         required=True,
@@ -78,14 +74,11 @@ class WriteOnlyCampaignSchema(SQLAlchemyAutoSchema):
             )
         ]
     )
-
     end_date = fields.AwareDateTime(
         format='iso',
         required=True
     )
-
     is_active = fields.Boolean()
-
     admin_id = fields.Integer(required=True)
 
     @validates_schema
@@ -102,14 +95,16 @@ class WriteOnlyCampaignSchema(SQLAlchemyAutoSchema):
                 raise ValidationError({"end_date": f"Campaign duration cannot exceed {max_duration} days."})
 
 
-# Schema Instances
+#Import me :) 
 write_only_campaign_schema = WriteOnlyCampaignSchema()
+
 
 """
 ********************************************
     This is a read-only schema
-    that will be used for
-    serializing/deserializing data to admin
+    that will be used for when 
+    Admins want to view historic
+    campaign data. 
 ********************************************
 """"
 class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
@@ -150,6 +145,7 @@ class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
     donations = fields.List(fields.Nested(ReadOnlyDonationSchema), dump_only=True)
 
 
-# Schema Instances
+# Import me :)
 read_only_campaign_schema = ReadOnlyCampaignSchema()
+# Me too :)
 read_only_campaign_list_schema = ReadOnlyCampaignSchema(many=True)

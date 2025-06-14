@@ -14,7 +14,7 @@ from app.utils.constants import CurrencyCode
 ********************************************
     This is a write-only schema
     that will be used for
-    serializing/deserializing data for admin
+    when a donor submits a donation
 ********************************************
 """"
 class WriteOnlyDonationSchema(SQLAlchemyAutoSchema):
@@ -33,14 +33,15 @@ class WriteOnlyDonationSchema(SQLAlchemyAutoSchema):
     )
     currency = fields.Enum(CurrencyCode, required=True)
 
+# import me :) 
 write_only_donation_schema = WriteOnlyDonationSchema()
 
 
 """
 ********************************************
     This is a read-only schema
-    that will be used for
-    serializing/deserializing data for admin
+    that will be used for when Admins
+    want to view historic Donation/(s)
 ********************************************
 """"
 class ReadOnlyDonationSchema(SQLAlchemyAutoSchema):
@@ -51,36 +52,21 @@ class ReadOnlyDonationSchema(SQLAlchemyAutoSchema):
         model = Donation
         load_instance = False
 
-        fields = (
-            "id",
-            "donor_id",
-            "campaign_id",
-            "amount",
-            "currency",
-            "notes",
-            "donor",
-            "payment_transaction",
-            "created_at",
-            "updated_at"
-        )
-
     id = fields.Integer(dump_only=True)
-
     donor_id = fields.ForeignKey(dump_only=Tru)
     campaign_id = fields.ForeignKey(dump_only=True)
-
-
     amount = fields.Decimal(
         places=2,
         as_string=True,
         dump_only=True
     )
-
-    currency = fields.Enum(dump_only=Tru)
-
+    currency = fields.Enum(dump_only=True)
     donor = fields.Nested(ReadOnlyDonorSchema, dump_only=True)
     payment_transaction = fields.Nested(ReadOnlyPaymentTransactionSchema, dump_only=True)
     created_at = fields.AwareDateTime(format='iso', dump_only=True)
     updated_at = fields.AwareDateTime(format='iso', dump_only=True)
 
+# import me :) 
 read_only_donation_schema = ReadOnlyDonationSchema()
+# import me too :) 
+read_only_donation_list_schema = ReadOnlyDonationSchema(many=True)
