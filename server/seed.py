@@ -11,16 +11,13 @@ def seed_data():
     from app.models.sent_email import SentEmail
     from app.utils.constants import CurrencyCode, PaymentStatus, EmailStatus
 
-    print("Starting database seeding...")
-
-    # Initialize Flask app context
     app = create_app()
     with app.app_context():
         db.drop_all()
         db.create_all()
-        print("Database tables dropped and recreated.")
+        print("drop db")
 
-        print("Creating users...")
+        print("making users")
         admin_user = User(
             email="admin@example.com",
             first_name="Admin",
@@ -66,9 +63,8 @@ def seed_data():
         db.session.add(anon_user)
 
         db.session.commit()
-        print("Users created.")
 
-        print("Creating campaigns...")
+
         active_campaign = Campaign(
             title="Urgent Disaster Relief Fund",
             description="Providing immediate aid to communities affected by recent natural disasters.",
@@ -103,9 +99,7 @@ def seed_data():
         db.session.add(past_campaign)
 
         db.session.commit()
-        print("Campaigns created.")
 
-        print("Creating donations and payment transactions...")
         donation1 = Donation(
             donor_id=donor_user_john.id,
             campaign_id=active_campaign.id,
@@ -114,7 +108,7 @@ def seed_data():
             notes="For the disaster relief efforts."
         )
         db.session.add(donation1)
-        db.session.flush()
+        db.session.commit()
 
         transaction1 = PaymentTransaction(
             donation_id=donation1.id,
@@ -134,7 +128,7 @@ def seed_data():
             notes="Glad to help!"
         )
         db.session.add(donation2)
-        db.session.flush()
+        db.session.commit()
 
         transaction2 = PaymentTransaction(
             donation_id=donation2.id,
@@ -145,6 +139,7 @@ def seed_data():
             created_at=datetime.now(timezone.utc)
         )
         db.session.add(transaction2)
+        db.session.commit()
 
         donation3 = Donation(
             donor_id=anon_user.id,
@@ -154,7 +149,7 @@ def seed_data():
             notes="Anonymous donation."
         )
         db.session.add(donation3)
-        db.session.flush()
+        db.session.commit()
 
         transaction3 = PaymentTransaction(
             donation_id=donation3.id,
@@ -165,17 +160,13 @@ def seed_data():
             created_at=datetime.now(timezone.utc)
         )
         db.session.add(transaction3)
-
-
         db.session.commit()
-        print("Donations and payment transactions created.")
+
 
         active_campaign.current_amount += donation1.amount + donation2.amount + donation3.amount
         db.session.add(active_campaign)
         db.session.commit()
-        print(f"Updated active campaign current amount to {active_campaign.current_amount}")
 
-        print("Creating sent emails...")
         email1 = SentEmail(
             recipient_user_id=donor_user_john.id,
             recipient_email=donor_user_john.email,
@@ -185,7 +176,9 @@ def seed_data():
             mailjet_message_id=f"mailjet_{uuid.uuid4().hex}",
             campaign_id=active_campaign.id
         )
+
         db.session.add(email1)
+        db.session.commit()
 
         email2 = SentEmail(
             recipient_user_id=admin_user.id,
@@ -196,21 +189,7 @@ def seed_data():
             campaign_id=active_campaign.id 
         )
         db.session.add(email2)
-
-
         db.session.commit()
-        print("Sent emails created.")
-
-        print("\n--- Database seeding complete! ---")
-        print(f"Admin User: {admin_user.email}")
-        print(f"Donor User (John): {donor_user_john.email}")
-        print(f"Active Campaign: '{active_campaign.title}' (ID: {active_campaign.id}, Current Amount: {active_campaign.current_amount})")
-        print(f"Future Campaign: '{future_campaign.title}' (ID: {future_campaign.id})")
-        print(f"Past Campaign: '{past_campaign.title}' (ID: {past_campaign.id})")
-        print(f"Total Donations seeded: {db.session.query(Donation).count()}")
-        print(f"Total Transactions seeded: {db.session.query(PaymentTransaction).count()}")
-        print(f"Total Sent Emails seeded: {db.session.query(SentEmail).count()}")
-        print("-" * 30)
 
 if __name__ == "__main__":
     seed_data()
