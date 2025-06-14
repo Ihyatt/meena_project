@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLoaderData } from "react-router-dom";
-import './Campaign.css'; // Import the CSS file
+import './styles/Campaign.css'; // Import the CSS file
 import  useCampaignStore  from '../stores/Campaign'
 
 
 const Campaign = () => {
   const { setCampaign } = useCampaignStore();
+  const { campaignId } = useCampaignStore();
   const navigate = useNavigate();
 
   const campaign = useLoaderData();
@@ -23,7 +24,7 @@ const Campaign = () => {
   }, []);
 
   const handleDonateClick = () => {
-    const { campaignId } = useCampaignStore();
+    
     navigate(`/campaigns/${campaignId}/checkout`);
   };
 

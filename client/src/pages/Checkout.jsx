@@ -15,14 +15,14 @@ const Checkout = () => {
 
     const fetchClientSecret = async () => {
       try {
-        const response = await fetch(`${backendUrl}/campaigns/${campaign.id}/create-checkout-session`, {
+        const response = await fetch(`${backendUrl}/campaigns/${campaignId}/create-checkout-session`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: donorEmail,
-            firstName: donationAmount,
+            email: 'email@example.com',
+            firstName: '1.0',
             lastName: 'usd',
     
             metadata: {
