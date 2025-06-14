@@ -2,7 +2,6 @@ import uuid
 from datetime import datetime, timezone, timedelta
 
 def seed_data():
-    # Import inside function to avoid circular imports
     from app import create_app
     from app.database import db
     from app.models.user import User

@@ -25,7 +25,6 @@ class Donation(db.Model, SoftDeleteMixin):
 
     amount = mapped_column(db.Numeric(10, 2),default=0.0,  nullable=False)
     currency = mapped_column(db.Enum(CurrencyCode), nullable=False)
-    notes = mapped_column(db.Text, nullable=True)
 
     created_at = mapped_column(
         db.DateTime(timezone=True),
