@@ -1,6 +1,6 @@
 
 from marshmallow import fields
-from marshmallow import fields, validate
+from marshmallow import fields, validate, Schema
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow import ValidationError
 
@@ -18,56 +18,81 @@ from marshmallow import (
 from app.models.user import User
 
 
-class AdminSchema(SQLAlchemyAutoSchema):
+
+"""
+Schema for when Admins login
+"""
+class LoginSchema(Schema):
+    email = fields.Email(required=True, validate=validate.Length(max=255))
+    password = fields.String(required=True, validate=validate.Length(min=8, max=255)) 
+    
+    @post_load
+    def lowerstrip_email(self, data, **kwargs):
+        data["email"] = data["email"].lower().strip()
+        return data
+
+login_schema = LoginSchema()
+
+
+"""
+Schema for dumping Admin data to other admins
+"""
+class ReadOnlyAdminSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+
+    id = fields.Integer(dump_only=True)
+    email = fields.Email(dump_only=True)
+    first_name = fields.String(dump_only=True)
+    last_name = fields.String(dump_only=True)
+    is_admin = fields.Boolean(dump_only=True)
+    
+read_only_admin_schema = ReadOnlyAdminSchema()
+
+"""
+Schema for loading new Admins
+"""
+class WriteOnlyAdminSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
         load_instance = True
-
-        fields = (
-            "id",
-            "email",
-            "first_name",
-            "last_name",
-            "is_admin"
-        )
+    
     id = fields.Integer(dump_only=True)
-    email = fields.Email(required=True)
-    first_name = fields.String(required=True)
-    last_name = fields.String(required=True)
-    is_admin = fields.Boolean(required=True)
+    email = fields.Email(
+        required=True,
+        validate=validate.Length(max=255)
+    )
+    first_name = fields.String(required=True, validate=validate.Length(max=100))
+    last_name = fields.String(required=True, validate=validate.Length(max=100))
+    is_admin = fields.Boolean(required=True, validate=True)
 
     @post_load
     def lowerstrip_email(self, data, **kwargs):
         data["email"] = data["email"].lower().strip()
         return data
 
-admin_schema = AdminSchema()
+write_only_admin_schema = WriteOnlyAdminSchema()
 
 
-class DonorSchema(SQLAlchemyAutoSchema):
+"""
+Schema for loading new donors
+"""
+class WriteOnlyDonorSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
         load_instance = True
 
-        fields = (
-            "id",
-            "email",
-            "first_name",
-            "last_name",
-            "anonymous_user_id"
-        )
-
     id = fields.Integer(dump_only=True)
     first_name = fields.String(allow_none=True, validate=validate.Length(max=100))
     last_name = fields.String(allow_none=True, validate=validate.Length(max=100))
-    anonymous_user_id = fields.String(allow_none=True, validate=validate.Length(max=200))
 
     email = fields.Email(
         allow_none=True,
         validate=validate.Length(max=255)
     )
-    anonymous_id = fields.String(
-        validate=validate.Length(max=1000)
+    anonymous_user_id = fields.String(
+        required=True,
+        validate=validate.Length(max=200)
     )
 
     @post_load
@@ -76,4 +101,22 @@ class DonorSchema(SQLAlchemyAutoSchema):
             data["email"] = data["email"].lower().strip()
         return data 
 
-donor_schema = DonorSchema()
+write_only_donor_schema = WriteOnlyDonorSchema()
+
+
+"""
+Schema for dumping donor data to admins
+"""
+class ReadOnlyDonorSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+
+    id = fields.Integer(dump_only=True)
+    first_name = fields.String(dump_only=True)
+    last_name = fields.String(dump_only=True)
+    anonymous_user_id = fields.String(dump_only=True)
+
+    email = fields.Email(dump_only=True)
+    anonymous_id = fields.String(dump_only=True)
+
+read_only_donor_schema = ReadOnlyDonorSchema()

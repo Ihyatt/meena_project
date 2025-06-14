@@ -15,20 +15,16 @@ from marshmallow import (
 )
 
 
-
-
+"""
+********************************************
+    This is a read-only schema
+    that will be used for
+    serializing/deserializing data to non-admin
+********************************************
+""""
 class PublicCampaignSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Campaign
-        load_instance = False 
-        fields = (
-            "id",
-            "title", 
-            "description", 
-            "target_amount",
-            "current_amount",
-            "is_active"
-        )
 
     id = fields.Integer(dump_only=True)
     is_active = fields.Boolean(dump_only=True)
@@ -40,39 +36,23 @@ class PublicCampaignSchema(SQLAlchemyAutoSchema):
 public_campaign_schema = PublicCampaignSchema()
 
 
-class PrivateCampaignSchema(SQLAlchemyAutoSchema):
 
-    from app.schemas.donation import DonationSchema
-    from app.schemas.user import AdminSchema
-
+"""
+********************************************
+    This is a write-only schema
+    that will be used for
+    serializing/deserializing data to non-admin
+********************************************
+""""
+class WriteOnlyCampaignSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Campaign
-        include_fk = True 
         load_instance = True
-        fields = (
-            "id",   
-            "title",
-            "description",
-            "target_amount",
-            "current_amount",
-            "start_date",
-            "end_date",
-            "is_active",
-            "created_at",
-            "updated_at",
-            "admin_id", 
-            "admin",
-            "donations"
-        )
 
     id = fields.Integer(dump_only=True)
-
     title = fields.String(
         required=True,
-        validate=[
-            validate.Length(min=3, max=200),
-            validate.Regexp(r'^[a-zA-Z0-9\s\-.,!]+$', error="Invalid characters in title")
-        ]
+        validate=validate.Length(min=3, max=200)
     )
 
     description = fields.String(
@@ -82,17 +62,8 @@ class PrivateCampaignSchema(SQLAlchemyAutoSchema):
     target_amount = fields.Decimal(
         places=2,
         as_string=True,
-        validate=[
-            validate.Range(min=0.01, max=1_000_000),
-            validate.Regexp(r'^\d+\.\d{2}$', error="Must have exactly 2 decimal places")
-        ],
+        validate=validate.Range(min=0.01, max=1_000_000)
         required=True
-    )
-
-    current_amount = fields.Decimal(
-        places=2,
-        as_string=True,
-        dump_only=True 
     )
 
     start_date = fields.AwareDateTime(
@@ -115,13 +86,6 @@ class PrivateCampaignSchema(SQLAlchemyAutoSchema):
 
     admin_id = fields.Integer(required=True)
 
-
-    created_at = fields.AwareDateTime(format='iso', dump_only=True)
-    updated_at = fields.AwareDateTime(format='iso', dump_only=True) 
-
-    admin = fields.Nested(AdminSchema, dump_only=True)
-    donations = fields.List(fields.Nested(DonationSchema), dump_only=True)
-
     @validates_schema
     def validate_dates(self, data, **kwargs):
         start_date = data.get("start_date")
@@ -137,5 +101,53 @@ class PrivateCampaignSchema(SQLAlchemyAutoSchema):
 
 
 # Schema Instances
-private_campaign_schema = PrivateCampaignSchema()
-private_campaign_list_schema = PrivateCampaignSchema(many=True)
+write_only_campaign_schema = WriteOnlyCampaignSchema()
+
+"""
+********************************************
+    This is a read-only schema
+    that will be used for
+    serializing/deserializing data to admin
+********************************************
+""""
+class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
+    from app.schemas.donation import ReadOnlyDonationSchema
+    from app.schemas.user import ReadOnlyAdminSchema
+
+    class Meta:
+        model = Campaign
+
+    id = fields.Integer(dump_only=True)
+    title = fields.String(dump_only=True)
+    description = fields.String(dump_only=True)
+    target_amount = fields.Decimal(
+        places=2,
+        as_string=True,
+        dump_only=True
+    )
+    current_amount = fields.Decimal(
+        places=2,
+        as_string=True,
+        dump_only=True 
+    )
+    start_date = fields.AwareDateTime(
+        format='iso',
+        dump_only=True
+       )
+    end_date = fields.AwareDateTime(
+        format='iso',
+        dump_only=True
+    )
+    is_active = fields.Boolean(dump_only=True)
+    admin_id = fields.ForeignKey(dump_only=True)
+
+    created_at = fields.AwareDateTime(format='iso', dump_only=True)
+    updated_at = fields.AwareDateTime(format='iso', dump_only=True) 
+
+    admin = fields.Nested(ReadOnlyAdminSchema, dump_only=True)
+    donations = fields.List(fields.Nested(ReadOnlyDonationSchema), dump_only=True)
+
+
+# Schema Instances
+read_only_campaign_schema = ReadOnlyCampaignSchema()
+read_only_campaign_list_schema = ReadOnlyCampaignSchema(many=True)

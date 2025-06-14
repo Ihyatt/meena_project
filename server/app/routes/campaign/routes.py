@@ -128,7 +128,6 @@ from app.utils.fingerprint import get_client_fingerprint
 import logging
 from flask import Blueprint, request, jsonify, current_app
 import stripe
-# Assuming landing_bp is defined here or imported correctly
 
 @campaign_bp.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session(campaign_id):
