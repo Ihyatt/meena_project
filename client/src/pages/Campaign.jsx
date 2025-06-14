@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLoaderData } from "react-router-dom";
 import './Campaign.css'; // Import the CSS file
 
+
 const Campaign = () => {
   const campaign = useLoaderData();
   
@@ -13,11 +14,11 @@ const Campaign = () => {
   if (campaign.isError) {
     return <div>Error loading posts.</div>;
   }
-  const navigate = useNavigate();
 
-  const handleDonateClick = () => {
 
-    navigate(`/campaigns/{campaign.id}/checkout`);
+  const handleDonateClick = (campaignId) => {
+    
+    useNavigate(`/campaigns/${campaignId}/checkout`);
   };
 
   return (
@@ -26,7 +27,7 @@ const Campaign = () => {
         <h1 className="donation-title">{campaign.title}</h1>
         <p className="donation-subtitle">{campaign.description}</p>
         <button 
-          onClick={handleDonateClick}
+          onClick={handleDonateClick(campaign.id)}
           className="donate-button"
         >
           Donate Now

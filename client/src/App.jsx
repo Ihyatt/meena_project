@@ -15,13 +15,15 @@ const fetchCampaign = async () => {
   return await response.json();
 };
 
-
-
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Campaign />,
     loader: fetchCampaign,
+  },
+  {
+    path: '/campaigns/:campaignId/checkout',
+    element: <Checkout />,
   },
 ]);
 
