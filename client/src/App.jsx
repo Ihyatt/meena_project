@@ -6,6 +6,7 @@ import {
 
 import Campaign from "./pages/Campaign";
 import Checkout from "./pages/Checkout";
+import Login from "./pages/Login";
 // import  useCampaignStore  from './stores/Campaign'
 
 
@@ -16,11 +17,17 @@ const fetchCampaign = async () => {
   return await response.json();
 };
 // const { campaignId } = useCampaignStore();
+
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Campaign />,
     loader: fetchCampaign,
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '/campaigns/:campaignId/checkout',
