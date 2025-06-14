@@ -162,12 +162,15 @@ def create_checkout_session(campaign_id):
 
 @campaign_bp.route('/session-status', methods=['GET'])
 def session_status(campaign_id):
+    print("*********************************")
     session_id = request.args.get('session_id')
+    print(request.args)
     if not session_id:
         return jsonify({'error': 'Session ID is required'}), 400
     
     try:
         session = stripe.checkout.Session.retrieve(session_id)
+        print(session)
         customer_email = session.customer_details.email if session.customer_details else None
         return jsonify({
             'status': session.status,

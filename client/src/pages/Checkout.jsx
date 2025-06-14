@@ -15,9 +15,20 @@ const Checkout = () => {
 
     const fetchClientSecret = async () => {
       try {
-        const response = await fetch(`${backendUrl}/campaigns/${campaignId}/create-checkout-session`, {
+        const response = await fetch(`${backendUrl}/campaigns/${campaign.id}/create-checkout-session`, {
           method: 'POST',
-  
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: donorEmail,
+            firstName: donationAmount,
+            lastName: 'usd',
+    
+            metadata: {
+              campaignId: campaignId,
+            },
+          }),
         });
         if (!response.ok) {
           throw new Error('Network response was not ok');

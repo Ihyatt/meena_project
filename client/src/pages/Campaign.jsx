@@ -22,9 +22,8 @@ const Campaign = () => {
     setCampaign(campaign.id)
   }, []);
 
-  const handleDonateClick = (campaignId) => {
-    console.log('redirect?')
-    console.log('clicking?')
+  const handleDonateClick = () => {
+    const { campaignId } = useCampaignStore();
     navigate(`/campaigns/${campaignId}/checkout`);
   };
 
@@ -34,7 +33,7 @@ const Campaign = () => {
         <h1 className="donation-title">{campaign.title}</h1>
         <p className="donation-subtitle">{campaign.description}</p>
         <button 
-          onClick={handleDonateClick(campaign.id)}
+          onClick={handleDonateClick}
           className="donate-button"
         >
           Donate Now
