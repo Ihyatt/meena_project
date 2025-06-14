@@ -65,7 +65,7 @@ def donate(campaign_id):
 
 @campaign_bp.route('/update', methods=['POST'])
 @jwt_required()
-@admin_required
+@admin_required(admin_id='admin_id')
 def update(campaign_id):
     campaign = Campaign.query.get(campaign_id)
 

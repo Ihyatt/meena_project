@@ -23,7 +23,7 @@ class PaymentTransaction(db.Model, SoftDeleteMixin):
 
     donor_id = mapped_column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    amount = mapped_column(db.Numeric(10, 2), nullable=False)
+    amount = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
     status = mapped_column(db.Enum(PaymentStatus), default=PaymentStatus.PENDING, nullable=False)
 
     idempotency_key = mapped_column(db.String(300), unique=True, nullable=False)
