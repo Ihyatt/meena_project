@@ -7,26 +7,17 @@ const useAuthStore = create(
   persist(
     (set, get) => ({
       jwtToken: null,
-      permission: null,
       isAuthenticated: false,
-      userName: false,
-      
-      login: (jwtToken, permission,userName) => {
+      login: (jwtToken) => {
         set({ 
           jwtToken,
-          permission,
-          userName,
           isAuthenticated: true 
         });
       },
-      
       logout: () => {
         set({ 
           jwtToken: null,
-          permission: null,
-          userName: '',
           isAuthenticated: false 
-
         });
       },
     }),
@@ -34,8 +25,6 @@ const useAuthStore = create(
       name: 'auth-storage',
       partialize: (state) => ({ 
         jwtToken: state.jwtToken,
-        permission: state.permission,
-        userName: state.userName,
         isAuthenticated: state.jwtToken !== null
       })
     }

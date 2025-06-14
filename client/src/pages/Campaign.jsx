@@ -6,6 +6,7 @@ import  useCampaignStore  from '../stores/Campaign'
 
 const Campaign = () => {
   const { setCampaign } = useCampaignStore();
+  const navigate = useNavigate();
 
   const campaign = useLoaderData();
   
@@ -22,7 +23,9 @@ const Campaign = () => {
   }, []);
 
   const handleDonateClick = (campaignId) => {
-    useNavigate(`/campaigns/${campaignId}/checkout`);
+    console.log('redirect?')
+    console.log('clicking?')
+    navigate(`/campaigns/${campaignId}/checkout`);
   };
 
   return (

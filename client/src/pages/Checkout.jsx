@@ -8,75 +8,30 @@ const stripePublishableKey = import.meta.env.VITE_STRIPE_PK;
 
 const Checkout = () => {
   const { campaignId } = useCampaignStore();
-  const [stripePromise, setStripePromise] = useState(null);
-  const [clientSecret, setClientSecret] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Initialize Stripe only once
-  useEffect(() => {
-    if (!stripePublishableKey) {
-      setError('Stripe publishable key is missing');
-      setLoading(false);
-      return;
-    }
+  const stripePromise = loadStripe(stripePublishableKey)
 
-    const initializeStripe = async () => {
-      try {
-        const stripe = await loadStripe(stripePublishableKey);
-        setStripePromise(stripe);
-      } catch (err) {
-        console.error('Failed to load Stripe:', err);
-        setError('Failed to initialize payment processor');
-        setLoading(false);
-      }
-    };
 
-    initializeStripe();
-  }, []);
 
-  // Fetch client secret when campaignId is available
-  useEffect(() => {
-    if (!campaignId || !stripePromise) return;
-
-    const fetchSecret = async () => {
+    const fetchClientSecret = async () => {
       try {
         const response = await fetch(`${backendUrl}/campaigns/${campaignId}/create-checkout-session`, {
-          method: "POST",
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          method: 'POST',
+  
         });
-
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error?.message || 'Failed to create checkout session');
+          throw new Error('Network response was not ok');
         }
-
         const data = await response.json();
-        setClientSecret(data.clientSecret);
-      } catch (err) {
-        console.error('Checkout session error:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        if (!data.clientSecret) {
+          throw new Error('No client secret in response');
+        }
+        return data.clientSecret; 
+      } catch (error) {
+        console.error('Error fetching client secret:', error);
+        throw error;
       }
     };
-
-    fetchSecret();
-  }, [campaignId, stripePromise]);
-
-  if (loading) {
-    return <div>Loading payment processor...</div>;
-  }
-
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
-
-  if (!clientSecret) {
-    return <div>Preparing checkout...</div>;
-  }
 
   return (
     <div className="checkout-container">
@@ -84,7 +39,7 @@ const Checkout = () => {
       <div id="checkout">
         <EmbeddedCheckoutProvider
           stripe={stripePromise}
-          options={{ clientSecret }}
+          options={{ fetchClientSecret }}
         >
           <EmbeddedCheckout />
         </EmbeddedCheckoutProvider>
