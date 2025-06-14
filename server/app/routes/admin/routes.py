@@ -12,7 +12,7 @@ from app.models.campaign import Campaign
 from app.models.user import User
 from app.schemas.campaign import (
     write_only_campaign_schema,
-    ReadOnlyCampaignSchema,
+    read_only_campaign_list_schema,
 )
 
 
@@ -33,7 +33,7 @@ def create_campaign(admin_id):
 @admin_required(admin_id='admin_id')
 def dashboard(admin_id):
     campaigns = Campaign.query.all()
-    return jsonify(ReadOnlyCampaignSchema.dump(campaigns))
+    return jsonify(read_only_campaign_list_schema.dump(campaigns))
 
 
 

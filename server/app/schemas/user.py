@@ -22,7 +22,7 @@ from app.models.user import User
 ********************************************
     Login schema for admins
 ********************************************
-""""
+"""
 class LoginSchema(Schema):
     email = fields.Email(required=True, validate=validate.Length(max=255))
     password = fields.String(required=True, validate=validate.Length(min=8, max=255)) 
@@ -42,7 +42,7 @@ login_schema = LoginSchema()
     that will be used for when admins
     want to view other admin's data
 ********************************************
-""""
+"""
 class ReadOnlyAdminSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
@@ -63,7 +63,7 @@ read_only_admin_schema = ReadOnlyAdminSchema(many=True)
     that will be used for when a new 
     Admin is added/updated
 ********************************************
-""""
+"""
 class WriteOnlyAdminSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
@@ -76,7 +76,10 @@ class WriteOnlyAdminSchema(SQLAlchemyAutoSchema):
     )
     first_name = fields.String(required=True, validate=validate.Length(max=100))
     last_name = fields.String(required=True, validate=validate.Length(max=100))
-    is_admin = fields.Boolean(required=True, validate=True)
+    is_admin = fields.Boolean(
+        required=True,
+        validate=validate.Equal(True)
+    )
 
     @post_load
     def lowerstrip_email(self, data, **kwargs):
@@ -95,7 +98,7 @@ write_only_admin_schema = WriteOnlyAdminSchema()
     a unique key that way i am not creating
     donor instances for one donor
 ********************************************
-""""
+"""
 class WriteOnlyDonorSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
@@ -130,7 +133,7 @@ write_only_donor_schema = WriteOnlyDonorSchema()
     that will be used for
     when admins can view hisotric Donor data
 ********************************************
-""""
+"""
 class ReadOnlyDonorSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User

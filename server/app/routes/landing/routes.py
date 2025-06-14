@@ -23,6 +23,5 @@ from app.routes.landing import landing_bp
 @landing_bp.route('/', methods=['GET'])
 def landing_page():
     campaign = Campaign.query.filter_by(is_active=True).first()
-    print('*************')
     
     return jsonify(public_campaign_schema.dump(campaign))

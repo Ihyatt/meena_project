@@ -3,7 +3,6 @@ from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow import ValidationError
 
-
 from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from app.models.payment_transaction import PaymentTransaction
@@ -18,16 +17,16 @@ from app.utils.constants import PaymentStatus
     submits a donotion transaction via 
     stripe api
 ********************************************
-""""
+"""
 class WriteOnlyPaymentTransactionSchema(SQLAlchemyAutoSchema):
-    from app.schemas.user import DonorSchema
     class Meta:
         model = PaymentTransaction 
         load_instance = True
+        include_fk = True
 
     id = fields.Integer(dump_only=True)
-    donation_id = fields.ForiegnKey(required=True)
-    donor_id = fields.ForiegnKey(required=True)
+    donation_id = fields.Integer(required=True)
+    donor_id = fields.Integer(required=True)
     amount = fields.Decimal(
         required=True,
         as_string=True,
@@ -50,25 +49,25 @@ write_only_payment_transaction_schema = WriteOnlyPaymentTransactionSchema()
     that will be used for
     Admins to view historic payment transactions
 ********************************************
-""""
+"""
 class ReadOnlyPaymentTransactionSchema(SQLAlchemyAutoSchema):
-    from app.schemas.user import DonorSchema
     class Meta:
-        model = PaymentTransaction 
+        model = PaymentTransaction
+        include_fk = True 
 
     id = fields.Integer(dump_only=True)
     created_at = fields.AwareDateTime(format='iso', dump_only=True)
     updated_at = fields.AwareDateTime(format='iso', dump_only=True)
 
-    donation_id = fields.ForiegnKey(dump_only=True)
-    donor_id = fields.ForiegnKey(dump_only=True)
+    donation_id = fields.Integer(dump_only=True)
+    donor_id = fields.Integer(dump_only=True)
     amount = fields.Decimal(
         as_string=True,
         places=2,
         dump_only=True
     )
 
-    status = fields.Enum(dump_only=True)
+    status = fields.Enum(PaymentStatus,dump_only=True)
 
 # import me :) 
 read_only_payment_transaction_schema = ReadOnlyPaymentTransactionSchema()

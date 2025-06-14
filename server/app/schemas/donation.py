@@ -16,15 +16,16 @@ from app.utils.constants import CurrencyCode
     that will be used for
     when a donor submits a donation
 ********************************************
-""""
+"""
 class WriteOnlyDonationSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Donation
         load_instance = True
+        include_fk = True
 
     id = fields.Integer(dump_only=True)
-    donor_id = fields.ForeignKey(required=True)
-    campaign_id = fields.ForeignKey(required=True)
+    donor_id = fields.Integer(required=True)
+    campaign_id = fields.Integer(required=True)
     amount = fields.Decimal(
         places=2,
         as_string=True,
@@ -43,7 +44,7 @@ write_only_donation_schema = WriteOnlyDonationSchema()
     that will be used for when Admins
     want to view historic Donation/(s)
 ********************************************
-""""
+"""
 class ReadOnlyDonationSchema(SQLAlchemyAutoSchema):
     from app.schemas.payment_transaction import ReadOnlyPaymentTransactionSchema
     from app.schemas.user import ReadOnlyDonorSchema
@@ -51,16 +52,17 @@ class ReadOnlyDonationSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Donation
         load_instance = False
+        include_fk = True
 
     id = fields.Integer(dump_only=True)
-    donor_id = fields.ForeignKey(dump_only=Tru)
-    campaign_id = fields.ForeignKey(dump_only=True)
+    donor_id = fields.Integer(dump_only=True)
+    campaign_id = fields.Integer(dump_only=True)
     amount = fields.Decimal(
         places=2,
         as_string=True,
         dump_only=True
     )
-    currency = fields.Enum(dump_only=True)
+    currency = fields.Enum(CurrencyCode, dump_only=True)
     donor = fields.Nested(ReadOnlyDonorSchema, dump_only=True)
     payment_transaction = fields.Nested(ReadOnlyPaymentTransactionSchema, dump_only=True)
     created_at = fields.AwareDateTime(format='iso', dump_only=True)

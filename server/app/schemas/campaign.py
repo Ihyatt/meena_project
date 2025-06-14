@@ -22,7 +22,7 @@ from marshmallow import (
     camaign data for when donors navigate to 
     landing page
 ********************************************
-""""
+"""
 class PublicCampaignSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Campaign
@@ -44,11 +44,12 @@ public_campaign_schema = PublicCampaignSchema()
     that will be used when Admins
     create/update a campaign
 ********************************************
-""""
+"""
 class WriteOnlyCampaignSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Campaign
         load_instance = True
+        include_fk = True
 
     id = fields.Integer(dump_only=True)
     title = fields.String(
@@ -61,7 +62,7 @@ class WriteOnlyCampaignSchema(SQLAlchemyAutoSchema):
     target_amount = fields.Decimal(
         places=2,
         as_string=True,
-        validate=validate.Range(min=0.01, max=1_000_000)
+        validate=validate.Range(min=0.01, max=1_000_000),
         required=True
     )
     start_date = fields.AwareDateTime(
@@ -106,13 +107,14 @@ write_only_campaign_schema = WriteOnlyCampaignSchema()
     Admins want to view historic
     campaign data. 
 ********************************************
-""""
+"""
 class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
     from app.schemas.donation import ReadOnlyDonationSchema
     from app.schemas.user import ReadOnlyAdminSchema
 
     class Meta:
         model = Campaign
+        include_fk = True
 
     id = fields.Integer(dump_only=True)
     title = fields.String(dump_only=True)
@@ -136,7 +138,7 @@ class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
         dump_only=True
     )
     is_active = fields.Boolean(dump_only=True)
-    admin_id = fields.ForeignKey(dump_only=True)
+    admin_id = fields.Integer(dump_only=True)
 
     created_at = fields.AwareDateTime(format='iso', dump_only=True)
     updated_at = fields.AwareDateTime(format='iso', dump_only=True) 
