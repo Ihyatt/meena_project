@@ -8,7 +8,7 @@ const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 const stripePromise = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 
 
-const CheckoutPage = () => {
+const Checkout = () => {
   const fetchClientSecret = useCallback(() => {
     return fetch(`${backednUrl}/campaigns/${camapignId}/create-checkout-session`, { 
       method: "POST",
@@ -39,4 +39,4 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+export default Checkout;

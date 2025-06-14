@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Navigate } from 'react-router-dom';
 
-const ReturnPage = () => {
+const Return = () => {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
 
@@ -89,4 +89,4 @@ const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
   );
 };
 
-export default ReturnPage;
+export default Return;

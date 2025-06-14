@@ -1,0 +1,57 @@
+/* Background and container styles */
+.donation-page-container {
+    background-image: url('https://www.unicef.org/afghanistan/sites/unicef.org.afghanistan/files/styles/hero_extended/public/Arifa2.jpeg.webp?itok=_BAYuzz9');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+  }
+  
+  /* Content box styles */
+  .donation-content {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 800px;
+  }
+  
+  /* Typography styles */
+  .donation-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .donation-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Button styles */
+  .donate-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.2rem;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Button hover effect */
+  .donate-button:hover {
+    transform: scale(1.05);
+    background-color: #45a049;
+  }

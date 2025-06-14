@@ -4,8 +4,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-
 import Campaign from "./pages/Campaign";
+import Checkout from "./pages/Checkout";
 
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
@@ -15,6 +15,8 @@ const fetchCampaign = async () => {
   return await response.json();
 };
 
+
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,6 +24,7 @@ const router = createBrowserRouter([
     loader: fetchCampaign,
   },
 ]);
+
 
 function App() {
   return <RouterProvider router={router} />;
