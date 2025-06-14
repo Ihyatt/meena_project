@@ -55,7 +55,7 @@ class ReadOnlyAdminSchema(SQLAlchemyAutoSchema):
 
 #import me  
 read_only_admin_schema = ReadOnlyAdminSchema()
-
+read_only_admin_schema = ReadOnlyAdminSchema(many=True)
 
 """
 ********************************************
