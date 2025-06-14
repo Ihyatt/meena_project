@@ -56,6 +56,9 @@ class ReadOnlyPaymentTransactionSchema(SQLAlchemyAutoSchema):
         include_fk = True 
 
     id = fields.Integer(dump_only=True)
+    donation_id = fields.Integer(dump_only=True)
+    donor_id = fields.Integer(dump_only=True)
+
     status = fields.Enum(PaymentStatus,dump_only=True)
 
 # import me :) 

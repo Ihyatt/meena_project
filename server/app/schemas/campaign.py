@@ -128,7 +128,11 @@ class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
         as_string=True,
         dump_only=True 
     )
+
+    admin_id = fields.Integer(dump_only=True)
+    admin = fields.Nested(ReadOnlyAdminSchema, dump_only=True)
     donations = fields.List(fields.Nested(ReadOnlyDonationSchema), dump_only=True)
+
 
 # Import me :)
 read_only_campaign_schema = ReadOnlyCampaignSchema()
