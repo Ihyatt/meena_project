@@ -55,18 +55,14 @@ class ReadOnlyDonationSchema(SQLAlchemyAutoSchema):
         include_fk = True
 
     id = fields.Integer(dump_only=True)
-    donor_id = fields.Integer(dump_only=True)
     campaign_id = fields.Integer(dump_only=True)
     amount = fields.Decimal(
         places=2,
         as_string=True,
         dump_only=True
     )
-    currency = fields.Enum(CurrencyCode, dump_only=True)
     donor = fields.Nested(ReadOnlyDonorSchema, dump_only=True)
     payment_transaction = fields.Nested(ReadOnlyPaymentTransactionSchema, dump_only=True)
-    created_at = fields.AwareDateTime(format='iso', dump_only=True)
-    updated_at = fields.AwareDateTime(format='iso', dump_only=True)
 
 # import me :) 
 read_only_donation_schema = ReadOnlyDonationSchema()

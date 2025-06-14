@@ -56,17 +56,6 @@ class ReadOnlyPaymentTransactionSchema(SQLAlchemyAutoSchema):
         include_fk = True 
 
     id = fields.Integer(dump_only=True)
-    created_at = fields.AwareDateTime(format='iso', dump_only=True)
-    updated_at = fields.AwareDateTime(format='iso', dump_only=True)
-
-    donation_id = fields.Integer(dump_only=True)
-    donor_id = fields.Integer(dump_only=True)
-    amount = fields.Decimal(
-        as_string=True,
-        places=2,
-        dump_only=True
-    )
-
     status = fields.Enum(PaymentStatus,dump_only=True)
 
 # import me :) 

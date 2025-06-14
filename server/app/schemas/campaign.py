@@ -118,7 +118,6 @@ class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
     title = fields.String(dump_only=True)
-    description = fields.String(dump_only=True)
     target_amount = fields.Decimal(
         places=2,
         as_string=True,
@@ -129,23 +128,7 @@ class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
         as_string=True,
         dump_only=True 
     )
-    start_date = fields.AwareDateTime(
-        format='iso',
-        dump_only=True
-       )
-    end_date = fields.AwareDateTime(
-        format='iso',
-        dump_only=True
-    )
-    is_active = fields.Boolean(dump_only=True)
-    admin_id = fields.Integer(dump_only=True)
-
-    created_at = fields.AwareDateTime(format='iso', dump_only=True)
-    updated_at = fields.AwareDateTime(format='iso', dump_only=True) 
-
-    admin = fields.Nested(ReadOnlyAdminSchema, dump_only=True)
     donations = fields.List(fields.Nested(ReadOnlyDonationSchema), dump_only=True)
-
 
 # Import me :)
 read_only_campaign_schema = ReadOnlyCampaignSchema()
