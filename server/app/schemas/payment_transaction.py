@@ -11,7 +11,13 @@ from app.utils.constants import PaymentStatus
 
 
 
-
+"""
+********************************************
+    This is a write-only schema
+    that will be used for
+    serializing/deserializing data for admin
+********************************************
+""""
 class WriteOnlyPaymentTransactionSchema(SQLAlchemyAutoSchema):
     from app.schemas.user import DonorSchema
     class Meta:
@@ -51,8 +57,13 @@ class WriteOnlyPaymentTransactionSchema(SQLAlchemyAutoSchema):
 write_only_payment_transaction_schema = WriteOnlyPaymentTransactionSchema()
 
 
-
-
+"""
+********************************************
+    This is a read-only schema
+    that will be used for
+    serializing/deserializing data for admin
+********************************************
+""""
 class ReadOnlyPaymentTransactionSchema(SQLAlchemyAutoSchema):
     from app.schemas.user import DonorSchema
     class Meta:

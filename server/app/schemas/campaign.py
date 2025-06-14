@@ -18,8 +18,10 @@ from marshmallow import (
 """
 ********************************************
     This is a read-only schema
-    that will be used for
-    serializing/deserializing data to non-admin
+    that will be used when donors
+    navigate to landing page and 
+    this schema will desirialize data
+    to client
 ********************************************
 """"
 class PublicCampaignSchema(SQLAlchemyAutoSchema):

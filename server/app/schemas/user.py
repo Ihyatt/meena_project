@@ -18,10 +18,11 @@ from marshmallow import (
 from app.models.user import User
 
 
-
 """
-Schema for when Admins login
-"""
+********************************************
+    Login schema for admins
+********************************************
+""""
 class LoginSchema(Schema):
     email = fields.Email(required=True, validate=validate.Length(max=255))
     password = fields.String(required=True, validate=validate.Length(min=8, max=255)) 
@@ -34,9 +35,14 @@ class LoginSchema(Schema):
 login_schema = LoginSchema()
 
 
+
 """
-Schema for dumping Admin data to other admins
-"""
+********************************************
+    This is a read-only schema
+    that will be used for
+    serializing/deserializing data for admin
+********************************************
+""""
 class ReadOnlyAdminSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
@@ -49,9 +55,14 @@ class ReadOnlyAdminSchema(SQLAlchemyAutoSchema):
     
 read_only_admin_schema = ReadOnlyAdminSchema()
 
+
 """
-Schema for loading new Admins
-"""
+********************************************
+    This is a write-only schema
+    that will be used for
+    serializing/deserializing data for admin
+********************************************
+""""
 class WriteOnlyAdminSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
@@ -75,8 +86,12 @@ write_only_admin_schema = WriteOnlyAdminSchema()
 
 
 """
-Schema for loading new donors
-"""
+********************************************
+    This is a write-only schema
+    that will be used for
+    serializing/deserializing data for admin
+********************************************
+""""
 class WriteOnlyDonorSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User
@@ -105,8 +120,12 @@ write_only_donor_schema = WriteOnlyDonorSchema()
 
 
 """
-Schema for dumping donor data to admins
-"""
+********************************************
+    This is a read-only schema
+    that will be used for
+    serializing/deserializing data for admin
+********************************************
+""""
 class ReadOnlyDonorSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = User

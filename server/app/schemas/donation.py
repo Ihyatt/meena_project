@@ -10,7 +10,13 @@ from app.models.donation import Donation
 from app.utils.constants import CurrencyCode
 
 
-
+"""
+********************************************
+    This is a write-only schema
+    that will be used for
+    serializing/deserializing data for admin
+********************************************
+""""
 class WriteOnlyDonationSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Donation
@@ -27,10 +33,16 @@ class WriteOnlyDonationSchema(SQLAlchemyAutoSchema):
     )
     currency = fields.Enum(CurrencyCode, required=True)
 
-
 write_only_donation_schema = WriteOnlyDonationSchema()
 
 
+"""
+********************************************
+    This is a read-only schema
+    that will be used for
+    serializing/deserializing data for admin
+********************************************
+""""
 class ReadOnlyDonationSchema(SQLAlchemyAutoSchema):
     from app.schemas.payment_transaction import ReadOnlyPaymentTransactionSchema
     from app.schemas.user import ReadOnlyDonorSchema
