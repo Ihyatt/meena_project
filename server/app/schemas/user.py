@@ -32,15 +32,15 @@ class LoginSchema(Schema):
         data["email"] = data["email"].lower().strip()
         return data
 
+# import me
 login_schema = LoginSchema()
-
 
 
 """
 ********************************************
     This is a read-only schema
-    that will be used for
-    serializing/deserializing data for admin
+    that will be used for when admins
+    want to view other admin's data
 ********************************************
 """"
 class ReadOnlyAdminSchema(SQLAlchemyAutoSchema):
@@ -52,15 +52,16 @@ class ReadOnlyAdminSchema(SQLAlchemyAutoSchema):
     first_name = fields.String(dump_only=True)
     last_name = fields.String(dump_only=True)
     is_admin = fields.Boolean(dump_only=True)
-    
+
+#import me  
 read_only_admin_schema = ReadOnlyAdminSchema()
 
 
 """
 ********************************************
     This is a write-only schema
-    that will be used for
-    serializing/deserializing data for admin
+    that will be used for when a new 
+    Admin is added/updated
 ********************************************
 """"
 class WriteOnlyAdminSchema(SQLAlchemyAutoSchema):
@@ -82,14 +83,17 @@ class WriteOnlyAdminSchema(SQLAlchemyAutoSchema):
         data["email"] = data["email"].lower().strip()
         return data
 
+# import me
 write_only_admin_schema = WriteOnlyAdminSchema()
 
 
 """
 ********************************************
     This is a write-only schema
-    that will be used for
-    serializing/deserializing data for admin
+    for when a donor makes a donotion, 
+    anonymous_user_id is going to be set as 
+    a unique key that way i am not creating
+    donor instances for one donor
 ********************************************
 """"
 class WriteOnlyDonorSchema(SQLAlchemyAutoSchema):
@@ -116,6 +120,7 @@ class WriteOnlyDonorSchema(SQLAlchemyAutoSchema):
             data["email"] = data["email"].lower().strip()
         return data 
 
+# import me
 write_only_donor_schema = WriteOnlyDonorSchema()
 
 
@@ -123,7 +128,7 @@ write_only_donor_schema = WriteOnlyDonorSchema()
 ********************************************
     This is a read-only schema
     that will be used for
-    serializing/deserializing data for admin
+    when admins can view hisotric Donor data
 ********************************************
 """"
 class ReadOnlyDonorSchema(SQLAlchemyAutoSchema):
@@ -138,4 +143,6 @@ class ReadOnlyDonorSchema(SQLAlchemyAutoSchema):
     email = fields.Email(dump_only=True)
     anonymous_id = fields.String(dump_only=True)
 
+# import me :) 
 read_only_donor_schema = ReadOnlyDonorSchema()
+read_only_donor_schema = ReadOnlyDonorSchema(many=True)
