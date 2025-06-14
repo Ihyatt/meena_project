@@ -1,23 +1,31 @@
-// frontend/src/App.jsx
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import * as React from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
-// Import your page components
-import CheckoutPage from './pages/CheckoutPage';
-import ReturnPage from './pages/ReturnPage';
-// import HomePage from './pages/HomePage'; // Example if you have a home page
 
-const App = () => {
-  return (
-    <div className="App">
-      <Routes>
-        {/* <Route path="/" element={<HomePage />} /> */}
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/return" element={<ReturnPage />} />
-        {/* Add more routes for your other application pages */}
-      </Routes>
-    </div>
-  );
+import Campaign from "./pages/Campaign";
+
+
+const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+
+const fetchCampaign = async () => {
+  const response = await fetch(`${backednUrl}`);
+  return await response.json();
 };
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Campaign />,
+    loader: fetchCampaign,
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
 export default App;
+

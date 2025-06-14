@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 
-const donationStore = create(
+const useDonationStore = create(
   persist(
     (set, get) => ({
       amount: 0.0,
@@ -22,4 +22,4 @@ const donationStore = create(
   )
 );
 
-export default donationStore;
+export default useDonationStore;

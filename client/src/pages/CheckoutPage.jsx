@@ -1,23 +1,20 @@
-// frontend/src/pages/CheckoutPage.jsx
 import React, { useCallback } from 'react';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js'; // Load stripePromise here if not global
+import { loadStripe } from '@stripe/stripe-js';
 
-// Make sure to call `loadStripe` outside of a component’s render
-// If you want to use this stripePromise only on this page, define it here
-// Otherwise, it can remain global in index.js/main.jsx
-const stripePromise = loadStripe("pk_test_51RYN7hBDf0C7MquBortrhWxvdIV8sGefWHua3uNVaCZimvSh2w1Fz4FiyhneOFEcjOA5A3OrOU8KItMRIP57uiYE00lho6BPUn");
+
+
+const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+const stripePromise = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 
 
 const CheckoutPage = () => {
   const fetchClientSecret = useCallback(() => {
-    // This function will fetch the client secret from your backend
-    return fetch("http://localhost:5000/create-checkout-session", { // Ensure this URL is correct
+    return fetch(`${backednUrl}/campaigns/${camapignId}/create-checkout-session`, { 
       method: "POST",
     })
       .then((res) => res.json())
       .then((data) => {
-        // Handle potential errors from backend
         if (data.error) {
           throw new Error(data.error.message);
         }

@@ -19,7 +19,7 @@ from app.config import Config
 from app.routes.auth import auth_bp
 from app.routes.admin  import admin_bp
 from app.routes.campaign import campaign_bp
-from app.routes.donor import landing_bp
+from app.routes.landing import landing_bp
 
 
 from app.models.user import User

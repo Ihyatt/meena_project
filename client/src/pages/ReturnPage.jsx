@@ -11,6 +11,10 @@ const ReturnPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+
+
   useEffect(() => {
     if (!sessionId) {
       setError("No session ID found in URL.");
@@ -18,7 +22,7 @@ const ReturnPage = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/session-status?session_id=${sessionId}`) // Ensure this URL is correct
+    fetch(`${backednUrl}/campaigns/${camapignId}/session-status?session_id=${sessionId}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
