@@ -10,6 +10,7 @@ const useCampaignStore = create(
     (set) => ({
       campaign: null,
       loading: true,
+      error:false, //come back to this later
       fetchCampaign: async () => {
         set({ loading: true });
         const campaign = await fetch(`${backednUrl}`).then(res => res.json());

@@ -13,13 +13,13 @@ const useDonorStore = create(
         emailOptIn: true,
         amount: 0.00,
         currency: CURRENCY_CODE.USD,
-        
-        setFirstName: (newFirstName) => set({ firstName: newFirstName }),
-        setlastname:(newLastName) => set({ lastName: newLastName }),
-        setEmail: (newEmail) => set({ email: newEmail }),
-        setAmount: (newAmount) => set({ amount: newAmount }),
-        toggleEmailOptIn: set((state) => ({ emailOptIn: !state.emailOptIn })),
-        setCurrency: (newCurrency) => set({ currency: newCurrency }),
+
+        setFirstName: (firstName) => set(() => ({ firstName: firstName })),
+        setLastName: (lastName) => set(() => ({ lastName: lastName })),
+        setEmail: (email) => set(() => ({ email: email })),
+        setAmount: (amount) => set(() => ({ amount: amount })),
+        setCurrency: (currency) => set(() => ({ currency: currency })),
+        toggleEmailOptIn: () => set((state) => ({ emailOptIn: !state.emailOptIn })),
     },
     {
       name: 'donor-storage',

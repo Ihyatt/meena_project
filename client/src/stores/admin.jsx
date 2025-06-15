@@ -10,6 +10,7 @@ const useAuthStore = create(
     (set, get) => ({
       jwtToken: null,
       isAuthenticated: false,
+      loading: true,
       login: async() => {
         const response = await fetch(`${backendUrl}/login`); 
         const data = await response.json();
