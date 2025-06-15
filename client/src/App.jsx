@@ -16,7 +16,6 @@ const fetchCampaign = async () => {
   const response = await fetch(`${backednUrl}`);
   return await response.json();
 };
-// const { campaignId } = useCampaignStore();
 
 
 const router = createBrowserRouter([

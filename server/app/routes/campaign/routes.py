@@ -56,7 +56,7 @@ def create_checkout_session(campaign_id):
                     'unit_amount': 1000,
                     'product_data': {
                         'name': 'Donation',
-                        'description': 'One-time contribution to our cause',
+                        'description': 'Thank you for contributing to Meena Project',
                     },
                 },
                 'quantity': 1,

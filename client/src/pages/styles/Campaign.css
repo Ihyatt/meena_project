@@ -13,7 +13,6 @@
     text-align: center;
   }
   
-  /* Content box styles */
   .donation-content {
     background-color: rgba(0, 0, 0, 0.6);
     padding: 2rem;
@@ -21,7 +20,6 @@
     max-width: 800px;
   }
   
-  /* Typography styles */
   .donation-title {
     font-size: 3rem;
     margin-bottom: 1rem;
@@ -32,7 +30,6 @@
     margin-bottom: 2rem;
   }
   
-  /* Button styles */
   .donate-button {
     background-color: #4CAF50;
     color: white;
