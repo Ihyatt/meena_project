@@ -5,23 +5,22 @@ import  useCampaignStore  from '../stores/Campaign'
 
 
 const Campaign = () => {
-  const { setCampaign } = useCampaignStore();
-  const { campaignId } = useCampaignStore();
+  const { setCampaign, campaignId } = useCampaignStore();
+  const loadedCampaignData = useLoaderData();
+  
+  useEffect(() => {
+    setCampaign(loadedCampaignData.id)
+  }, [loadedCampaignData.id, setCampaign]);
+
   const navigate = useNavigate();
 
-  const campaign = useLoaderData();
-  
-  if (campaign.isLoading) {
+  if (loadedCampaignData.isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (campaign.isError) {
+  if (loadedCampaignData.isError) {
     return <div>Error loading posts.</div>;
   }
-  useEffect(() => {
-    console.log("Campaign page mounted");
-    setCampaign(campaign.id)
-  }, []);
 
   const handleDonateClick = () => {
     
@@ -31,8 +30,8 @@ const Campaign = () => {
   return (
     <div className="donation-page-container">
       <div className="donation-content">
-        <h1 className="donation-title">{campaign.title}</h1>
-        <p className="donation-subtitle">{campaign.description}</p>
+        <h1 className="donation-title">{loadedCampaignData.title}</h1>
+        <p className="donation-subtitle">{loadedCampaignData.description}</p>
         <button 
           onClick={handleDonateClick}
           className="donate-button"
