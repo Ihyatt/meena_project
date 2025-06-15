@@ -7,22 +7,12 @@ import {
 import Campaign from "./pages/Campaign";
 import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
-// import  useCampaignStore  from './stores/Campaign'
-
-
-const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
-
-const fetchCampaign = async () => {
-  const response = await fetch(`${backednUrl}`);
-  return await response.json();
-};
 
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Campaign />,
-    loader: fetchCampaign,
   },
   {
     path: '/login',

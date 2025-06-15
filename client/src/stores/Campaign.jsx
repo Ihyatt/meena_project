@@ -1,15 +1,23 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+
+const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+
+
 const useCampaignStore = create(
   persist(
     (set) => ({
-      campaignId: null,
-      setCampaign: (campaignId) => set({ campaignId }),
+      campaign: null,
+      loading: true,
+      fetchCampaign: async () => {
+        set({ loading: true });
+        const campaign = await fetch(`${backednUrl}`).then(res => res.json());
+        set({ campaign, loading: false });
+      },
     }),
     {
-      name: 'campaign-storage',
-      partialize: (state) => ({ campaignId: state.campaignId }),
+      name: 'campaign-storage'
     }
   )
 );

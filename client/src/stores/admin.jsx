@@ -2,15 +2,19 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 
+const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+
 
 const useAuthStore = create(
   persist(
     (set, get) => ({
       jwtToken: null,
       isAuthenticated: false,
-      login: (jwtToken) => {
+      login: async() => {
+        const response = await fetch(`${backendUrl}/login`); 
+        const data = await response.json();
         set({ 
-          jwtToken,
+          jwtToken:data.jwtToken,
           isAuthenticated: true 
         });
       },
@@ -23,10 +27,6 @@ const useAuthStore = create(
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({ 
-        jwtToken: state.jwtToken,
-        isAuthenticated: state.jwtToken !== null
-      })
     }
   )
 );

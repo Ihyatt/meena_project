@@ -1,7 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import CURRENCY_CODE from '../utils/constants';
 
 
+// these are all sync
 const useDonorStore = create(
     persist(
       (set, get) => ({
@@ -10,28 +12,21 @@ const useDonorStore = create(
         email: '',
         emailOptIn: true,
         amount: 0.00,
-        currency: 'usd',//make this to enum
+        currency: CURRENCY_CODE.USD,
         
         setFirstName: (newFirstName) => set({ firstName: newFirstName }),
         setlastname:(newLastName) => set({ lastName: newLastName }),
         setEmail: (newEmail) => set({ email: newEmail }),
         setAmount: (newAmount) => set({ amount: newAmount }),
-        setEmailOptIn: (newEmailOptIn) => set({ emailOptIn: newEmailOptIn }),
+        toggleEmailOptIn: set((state) => ({ emailOptIn: !state.emailOptIn })),
         setCurrency: (newCurrency) => set({ currency: newCurrency }),
-    }),
-      {
-        name: 'donor-storage',
-        partialize: (state) => ({ 
-          firstName: state.firstName,
-          lastName: state.lastName,
-          email: state.email,
-          emailOptIn: state.emailOptIn,
-          amount: state.amount,
-          currency: state.currency,//make this to enum
-        })
-      }
-    )
-  );
+    },
+    {
+      name: 'donor-storage',
+    }
+  )
+  )
+);
   
   export default useDonorStore;
 

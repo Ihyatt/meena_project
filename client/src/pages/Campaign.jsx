@@ -5,33 +5,32 @@ import  useCampaignStore  from '../stores/Campaign'
 
 
 const Campaign = () => {
-  const { setCampaign, campaignId } = useCampaignStore();
-  const loadedCampaignData = useLoaderData();
+  const { fetchCampaign, campaign, loading } = useCampaignStore();
   
   useEffect(() => {
-    setCampaign(loadedCampaignData.id)
-  }, [loadedCampaignData.id, setCampaign]);
+    fetchCampaign()
+  }, []);
 
   const navigate = useNavigate();
 
-  if (loadedCampaignData.isLoading) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (loadedCampaignData.isError) {
-    return <div>Error loading posts.</div>;
-  }
+  // if (campaign.isError) {
+  //   return <div>Error loading posts.</div>;
+  // }
 
   const handleDonateClick = () => {
     
-    navigate(`/campaigns/${campaignId}/checkout`);
+    navigate(`/campaigns/${campaign.id}/checkout`);
   };
 
   return (
     <div className="donation-page-container">
       <div className="donation-content">
-        <h1 className="donation-title">{loadedCampaignData.title}</h1>
-        <p className="donation-subtitle">{loadedCampaignData.description}</p>
+        <h1 className="donation-title">{campaign.title}</h1>
+        <p className="donation-subtitle">{campaign.description}</p>
         <button 
           onClick={handleDonateClick}
           className="donate-button"
