@@ -20,8 +20,7 @@ def seed_data():
         print("making users")
         admin_user = User(
             email="admin@example.com",
-            first_name="Admin",
-            last_name="User",
+            full_name="Admin",
             is_admin=True,
             is_active=True,
             anonymous_user_id=None
@@ -31,8 +30,7 @@ def seed_data():
 
         donor_user_john = User(
             email="john.doe@example.com",
-            first_name="John",
-            last_name="Doe",
+            full_name="John",
             is_admin=False,
             is_active=True,
             anonymous_user_id=None
@@ -42,8 +40,7 @@ def seed_data():
 
         donor_user_jane = User(
             email="jane.smith@example.com",
-            first_name="Jane",
-            last_name="Smith",
+            full_name="Jane",
             is_admin=False,
             is_active=True,
             anonymous_user_id=None
@@ -54,8 +51,7 @@ def seed_data():
         anon_user = User(
             email=None,
             password_hash=None,
-            first_name="Anonymous",
-            last_name="Donor",
+            full_name="Anonymous",
             is_admin=False,
             is_active=True,
             anonymous_user_id=uuid.uuid4().hex 

@@ -8,16 +8,12 @@ export const useDonorStore = create(
   persist(
     (set) => ({
       // State
-      firstName: '',
-      lastName: '',
+      fullName: 'hello',
       email: '',
       emailOptIn: true,
       amount: 0.0,
-      currency: 'USD',
-
-      // Actions
-      setFirstName: (firstName) => set({ firstName }),
-      setLastName: (lastName) => set({ lastName }),
+      currency: 'usd',
+      setFullName: (newFullName) => set({ fullName: newFullName }),
       setEmail: (email) => set({ email }),
       setAmount: (amount) => set({ amount }),
       setCurrency: (currency) => set({ currency }),

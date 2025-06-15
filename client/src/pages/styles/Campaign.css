@@ -1,4 +1,3 @@
-
 .pageContainer {
   display: flex;
   min-height: 100vh;
@@ -204,3 +203,69 @@
     font-size: 1.5em; 
   }
 }
+
+/* Typeahead Custom Styling to Match Other Inputs */
+.custom-typeahead {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.custom-typeahead .rbt-input {
+  width: 100%;
+  padding: 14px 18px !important;
+  border: 1px solid #444444 !important;
+  border-radius: 0px !important;
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  font-size: 1em !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.custom-typeahead .rbt-input:focus {
+  border-color: #777777 !important;
+}
+
+.custom-typeahead .rbt-menu {
+  background-color: #000000 !important;
+  border: 1px solid #444444 !important;
+  border-radius: 0px !important;
+  margin-top: -1px !important;
+}
+
+.custom-typeahead .dropdown-item {
+  color: #FFFFFF !important;
+  padding: 14px 18px !important;
+  background-color: transparent !important;
+}
+
+.custom-typeahead .dropdown-item:hover,
+.custom-typeahead .dropdown-item:focus {
+  background-color: #333333 !important;
+  color: #FFFFFF !important;
+}
+
+.custom-typeahead .dropdown-item.active {
+  background-color: #444444 !important;
+  color: #FFFFFF !important;
+}
+
+.rbt-input-main.form-control.rbt-input:hover,
+.rbt-input-main.form-control.rbt-input:focus {
+  background-color: transparent !important;
+  border-color: #444444 !important; /* Match your default border color */
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.rbt-highlight-text {
+  background-color: black;
+  color: white;
+}
+
+/* If needed, add this for the wrapper */
+.rbt-input-wrapper:hover {
+  background-color: transparent !important;
+}
+

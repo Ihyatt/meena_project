@@ -28,7 +28,7 @@ def login():
     jwt_token = create_access_token(identity=str(user.id))
 
     return jsonify({
-        "message": f"Welcome back, {user.first_name}!",
+        "message": f"Welcome back, {user.full_name}!",
         "jwtToken": jwt_token
     }), 200
   

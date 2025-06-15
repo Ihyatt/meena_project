@@ -49,8 +49,7 @@ class ReadOnlyAdminSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
     email = fields.Email(dump_only=True)
-    first_name = fields.String(dump_only=True)
-    last_name = fields.String(dump_only=True)
+    full_name = fields.String(dump_only=True)
     is_admin = fields.Boolean(dump_only=True)
 
 #import me  
@@ -74,8 +73,7 @@ class WriteOnlyAdminSchema(SQLAlchemyAutoSchema):
         required=True,
         validate=validate.Length(max=255)
     )
-    first_name = fields.String(required=True, validate=validate.Length(max=100))
-    last_name = fields.String(required=True, validate=validate.Length(max=100))
+    full_name = fields.String(required=True, validate=validate.Length(max=200))
     is_admin = fields.Boolean(
         required=True,
         validate=validate.Equal(True)
@@ -105,8 +103,7 @@ class WriteOnlyDonorSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
     id = fields.Integer(dump_only=True)
-    first_name = fields.String(allow_none=True, validate=validate.Length(max=100))
-    last_name = fields.String(allow_none=True, validate=validate.Length(max=100))
+    full_name = fields.String(allow_none=True, validate=validate.Length(max=200))
 
     email = fields.Email(
         allow_none=True,

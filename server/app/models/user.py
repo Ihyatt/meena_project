@@ -19,8 +19,7 @@ class User(db.Model, SoftDeleteMixin):
 
     email = mapped_column(db.String(255), nullable=True) #nullable so that we can have anon users
     password_hash = mapped_column(db.String(255), nullable=True)
-    first_name = mapped_column(db.String(80), nullable=True)
-    last_name = mapped_column(db.String(80), nullable=True)
+    full_name = mapped_column(db.String(160), nullable=True)
     is_admin = mapped_column(db.Boolean, default=False, nullable=False)
     is_active = mapped_column(db.Boolean, default=True, nullable=False)
     anonymous_user_id = db.Column(db.String(64), unique=True, nullable=True, index=True) # SHA-256 hash output
