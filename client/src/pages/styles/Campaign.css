@@ -4,7 +4,8 @@
   min-height: 100vh;
   background-color: #F5F5F5;
   font-family: 'Roboto', sans-serif;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
+   
 }
 
 .imageSection {
@@ -73,6 +74,7 @@
   padding: 60px 40px;
   box-sizing: border-box;
   min-width: 350px; 
+  
 }
 
 .formContentWrapper {
@@ -87,6 +89,8 @@
   font-weight: 700;
   letter-spacing: 1px;
   color: #FFFFFF;
+  opacity: 0.7;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .label {
@@ -95,6 +99,8 @@
   font-size: 1.1em;
   font-weight: 500;
   color: #E0E0E0;
+  opacity: 0.7;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .input {
@@ -109,6 +115,7 @@
   box-sizing: border-box;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
 }
 
 .input:focus {
@@ -119,12 +126,13 @@
 .textarea {
   resize: vertical;
   min-height: 150px;
+  
 }
 
 .button {
   width: 100%;
   padding: 16px 25px;
-  background-color: #333333;
+  background-color: #009000;
   color: #FFFFFF;
   border: none;
   border-radius: 0px;
@@ -136,7 +144,7 @@
 }
 
 .button:hover {
-  background-color: #555555;
+  background-color:  #0ba60b;
   transform: translateY(-2px);
 }
 
