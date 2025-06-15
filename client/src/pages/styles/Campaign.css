@@ -1,54 +1,199 @@
-/* Background and container styles */
-.donation-page-container {
-    background-image: url('https://www.unicef.org/afghanistan/sites/unicef.org.afghanistan/files/styles/hero_extended/public/Arifa2.jpeg.webp?itok=_BAYuzz9');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-align: center;
-  }
+
+.pageContainer {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F5F5F5;
+  font-family: 'Roboto', sans-serif;
+  flex-wrap: wrap; 
+}
+
+.imageSection {
+  flex: 1; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0; 
+  overflow: hidden;
+  position: relative;
+  min-width: 300px; 
+
   
-  .donation-content {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 2rem;
-    border-radius: 10px;
-    max-width: 800px;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),
+    url("https://www.guernicamag.com/wp-content/uploads/2021/09/hossaini4.jpg");
+
+  background-size: cover; 
+  background-position: center center; 
+  background-repeat: no-repeat; 
+}
+
+/
+.image {
+  display: none; 
+}
+
+.image-overlay-text-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  z-index: 2;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1em; 
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #FFFFFF;
+  opacity: 0.7;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.image-overlay-text-container h2 {
+  font-size: 1.5em; 
+  margin: 0 0 15px 0; 
+}
+
+.image-overlay-text-container p {
+  font-size: 1em;
+  margin: 0; 
+}
+
+
+.formSection {
+  flex: 1; 
+  background-color: #000000;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 40px;
+  box-sizing: border-box;
+  min-width: 350px; 
+}
+
+.formContentWrapper {
+  width: 100%;
+  max-width: 450px;
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2.8em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #FFFFFF;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #E0E0E0;
+}
+
+.input {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 30px;
+  border: 1px solid #444444;
+  border-radius: 0px;
+  background-color: transparent;
+  color: #FFFFFF;
+  font-size: 1em;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input:focus {
+  border-color: #777777;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.button {
+  width: 100%;
+  padding: 16px 25px;
+  background-color: #333333;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 0px;
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: #555555;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    flex-direction: column; 
   }
+
+  .imageSection,
+  .formSection {
+    flex: none; 
+    width: 100%;
+    min-width: unset; 
+  }
+
+  .imageSection {
+    height: 350px;
   
-  .donation-title {
-    font-size: 3rem;
-    margin-bottom: 1rem;
   }
-  
-  .donation-subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
+
+  .formSection {
+    padding: 40px 20px; 
   }
-  
-  .donate-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.2rem;
-    margin: 10px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  .heading {
+    font-size: 2em;
+    margin-bottom: 30px;
   }
-  
-  /* Button hover effect */
-  .donate-button:hover {
-    transform: scale(1.05);
-    background-color: #45a049;
+
+  .input {
+    margin-bottom: 20px;
   }
+
+  .image-overlay-text-container {
+    max-width: 90%; 
+    font-size: 0.9em;
+  }
+
+  .image-overlay-text-container h2 {
+    font-size: 1.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .formSection {
+    padding: 30px 15px;
+  }
+
+  .heading {
+    font-size: 1.8em;
+  }
+
+  .image-overlay-text-container {
+    font-size: 0.8em; 
+  }
+
+  .image-overlay-text-container h2 {
+    font-size: 1.5em; 
+  }
+}
