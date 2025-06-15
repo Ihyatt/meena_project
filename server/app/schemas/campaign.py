@@ -118,6 +118,7 @@ class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
     title = fields.String(dump_only=True)
+    description = fields.String(dump_only=True)
     target_amount = fields.Decimal(
         places=2,
         as_string=True,
@@ -128,6 +129,7 @@ class ReadOnlyCampaignSchema(SQLAlchemyAutoSchema):
         as_string=True,
         dump_only=True 
     )
+    is_active = fields.Boolean()
 
     admin_id = fields.Integer(dump_only=True)
     admin = fields.Nested(ReadOnlyAdminSchema, dump_only=True)
