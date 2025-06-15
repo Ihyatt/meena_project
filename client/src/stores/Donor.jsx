@@ -4,29 +4,27 @@ import CURRENCY_CODE from '../utils/constants';
 
 
 // these are all sync
-const useDonorStore = create(
-    persist(
-      (set, get) => ({
-        firstName: '',
-        lastName: '',
-        email: '',
-        emailOptIn: true,
-        amount: 0.00,
-        currency: CURRENCY_CODE.USD,
+export const useDonorStore = create(
+  persist(
+    (set) => ({
+      // State
+      firstName: '',
+      lastName: '',
+      email: '',
+      emailOptIn: true,
+      amount: 0.0,
+      currency: 'USD',
 
-        setFirstName: (firstName) => set(() => ({ firstName: firstName })),
-        setLastName: (lastName) => set(() => ({ lastName: lastName })),
-        setEmail: (email) => set(() => ({ email: email })),
-        setAmount: (amount) => set(() => ({ amount: amount })),
-        setCurrency: (currency) => set(() => ({ currency: currency })),
-        toggleEmailOptIn: () => set((state) => ({ emailOptIn: !state.emailOptIn })),
-    },
+      // Actions
+      setFirstName: (firstName) => set({ firstName }),
+      setLastName: (lastName) => set({ lastName }),
+      setEmail: (email) => set({ email }),
+      setAmount: (amount) => set({ amount }),
+      setCurrency: (currency) => set({ currency }),
+      toggleEmailOptIn: () => set((state) => ({ emailOptIn: !state.emailOptIn })),
+    }),
     {
-      name: 'donor-storage',
+      name: 'donor-storage', // LocalStorage key
     }
   )
-  )
 );
-  
-  export default useDonorStore;
-
