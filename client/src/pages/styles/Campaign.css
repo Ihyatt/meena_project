@@ -264,8 +264,11 @@
   color: white;
 }
 
-/* If needed, add this for the wrapper */
-.rbt-input-wrapper:hover {
-  background-color: transparent !important;
+input[type="checkbox"] {
+  accent-color:  white;
 }
 
+input[type="checkbox"]:hover {
+  accent-color: purple;
+  
+}

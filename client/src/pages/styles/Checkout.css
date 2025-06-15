@@ -9,6 +9,7 @@
   #checkout {
     width: 100%;
   }
+
   @media (max-width: 480px) {
     .checkout-container {
       padding: 10px;
@@ -16,3 +17,24 @@
     }
   }
   
+  .custom-checkbox-label input[type="checkbox"] {  
+    margin-right: 0.5rem !important; 
+  }
+  
+  .custom-checkbox-label {
+    display: flex;     
+    align-items: center; 
+
+  }
+  
+
+  .accent {
+    accent-color: red;
+}
+
+
+
+input:checked + label {
+  background-color: teal;
+  color: white;
+}

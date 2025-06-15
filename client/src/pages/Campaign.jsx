@@ -21,7 +21,6 @@ import 'primeicons/primeicons.css';
 
 const Campaign = () => {
 
-  const [selectedOption, setSelectedOption] = useState([]);
   const { fetchCampaign, campaign, loading } = useCampaignStore();
   const {
     fullName,
@@ -59,10 +58,6 @@ const Campaign = () => {
     navigate(`/campaigns/${campaign.id}/checkout`);
   }
   
-  const handleClick = () => {
-    const newSelectedOption = [options[0]];
-    setSelectedOption(newSelectedOption);
-  };
   return (
     <div className="pageContainer">
       <div className="imageSection">
@@ -79,7 +74,7 @@ const Campaign = () => {
           </h3>
           <form onSubmit={handleDonateClick}>
             <div>
-              <label htmlFor="fullName" className="label">First Name</label>
+              <label htmlFor="fullName" className="label">Full Name</label>
               <input
                 type="text"
                 id="fullName"
@@ -118,19 +113,16 @@ const Campaign = () => {
               />
             </div>
 
-            {/* Typeahead for Currency */}
-            {/* Added a simple div wrapper to explicitly control its margin,
-                though .rbt-input-wrapper should already be handled. */}
-            <div className="typeahead-form-group"> {/* New wrapper for consistent spacing */}
+            <div className="typeahead-form-group"> 
               <label htmlFor="currency-typeahead" className="label">Currency Type</label>
               <Typeahead
               id="currency-typeahead"
-              labelKey="name" // Assuming CURRENCY_CODE items have a 'name' property
+              labelKey="name" //TODO: change this and enum to currency
               onChange={setCurrency}
               options={CURRENCY_CODE}
               placeholder="Select currency..."
-              selected={currency}// Typeahead expects an array for 'selected'
-              className="custom-typeahead" // Add a custom class for easier targeting
+              selected={currency}
+              className="custom-typeahead" 
               maxResults={1}
               paginate={false}
             />
@@ -138,6 +130,20 @@ const Campaign = () => {
 
               
             </div>
+
+
+            <div className="mb-3">
+            <label htmlFor="emailOptInCheckbox" className="custom-checkbox-label">
+              <input
+                type="checkbox"
+                id="emailOptInCheckbox"
+                checked={emailOptIn}
+                onChange={toggleEmailOptIn}
+                className="custom-checkbox-label" // Adds margin between checkbox and label
+              />
+              Opt in for emails.
+            </label>
+          </div>
 
             <button
               type="submit"
