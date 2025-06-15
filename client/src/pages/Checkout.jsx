@@ -2,8 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import useCampaignStore from '../stores/Campaign';
-import './styles/Checkout.css';  // Make sure this file exists with the CSS provided earlier
-
+import './styles/Checkout.css'
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 const stripePublishableKey = import.meta.env.VITE_STRIPE_PK;
@@ -47,16 +46,16 @@ const Checkout = () => {
     };
 
   return (
-    <div className="checkout-container">
-      <div id="checkout">
-        <EmbeddedCheckoutProvider
-          stripe={stripePromise}
-          options={{ fetchClientSecret }}
-        >
-          <EmbeddedCheckout />
-        </EmbeddedCheckoutProvider>
-      </div>
+    <div className="checkout-container" style={{ backgroundColor: 'black', minHeight: '100vh' }}>
+    <div id="checkout">
+      <EmbeddedCheckoutProvider
+        stripe={stripePromise}
+        options={{ fetchClientSecret }}
+      >
+        <EmbeddedCheckout />
+      </EmbeddedCheckoutProvider>
     </div>
+  </div>
   );
 };
 

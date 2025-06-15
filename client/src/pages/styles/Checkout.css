@@ -1,40 +1,24 @@
+/* Checkout.css */
 .checkout-container {
-    max-width: 450px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-
-
-  #checkout {
-    width: 100%;
-  }
-
-  @media (max-width: 480px) {
-    .checkout-container {
-      padding: 10px;
-      width: 95%;
-    }
-  }
-  
-  .custom-checkbox-label input[type="checkbox"] {  
-    margin-right: 0.5rem !important; 
-  }
-  
-  .custom-checkbox-label {
-    display: flex;     
-    align-items: center; 
-
-  }
-  
-
-  .accent {
-    accent-color: red;
+  background-color: black;
+  min-height: 100vh; /* Ensure it covers full viewport height */
+  width: 100%;
+  padding: 20px; /* Optional padding */
 }
 
-
-
-input:checked + label {
-  background-color: teal;
-  color: white;
+#checkout {
+  max-width: 400px; /* Adjust as needed */
+  margin: 0 auto; /* Center the checkout form */
+  background-color: black; /* Ensure the inner container is also black */
 }
+
+/* If you need to override any Stripe iframe styles */
+iframe {
+  background-color: black !important;
+}
+
+body {
+  background-color: black !important;
+  margin: 0;
+}
+
