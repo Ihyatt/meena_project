@@ -25,6 +25,8 @@ As such, you may notice:
 - **APIs:** Stripe, Mailjet, Google Maps API
 - **Security:** JWT, Role-Based Access Control
 - **Monitoring:** Logging for error handling
+- **SSE** Redis Pub/Sub
+- **MQ** Redis message queue
 
 **Frontend:**
 
