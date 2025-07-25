@@ -1,0 +1,55 @@
+.wrapper {
+  max-width: 500px;
+  margin: 50px 0;
+  padding: 40px 25px;
+  background-color: whitesmoke;
+  font-size: 16px;
+  line-height: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.modal-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Ensure it covers the full width */
+  height: 100%;
+  /* Ensure it covers the full height */
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Center vertically as well */
+  padding: 20px;
+  /* Adjust padding as needed, but let it cover */
+  overflow-y: auto;
+  /* Allow scrolling if modal content is too tall */
+  -webkit-overflow-scrolling: touch;
+  z-index: 1000;
+  overflow-y: scroll;
+}
+
+.no-modal-wrapper {
+  max-width: 500px;
+  font-size: 16px;
+  line-height: 30px;
+  background-color: #ffffff;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+.modal {
+  width: 100%;
+  height: fit-content;
+  max-width: 500px;
+  background-color: #ffffff;
+  position: relative;
+  border: 5px;
+  box-shadow: 2px 4px 20px 0px rgba(0, 0, 0, 0.75);
+}
+
+
+
+
+

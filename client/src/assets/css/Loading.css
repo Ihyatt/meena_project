@@ -1,0 +1,39 @@
+.loading-overlay {
+    position: fixed;
+    /* Covers the whole viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Semi-transparent black background */
+    display: flex;
+    flex-direction: column;
+    /* To stack spinner and text */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    z-index: 9999;
+    /* Ensure it's on top of everything else */
+    color: white;
+    /* For the "Loading..." text */
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px dotted #40bf51;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
+    /* Animation for spinning */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    } }

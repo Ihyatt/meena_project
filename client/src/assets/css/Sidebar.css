@@ -1,0 +1,69 @@
+
+
+/* a:hover {
+  color: #0000ff;
+  font-size: 1.1rem;
+} */
+
+.menu-anchor:hover {
+cursor: pointer;
+}
+
+.menu-label {
+  font-size: 13px;
+}
+
+button {
+  right: 20px;
+}
+
+hr {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  opacity: 0.15;
+}
+.ps-sidebar-root {
+  border-color:white !important;
+}
+.ps-sidebar-container {
+  background-color: #ffffff !important;
+  color:white;
+}
+.ps-sidebar-container a:hover {
+  background-color: #ffffff !important;
+}
+.logo{
+  padding: 9px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14;
+  letter-spacing: 1px;
+}
+
+.ps-menu-button {
+    background-color: #ffffff !important;
+  }
+
+.ps-open {
+  background-color: #ffffff !important;
+}
+
+
+
+
+a.active {
+  color: red;
+}
+
+a.pending {
+  color: blue;
+}
+
+a.transitioning {
+  view-transition-name: my-transition;
+}
+
+.ps-menu-button, .ps-active{
+  color:#DB5758;
+
+}

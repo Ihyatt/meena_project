@@ -1,0 +1,30 @@
+.react-multi-carousel-item {
+    padding:1px;
+}
+
+.react-multi-carousel-dot button {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    opacity: 1;
+    padding: 5px 5px 5px 5px;
+    box-shadow: none;
+    transition: background .5s;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #000000;
+    padding: 0;
+    margin: 0;
+    margin-right: 6px;
+    outline: 0;
+    cursor: pointer;
+    background-color: black;
+    opacity: 0.3;
+}
+
+
+.react-multi-carousel-dot--active button {
+    background: #000000;
+    opacity: 0.7;
+}
