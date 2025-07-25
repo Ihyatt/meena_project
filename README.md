@@ -110,8 +110,10 @@ This project represents a significant learning endeavor, and I appreciate your u
     - Donor completes payment via Stripe.
     - **IF Payment Success:**
       - Stripe webhook notifies the backend.
-      - Backend updates payment status to 'succeeded' and campaign current amount.
+      - webhook API puts charge data on redis MQ
+      - Workers pull from MQ and update payment status to 'succeeded' and campaign current amount.
       - Donor is navigated to a success page.
+      - Via SSE donor will see new donoation on UI
       - Thank you email sent to donor (with unsubscribe option).
     - **IF Payment Failure:**
       - Stripe webhook notifies the backend.
