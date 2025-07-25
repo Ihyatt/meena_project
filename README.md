@@ -119,7 +119,3 @@ This project represents a significant learning endeavor, and I appreciate your u
       - Stripe webhook notifies the backend.
       - Backend updates payment status to 'failed'.
       - Donor is navigated to a failure page.
-
-key learning
-async processing for webhooks
--
