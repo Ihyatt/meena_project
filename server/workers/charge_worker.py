@@ -3,8 +3,10 @@ import random
 import json
 import time
 
+from datetime import datetime, timezone, timedelta
 
 from redis_module import redis_access
+from workers.utils import backoff
 
 
 from app.services.charge_handler import (
@@ -13,9 +15,11 @@ from app.services.charge_handler import (
     refunded_charge,
 )
 
-CHARGE_DLQ = "charge_dlq"
-CHARGE_RQ = "charge_rq"
-CHARGE_PQ = "charge_pq"
+CHARGE_DEAD_LETTER_QUEUE = "charge_dlq"
+CHARGE_RETRY_QUEUE = "charge_retry_queue"
+CHARGE_PROCESS_QUEUE = "charge_process_queue"
+RETRY_COUNTS = "retry_counts"
+DELAYED_QUEUE = "delayed_queue"
 
 
 def process_message(db, message_json: str):
@@ -45,20 +49,42 @@ def process_message(db, message_json: str):
                 data["idempotency_key"],
                 data["charge_id"],
             )
-        db.hdel("retry_counts", message_json)  # Clear retry count on success
+        db.hdel(RETRY_COUNTS, message_json)  # Clear retry count on success
         print("\t>> Processed successfully.")
 
     except Exception as e:
+
         print(f"Error processing charge: {str(e)}")
-        retry_count = redis_access.hincrby("retry_counts", message_json, 1)
+        retry_count = db.hincrby(RETRY_COUNTS, message_json, 1)
 
         if retry_count <= 3:
             # Move to retry queue with delay
             print("\tProcessing failed - requeuing...")
-            redis_access.redis_queue_push(db, CHARGE_RQ, message_json)
+            now = int(datetime.now(timezone.utc).timestamp())
+            next_retry = now + backoff(attempt=3)
+
+            db.zadd(DELAYED_QUEUE, {task: next_retry})
+
         else:
-            redis_access.redis_queue_push(db, CHARGE_DLQ, message_json)
+            db.redis_queue_push(db, CHARGE_DLQ, message_json)
             print("\tProcessing failed - moving to dead letter queue (DLQ).")
+
+
+def push_to_queue(db):
+    now = int(datetime.now(timezone.utc).timestamp())
+
+    while True:
+        items = db.zpopmin(DELAYED_QUEUE, count=1)
+        if not items:  # sorted-set is empty
+            break
+        task, score = items[0]
+        if score > now:  # popped too early – put it back
+            db.zadd(DELAYED_QUEUE, {task: score})
+            break  # nothing else is ready
+
+        # score <= now – task is really due; process it
+        print(f"Popped task={task}  due={score}")
+        db.redis_queue_push(db, CHARGE_RETRY_QUEUE, message_json)
 
 
 def main():
@@ -66,8 +92,8 @@ def main():
     db = redis_access.redis_db(config)
 
     while True:
-        message_json = redis_access.redis_queue_pop(db, CHARGE_PQ)
-
+        push_to_queue(db)
+        message_json = redis_access.redis_queue_pop(db, CHARGE_PROCESS_QUEUE)
         process_message(db, message_json)
 
 
