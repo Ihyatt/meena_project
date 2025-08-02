@@ -208,7 +208,7 @@ async def stripe_webhook():
             "campaign_id": metadata.get("campaign_id", ""),
             "email_address": metadata.get("email_address", ""),
             "donor_id": metadata.get("donor_id", ""),
-            "payment_transaction_id": payment_transaction_id = metadata.get("payment_transaction_id", ""),
+            "payment_transaction_id": metadata.get("payment_transaction_id", ""),
             "idempotency_key": metadata.get("idempotency_key", ""),
             "amount": metadata.get("amount", ""),
             "charge_id": session.get("payment_intent", ""),

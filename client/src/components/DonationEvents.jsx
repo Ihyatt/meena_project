@@ -73,11 +73,11 @@ const DonationEvents = () => {
 
 
     return (
-        <div className="p-4 h-105">
+        <div className="pt-2 h-105">
             {notifications.length === 0 ? (
                 <p className="">No donations yet.</p>
             ) : (
-                <ul className=" pt-0 p-2 space-y-2">
+                <ul className=" space-y-2">
                     {notifications.map((note) => (
                         <li key={note.notification_id} className="flex items-center">
                             <div className='rounded-full bg-[#DB5758] p-2'>

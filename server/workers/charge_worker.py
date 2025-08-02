@@ -66,7 +66,7 @@ def process_message(db, message_json: str):
             db.zadd(DELAYED_QUEUE, {task: next_retry})
 
         else:
-            db.redis_queue_push(db, CHARGE_DLQ, message_json)
+            db.redis_queue_push(db, CHARGE_DEAD_LETTER_QUEUE, message_json)
             print("\tProcessing failed - moving to dead letter queue (DLQ).")
 
 
@@ -88,9 +88,7 @@ def push_to_queue(db):
 
 
 def main():
-
     db = redis_access.redis_db(config)
-
     while True:
         push_to_queue(db)
         message_json = redis_access.redis_queue_pop(db, CHARGE_PROCESS_QUEUE)

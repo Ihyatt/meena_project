@@ -10,6 +10,8 @@ import { NumericFormat } from 'react-number-format';
 import { RiInstagramLine } from "react-icons/ri";
 import MasterDonationBar from "src/components/MasterDonationBar";
 import DonationEvents from "src/components/DonationEvents"
+import logo from 'src/assets/images/logo.png';
+
 
 import {
   Card,
@@ -81,10 +83,13 @@ const Donate = () => {
     <div>
       {isLoading && <Loading />}
 
-      <div className="grid grid-cols-6 gap-4">
+      <div className="fixed top-0 text-center w-full  bg-white  py-3 shadow-md z-10">
+        <img className="w-40 mx-auto" src={logo} alt="A descriptive alt text for my image" />
 
+      </div>
 
-        <div className=" w-110 rounded-lg col-start-3 col-span-2 shadow-lg mt-4 mb-4">
+      <div className=" flex justify-center w-full mt-16">
+        <div className=" w-110 rounded-lg  shadow-lg mt-4 mb-4 ">
           <div className="rounded-lg  w-full">
             <img
               src={campaign?.imageUrl || null}
@@ -314,37 +319,32 @@ const Donate = () => {
             </div>
           </div>
         </div>
-
-        <div className="col-start-5 col-end-6">
-
-          <div className="fixed mt-4 top-0 ">
-            <div>
-              <div className=' flex mb-2 gap-x-1 items-center text-left'>
-                <div className="text-sm">
-                  <NumericFormat
-                    value={masterCampaign?.raised || 0}
-                    thousandSeparator={true}
-                    prefix="$"
-                    decimalScale={2}
-                    displayType="text"
-                  /> {' '} total raised
-                </div>
-                ·
-                <div className='text-xs font-light'>
-                  <NumericFormat
-                    value={masterCampaign?.totalDonations || 0}
-                    thousandSeparator={true}
-                    displayType="text"
-                  /> {' '} donations
-                </div>
+        <div className="mt-2 ml-5 w-62">
+          <div>
+            <div className='flex  items-center py-2 bg-white rounded-t-lg '>
+              <div className="text-sm">
+                <NumericFormat
+                  value={masterCampaign?.raised || 0}
+                  thousandSeparator={true}
+                  prefix="$"
+                  decimalScale={2}
+                  displayType="text"
+                /> {' '} total raised
+              </div>
+              ·
+              <div className='text-xs font-light'>
+                <NumericFormat
+                  value={masterCampaign?.totalDonations || 0}
+                  thousandSeparator={true}
+                  displayType="text"
+                /> {' '} donations
               </div>
             </div>
-            <MasterDonationBar raised={masterCampaign?.raised || 0} goal={masterCampaign?.goal || 0} />
-            <DonationEvents />
           </div>
+          <MasterDonationBar raised={masterCampaign?.raised || 0} goal={masterCampaign?.goal || 0} />
+          <DonationEvents />
         </div>
-
-      </div >
+      </div>
     </div >
   )
 };

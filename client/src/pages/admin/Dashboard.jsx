@@ -11,11 +11,16 @@ import DonationEvents from 'src/components/DonationEvents.jsx'
 
 import Loading from "src/components/Loading";
 
+
 import {
   RiHandHeartLine,
   RiUserHeartLine,
   RiMoneyDollarBoxLine,
-  RiMegaphoneLine
+  RiMegaphoneLine,
+  RiHandHeartFill,
+  RiMegaphoneFill,
+  RiMoneyDollarCircleFill,
+  RiUserHeartFill,
 } from "react-icons/ri";
 
 const Dashboard = () => {
@@ -36,7 +41,7 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiMegaphoneLine size={25} className="inline" /> <span className='text-xl'>{launchedCampaigns}</span>
+            <RiMegaphoneFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{launchedCampaigns}</span>
           </div>
           <div className="text-black">
             CAMPAIGNS
@@ -47,7 +52,7 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiHandHeartLine size={25} className="inline" /> <span className='text-xl'>{masterCampaign?.totalDonations || 0}</span>
+            <RiHandHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{masterCampaign?.totalDonations || 0}</span>
           </div>
           <div className="text-black">
             DONATIONS
@@ -58,7 +63,7 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiMoneyDollarBoxLine size={25} className="inline" />
+            <RiMoneyDollarCircleFill size={30} color={'#40bf51'} className="inline bg-white" />
             <span className='text-xl'>
               <NumericFormat
                 value={masterCampaign?.raised || 0}
@@ -78,7 +83,7 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiUserHeartLine size={25} className="inline" /> <span className='text-xl'>{numDonors}</span>
+            <RiUserHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{numDonors}</span>
           </div>
           <div className="text-black">
             DONORS

@@ -58,7 +58,7 @@ const DonationsChart = () => {
     return (
         <ScatterChart
             height={300}
-            colors={['green', 'red']}
+            colors={['orange', 'red']}
             voronoiMaxRadius={30}
             series={series}
             disableAxisListener={false}

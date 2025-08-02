@@ -30,14 +30,15 @@ from flask_jwt_extended import JWTManager
 import stripe
 from mailjet_rest import Client
 from datetime import timedelta
-from app.scheduler.camapign_emails import campaign_emails
 
-from app.scheduler.campaign_reconciliation import campaign_reconciliation
-from app.scheduler.payment_reconciliation import payment_reconciliation
-from app.scheduler.email_reconciliation import email_reconciliation
-from app.scheduler.donor_reconciliation import donor_reconciliation
-from app.scheduler.campaign_reminder_emails import campaign_reminder_emails
-from app.scheduler.campaign_close_emails import campaign_close_emails
+from app.scheduler.email_campaign.close import campaign_close_emails
+from app.scheduler.email_campaign.reminder import campaign_reminder_emails
+
+from app.scheduler.reconciliation.email import email_reconciliation
+from app.scheduler.reconciliation.campaign import campaign_reconciliation
+from app.scheduler.reconciliation.donor import donor_reconciliation
+from app.scheduler.reconciliation.payment import payment_reconciliation
+
 
 from app.database import db
 from sqlalchemy_continuum import make_versioned
@@ -64,7 +65,6 @@ from app.models.image import Image
 from app.models.master_campaign import MasterCampaign
 
 from app.models.payment_transaction import PaymentTransaction
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 
 app = Flask(__name__)
@@ -134,16 +134,17 @@ def create_app():
         "default": ThreadPoolExecutor(20),
         "processpool": ProcessPoolExecutor(5),
     }
+
     job_defaults = {"coalesce": False, "max_instances": 3}
 
-    app.scheduler = BackgroundScheduler(
+    scheduler = BackgroundScheduler(
         jobstores=jobstores,
         executors=executors,
         job_defaults=job_defaults,
         timezone=utc,
     )
 
-    app.scheduler.start()
+    scheduler.start()
 
     scheduler.add_job(
         email_reconciliation,

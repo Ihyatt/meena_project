@@ -5,6 +5,8 @@ from app.routes.donation import donation_bp
 from marshmallow import EXCLUDE
 import uuid
 from app.database import db
+from redis import Redis
+
 
 from retrying import retry
 from app.utils.constants import (
@@ -94,7 +96,7 @@ def stream():
 
                 if message["type"] != "message":
                     if message["type"] == "subscribe":
-                        app_instance.logger.info(
+                        current_app.logger.info(
                             f"SSE stream: Subscribed to {message['channel']}"
                         )
                     continue

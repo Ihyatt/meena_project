@@ -18,6 +18,7 @@ import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 
 import useAuthStore from 'src/stores/Auth';
 import { EmailType } from 'src/utils/Constants'
+import logo from 'src/assets/images/logo.png';
 
 
 
@@ -47,30 +48,8 @@ const DashboardLayout = () => {
         handleCollapsedChange={handleCollapsedChange}
       >
         <main>
+          <img className="w-40 mx-auto my-3" src={logo} alt="A descriptive alt text for my image" />
           <Menu>
-
-            <MenuItem
-            >
-              <div
-                style={{
-                  padding: "9px",
-                  fontWeight: "bold",
-                  fontSize: 14,
-                  letterSpacing: "1px"
-                }}
-              >
-                Meena
-              </div>
-            </MenuItem>
-
-          </Menu>
-
-          <Menu>
-            <MenuItem
-              icon={<RiHome4Line color="black" fontSize='15px' />} style={{ color: 'black', textDecoration: 'none', 'fontSize': '15px' }}
-            >
-              Home
-            </MenuItem>
             <MenuItem
               active={location.pathname === '/admins/campaigns/drafts'}
               icon={<RiDraftLine />}
