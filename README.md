@@ -85,9 +85,16 @@ This project represents a significant learning endeavor, and I appreciate your u
 ### Donor UI
 
 <p align="center">
-<img width="1108" height="1218" alt="Image" src="https://github.com/user-attachments/assets/0a45b650-125d-4344-84ff-8f8440f675b6" />
+<img width="200" height="1261" alt="Image" src="https://github.com/user-attachments/assets/9d94abec-0ed8-46a1-9dea-03e498e3e705" />
 </p>
 
+### Admin UI
+
+<p align="center">
+<img width="200" height="1298" alt="Image" src="https://github.com/user-attachments/assets/b9e93293-cd18-4ccf-8860-c7e78142238e" />
+<img width="200" height="1288" alt="Image" src="https://github.com/user-attachments/assets/58e80326-2319-450c-8415-213365b5349a" />
+
+</p>
 ---
 
 ## Flow
