@@ -49,7 +49,7 @@ def dashboard():
 
         for donation in donations:
             time_diff = now - donation.created_at
-            if time_diff.days < 365:
+            if time_diff.days < 182:  # 6 months
                 if donation.recurring:
                     recurring_donations.append(
                         {"created_at": donation.created_at, "amount": donation.amount}

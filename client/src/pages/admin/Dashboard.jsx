@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import useAdminStore from 'src/stores/Admin';
 import DonationsHeatMap from 'src/pages/admin/components/DonationsHeatMap'
-import DonationsChart from 'src/pages/admin/components/DonationsChart'
+import DonationsScatterChart from 'src/pages/admin/components/DonationsScatterChart'
+import DonationsBarChart from 'src/pages/admin/components/DonationsBarChart';
 import Campaigns from 'src/pages/admin/components/CampaignsCarousel'
 import { DonorsTable } from 'src/pages/admin/components/DonorsTable'
 import MasterDonationBar from "src/components/MasterDonationBar";
@@ -90,12 +91,19 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="mx-4 grid grid-cols-4 gap-4">
-        <div className="col-start-1 col-span-2 h-80">
+      <div className="mx-4 ">
+        <div className=" h-80">
           <DonationsHeatMap />
         </div >
-        <div className="col-start-3 col-span-2 h-80">
-          <DonationsChart />
+
+
+      </div>
+      <div className="m-4 grid grid-cols-4 gap-4">
+        <div className="col-start-1 col-span-2 h-70">
+          <DonationsBarChart />
+        </div >
+        <div className="col-start-3 col-span-2 h-70">
+          <DonationsScatterChart />
         </div >
 
       </div>

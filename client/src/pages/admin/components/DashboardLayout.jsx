@@ -78,7 +78,7 @@ const DashboardLayout = () => {
                   />
                 }
               >
-                Donation Receipt
+                Donation Confirmation
               </MenuItem>
               <MenuItem
                 active={location.pathname === '/admins/emails/email-template/campaign-update'}
@@ -90,7 +90,7 @@ const DashboardLayout = () => {
                   />
                 }
               >
-                Update Campaign
+                Impact Update
               </MenuItem>
               <MenuItem
                 active={location.pathname === '/admins/emails/email-template/campaign-close'}
@@ -102,7 +102,7 @@ const DashboardLayout = () => {
                   />
                 }
               >
-                Close Campaign
+                Closeout
               </MenuItem>
 
             </SubMenu>

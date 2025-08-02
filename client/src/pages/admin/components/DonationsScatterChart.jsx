@@ -6,7 +6,7 @@ import { format } from 'date-fns'; // Or any date formatting library
 
 
 
-const DonationsChart = () => {
+const DonationsScatterChart = () => {
     const { donationsWindow } = useAdminStore();
     const series = [
         {
@@ -31,11 +31,11 @@ const DonationsChart = () => {
     const xAxisConfig = [
         {
             scaleType: 'time', // Important for Date objects
-            data: MonthsWindow({ numMonths: 12 }), // Generates the last 12 months
+            data: MonthsWindow({ numMonths: 7 }), // Generates the last 7 months
             valueFormatter: (date, context) => {
                 // This formatter applies to both axis ticks and tooltip header (if 'axis' type tooltip)
                 if (date instanceof Date) {
-                    return format(date, 'MMM dd, yyyy'); // e.g., "Jan 15, 2023"
+                    return format(date, 'MMM yyyy'); // e.g., "Jan 2023"
                 }
                 return String(date); // Fallback for non-Date values
             },
@@ -66,9 +66,12 @@ const DonationsChart = () => {
             axisTickLabel
             xAxis={xAxisConfig}
             yAxis={yAxisConfig}
+            slotProps={{
+                legend: { hidden: true }, // 👈 Hides the legend
+            }}
         />
     );
 
 }
 
-export default DonationsChart;
+export default DonationsScatterChart;

@@ -78,7 +78,6 @@ const Donate = () => {
     }
   };
 
-  console.log('Campaign:', campaign);
   return (
     <div>
       {isLoading && <Loading />}
@@ -319,20 +318,20 @@ const Donate = () => {
             </div>
           </div>
         </div>
-        <div className="mt-2 ml-5 w-62">
+        <div className="mt-2 ml-5 w-70">
           <div>
             <div className='flex  items-center py-2 bg-white rounded-t-lg '>
-              <div className="text-sm">
+              <div className="text-md">
                 <NumericFormat
                   value={masterCampaign?.raised || 0}
                   thousandSeparator={true}
                   prefix="$"
                   decimalScale={2}
                   displayType="text"
-                /> {' '} total raised
+                /> {' '} total raised {' '}
               </div>
-              ·
-              <div className='text-xs font-light'>
+              <div className='text-sm font-light'>
+                {' '} · {' '}
                 <NumericFormat
                   value={masterCampaign?.totalDonations || 0}
                   thousandSeparator={true}
