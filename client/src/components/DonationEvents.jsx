@@ -79,7 +79,7 @@ const DonationEvents = () => {
             ) : (
                 <ul className=" space-y-2">
                     {notifications.map((note) => (
-                        <li key={note.notification_id} className="flex items-center">
+                        <li key={note.notification_id} className="flex items-center bg-[#c9e6cb] rounded-xl p-2 ">
                             <div className='rounded-full bg-[#DB5758] p-2'>
                                 <RiGift2Fill color="#fff" size={22} />
                             </div>

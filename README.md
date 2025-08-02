@@ -22,11 +22,10 @@ As such, you may notice:
 
 - **Python:** Flask, SQLAlchemy, Marshmallow, APScheduler
 - **Databases:** PostgreSQL (with strong consistency, transactions, optimistic locking via SQLAlchemy-Continuum)
-- **APIs:** Stripe, Mailjet, Google Maps API
+- **APIs:** Stripe, Mailjet, Google Maps API, amazon s3
 - **Security:** JWT, Role-Based Access Control
-- **Monitoring:** Logging for error handling
-- **SSE** Redis Pub/Sub
-- **MQ** Redis message queue
+- **Monitoring:** Logging for error handling, redis-cli monitor
+- **Redis** Pub/Sub, MQ, SortedSets
 
 **Frontend:**
 
