@@ -95,8 +95,6 @@ const Dashboard = () => {
         <div className=" h-80">
           <DonationsHeatMap />
         </div >
-
-
       </div>
       <div className="m-4 grid grid-cols-4 gap-4">
         <div className="col-start-1 col-span-2 h-70">
@@ -107,10 +105,10 @@ const Dashboard = () => {
         </div >
 
       </div>
-      <div className="m-4 h-70 grid lg:grid-cols-12 md:grid-cols-12 sm:grid-cols-1 grid-cols-1">
+      <div className="m-4 h-90 ">
         <Campaigns />
       </div>
-      <div className="m-4 grid lg:grid-cols-12 md:grid-cols-12 sm:grid-cols-1 grid-cols-1">
+      <div className="m-4">
         <DonorsTable />
       </div>
     </div >

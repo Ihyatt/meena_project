@@ -16,7 +16,7 @@ import {
 export const Campaign = ({ data }) => {
 
   return (
-    <Card className=" h-70 w-full max-w-[26rem]  shadow-none flex flex-col border border-solid border-gray-100 rounded-none">
+    <Card className=" h-90 w-full max-w-[26rem]  shadow-none flex flex-col border border-solid border-gray-100 rounded-none">
       <CardHeader floated={false} color="" className='shadow-none m-0 rounded-none'>
         <img
           src={data.imageUrl}

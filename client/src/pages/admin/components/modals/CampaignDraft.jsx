@@ -38,7 +38,8 @@ export const CampaignDraft = () => {
     };
   }, [fetchCampaignDraft]);
 
-  const characterLimit = 200;
+
+  const descriptionCharacterLimit = 200;
 
   const handleClose = (event) => {
     navigate('/admins')
@@ -75,6 +76,7 @@ export const CampaignDraft = () => {
               className="w-full border-none box-border resize-none block mb-1 text-2xl focus:outline-none"
               required
             />
+
           </div>
 
           <div className="input-container">
@@ -87,7 +89,7 @@ export const CampaignDraft = () => {
               className="w-full border-none box-border resize-none block mb-1 text-sm h-50 focus:outline-none"
             ></textarea>
             <div className="text-sm text-gray-400 mt-1">
-              {description.length}/{characterLimit}
+              {description.length}/{descriptionCharacterLimit}
             </div>
           </div>
           <div className="flex items-center border-2 border-solid  p-1 rounded-sm">

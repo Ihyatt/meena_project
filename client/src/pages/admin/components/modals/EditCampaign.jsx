@@ -48,7 +48,7 @@ export const CampaignDetails = () => {
     saveCampaign(campaignId)
     event.preventDefault();
   }
-  const characterLimit = 200;
+  const descriptionCharacterLimit = 200;
 
   return (
     <div ref={modalRef} className="modal-wrapper" >
@@ -79,7 +79,7 @@ export const CampaignDetails = () => {
               className="w-full border-none box-border resize-none block mb-1 text-sm h-50 focus:outline-none"
             ></textarea>
             <div className="text-sm text-gray-400 mt-1">
-              {description.length}/{characterLimit}
+              {description.length}/{descriptionCharacterLimit}
             </div>
           </div>
 
