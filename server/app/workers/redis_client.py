@@ -4,12 +4,8 @@ import redis
 class redis_access:
 
     @staticmethod
-    def redis_db(config):
-        db = redis.Redis(
-            host=config.redis_host,
-            port=config.redis_port,
-            db=config.redis_db,
-        )
+    def redis_db():
+        db = redis.Redis(host="127.0.0.1", port=6379, decode_responses=True, db=0)
         # query access
         db.ping()
         return db

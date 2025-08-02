@@ -15,6 +15,7 @@ from app.services.email_handler import EmailHandler
 from werkzeug.exceptions import NotFound
 from decimal import Decimal  # For db.Numeric types
 import asyncio
+from redis import Redis
 
 
 def successful_charge(
@@ -92,8 +93,6 @@ def successful_charge(
         current_app.redis.publish(
             DONATION_NOTIFICATIONS_CHANNEL, json.dumps(notification_metadata)
         )
-
-        current_app.logger.info(f"current_app.redis: {current_app.redis}")
 
         if email_address:
             email_handler = EmailHandler(

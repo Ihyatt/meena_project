@@ -18,6 +18,7 @@ from app.services.charge_handler import (
     failed_charge,
     refunded_charge,
 )
+import json
 from app.utils.payment_transaction import create_payment_transaction
 from app.utils.user import get_or_create_donor
 from app.utils.donation import create_donation
@@ -216,11 +217,13 @@ async def stripe_webhook():
 
         message = {
             "id": str(uuid.uuid4()),
-            "timestamp": str(datetime.datetime.now()),
+            "timestamp": datetime.now().isoformat(),
             "value": event_type,
-            "data": {"message_no": id, "message": data},
+            "data": ,
         }
-        current_app.redis.lpush(CHARGE_MESSAGE_QUEUE, json.dumps(message))
+        CHARGE_PROCESS_QUEUE = "charge_process_queue"
+
+        current_app.redis.lpush(CHARGE_PROCESS_QUEUE, json.dumps(message))
 
         return jsonify({"status": "success"}), 200
     except Exception as e:

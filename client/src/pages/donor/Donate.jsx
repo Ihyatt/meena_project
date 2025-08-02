@@ -317,7 +317,7 @@ const Donate = () => {
               </div>
             </div>
           </div>
-          <div className="mt-2 ml-5 w-70">
+          <div className="mt-2 ml-5 w-60">
 
             <DonationEvents />
           </div>

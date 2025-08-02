@@ -1,12 +1,11 @@
-import config
 import random
 import json
 import time
 
 from datetime import datetime, timezone, timedelta
 
-from redis_module import redis_access
-from workers.utils import backoff
+from app.workers.redis_client import redis_access
+from app.workers.utils import backoff
 
 
 from app.services.charge_handler import (
@@ -25,7 +24,7 @@ DELAYED_QUEUE = "delayed_queue"
 def process_message(db, message_json: str):
     try:
         message = json.loads(message_json)
-        data = message["data"]["message"]
+        data = message["data"]
 
         if message["value"] == "charge.succeeded":
             successful_charge(
@@ -63,7 +62,7 @@ def process_message(db, message_json: str):
             now = int(datetime.now(timezone.utc).timestamp())
             next_retry = now + backoff(attempt=3)
 
-            db.zadd(DELAYED_QUEUE, {task: next_retry})
+            db.zadd(DELAYED_QUEUE, {message_json: next_retry})
 
         else:
             db.redis_queue_push(db, CHARGE_DEAD_LETTER_QUEUE, message_json)
@@ -74,6 +73,7 @@ def push_to_queue(db):
     now = int(datetime.now(timezone.utc).timestamp())
 
     while True:
+        print("Checking for delayed tasks...")
         items = db.zpopmin(DELAYED_QUEUE, count=1)
         if not items:  # sorted-set is empty
             break
@@ -84,14 +84,19 @@ def push_to_queue(db):
 
         # score <= now – task is really due; process it
         print(f"Popped task={task}  due={score}")
-        db.redis_queue_push(db, CHARGE_RETRY_QUEUE, message_json)
+        db.redis_queue_push(db, CHARGE_RETRY_QUEUE, task)
 
 
 def main():
-    db = redis_access.redis_db(config)
+    db = redis_access.redis_db()
+    time.sleep(random.uniform(0.5, 1.5))  # Simulate some startup delay
+
     while True:
+        print("Waiting for messages in the charge process queue...")
         push_to_queue(db)
+
         message_json = redis_access.redis_queue_pop(db, CHARGE_PROCESS_QUEUE)
+        print(f"Processing message: {message_json}")
         process_message(db, message_json)
 
 
