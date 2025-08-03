@@ -15,19 +15,17 @@ from app.services.email_handler import EmailHandler
 from werkzeug.exceptions import NotFound
 from decimal import Decimal  # For db.Numeric types
 import asyncio
-from redis import Redis
 
 
 def successful_charge(
-    campaign_id,
-    email_address,
     donor_id,
+    email_address,
+    campaign_id,
     payment_transaction_id,
     idempotency_key,
     amount,
     charge_id,
 ):
-
     try:
         payment_transaction = PaymentTransaction.query.filter_by(
             id=payment_transaction_id, idempotency_key=idempotency_key

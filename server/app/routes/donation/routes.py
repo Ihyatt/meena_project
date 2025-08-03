@@ -219,7 +219,7 @@ async def stripe_webhook():
             "id": str(uuid.uuid4()),
             "timestamp": datetime.now().isoformat(),
             "value": event_type,
-            "data": ,
+            "data": data,
         }
         CHARGE_PROCESS_QUEUE = "charge_process_queue"
 

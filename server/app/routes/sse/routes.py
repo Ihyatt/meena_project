@@ -35,8 +35,8 @@ from app.utils.payment_transaction import create_payment_transaction
 
 @sse_bp.route("/init", methods=["GET"])
 def init():
-    redis_client = Redis(host="127.0.0.1", port=6379, decode_responses=True, db=0)
-    notifications = redis_client.zrevrange(
+
+    notifications = current_app.redis.zrevrange(
         "donation_notifications", 0, -1, withscores=True
     )
 

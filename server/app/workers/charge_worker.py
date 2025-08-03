@@ -13,12 +13,16 @@ from app.services.charge_handler import (
     failed_charge,
     refunded_charge,
 )
+from app import create_app
 
 CHARGE_DEAD_LETTER_QUEUE = "charge_dlq"
 CHARGE_RETRY_QUEUE = "charge_retry_queue"
 CHARGE_PROCESS_QUEUE = "charge_process_queue"
 RETRY_COUNTS = "retry_counts"
 DELAYED_QUEUE = "delayed_queue"
+
+
+app = create_app()
 
 
 def process_message(db, message_json: str):
@@ -47,6 +51,7 @@ def process_message(db, message_json: str):
                 data["payment_transaction_id"],
                 data["idempotency_key"],
                 data["charge_id"],
+                data["campaign_id"],
             )
         db.hdel(RETRY_COUNTS, message_json)  # Clear retry count on success
         print("\t>> Processed successfully.")
@@ -88,16 +93,20 @@ def push_to_queue(db):
 
 
 def main():
-    db = redis_access.redis_db()
-    time.sleep(random.uniform(0.5, 1.5))  # Simulate some startup delay
 
-    while True:
-        print("Waiting for messages in the charge process queue...")
-        push_to_queue(db)
+    with app.app_context():
+        print("Starting charge worker...")
 
-        message_json = redis_access.redis_queue_pop(db, CHARGE_PROCESS_QUEUE)
-        print(f"Processing message: {message_json}")
-        process_message(db, message_json)
+        app.redis = redis_access.redis_db()
+        time.sleep(random.uniform(0.5, 1.5))  # Simulate some startup delay
+
+        while True:
+            print("Waiting for messages in the charge process queue...")
+            push_to_queue(app.redis)
+
+            message_json = redis_access.redis_queue_pop(app.redis, CHARGE_PROCESS_QUEUE)
+            print(f"Processing message: {message_json}")
+            process_message(app.redis, message_json)
 
 
 if __name__ == "__main__":
