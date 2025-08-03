@@ -1,11 +1,15 @@
+
+
 {
-    "compilerOptions": {
-      "baseUrl": ".",
+  "files": [],
+  "references": [],
+  "compilerOptions": {
+    "baseUrl": ".",
       "paths": {
         "src/*": ["./src/*"],
         "@/*": ["./src/*"] // Maps @/ to src/
       }
-    },
+  },
       "include": ["src/**/*"],  // Only process files in src/
   "exclude": ["node_modules", "**/__tests__"]  // Ignore tests
-  }
+}

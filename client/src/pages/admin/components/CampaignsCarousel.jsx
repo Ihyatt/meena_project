@@ -1,51 +1,39 @@
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
 
 
 import { Campaign } from 'src/pages/admin/components/cards/Campaign';
 
 import useAdminStore from 'src/stores/Admin';
 
-
-const responsive = {
-    desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 3,
-        slidesToSlide: 1
-    },
-    tablet: {
-        breakpoint: { max: 1024, min: 768 },
-        items: 2,
-        slidesToSlide: 1
-    },
-    mobile: {
-        breakpoint: { max: 767, min: 464 },
-        items: 1,
-        slidesToSlide: 1
-    }
-};
+import { Card, CardContent } from "@/components/ui/card"
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel"
 
 
 const Campaigns = () => {
     const { campaigns } = useAdminStore();
 
-
     return (
-        <div className=" lg:col-span-12 md:col-span-12 bg-white ">
-            <div style={{ position: "relative" }}>
-                <Carousel
-                    showDots={true}
-                    responsive={responsive}
-                    arrows={false}
-                >
-                    {campaigns.map((campaign) => {
-                        return (
-                            <Campaign key={campaign.id} data={campaign} />
-                        );
-                    })}
-                </Carousel>
+        // Set a specific width, e.g., 400px, and ensure it's not limited by max-w-xs
+        <Carousel className="relative w-full max-w-xs"> {/* Changed to w-[400px] and removed max-w-xs */}
+            <CarouselContent>
+                {campaigns.map((campaign, index) => (
+                    <CarouselItem key={index} className="rounded-lg">
+                        <Campaign data={campaign} />
+                    </CarouselItem>
+                ))}
+            </CarouselContent>
+            <div className="absolute top-1/2 left-2 flex items-center justify-center">
+                <CarouselPrevious className="relative left-0 -translate-x-10 " />
             </div>
-        </div>
+            <div className="absolute top-1/2 right-2 flex items-center justify-center">
+                <CarouselNext className="relative right-0 translate-x-17 " />
+            </div>
+        </Carousel>
     );
 };
 
