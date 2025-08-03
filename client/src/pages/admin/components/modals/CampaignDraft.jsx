@@ -64,7 +64,7 @@ export const CampaignDraft = () => {
     <div ref={modalRef} className="modal-wrapper" >
       {isLoading && <Loading />}
 
-      <div className="modal">
+      <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
           <div className="input-container">
             <input

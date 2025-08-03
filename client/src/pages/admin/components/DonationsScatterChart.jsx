@@ -56,20 +56,22 @@ const DonationsScatterChart = () => {
     ];
 
     return (
-        <ScatterChart
-            height={300}
-            colors={['orange', 'red']}
-            voronoiMaxRadius={30}
-            series={series}
-            disableAxisListener={false}
-            axisTick={'line'}
-            axisTickLabel
-            xAxis={xAxisConfig}
-            yAxis={yAxisConfig}
-            slotProps={{
-                legend: { hidden: true }, // 👈 Hides the legend
-            }}
-        />
+        <div className='rounded-lg shadow-sm'>
+            <ScatterChart
+                height={300}
+                colors={['orange', 'red']}
+                voronoiMaxRadius={30}
+                series={series}
+                disableAxisListener={false}
+                axisTick={'line'}
+                axisTickLabel
+                xAxis={xAxisConfig}
+                yAxis={yAxisConfig}
+                slotProps={{
+                    legend: { hidden: true }, // 👈 Hides the legend
+                }}
+            />
+        </ div >
     );
 
 }

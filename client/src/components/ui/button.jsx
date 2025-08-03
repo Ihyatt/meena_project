@@ -20,6 +20,7 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+        clear: "bg-transparent",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -35,21 +36,18 @@ const buttonVariants = cva(
   }
 )
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ...props
-}) {
-  const Comp = asChild ? Slot : "button"
-
-  return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props} />
-  );
-}
+const Button = React.forwardRef(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        className={cva(buttonVariants({ variant, size, className }))()}
+        ref={ref} // Pass the ref to the underlying component/element
+        {...props}
+      />
+    );
+  }
+);
+Button.displayName = "Button"; // Good for React DevTools
 
 export { Button, buttonVariants }

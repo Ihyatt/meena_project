@@ -54,7 +54,7 @@ export const CampaignDetails = () => {
     <div ref={modalRef} className="modal-wrapper" >
 
 
-      <div className="modal ">
+      <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
           {isLoading && <Loading />}
           <div className="input-container">

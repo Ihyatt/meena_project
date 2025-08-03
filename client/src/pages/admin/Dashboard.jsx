@@ -5,7 +5,6 @@ import DonationsScatterChart from 'src/pages/admin/components/DonationsScatterCh
 import DonationsBarChart from 'src/pages/admin/components/DonationsBarChart';
 import Campaigns from 'src/pages/admin/components/CampaignsCarousel'
 import { DonorsTable } from 'src/pages/admin/components/DonorsTable'
-import MasterDonationBar from "src/components/MasterDonationBar";
 import { NumericFormat } from 'react-number-format';
 
 import DonationEvents from 'src/components/DonationEvents.jsx'
@@ -38,7 +37,7 @@ const Dashboard = () => {
       {isLoading && <Loading />}
       <div className="m-4 grid gap-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-4">
         <div
-          className="grid grid-cols-1 content-center justify-items-center shadow-sm h-20 "
+          className="grid grid-cols-1 content-center justify-items-center rounded-lg shadow-sm h-20 "
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
@@ -49,7 +48,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div
-          className="grid grid-cols-1 content-center justify-items-center shadow-sm h-20 "
+          className="grid grid-cols-1 content-center justify-items-center rounded-lg shadow-sm h-20 "
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
@@ -60,7 +59,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div
-          className=" grid grid-cols-1 content-center justify-items-center text-black shadow-sm h-20 "
+          className=" grid grid-cols-1 content-center justify-items-center text-black rounded-lg shadow-sm h-20 "
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
@@ -80,7 +79,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div
-          className=" grid grid-cols-1 content-center justify-items-center text-black shadow-sm min-h-20 "
+          className=" grid grid-cols-1 content-center justify-items-center text-black rounded-lg  shadow-sm min-h-20 "
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
@@ -91,11 +90,11 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="m-4 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-4">
-        <div className="col-start-1 col-span-1 h-70">
+      <div className="m-4 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5">
+        <div className="col-start-1 col-span-2 h-83">
           <DonationsHeatMap />
         </div >
-        <div className="col-start-2 col-span-1 h-70">
+        <div className="col-start-3 col-span-1 h-83 mr-10 ml-8">
           <Campaigns />
         </div>
       </div>
@@ -106,7 +105,6 @@ const Dashboard = () => {
         <div className="col-start-3 col-span-2 h-70">
           <DonationsScatterChart />
         </div >
-
       </div>
 
       <div className="m-4">

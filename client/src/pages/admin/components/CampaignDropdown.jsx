@@ -29,17 +29,16 @@ export function CampaignDropdown({ data }) {
     const handleCloseClick = () => {
         closeCampaign(data.id)
     }
-
-
     const location = useLocation();
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="clear"><RiMoreFill size={25} /></Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="start">
+            <DropdownMenuContent className="w-5" align="start">
                 <DropdownMenuGroup>
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem >
                         <Link
                             to={`/admins/campaigns/${data.id}`}
                             state={{ background: location }}

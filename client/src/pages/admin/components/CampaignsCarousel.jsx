@@ -23,15 +23,15 @@ const Campaigns = () => {
             <CarouselContent>
                 {campaigns.map((campaign, index) => (
                     <CarouselItem key={index} className="rounded-lg">
-                        <Campaign data={campaign} />
+                        <Campaign key={campaign.id} data={campaign} />
                     </CarouselItem>
                 ))}
             </CarouselContent>
             <div className="absolute top-1/2 left-2 flex items-center justify-center">
-                <CarouselPrevious className="relative left-0 -translate-x-10 " />
+                <CarouselPrevious className="relative left-0 -translate-x-12 rounded-full" />
             </div>
             <div className="absolute top-1/2 right-2 flex items-center justify-center">
-                <CarouselNext className="relative right-0 translate-x-17 " />
+                <CarouselNext className="relative right-0 translate-x-17 rounded-full" />
             </div>
         </Carousel>
     );

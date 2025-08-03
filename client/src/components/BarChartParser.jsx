@@ -1,7 +1,6 @@
 import { parse, format } from 'date-fns';
 
 const BarChartParser = (rawData) => {
-    console.log('rawData', rawData);
     const onetime = rawData?.onetime || [];
     const recurring = rawData?.recurring || [];
 

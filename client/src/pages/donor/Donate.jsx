@@ -8,7 +8,6 @@ import Loading from "src/components/Loading";
 import DonationBar from 'src/components/DonationBar';
 import { NumericFormat } from 'react-number-format';
 import { RiInstagramLine } from "react-icons/ri";
-import MasterDonationBar from "src/components/MasterDonationBar";
 import DonationEvents from "src/components/DonationEvents"
 import logo from 'src/assets/images/logo.png';
 

@@ -35,10 +35,10 @@ export function DonorsTable() {
     };
 
     return (
-        <div className=" lg:col-span-12 md:col-span-12 bg-white shadow-none">
+        <div className=" mt-8 bg-white shadow-sm rounded-lg">
             <Card className="h-full w-full shadow-none">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
-                    <div className="mb-2flex items-center justify-between gap-8">
+                    <div className="ml-4 flex items-center justify-between gap-8">
                         <Typography variant="h5" color="blue-gray">
                             Donors
                         </Typography>

@@ -27,21 +27,23 @@ const DonationsBarChart = () => {
     }));
 
     return (
-        <BarChart
-            dataset={transformedDataset}
-            xAxis={[{ dataKey: 'monthYear' }]}
-            series={[
-                { dataKey: 'onetime', label: 'one-time', valueFormatter },
-                { dataKey: 'recurring', label: 'recurring', valueFormatter },
+        <div className="rounded-lg shadow-sm">
+            <BarChart
+                dataset={transformedDataset}
+                xAxis={[{ dataKey: 'monthYear' }]}
+                series={[
+                    { dataKey: 'onetime', label: 'one-time', valueFormatter },
+                    { dataKey: 'recurring', label: 'recurring', valueFormatter },
 
 
-            ]}
-            colors={['orange', 'red']}
-            slotProps={{
-                legend: { hidden: true }, // 👈 Hides the legend
-            }}
-            height={300}
-        />
+                ]}
+                colors={['orange', 'red']}
+                slotProps={{
+                    legend: { hidden: true }, // 👈 Hides the legend
+                }}
+                height={300}
+            />
+        </div>
     );
 }
 

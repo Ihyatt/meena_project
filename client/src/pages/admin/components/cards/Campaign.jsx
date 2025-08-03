@@ -1,6 +1,6 @@
-import DonationBar from 'src/components/DonationBar';
 import { CampaignDropdown } from "src/pages/admin/components/CampaignDropdown"
 import { NumericFormat } from 'react-number-format';
+import DonationBar from 'src/pages/admin/components/DonationBar';
 
 import {
   Card,
@@ -8,37 +8,35 @@ import {
   CardBody,
   CardFooter,
   Typography,
+  Button,
+  Tooltip,
   IconButton,
 } from "@material-tailwind/react";
-
 
 export const Campaign = ({ data }) => {
 
   return (
-    <Card className=" h-70 w-full max-w-[26rem]  shadow-none flex flex-col border border-solid border-gray-100 rounded-lg">
-      <CardHeader floated={false} color="" className='shadow-none m-0 rounded-none'>
+    <Card className="w-full max-w-[26rem] shadow-sm">
+      <CardHeader floated={false} className="rounded-t-lg shadow-none rounded-b-none mt-0" >
         <img
           src={data.imageUrl}
-          alt="ui/ux review check"
-          className='shadow-none'
+          alt="campaign image"
         />
-        <div className="to-bg-black-10 absolute inset-0 w-full" />
+        <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
         <IconButton
-          className="!absolute top-4 right-4 shadow-none border-2 border-solid border-white opacity-70 hover:opacity-100"
+          className="!absolute top-4 right-4 rounded-full p-3 shadow-none border-2 border-solid border-white opacity-70 hover:opacity-100"
         >
           <CampaignDropdown data={data} />
         </IconButton>
       </CardHeader>
-
-      <CardBody className="p-0">
+      <CardBody>
         <div className="m-3 flex items-center justify-between">
           <Typography variant="h5" color="blue-gray" className="font-medium ">
             {data.title}
           </Typography>
         </div>
       </CardBody>
-
-      <CardFooter className="p-0 pt-3">
+      <CardFooter className="pt-3">
         <div className='m-3'>
           <div className="text-sm flex items-center text-gray-800 font-semibold">
             <div>
@@ -58,7 +56,7 @@ export const Campaign = ({ data }) => {
             }
 
           </div>
-          <div className='text-xs text-gray-400 font-light'>
+          <div className='text-xs text-gray-400 font-light mb-1'>
             <NumericFormat
               value={data.goal}
               thousandSeparator={true}
@@ -72,11 +70,11 @@ export const Campaign = ({ data }) => {
               displayType="text"
             /> {' '} donations
           </div>
+          <DonationBar
+            raised={data.raised}
+            goal={data.goal}
+          />
         </div>
-        <DonationBar
-          raised={data.raised}
-          goal={data.goal}
-        />
       </CardFooter>
     </Card>
   );
