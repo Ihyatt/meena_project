@@ -77,8 +77,60 @@ def fetch_campaign():
 @donation_bp.route("create-subscription-checkout-session", methods=["POST"])
 def create_subscription_checkout_session():
     try:
+        data = await request.json()
+
+    if not app.state.stripe_customer_id:
+        customer = stripe.Customer.create(
+            description="Demo customer",
+        )
+        app.state.stripe_customer_id = customer["id"]
+
+    checkout_session = stripe.checkout.Session.create(
+        customer=app.state.stripe_customer_id,
+        success_url="http://localhost:8000/success?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url="http://localhost:8000/cancel",
+        payment_method_types=["card"],
+        mode="subscription",
+        line_items=[{
+            "price": data["priceId"],
+            "quantity": 1
+        }],
+    )
+    return {"sessionId": checkout_session["id"]}
+
+        current_app.logger.info(f"Checkout session created.")
+        return (
+            jsonify(
+                {
+                    "clientSecret": session.client_secret,
+                    "status": "success",
+                }
+            ),
+            200,
+        )
+    except ValidationError as ve:
+        current_app.logger.error(f"Validation error: {str(ve)}", exc_info=True)
+        return jsonify({"status": "failed", "message": str(ve)}), 400
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error creating checkout session: {str(e)}", exc_info=True
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error creating checkout session: {str(e)}",
+                }
+            ),
+            500,
+        )
+
+
+@donation_bp.route("/<int:campaign_id>/create-checkout-session", methods=["POST"])
+def create_checkout_session(campaign_id):
+        try:
         data = request.get_json()
-        active_campaign = Campaign.query.filter_by(is_active=True).first()
         domain_url = current_app.config["WEB_URL"]
         donor_schema = DonorSchema(
             unknown=EXCLUDE,
@@ -86,6 +138,7 @@ def create_subscription_checkout_session():
                 "email_address",
                 "subscribed",
                 "is_anonymous",
+                "full_name",
             ],
         )
 
@@ -93,7 +146,10 @@ def create_subscription_checkout_session():
             unknown=EXCLUDE,
             only=[
                 "amount",
+                "lat",
+                "lng",
                 "donor_id",
+                "campaign_id",
             ],
         )
         validated_donor_data = donor_schema.load(data)
@@ -102,6 +158,7 @@ def create_subscription_checkout_session():
             validated_donor_data["email_address"],
             validated_donor_data["subscribed"],
             validated_donor_data["is_anonymous"],
+            validated_donor_data["full_name"],
         )
 
         db.session.add(donor)
@@ -172,6 +229,7 @@ def create_subscription_checkout_session():
             ),
             500,
         )
+
 
 
 @donation_bp.route("/check-session-status", methods=["GET"])

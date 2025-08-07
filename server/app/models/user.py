@@ -39,7 +39,6 @@ class User(db.Model, SoftDeleteMixin):
     )
     donations = relationship("Donation", back_populates="donor")
     payment_transactions = relationship("PaymentTransaction", back_populates="donor")
-    emails = relationship("Email", back_populates="recipient")
 
     email_subscription = relationship(
         "EmailSubscription",
