@@ -76,7 +76,6 @@ def stream():
     Server-Sent Events endpoint that pushes donation notifications
     to connected browsers in real time.
     """
-    app = current_app._get_current_object()
 
     def event_stream():
 

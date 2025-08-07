@@ -74,18 +74,17 @@ def fetch_campaign():
         )
 
 
-@donation_bp.route("/<int:campaign_id>/create-checkout-session", methods=["POST"])
-def create_checkout_session(campaign_id):
+@donation_bp.route("create-subscription-checkout-session", methods=["POST"])
+def create_subscription_checkout_session():
     try:
         data = request.get_json()
+        active_campaign = Campaign.query.filter_by(is_active=True).first()
         domain_url = current_app.config["WEB_URL"]
         donor_schema = DonorSchema(
             unknown=EXCLUDE,
             only=[
                 "email_address",
                 "subscribed",
-                "is_anonymous",
-                "full_name",
             ],
         )
 
@@ -93,10 +92,7 @@ def create_checkout_session(campaign_id):
             unknown=EXCLUDE,
             only=[
                 "amount",
-                "lat",
-                "lng",
                 "donor_id",
-                "campaign_id",
             ],
         )
         validated_donor_data = donor_schema.load(data)
@@ -105,7 +101,6 @@ def create_checkout_session(campaign_id):
             validated_donor_data["email_address"],
             validated_donor_data["subscribed"],
             validated_donor_data["is_anonymous"],
-            validated_donor_data["full_name"],
         )
 
         db.session.add(donor)
@@ -202,6 +197,7 @@ async def stripe_webhook():
         event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
         event_type = event["type"]
         session = event["data"]["object"]
+        current_app.logger.info(f"Received event: {session}")
 
         metadata = session.get("metadata", {})
 

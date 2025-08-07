@@ -249,7 +249,7 @@ const Donate = () => {
                     className=' border-b border-gray-400 w-full p-2 mb-2 focus:outline-none'
                   />
                   <div className="mt-4 mb-5">
-                    <div className=" m-2 text-sm text-gray-400 font-light">
+                    <div className="flex m-2 text-sm text-gray-400 font-light">
                       <div className="inline-flex items-center mr-1">
                         <label className="flex items-center cursor-pointer relative">
                           <input
@@ -266,7 +266,7 @@ const Donate = () => {
                       </div>
                       <label >I would like to recieve email updates</label>
                     </div>
-                    <div className="m-2 text-sm text-gray-400 font-light">
+                    <div className="flex m-2 text-sm text-gray-400 font-light">
                       <div className="inline-flex items-center mr-1">
                         <label className="flex items-center cursor-pointer relative">
                           <input
@@ -316,7 +316,7 @@ const Donate = () => {
               </div>
             </div>
           </div>
-          <div className="mt-2 ml-5 w-60">
+          <div className="mt-2 ml-5 w-70">
 
             <DonationEvents />
           </div>

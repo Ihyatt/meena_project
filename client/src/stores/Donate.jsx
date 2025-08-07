@@ -45,6 +45,35 @@ const useDonateStore = create(
         }
       },
 
+      fetchSubscriptionClientSecret: async () => {
+        set({ isLoading: true, error: null });
+        try {
+
+          const state = get();
+          const { emailAddress, productId, isAnonymous, campaign } = state;
+          const response = await fetch(`${backendUrl}/donations/${campaign.id}/create-subscription-checkout-session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              emailAddress,
+              productId,
+              isAnonymous,
+            }),
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            set({ error: data.message });
+          }
+          set({ isLoading: false });
+          return data.clientSecret;
+        } catch (error) {
+          set({ error: error, isLoading: false });
+        }
+      },
+
+
       fetchClientSecret: async () => {
         set({ isLoading: true, error: null });
         try {

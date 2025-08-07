@@ -35,7 +35,7 @@ const Dashboard = () => {
   return (
     <div>
       {isLoading && <Loading />}
-      <div className="m-4 grid gap-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-4">
+      <div className="m-4  grid gap-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-4">
         <div
           className="grid grid-cols-1 content-center justify-items-center rounded-lg shadow-sm h-20 "
           style={{ backgroundColor: "white", color: "#40bf51" }}
@@ -90,7 +90,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="m-4 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5">
+      <div className="m-4 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
         <div className="col-start-1 col-span-2 h-83">
           <DonationsHeatMap />
         </div >

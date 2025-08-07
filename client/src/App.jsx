@@ -12,7 +12,8 @@ import { CampaignDraft } from "src/pages/admin/components/modals/CampaignDraft";
 import { CampaignDetails } from "src/pages/admin/components/modals/EditCampaign";
 import DashboardLayout from "src/pages/admin/components/DashboardLayout";
 import NotFound from "src/pages/NotFound";
-import Unsubscribe from "src/pages/Unsubscribe";
+import Unsubscribe from "src/pages/donor/Unsubscribe";
+import Subscribe from "src/pages/donor/Subscribe";
 import ProtectedRoute from "src/components/ProtectedRoute";
 
 
@@ -28,7 +29,7 @@ function App() {
         <Route path="checkout" element={<Checkout />} />
         <Route path="checkout-complete" element={<CheckoutComplete />} />
         <Route path="unsubscribe" element={<Unsubscribe />} />
-
+        <Route path="subscribe" element={<Subscribe />} />
         <Route
           element={
             <ProtectedRoute>

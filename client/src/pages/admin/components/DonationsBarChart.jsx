@@ -4,7 +4,6 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import useAdminStore from 'src/stores/Admin';
 import BarChartParser from 'src/components/BarChartParser';
 import { format } from 'date-fns'; // Or any date formatting library
-import { orange } from '@mui/material/colors';
 
 
 
@@ -37,7 +36,7 @@ const DonationsBarChart = () => {
 
 
                 ]}
-                colors={['orange', 'red']}
+                colors={['green', 'red']}
                 slotProps={{
                     legend: { hidden: true }, // 👈 Hides the legend
                 }}

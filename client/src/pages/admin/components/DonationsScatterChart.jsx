@@ -59,7 +59,7 @@ const DonationsScatterChart = () => {
         <div className='rounded-lg shadow-sm'>
             <ScatterChart
                 height={300}
-                colors={['orange', 'red']}
+                colors={['green', 'red']}
                 voronoiMaxRadius={30}
                 series={series}
                 disableAxisListener={false}
