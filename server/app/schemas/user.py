@@ -22,7 +22,6 @@ class AdminSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
     is_admin = fields.Boolean(required=True, data_key="isAdmin")
-    is_master_admin = fields.Boolean(required=True, data_key="isMasterAdmin")
     full_name = fields.String(
         required=True, validate=validate.Length(max=100), data_key="fullName"
     )

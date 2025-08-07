@@ -15,7 +15,6 @@ class Subscription(db.Model, SoftDeleteMixin):
     version_uuid = mapped_column(db.String(32), nullable=False)
     subscription_id = mapped_column(db.String(500), nullable=False)
     price_id = mapped_column(db.String(500), nullable=False)
-    customer_id = mapped_column(db.String(500), nullable=False)
     status = mapped_column(
         db.Enum(SubscriptionStatus), default=SubscriptionStatus.PENDING, nullable=False
     )

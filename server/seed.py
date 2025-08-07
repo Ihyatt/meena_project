@@ -40,7 +40,6 @@ def seed_all():
             email_address="admin@example.com",
             full_name="Admin User",
             is_admin=True,
-            is_master_admin=True,
             subscribed=True,
             is_anonymous=False,
         )

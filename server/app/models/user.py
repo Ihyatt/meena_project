@@ -11,23 +11,15 @@ from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
 class User(db.Model, SoftDeleteMixin):
     __tablename__ = "users"
     __versioned__ = {}
-    __table_args__ = (
-        db.Index(
-            "uq_global_admin",
-            "is_master_admin",
-            unique=True,
-            postgresql_where=(mapped_column("is_master_admin") == True),
-        ),
-    )
 
     id = mapped_column(db.Integer, primary_key=True)
     version_uuid = mapped_column(db.String(32), nullable=False)
 
     email_address = mapped_column(db.String(255), nullable=True)
     password_hash = mapped_column(db.String(255), nullable=True)
+    customer_id = mapped_column(db.String(500), nullable=False)  # stripe customer ID
     full_name = mapped_column(db.String(100), nullable=True)
     is_admin = mapped_column(db.Boolean, default=False, nullable=False)
-    is_master_admin = mapped_column(db.Boolean, default=False, nullable=False)
     subscribed = mapped_column(db.Boolean, default=True, nullable=False)
     is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
     emails_queued = mapped_column(db.Integer, default=0, nullable=False)
