@@ -25,6 +25,7 @@ class Campaign(db.Model, SoftDeleteMixin):
         server_default=db.func.now(),
         nullable=False,
     )
+
     reconciled_at_version_uuid = mapped_column(db.String(32), nullable=True)
 
     title = mapped_column(db.String(50), default="", nullable=False)
@@ -58,7 +59,6 @@ class Campaign(db.Model, SoftDeleteMixin):
     admin = relationship(
         "User", back_populates="admin_campaigns", foreign_keys=[admin_id]
     )
-    emails = relationship("Email", back_populates="campaign")
     images = relationship("Image", back_populates="campaign")
     donations = relationship("Donation", back_populates="campaign")
 

@@ -40,12 +40,10 @@ class Email(db.Model, SoftDeleteMixin):
         nullable=False,
     )
 
-    campaign_id = mapped_column(
-        db.Integer, db.ForeignKey("campaigns.id"), nullable=False
+    email_subscription_id = mapped_column(
+        db.Integer, db.ForeignKey("email_subscriptions.id"), nullable=False
     )
-    campaign = relationship("Campaign", back_populates="emails")
-    recipient_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    recipient = relationship("User", back_populates="emails")
+    email_subscription = relationship("EmailSubscription", back_populates="emails")
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

@@ -20,12 +20,7 @@ class User(db.Model, SoftDeleteMixin):
     customer_id = mapped_column(db.String(500), nullable=False)  # stripe customer ID
     full_name = mapped_column(db.String(100), nullable=True)
     is_admin = mapped_column(db.Boolean, default=False, nullable=False)
-    subscribed = mapped_column(db.Boolean, default=True, nullable=False)
     is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
-    emails_queued = mapped_column(db.Integer, default=0, nullable=False)
-    emails_opened = mapped_column(db.Integer, default=0, nullable=False)
-    total_donated = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
-    total_donations = mapped_column(db.Integer, default=0, nullable=False)
 
     created_at = mapped_column(
         db.DateTime(timezone=True),
@@ -45,6 +40,12 @@ class User(db.Model, SoftDeleteMixin):
     donations = relationship("Donation", back_populates="donor")
     payment_transactions = relationship("PaymentTransaction", back_populates="donor")
     emails = relationship("Email", back_populates="recipient")
+
+    email_subscription = relationship(
+        "EmailSubscription",
+        back_populates="user",
+        uselist=False,
+    )
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

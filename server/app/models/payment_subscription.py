@@ -7,8 +7,8 @@ from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
 from app.utils.constants import SubscriptionStatus
 
 
-class Subscription(db.Model, SoftDeleteMixin):
-    __tablename__ = "subscriptions"
+class PaymentSubscription(db.Model, SoftDeleteMixin):
+    __tablename__ = "payment_subscriptions"
     __versioned__ = {}
 
     id = mapped_column(db.Integer, primary_key=True)
