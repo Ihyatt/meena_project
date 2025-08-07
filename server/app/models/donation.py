@@ -38,6 +38,12 @@ class Donation(db.Model, SoftDeleteMixin):
         db.Integer, db.ForeignKey("campaigns.id"), nullable=False
     )
     campaign = relationship("Campaign", back_populates="donations")
+
+    subscription_id = mapped_column(
+        db.Integer, db.ForeignKey("subscriptions.id"), nullable=False
+    )
+    subscription = relationship("Subscription", back_populates="donations")
+
     donor_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     donor = relationship("User", back_populates="donations")
     donation_notifications = relationship(

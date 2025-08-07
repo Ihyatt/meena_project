@@ -85,6 +85,7 @@ def create_subscription_checkout_session():
             only=[
                 "email_address",
                 "subscribed",
+                "is_anonymous",
             ],
         )
 

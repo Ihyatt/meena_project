@@ -29,6 +29,7 @@ class User(db.Model, SoftDeleteMixin):
     is_admin = mapped_column(db.Boolean, default=False, nullable=False)
     is_master_admin = mapped_column(db.Boolean, default=False, nullable=False)
     subscribed = mapped_column(db.Boolean, default=True, nullable=False)
+    is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
     emails_queued = mapped_column(db.Integer, default=0, nullable=False)
     emails_opened = mapped_column(db.Integer, default=0, nullable=False)
     total_donated = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)

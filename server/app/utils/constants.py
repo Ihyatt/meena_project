@@ -14,6 +14,12 @@ class DonationStatus(enum.Enum):
     FAILED = "failed"
 
 
+class SubscriptionStatus(enum.Enum):
+    PENDING = "pending"
+    INACTIVE = "inactive"
+    ACTIVE = "active"
+
+
 class JobStatus(enum.Enum):
     QUEUED = "queued"
     SUCCEEDED = "succeeded"
