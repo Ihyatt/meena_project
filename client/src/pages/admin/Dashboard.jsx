@@ -52,7 +52,7 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiHandHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{masterCampaign?.totalDonations || 0}</span>
+            <RiHandHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{totalDonations || 0}</span>
           </div>
           <div className="text-black">
             DONATIONS
@@ -66,7 +66,7 @@ const Dashboard = () => {
             <RiMoneyDollarCircleFill size={30} color={'#40bf51'} className="inline bg-white" />
             <span className='text-xl'>
               <NumericFormat
-                value={masterCampaign?.raised || 0}
+                value={total || 0}
                 thousandSeparator={true}
                 prefix="$"
                 decimalScale={2}

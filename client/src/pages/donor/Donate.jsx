@@ -41,7 +41,6 @@ const Donate = () => {
     setSubscribed,
     subscribed,
     campaign,
-    masterCampaign,
 
   } = useDonateStore();
 

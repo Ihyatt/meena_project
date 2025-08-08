@@ -94,12 +94,6 @@ def dashboard():
                 "total_donations",
             ],
         )
-        donations_schema = DonationSchema(
-            many=True,
-            only=[
-                "amount",
-            ],
-        )
 
         current_app.logger.info("Dashboard data fetched.")
         return (
@@ -108,8 +102,12 @@ def dashboard():
                     "campaigns": campaign_schema.dump(campaigns),
                     "donationsLatLng": lat_lng_donations,
                     "launchedCampaigns": len(campaigns),
+                    "totalHistoricalDonations": len(donations),
+                    "totalHistoricalRaised": sum(
+                        donation.amount for donation in donations
+                    ),
+                    "totalHistoricalDonors": len(donors),
                     "donors": donor_schema.dump(donors),
-                    "donations": donations_schema.dump(donations),
                     "donationsWindow": donations_window,
                 }
             ),

@@ -41,7 +41,6 @@ const Subscribe = () => {
         setSubscribed,
         subscribed,
         campaign,
-        masterCampaign,
 
     } = useDonateStore();
     const [open, setOpen] = useState(false);

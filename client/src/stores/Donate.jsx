@@ -19,7 +19,6 @@ const useDonateStore = create(
       isLoading: false,
       error: null,
       status: '',
-      masterCampaign: null,
 
       setFullName: (fullName) => set({ fullName }),
       setEmailAddress: (emailAddress) => set({ emailAddress }),
@@ -37,7 +36,6 @@ const useDonateStore = create(
           const data = await response.json();
           set({
             campaign: data.campaign,
-            masterCampaign: data.masterCampaign,
             isLoading: false,
           });
         } catch (error) {
