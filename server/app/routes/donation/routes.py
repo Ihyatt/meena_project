@@ -7,10 +7,8 @@ from werkzeug.exceptions import NotFound
 from app.database import db
 from app.routes.donation import donation_bp
 from app.models.campaign import Campaign
-from app.models.master_campaign import MasterCampaign
 from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
-from app.schemas.master_campaign import MasterCampaignSchema
 from app.schemas.user import DonorSchema
 from app.services.checkout_session import CheckoutSession
 from app.services.charge_handler import (
@@ -32,8 +30,6 @@ from app.utils.constants import CHARGE_MESSAGE_QUEUE
 def fetch_campaign():
     try:
         campaign = Campaign.query.filter_by(is_active=True).first()
-        master_campaign = MasterCampaign.query.first()
-        master_campaign_schema = MasterCampaignSchema()
         campaign_schema = CampaignSchema(
             only=[
                 "id",
@@ -53,7 +49,6 @@ def fetch_campaign():
             jsonify(
                 {
                     "campaign": campaign_schema.dump(campaign),
-                    "masterCampaign": master_campaign_schema.dump(master_campaign),
                 }
             ),
             200,

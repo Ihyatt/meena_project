@@ -25,13 +25,6 @@ class AdminSchema(SQLAlchemyAutoSchema):
     full_name = fields.String(
         required=True, validate=validate.Length(max=100), data_key="fullName"
     )
-    subscribed = fields.Boolean(required=True, data_key="subscribed")
-    emails_queued = fields.Integer(dump_only=True, data_key="emailsQueued")
-    emails_opened = fields.Integer(dump_only=True, data_key="emailsOpened")
-    total_donated = fields.Decimal(
-        places=2, as_string=True, dump_only=True, data_key="totalDonated"
-    )
-    total_donations = fields.Integer(dump_only=True, data_key="totalDonations")
     is_anonymous = fields.Boolean(required=True, data_key="isAnonymous")
     email_address = fields.Email(
         required=True, validate=validate.Length(max=255), data_key="emailAddress"
@@ -55,13 +48,6 @@ class DonorSchema(SQLAlchemyAutoSchema):
     full_name = fields.String(
         allow_none=True, validate=validate.Length(max=100), data_key="fullName"
     )
-    subscribed = fields.Boolean(required=True, data_key="subscribed")
-    emails_queued = fields.Integer(dump_only=True, data_key="emailsQueued")
-    emails_opened = fields.Integer(dump_only=True, data_key="emailsOpened")
-    total_donated = fields.Decimal(
-        places=2, as_string=True, dump_only=True, data_key="totalDonated"
-    )
-    total_donations = fields.Integer(dump_only=True, data_key="totalDonations")
     is_anonymous = fields.Boolean(required=True, data_key="isAnonymous")
     email_address = fields.Email(
         allow_none=True, validate=validate.Length(max=255), data_key="emailAddress"
@@ -74,3 +60,7 @@ class DonorSchema(SQLAlchemyAutoSchema):
         if data.get("email_address") is not None:
             data["email_address"] = data["email_address"].lower().strip()
         return data
+
+    donations = fields.List(
+        fields.Nested("DonationSchema", only=("id", "amount", "status"))
+    )

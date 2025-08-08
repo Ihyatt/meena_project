@@ -2,6 +2,7 @@ from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from decimal import Decimal
 from app.models.donation import Donation
+from app.utils.constants import DonationStatus
 
 
 class DonationSchema(SQLAlchemyAutoSchema):
@@ -13,6 +14,11 @@ class DonationSchema(SQLAlchemyAutoSchema):
 
     donor_id = fields.Integer(required=True, data_key="donorId")
     campaign_id = fields.Integer(required=True, data_key="campaignId")
+
+    status = fields.Enum(
+        DonationStatus,
+        required=True,
+    )
     amount = fields.Decimal(
         places=2,
         as_string=True,
@@ -34,3 +40,7 @@ class DonationSchema(SQLAlchemyAutoSchema):
 
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")
     updated_at = fields.DateTime(dump_only=True, data_key="updatedAt")
+    payment_transaction = fields.List(
+        fields.Nested("PaymentTransactionSchema", only=("id", "status")),
+        data_key="paymentTransaction",
+    )

@@ -9,12 +9,10 @@ from app.utils.decorators import admin_required
 from app.models.user import User
 from app.models.donation import Donation
 from app.models.campaign import Campaign
-from app.models.master_campaign import MasterCampaign
 from app.models.payment_transaction import PaymentTransaction
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
 from app.schemas.campaign import CampaignSchema
-from app.schemas.master_campaign import MasterCampaignSchema
 from app.utils.constants import DonationStatus
 from datetime import datetime, timezone
 
@@ -70,9 +68,6 @@ def dashboard():
             .all()
         )
 
-        master_campaign = MasterCampaign.query.first()
-        master_campaign_schema = MasterCampaignSchema()
-
         campaign_schema = CampaignSchema(
             many=True,
             only=[
@@ -95,11 +90,14 @@ def dashboard():
                 "id",
                 "email_address",
                 "full_name",
-                "subscribed",
-                "emails_queued",
-                "emails_opened",
                 "total_donated",
                 "total_donations",
+            ],
+        )
+        donations_schema = DonationSchema(
+            many=True,
+            only=[
+                "amount",
             ],
         )
 
@@ -111,7 +109,7 @@ def dashboard():
                     "donationsLatLng": lat_lng_donations,
                     "launchedCampaigns": len(campaigns),
                     "donors": donor_schema.dump(donors),
-                    "masterCampaign": master_campaign_schema.dump(master_campaign),
+                    "donations": donations_schema.dump(donations),
                     "donationsWindow": donations_window,
                 }
             ),

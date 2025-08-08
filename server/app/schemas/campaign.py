@@ -45,8 +45,3 @@ class CampaignSchema(SQLAlchemyAutoSchema):
 
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")
     updated_at = fields.DateTime(dump_only=True, data_key="updatedAt")
-
-    admin_id = fields.Integer(dump_only=True, data_key="adminId")
-    admin = fields.Nested(
-        AdminSchema(only=("full_name", "id")), dump_only=True, data_key="admin"
-    )
