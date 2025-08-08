@@ -13,8 +13,16 @@ class EmailSubscription(db.Model, SoftDeleteMixin):
 
     id = mapped_column(db.Integer, primary_key=True)
     version_uuid = mapped_column(db.String(32), nullable=False)
-    blocked = mapped_column(db.Integer, default=0, nullable=False)
-    spam = mapped_column(db.Integer, default=0, nullable=False)
+    reconciled_at = mapped_column(
+        db.DateTime(timezone=True),
+        server_default=db.func.now(),
+        nullable=False,
+    )
+
+    reconciled_at_version_uuid = mapped_column(db.String(32), nullable=True)
+    email_address = mapped_column(db.String(255), nullable=False, index=True)
+    blocked = mapped_column(db.Boolean, default=False, nullable=False)
+    spam = mapped_column(db.Boolean, default=False, nullable=False)
     bounced = mapped_column(db.Integer, default=0, nullable=False)
     opened = mapped_column(db.Integer, default=0, nullable=False)
     queued = mapped_column(db.Integer, default=0, nullable=False)
@@ -34,9 +42,9 @@ class EmailSubscription(db.Model, SoftDeleteMixin):
         nullable=False,
     )
 
-    user_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    user = relationship("User", back_populates="subscriptions")
-    emails = relationship("Email", back_populates="recipient")
+    donor_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    donor = relationship("User", back_populates="email_subscription", uselist=False)
+    emails = relationship("Email", back_populates="email_subscription")
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

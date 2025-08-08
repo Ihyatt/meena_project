@@ -32,9 +32,9 @@ class PaymentSubscription(db.Model, SoftDeleteMixin):
     )
 
     donor_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    donor = relationship("User", back_populates="subscriptions")
+    donor = relationship("User", back_populates="payment_subscriptions")
 
-    donations = relationship("Donation", back_populates="subscription")
+    donations = relationship("Donation", back_populates="payment_subscription")
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

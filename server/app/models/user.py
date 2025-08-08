@@ -15,7 +15,7 @@ class User(db.Model, SoftDeleteMixin):
     id = mapped_column(db.Integer, primary_key=True)
     version_uuid = mapped_column(db.String(32), nullable=False)
 
-    email_address = mapped_column(db.String(255), nullable=True)
+    email_address = mapped_column(db.String(255), nullable=False, index=True)
     password_hash = mapped_column(db.String(255), nullable=True)
     customer_id = mapped_column(db.String(500), nullable=False)  # stripe customer ID
     full_name = mapped_column(db.String(100), nullable=True)
@@ -42,9 +42,10 @@ class User(db.Model, SoftDeleteMixin):
 
     email_subscription = relationship(
         "EmailSubscription",
-        back_populates="user",
+        back_populates="donor",
         uselist=False,
     )
+    payment_subscriptions = relationship("PaymentSubscription", back_populates="donor")
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

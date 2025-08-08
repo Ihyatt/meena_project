@@ -79,16 +79,14 @@ def create_subscription_checkout_session():
     try:
         data = await request.json()
 
-    if not app.state.stripe_customer_id:
-        customer = stripe.Customer.create(
-            description="Demo customer",
-        )
-        app.state.stripe_customer_id = customer["id"]
+    customer = stripe.Customer.create(
+        email=data["email"],
+    )
 
     checkout_session = stripe.checkout.Session.create(
-        customer=app.state.stripe_customer_id,
-        success_url="http://localhost:8000/success?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url="http://localhost:8000/cancel",
+        customer=customer["id"],
+        return_url=self.domain_url
+                + "checkout-complete?session_id={CHECKOUT_SESSION_ID}",
         payment_method_types=["card"],
         mode="subscription",
         line_items=[{
