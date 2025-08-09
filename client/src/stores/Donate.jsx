@@ -15,7 +15,6 @@ const useDonateStore = create(
       campaign: null,
       lat: null,
       lng: null,
-      activeButton: '',
       isLoading: false,
       error: null,
       status: '',
@@ -27,7 +26,6 @@ const useDonateStore = create(
       setLng: (lng) => set({ lng }),
       setSubscribed: () => set((state) => ({ subscribed: !state.subscribed })),
       setIsAnonymous: () => set((state) => ({ isAnonymous: !state.isAnonymous })),
-      setActiveButton: (activeButton) => set({ activeButton }),
 
       fetchCampaign: async () => {
         set({ isLoading: true, error: null });
