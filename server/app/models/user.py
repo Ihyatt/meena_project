@@ -20,7 +20,6 @@ class User(db.Model, SoftDeleteMixin):
     customer_id = mapped_column(db.String(500), nullable=True)  # stripe customer ID
     full_name = mapped_column(db.String(100), nullable=True)
     is_admin = mapped_column(db.Boolean, default=False, nullable=False)
-    is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
 
     created_at = mapped_column(
         db.DateTime(timezone=True),

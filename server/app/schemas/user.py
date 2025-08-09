@@ -48,7 +48,6 @@ class DonorSchema(SQLAlchemyAutoSchema):
     full_name = fields.String(
         allow_none=True, validate=validate.Length(max=100), data_key="fullName"
     )
-    is_anonymous = fields.Boolean(required=True, data_key="isAnonymous")
     email_address = fields.Email(
         allow_none=True, validate=validate.Length(max=255), data_key="emailAddress"
     )

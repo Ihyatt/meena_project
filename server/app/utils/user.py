@@ -1,20 +1,32 @@
 from app.models.user import User
+from app.models.email_subscription import EmailSubscription
+from app.utils.constants import SubscriptionStatus
+from app.database import db
 
 
-def get_or_create_donor(email_address, subscribed, is_anonymous, full_name):
+def get_or_create_donor(email_address, is_email_subscription, full_name):
     try:
         donor = User.query.filter_by(email_address=email_address).first()
 
-        if donor:
-            donor.subscribed = subscribed
-            donor.is_anonymous = is_anonymous
-        else:
+        if not donor:
             donor = User(
                 email_address=email_address,
-                is_anonymous=is_anonymous,
                 full_name=full_name,
-                subscribed=subscribed,
             )
+            db.session.add(donor)
+            db.session.commit()
+
+            email_subscription = EmailSubscription(
+                user_id=donor.id,
+                email_address=email_address,
+            )
+            if is_email_subscription:
+                email_subscription.status = SubscriptionStatus.ACTIVE
+            else:
+                email_subscription.status = SubscriptionStatus.INACTIVE
+            db.session.add(email_subscription)
+            db.session.commit()
+
         return donor
     except Exception as e:
         current_app.logger.error(f"Error getting or creating donor: {str(e)}")

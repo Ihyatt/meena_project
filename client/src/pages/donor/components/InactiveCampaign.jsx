@@ -2,6 +2,7 @@ import DonationBar from 'src/components/DonationBar';
 import { NumericFormat } from 'react-number-format';
 import { RiInstagramLine } from "react-icons/ri";
 import useDonateStore from 'src/stores/Donate'
+import defaultImg from 'src/assets/images/defaultImg.jpg';
 
 
 
@@ -18,21 +19,31 @@ const InactiveCampaign = ({ handleDonateClick, handleClick, activeButton }) => {
         isAnonymous,
         fetchCampaign,
         isLoading,
-        setSubscribed,
-        subscribed,
+        setIsEmailSubscription,
+        isEmailSubscription,
         campaign,
 
     } = useDonateStore();
     return (
         <div className=" w-110 rounded-lg  shadow-lg mt-4 mb-4 ">
             <div className="rounded-lg  w-full">
-
+                <img
+                    src={defaultImg}
+                    alt="ui/ux review check"
+                    className='rounded-t-lg shadow-none  h-100 w-full object-cover'
+                />
 
                 <div className="pt-2 pb-7 px-8 bg-white rounded-b-lg ">
+                    <div className="text-2xl font-bold">
+                        Select a Gift Amount
+                    </div>
 
+                    <div className="mb-3 text-gray-400">
+                        _ _ _
+                    </div>
                     <form onSubmit={handleDonateClick}>
+                        <div>One-time donation</div>
 
-                        <div>Select amount</div>
                         <div className="flex gap-5 my-[25px] transition-all duration-300 ease-in-out" id="amountSelector">
                             <button
                                 type="button"
@@ -124,6 +135,7 @@ const InactiveCampaign = ({ handleDonateClick, handleClick, activeButton }) => {
                         <input
                             type="email"
                             id="email"
+                            required
                             value={emailAddress}
                             onChange={(e) => setEmailAddress(e.target.value)}
                             placeholder="Email"
@@ -132,6 +144,7 @@ const InactiveCampaign = ({ handleDonateClick, handleClick, activeButton }) => {
                         <input
                             type="name"
                             id="name"
+                            required
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             placeholder="Name"
@@ -142,8 +155,8 @@ const InactiveCampaign = ({ handleDonateClick, handleClick, activeButton }) => {
                                 <div className="inline-flex items-center mr-1">
                                     <label className="flex items-center cursor-pointer relative">
                                         <input
-                                            checked={subscribed}
-                                            onChange={setSubscribed}
+                                            checked={isEmailSubscription}
+                                            onChange={setIsEmailSubscription}
                                             type="checkbox"
                                             className="peer h-3.5 w-3.5 cursor-pointer transition-all appearance-none rounded  hover:shadow-sm border border-slate-300 checked:bg-slate-800 checked:border-slate-800" id="check-custom-icon" />
                                         <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

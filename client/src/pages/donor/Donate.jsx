@@ -20,8 +20,8 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
-import ActiveCampaign from './components/ActiveCampaign';
-import InactiveCampaign from './components/InactiveCampaign';
+import ActiveCampaign from 'src/pages/donor/components/ActiveCampaign';
+import InactiveCampaign from 'src/pages/donor/components/InactiveCampaign';
 
 const Donate = () => {
   const navigate = useNavigate();
@@ -41,11 +41,12 @@ const Donate = () => {
     setSubscribed,
     subscribed,
     campaign,
+    activeButton,
+    setActiveButton
 
   } = useDonateStore();
 
 
-  const [activeButton, setActiveButton] = useState(null);
 
   useEffect(() => {
     getUserLocation()
@@ -81,9 +82,9 @@ const Donate = () => {
 
   let CampaignDisplay = null;
   if (campaign) {
-    CampaignDisplay = <ActiveCampaign />;
+    CampaignDisplay = <ActiveCampaign handleDonateClick={handleDonateClick} handleClick={handleClick} activeButton={activeButton} />;
   } else {
-    CampaignDisplay = <InactiveCampaign />
+    CampaignDisplay = <InactiveCampaign handleDonateClick={handleDonateClick} handleClick={handleClick} activeButton={activeButton} />
   }
 
 
@@ -96,8 +97,7 @@ const Donate = () => {
       </div>
       <div className="bg-[#86c88b]">
         <div className=" flex justify-center w-full mt-16 ">
-
-          <CampaignDisplay handleDonateClick={handleDonateClick} handleClick={handleClick} activeButton={activeButton} />
+          {CampaignDisplay}
           <div className="mt-2 ml-5 w-70">
             <DonationEvents />
           </div>

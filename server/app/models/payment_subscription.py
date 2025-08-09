@@ -18,6 +18,7 @@ class PaymentSubscription(db.Model, SoftDeleteMixin):
     status = mapped_column(
         db.Enum(SubscriptionStatus), default=SubscriptionStatus.PENDING, nullable=False
     )
+    is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
 
     created_at = mapped_column(
         db.DateTime(timezone=True),

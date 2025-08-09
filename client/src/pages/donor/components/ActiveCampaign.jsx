@@ -20,8 +20,8 @@ const ActiveCampaign = ({ handleDonateClick, handleClick, activeButton }) => {
         isAnonymous,
         fetchCampaign,
         isLoading,
-        setSubscribed,
-        subscribed,
+        setEmailSubscription,
+        emailSubscription,
         campaign,
 
     } = useDonateStore();
@@ -195,8 +195,8 @@ const ActiveCampaign = ({ handleDonateClick, handleClick, activeButton }) => {
                                     <div className="inline-flex items-center mr-1">
                                         <label className="flex items-center cursor-pointer relative">
                                             <input
-                                                checked={subscribed}
-                                                onChange={setSubscribed}
+                                                checked={emailSubscribtion}
+                                                onChange={setEmailSubscription}
                                                 type="checkbox"
                                                 className="peer h-3.5 w-3.5 cursor-pointer transition-all appearance-none rounded  hover:shadow-sm border border-slate-300 checked:bg-slate-800 checked:border-slate-800" id="check-custom-icon" />
                                             <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

@@ -41,6 +41,8 @@ def fetch_campaign():
                 "total_donations",
             ]
         )
+        if not campaign:
+            return jsonify({campaign: None}), 200
         current_app.logger.info(f"Active Campaign {campaign.id} successfully fetched.")
         current_app.logger.info(
             f"Master Campaign {master_campaign.id} successfully fetched."
@@ -117,17 +119,17 @@ def create_subscription_checkout_session():
         )
 
 
-@donation_bp.route("/<int:campaign_id>/create-checkout-session", methods=["POST"])
-def create_checkout_session(campaign_id):
+@donation_bp.route("/create-checkout-session", methods=["POST"])
+def create_checkout_session():
     try:
         data = request.get_json()
+        current_app.logger.info(f"Received data: {data}")
+        active_campaign = Campaign.query.filter_by(is_active=True).first()
         domain_url = current_app.config["WEB_URL"]
         donor_schema = DonorSchema(
             unknown=EXCLUDE,
             only=[
                 "email_address",
-                "subscribed",
-                "is_anonymous",
                 "full_name",
             ],
         )
@@ -139,56 +141,60 @@ def create_checkout_session(campaign_id):
                 "lat",
                 "lng",
                 "donor_id",
-                "campaign_id",
+                "is_anonymous",
+                "is_recurring",
             ],
         )
         validated_donor_data = donor_schema.load(data)
 
         donor = get_or_create_donor(
-            validated_donor_data["email_address"],
-            validated_donor_data["subscribed"],
-            validated_donor_data["is_anonymous"],
-            validated_donor_data["full_name"],
+            email_address=validated_donor_data["email_address"],
+            is_email_subscription=data.get("isEmailSubscription", False),
+            full_name=validated_donor_data["full_name"],
         )
 
-        db.session.add(donor)
-        db.session.commit()
+        current_app.logger.info("created donor data")
 
         combined = {
             **data,
             "donorId": donor.id,
-            "campaignId": campaign_id,
+            "isRecurring": False,
         }
 
         validated_donation_data = donation_schema.load(combined)
 
         donation = create_donation(
             donor.id,
-            campaign_id,
             validated_donation_data["amount"],
             validated_donation_data["lat"],
             validated_donation_data["lng"],
+            validated_donation_data["is_anonymous"],
+            validated_donation_data["is_recurring"],
         )
-        db.session.add(donation)
-        db.session.commit()
+        current_app.logger.info("created donation data")
+
+        if active_campaign:
+            donation.campaign_id = active_campaign.id
+            db.session.commit()
 
         idempotency_key = f"payment_{donation.id}_{uuid.uuid4()}"
         payment_transaction = create_payment_transaction(
             donation.id, donor.id, donation.amount, idempotency_key
         )
-        db.session.add(payment_transaction)
-        db.session.commit()
+
+        current_app.logger.info("created payment transaction")
 
         checkout_session = CheckoutSession(
-            donation.amount,
-            domain_url,
-            campaign_id,
-            payment_transaction.id,
-            idempotency_key,
-            donor.id,
-            donation.id,
-            donor.email_address,
+            amount=donation.amount,
+            domain_url=domain_url,
+            campaign_id=active_campaign.id if active_campaign else None,
+            payment_transaction_id=payment_transaction.id,
+            idempotency_key=idempotency_key,
+            donor_id=donor.id,
+            donation_id=donation.id,
+            email_address=donor.email_address,
         )
+        current_app.logger.info("created checkout session")
 
         session = checkout_session.create_checkout_session()
 

@@ -39,10 +39,11 @@ def successful_charge(
             raise ValueError(
                 f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
             )
-        campaign = Campaign.query.get_or_404(campaign_id)
-        campaign.raised += payment_transaction.amount
+        if campaign_id is not None:
+            campaign = Campaign.query.get_or_404(campaign_id)
+            campaign.raised += payment_transaction.amount
 
-        campaign.total_donations += 1
+            campaign.total_donations += 1
 
         payment_transaction.status = PaymentStatus.SUCCEEDED
 
@@ -165,8 +166,9 @@ def refunded_charge(payment_transaction_id, idempotency_key, charge_id, campaign
             )
         try:
             payment_transaction.charge_id = charge_id
-            campaign = Campaign.query.get_or_404(campaign_id)
-            campaign.raised -= payment_transaction.amount
+            if campaign_id is not None:
+                campaign = Campaign.query.get_or_404(campaign_id)
+                campaign.raised -= payment_transaction.amount
             payment_transaction.status = PaymentStatus.REFUNDED
             db.session.commit()
             current_app.logger.info(

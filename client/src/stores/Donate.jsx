@@ -1,3 +1,4 @@
+import { setActive } from '@material-tailwind/react/components/Tabs/TabsContext';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -9,13 +10,14 @@ const useDonateStore = create(
     (set, get) => ({
       fullName: '',
       emailAddress: '',
-      subscribed: false,
+      isEmailSubscription: false,
       isAnonymous: false,
       amount: 0.0,
       campaign: null,
       lat: null,
       lng: null,
       isLoading: false,
+      activeButton: null,
       error: null,
       status: '',
 
@@ -24,8 +26,9 @@ const useDonateStore = create(
       setAmount: (amount) => set({ amount }),
       setLat: (lat) => set({ lat }),
       setLng: (lng) => set({ lng }),
-      setSubscribed: () => set((state) => ({ subscribed: !state.subscribed })),
+      setIsEmailSubscription: () => set((state) => ({ isEmailSubscription: !state.isEmailSubscription })),
       setIsAnonymous: () => set((state) => ({ isAnonymous: !state.isAnonymous })),
+      setActiveButton: (buttonId) => set({ activeButton: buttonId }),
 
       fetchCampaign: async () => {
         set({ isLoading: true, error: null });
@@ -75,8 +78,17 @@ const useDonateStore = create(
         try {
 
           const state = get();
-          const { emailAddress, fullName, subscribed, campaign, amount, isAnonymous, lat, lng } = state;
-          const response = await fetch(`${backendUrl}/donations/${campaign.id}/create-checkout-session`, {
+          const { emailAddress, fullName, isEmailSubscription, amount, isAnonymous, lat, lng } = state;
+          console.log("Creating checkout session with data:", {
+            emailAddress,
+            fullName,
+            isEmailSubscription,
+            amount,
+            isAnonymous,
+            lat,
+            lng
+          });
+          const response = await fetch(`${backendUrl}/donations/create-checkout-session`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -84,7 +96,7 @@ const useDonateStore = create(
             body: JSON.stringify({
               emailAddress,
               fullName,
-              subscribed,
+              isEmailSubscription,
               amount,
               isAnonymous,
               lat,
