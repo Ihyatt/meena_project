@@ -42,8 +42,8 @@ class EmailSubscription(db.Model, SoftDeleteMixin):
         nullable=False,
     )
 
-    donor_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    donor = relationship("User", back_populates="email_subscription", uselist=False)
+    user_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user = relationship("User", back_populates="email_subscription", uselist=False)
     emails = relationship("Email", back_populates="email_subscription")
 
     __mapper_args__ = {

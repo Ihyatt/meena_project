@@ -25,7 +25,7 @@ import {
 
 const Dashboard = () => {
 
-  const { fetchCampaigns, launchedCampaigns, numDonors, isLoading, masterCampaign, error } = useAdminStore();
+  const { fetchCampaigns, launchedCampaigns, totalHistoricalDDonors, isLoading, totalHistoricalDonations, totalHistoricalRaised, error } = useAdminStore();
 
   useEffect(() => {
     fetchCampaigns();
@@ -52,7 +52,7 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiHandHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{totalDonations || 0}</span>
+            <RiHandHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{totalHistoricalDonations || 0}</span>
           </div>
           <div className="text-black">
             DONATIONS
@@ -66,7 +66,7 @@ const Dashboard = () => {
             <RiMoneyDollarCircleFill size={30} color={'#40bf51'} className="inline bg-white" />
             <span className='text-xl'>
               <NumericFormat
-                value={total || 0}
+                value={totalHistoricalRaised || 0}
                 thousandSeparator={true}
                 prefix="$"
                 decimalScale={2}
@@ -83,7 +83,7 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiUserHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{numDonors}</span>
+            <RiUserHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{totalHistoricalDDonors}</span>
           </div>
           <div className="text-black">
             DONORS

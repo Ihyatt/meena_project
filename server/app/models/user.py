@@ -17,7 +17,7 @@ class User(db.Model, SoftDeleteMixin):
 
     email_address = mapped_column(db.String(255), nullable=False, index=True)
     password_hash = mapped_column(db.String(255), nullable=True)
-    customer_id = mapped_column(db.String(500), nullable=False)  # stripe customer ID
+    customer_id = mapped_column(db.String(500), nullable=True)  # stripe customer ID
     full_name = mapped_column(db.String(100), nullable=True)
     is_admin = mapped_column(db.Boolean, default=False, nullable=False)
     is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
@@ -42,7 +42,7 @@ class User(db.Model, SoftDeleteMixin):
 
     email_subscription = relationship(
         "EmailSubscription",
-        back_populates="donor",
+        back_populates="user",
         uselist=False,
     )
     payment_subscriptions = relationship("PaymentSubscription", back_populates="donor")

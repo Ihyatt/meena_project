@@ -14,6 +14,8 @@ from app import create_app
 # Import your database instance and models
 from app.database import db
 from app.models.user import User
+from app.models.email_subscription import EmailSubscription
+from app.utils.constants import SubscriptionStatus
 
 
 def seed_all():
@@ -28,6 +30,15 @@ def seed_all():
         admin.set_password("password")
         db.session.add(admin)
         db.session.commit()
+        print("Admin user created.")
+        email_subscription = EmailSubscription(
+            email_address="admin@example.com",
+            status=SubscriptionStatus.ACTIVE,
+            user_id=admin.id,
+        )
+        db.session.add(email_subscription)
+        db.session.commit()
+        print("Email subscription created.")
 
     except Exception as e:
         db.session.rollback()
@@ -40,6 +51,7 @@ if __name__ == "__main__":
     with app.app_context():
 
         db.session.query(User).delete()
+        db.session.query(EmailSubscription).delete()
         db.session.commit()
         print("Existing data cleared.")
 

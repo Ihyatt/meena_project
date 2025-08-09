@@ -72,24 +72,21 @@ def fetch_campaign():
 @donation_bp.route("create-subscription-checkout-session", methods=["POST"])
 def create_subscription_checkout_session():
     try:
-        data = await request.json()
+        data = request.get_json()
 
-    customer = stripe.Customer.create(
-        email=data["email"],
-    )
+        customer = stripe.Customer.create(
+            email=data["email"],
+        )
 
-    checkout_session = stripe.checkout.Session.create(
-        customer=customer["id"],
-        return_url=self.domain_url
-                + "checkout-complete?session_id={CHECKOUT_SESSION_ID}",
-        payment_method_types=["card"],
-        mode="subscription",
-        line_items=[{
-            "price": data["priceId"],
-            "quantity": 1
-        }],
-    )
-    return {"sessionId": checkout_session["id"]}
+        checkout_session = stripe.checkout.Session.create(
+            customer=customer["id"],
+            return_url=self.domain_url
+            + "checkout-complete?session_id={CHECKOUT_SESSION_ID}",
+            payment_method_types=["card"],
+            mode="subscription",
+            line_items=[{"price": data["priceId"], "quantity": 1}],
+        )
+        return {"sessionId": checkout_session["id"]}
 
         current_app.logger.info(f"Checkout session created.")
         return (
@@ -122,7 +119,7 @@ def create_subscription_checkout_session():
 
 @donation_bp.route("/<int:campaign_id>/create-checkout-session", methods=["POST"])
 def create_checkout_session(campaign_id):
-        try:
+    try:
         data = request.get_json()
         domain_url = current_app.config["WEB_URL"]
         donor_schema = DonorSchema(
@@ -222,7 +219,6 @@ def create_checkout_session(campaign_id):
             ),
             500,
         )
-
 
 
 @donation_bp.route("/check-session-status", methods=["GET"])

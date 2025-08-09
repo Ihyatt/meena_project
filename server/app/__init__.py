@@ -62,7 +62,7 @@ from app.models.campaign import Campaign
 from app.models.donation import Donation
 from app.models.email import Email
 from app.models.image import Image
-from app.modesl.payment_subscription import PaymentSubscription
+from app.models.payment_subscription import PaymentSubscription
 from app.models.email_subscription import EmailSubscription
 from app.models.payment_transaction import PaymentTransaction
 
