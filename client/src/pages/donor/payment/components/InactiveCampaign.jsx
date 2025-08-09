@@ -1,7 +1,7 @@
 import DonationBar from 'src/components/DonationBar';
 import { NumericFormat } from 'react-number-format';
 import { RiInstagramLine } from "react-icons/ri";
-import useDonateStore from 'src/stores/Donate'
+import useDonorStore from 'src/stores/Donor'
 import defaultImg from 'src/assets/images/defaultImg.jpg';
 
 
@@ -23,7 +23,7 @@ const InactiveCampaign = ({ handleDonateClick, handleClick, activeButton }) => {
         isEmailSubscription,
         campaign,
 
-    } = useDonateStore();
+    } = useDonorStore();
     return (
         <div className=" w-110 rounded-lg  shadow-lg mt-4 mb-4 ">
             <div className="rounded-lg  w-full">

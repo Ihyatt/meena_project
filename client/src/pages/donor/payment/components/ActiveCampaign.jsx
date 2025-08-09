@@ -1,7 +1,7 @@
 import DonationBar from 'src/components/DonationBar';
 import { NumericFormat } from 'react-number-format';
 import { RiInstagramLine } from "react-icons/ri";
-import useDonateStore from 'src/stores/Donate'
+import useDonorStore from 'src/stores/Donor'
 
 
 
@@ -24,7 +24,7 @@ const ActiveCampaign = ({ handleDonateClick, handleClick, activeButton }) => {
         emailSubscription,
         campaign,
 
-    } = useDonateStore();
+    } = useDonorStore();
 
     return (
         <div>

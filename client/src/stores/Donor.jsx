@@ -5,7 +5,7 @@ import { persist } from 'zustand/middleware';
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 
-const useDonateStore = create(
+const useDonorStore = create(
   persist(
     (set, get) => ({
       fullName: '',
@@ -134,4 +134,4 @@ const useDonateStore = create(
   )
 );
 
-export default useDonateStore;
+export default useDonorStore;

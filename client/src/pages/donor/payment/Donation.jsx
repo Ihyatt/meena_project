@@ -3,13 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import useDonateStore from 'src/stores/Donate'
+import useDonorStore from 'src/stores/Donor'
 import Loading from "src/components/Loading";
 import DonationBar from 'src/components/DonationBar';
 import { NumericFormat } from 'react-number-format';
 import { RiInstagramLine } from "react-icons/ri";
 import DonationEvents from "src/components/DonationEvents"
-import logo from 'src/assets/images/logo.png';
 
 
 import {
@@ -20,10 +19,10 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
-import ActiveCampaign from 'src/pages/donor/components/ActiveCampaign';
-import InactiveCampaign from 'src/pages/donor/components/InactiveCampaign';
+import ActiveCampaign from 'src/pages/donor/payment/components/ActiveCampaign';
+import InactiveCampaign from 'src/pages/donor/payment/components/InactiveCampaign';
 
-const Donate = () => {
+const Donation = () => {
   const navigate = useNavigate();
 
   const {
@@ -44,7 +43,7 @@ const Donate = () => {
     activeButton,
     setActiveButton
 
-  } = useDonateStore();
+  } = useDonorStore();
 
 
 
@@ -91,10 +90,6 @@ const Donate = () => {
   return (
     <div>
       {isLoading && <Loading />}
-
-      <div className="fixed top-0 text-center w-full  bg-white  py-3 shadow-md z-10">
-        <img className="w-40 mx-auto" src={logo} alt="A descriptive alt text for my image" />
-      </div>
       <div className="bg-[#86c88b]">
         <div className=" flex justify-center w-full mt-16 ">
           {CampaignDisplay}
@@ -106,4 +101,4 @@ const Donate = () => {
     </div >
   )
 };
-export default Donate
+export default Donation;

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import PaymentSuccess from 'src/pages/donor/components/PaymentSuccess'
-import PaymentFailed from 'src/pages/donor/components/PaymentFailed'
+import PaymentSuccess from 'src/pages/donor/payment/components/PaymentSuccess'
+import PaymentFailed from 'src/pages/donor/payment/components/PaymentFailed'
 import Loading from 'src/components/Loading'
-import useDonateStore from 'src/stores/Donate';
+import useDonorStore from 'src/stores/Donor';
 
 
 
 
 const CheckoutComplete = () => {
-  const { fetchCheckout, isLoading, status } = useDonateStore();
+  const { fetchCheckout, isLoading, status } = useDonorStore();
 
   const location = useLocation();
 

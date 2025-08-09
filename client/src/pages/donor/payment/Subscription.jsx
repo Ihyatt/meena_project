@@ -3,13 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import useDonateStore from 'src/stores/Donate'
+import useDonorStore from 'src/stores/Donor'
 import Loading from "src/components/Loading";
 import { RiInstagramLine } from "react-icons/ri";
-import logo from 'src/assets/images/logo.png';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import defaultImg from 'src/assets/images/defaultImg.jpg';
+
 
 
 import {
@@ -21,7 +22,7 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 
-const Subscribe = () => {
+const Subscription = () => {
     const navigate = useNavigate();
 
     const {
@@ -42,7 +43,7 @@ const Subscribe = () => {
         subscribed,
         campaign,
 
-    } = useDonateStore();
+    } = useDonorStore();
     const [open, setOpen] = useState(false);
     const [agreement, setAgreement] = useState(false);
 
@@ -76,16 +77,12 @@ const Subscribe = () => {
     return (
         <div>
             {isLoading && <Loading />}
-
-            <div className="fixed top-0 text-center w-full  bg-white  py-3 shadow-md z-10">
-                <img className="w-40 mx-auto" src={logo} alt="A descriptive alt text for my image" />
-            </div>
             <div className="bg-[#86c88b]">
                 <div className=" flex justify-center w-full mt-16 ">
                     <div className=" w-110 rounded-lg  shadow-lg mt-4 mb-4 ">
                         <div className="rounded-lg  w-full">
                             <img
-                                src={campaign?.imageUrl || null}
+                                src={defaultImg}
                                 alt="ui/ux review check"
                                 className='rounded-t-lg shadow-none  h-100 w-full object-cover'
                             />
@@ -261,4 +258,4 @@ const Subscribe = () => {
         </div >
     )
 };
-export default Subscribe
+export default Subscription;

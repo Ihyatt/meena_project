@@ -23,9 +23,9 @@ const Unsubscribe = () => {
     };
 
     return (
-        <div className="grid grid-cols-9 gap-4 items-center justify-center h-screen">
+        <div className="flex items-center justify-center h-screen">
             {isLoading && <Loading />}
-            <div className=" col-start-4 col-span-3 shadow-lg mt-4 mb-4">
+            <div className=" w-110 shadow-lg mt-4 mb-4 bg-white rounded-lg">
                 <div className="w-full p-10">
                     <div className="pt-2 pb-2 px-7">
                         <div className="m-5 text-center font-bold text-2xl">Unsubscribe</div>
