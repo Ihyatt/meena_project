@@ -32,26 +32,26 @@ def process_message(db, message_json: str):
 
         if message["value"] == "charge.succeeded":
             successful_charge(
-                data["donor_id"],
-                data["email_address"],
-                data["campaign_id"],
-                data["payment_transaction_id"],
-                data["idempotency_key"],
-                data["amount"],
-                data["charge_id"],
+                donor_id=data["donor_id"],
+                email_address=data["email_address"],
+                campaign_id=data["campaign_id"],
+                payment_transaction_id=data["payment_transaction_id"],
+                idempotency_key=data["idempotency_key"],
+                amount=data["amount"],
+                charge_id=data["charge_id"],
             )
         elif message["value"] == "charge.failed":
             failed_charge(
-                data["payment_transaction_id"],
-                data["idempotency_key"],
-                data["charge_id"],
+                payment_transaction_id=data["payment_transaction_id"],
+                idempotency_key=data["idempotency_key"],
+                charge_id=data["charge_id"],
             )
         elif message["value"] == "charge.refunded":
             refunded_charge(
-                data["payment_transaction_id"],
-                data["idempotency_key"],
-                data["charge_id"],
-                data["campaign_id"],
+                payment_transaction_id=data["payment_transaction_id"],
+                idempotency_key=data["idempotency_key"],
+                charge_id=data["charge_id"],
+                campaign_id=data["campaign_id"],
             )
         db.hdel(RETRY_COUNTS, message_json)  # Clear retry count on success
         print("\t>> Processed successfully.")

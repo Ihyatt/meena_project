@@ -15,26 +15,6 @@ import defaultImg from 'src/assets/images/defaultImg.jpg';
 
 
 
-
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Typography,
-  IconButton,
-} from "@material-tailwind/react";
-import {
-  Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-} from "@material-tailwind/react";
-
-
-
-
 const Donation = () => {
   const navigate = useNavigate();
 
@@ -52,9 +32,14 @@ const Donation = () => {
     isLoading,
     setIsEmailSubscription,
     isEmailSubscription,
-    campaign,
     activeButton,
-    setActiveButton
+    setActiveButton,
+    imageUrl,
+    title,
+    description,
+    raised,
+    goal,
+    totalDonations,
 
   } = useDonorStore();
 
@@ -108,22 +93,22 @@ const Donation = () => {
           <div className=" bg-[#ffffff] w-110 rounded-lg  shadow-lg mt-4 mb-4 ">
             <div className="rounded-lg  w-full">
               <img
-                src={campaign ? campaign.imageUrl : defaultImg}
+                src={imageUrl || defaultImg}
                 alt="ui/ux review check"
                 className='rounded-t-lg shadow-none  h-100 w-full object-cover'
               />
-              {campaign &&
+              {goal &&
                 <DonationBar
-                  raised={campaign?.raised || 0}
-                  goal={campaign?.goal || 0}
+                  raised={raised || 0}
+                  goal={goal || 0}
                 />
               }
-              {campaign &&
+              {goal &&
                 <div className="pt-2 pb-7 px-8 bg-white rounded-b-lg ">
                   <div className=' mt-3 text-right'>
                     <div className="text-md">
                       <NumericFormat
-                        value={campaign?.raised || 0}
+                        value={raised || 0}
                         thousandSeparator={true}
                         prefix="$"
                         decimalScale={2}
@@ -132,14 +117,14 @@ const Donation = () => {
                     </div>
                     <div className='text-sm text-gray-400 font-light'>
                       <NumericFormat
-                        value={campaign?.goal || 0}
+                        value={goal || 0}
                         thousandSeparator={true}
                         prefix="$"
                         decimalScale={2}
                         displayType="text"
                       />{' '}goal · {''}
                       <NumericFormat
-                        value={campaign?.totalDonations || 0}
+                        value={totalDonations || 0}
                         thousandSeparator={true}
                         displayType="text"
                       /> donations
@@ -149,18 +134,16 @@ const Donation = () => {
               }
               <div className="p-6">
                 <div className="text-2xl font-bold">
-                  {campaign ? campaign.title : 'Select Gift Amount'}
+                  {title || 'Select Gift Amount'}
                 </div>
-                {campaign && (
-                  <div className="text-md m-3 text-gray-600">
-                    {campaign ? campaign.description || '' : ''}
-                  </div>
-                )}
+                <div className="text-md m-3 text-gray-600">
+                  {description || 'Your donation will help us achieve our goals and make a difference in the community.'}
+                </div>
                 <div className="mb-3 text-gray-400">
                   _ _ _
                 </div>
                 <form onSubmit={handleDonateClick}>
-                  <div>{campaign ? 'Select amount' : 'One-time donation'}</div>
+                  <div>One-time donation</div>
                   <div className="flex gap-5 my-[25px] transition-all duration-300 ease-in-out" id="amountSelector">
                     <button
                       type="button"
@@ -250,6 +233,7 @@ const Donation = () => {
                     </button>
                   </div>
                   <input
+                    required
                     type="email"
                     id="email"
                     value={emailAddress}
@@ -258,7 +242,8 @@ const Donation = () => {
                     className='border-b border-gray-400 w-full p-2 mb-2 focus:outline-none'
                   />
                   <input
-                    type="name"
+                    required
+                    type="text"
                     id="name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}

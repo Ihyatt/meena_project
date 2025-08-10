@@ -12,7 +12,7 @@ class DonationSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
 
-    donor_id = fields.Integer(required=True, data_key="donorId")
+    donor_id = fields.Integer(allow_none=True, data_key="donorId")
     campaign_id = fields.Integer(allow_none=True, data_key="campaignId")
 
     status = fields.Enum(
@@ -38,7 +38,6 @@ class DonationSchema(SQLAlchemyAutoSchema):
         validate=validate.Range(min=Decimal("-180.0"), max=Decimal("180.0")),
     )
     is_anonymous = fields.Boolean(allow_none=False, data_key="isAnonymous")
-    is_recurring = fields.Boolean(allow_none=False, data_key="isRecurring")
 
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")
     updated_at = fields.DateTime(dump_only=True, data_key="updatedAt")

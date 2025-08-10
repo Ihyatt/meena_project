@@ -13,13 +13,19 @@ const useDonorStore = create(
       isEmailSubscription: false,
       isAnonymous: false,
       amount: 0.0,
-      campaign: null,
       lat: null,
       lng: null,
       isLoading: false,
       activeButton: null,
       error: null,
       status: '',
+      id: '',
+      image_url: '',
+      title: '',
+      description: '',
+      raised: 0,
+      goal: 0,
+      total_donations: 0,
 
       setFullName: (fullName) => set({ fullName }),
       setEmailAddress: (emailAddress) => set({ emailAddress }),
@@ -36,7 +42,12 @@ const useDonorStore = create(
           const response = await fetch(`${backendUrl}/donations`);
           const data = await response.json();
           set({
-            campaign: data.campaign,
+            image_url: data.image_url,
+            title: data.title,
+            description: data.description,
+            raised: data.raised,
+            goal: data.goal,
+            total_donations: data.total_donations,
             isLoading: false,
           });
         } catch (error) {
@@ -44,50 +55,13 @@ const useDonorStore = create(
         }
       },
 
-      fetchSubscriptionClientSecret: async () => {
-        set({ isLoading: true, error: null });
-        try {
-
-          const state = get();
-          const { emailAddress, productId, isAnonymous, campaign } = state;
-          const response = await fetch(`${backendUrl}/donations/${campaign.id}/create-subscription-checkout-session`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              emailAddress,
-              productId,
-              isAnonymous,
-            }),
-          });
-          const data = await response.json();
-          if (!response.ok) {
-            set({ error: data.message });
-          }
-          set({ isLoading: false });
-          return data.clientSecret;
-        } catch (error) {
-          set({ error: error, isLoading: false });
-        }
-      },
-
-
       fetchClientSecret: async () => {
         set({ isLoading: true, error: null });
         try {
 
           const state = get();
           const { emailAddress, fullName, isEmailSubscription, amount, isAnonymous, lat, lng } = state;
-          console.log("Creating checkout session with data:", {
-            emailAddress,
-            fullName,
-            isEmailSubscription,
-            amount,
-            isAnonymous,
-            lat,
-            lng
-          });
+
           const response = await fetch(`${backendUrl}/donations/create-checkout-session`, {
             method: 'POST',
             headers: {

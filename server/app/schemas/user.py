@@ -46,11 +46,15 @@ class DonorSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
     full_name = fields.String(
-        allow_none=True, validate=validate.Length(max=100), data_key="fullName"
+        required=True, validate=validate.Length(max=100), data_key="fullName"
     )
     email_address = fields.Email(
-        allow_none=True, validate=validate.Length(max=255), data_key="emailAddress"
+        required=True, validate=validate.Length(max=255), data_key="emailAddress"
     )
+    is_email_subscription = fields.Boolean(
+        required=True, data_key="isEmailSubscription"
+    )
+
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")
     updated_at = fields.DateTime(dump_only=True, data_key="updatedAt")
 

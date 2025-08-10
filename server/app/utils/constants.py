@@ -188,3 +188,6 @@ DONATION_NOTIFICATIONS = "donation_notifications"
 DONATION_NOTIFICATIONS_CHANNEL = "donation_notifications_channel"
 CRON_MESSAGE_QUEUE = "cron_message_queue"
 CHARGE_MESSAGE_QUEUE = "charge_message_queue"
+
+
+CHARGE_PROCESS_QUEUE = "charge_process_queue"

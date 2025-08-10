@@ -34,10 +34,10 @@ class CheckoutSession:
                                 int(self.amount * 100)
                             ),  # Convert to cents
                             "product_data": {
-                                "name": "Donation",
-                                "description": "One-time donation",
+                                "name": "donation",
+                                "description": "one-time donation",
                             },
-                            "currency": "USD",
+                            "currency": "USD",  # Change to your desired currency
                         },
                         "quantity": 1,
                     }
@@ -46,13 +46,13 @@ class CheckoutSession:
                 return_url=self.domain_url
                 + "checkout-complete?session_id={CHECKOUT_SESSION_ID}",
                 metadata={
-                    "campaign_id": str(self.campaign_id),
+                    "campaign_id": str(self.campaign_id) if self.campaign_id else "",
                     "donor_id": str(self.donor_id),
                     "payment_transaction_id": str(self.payment_transaction_id),
                     "donation_id": str(self.donation_id),
                     "idempotency_key": self.idempotency_key,
                     "email_address": self.email_address,
-                    "amount": self.amount,
+                    "amount": str(self.amount),
                 },
                 payment_intent_data={
                     "metadata": {
@@ -62,7 +62,7 @@ class CheckoutSession:
                         "donation_id": str(self.donation_id),
                         "idempotency_key": self.idempotency_key,
                         "email_address": self.email_address,
-                        "amount": self.amount,
+                        "amount": str(self.amount),
                     },
                 },
                 idempotency_key=self.idempotency_key,

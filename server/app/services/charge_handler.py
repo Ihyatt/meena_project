@@ -40,7 +40,7 @@ def successful_charge(
             raise ValueError(
                 f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
             )
-        if campaign_id is not None:
+        if campaign_id is not None and campaign_id != "":
             campaign = Campaign.query.get_or_404(campaign_id)
             campaign.raised += payment_transaction.amount
             campaign.total_donations += 1
@@ -86,10 +86,11 @@ def successful_charge(
         )
 
         email_handler = EmailHandler(
-            donor_id,
-            campaign_id,
-            amount,
-            EmailType.DONATION_RECEIPT,
+            donor_id=donor.id,
+            campaign_id=campaign.id,
+            email_address=email_address,
+            amount=payment_transaction.amount,
+            email_type=EmailType.DONATION_RECEIPT,
         )
         current_app.logger.info(f"email_handler: {email_handler}")
         email = email_handler.create_email()

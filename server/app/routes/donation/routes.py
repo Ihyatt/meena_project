@@ -23,7 +23,7 @@ from app.utils.donation import create_donation
 from marshmallow import EXCLUDE
 import asyncio
 from datetime import datetime, timedelta, timezone
-from app.utils.constants import CHARGE_MESSAGE_QUEUE
+from app.utils.constants import CHARGE_PROCESS_QUEUE
 
 
 @donation_bp.route("/", methods=["GET"])
@@ -42,19 +42,23 @@ def fetch_campaign():
             ]
         )
         if not campaign:
-            return jsonify({campaign: None}), 200
+            current_app.logger.info("No active campaign found.")
+            return (
+                jsonify(
+                    {
+                        "id": None,
+                        "image_url": None,
+                        "title": None,
+                        "description": None,
+                        "raised": None,
+                        "goal": None,
+                        "totalDonations": None,
+                    }
+                ),
+                200,
+            )
         current_app.logger.info(f"Active Campaign {campaign.id} successfully fetched.")
-        current_app.logger.info(
-            f"Master Campaign {master_campaign.id} successfully fetched."
-        )
-        return (
-            jsonify(
-                {
-                    "campaign": campaign_schema.dump(campaign),
-                }
-            ),
-            200,
-        )
+        return campaign_schema.dump(campaign), 200
 
     except Exception as e:
         current_app.logger.error(
@@ -92,16 +96,14 @@ def create_checkout_session():
                 "amount",
                 "lat",
                 "lng",
-                "donor_id",
                 "is_anonymous",
-                "is_recurring",
             ],
         )
         validated_donor_data = donor_schema.load(data)
 
         donor = get_or_create_donor(
             email_address=validated_donor_data["email_address"],
-            is_email_subscription=data.get("isEmailSubscription", False),
+            is_email_subscription=validated_donor_data["is_email_subscription"],
             full_name=validated_donor_data["full_name"],
         )
 
@@ -109,19 +111,16 @@ def create_checkout_session():
 
         combined = {
             **data,
-            "donorId": donor.id,
-            "isRecurring": False,
         }
 
         validated_donation_data = donation_schema.load(combined)
 
         donation = create_donation(
-            donor.id,
-            validated_donation_data["amount"],
-            validated_donation_data["lat"],
-            validated_donation_data["lng"],
-            validated_donation_data["is_anonymous"],
-            validated_donation_data["is_recurring"],
+            donor_id=donor.id,
+            amount=validated_donation_data["amount"],
+            lat=validated_donation_data["lat"],
+            lng=validated_donation_data["lng"],
+            is_anonymous=validated_donation_data["is_anonymous"],
         )
         current_app.logger.info("created donation data")
 
@@ -131,7 +130,10 @@ def create_checkout_session():
 
         idempotency_key = f"payment_{donation.id}_{uuid.uuid4()}"
         payment_transaction = create_payment_transaction(
-            donation.id, donor.id, donation.amount, idempotency_key
+            donation_id=donation.id,
+            donor_id=donor.id,
+            amount=donation.amount,
+            idempotency_key=idempotency_key,
         )
 
         current_app.logger.info("created payment transaction")
@@ -223,7 +225,6 @@ async def stripe_webhook():
             "value": event_type,
             "data": data,
         }
-        CHARGE_PROCESS_QUEUE = "charge_process_queue"
 
         current_app.redis.lpush(CHARGE_PROCESS_QUEUE, json.dumps(message))
 
