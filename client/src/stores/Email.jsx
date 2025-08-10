@@ -8,38 +8,12 @@ const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 const useEmailStore = create(
     persist(
         (set, get) => ({
-            emailAddress: '',
             subject: '',
-            body: '',
             isLoading: false,
             error: null,
 
-            setEmailAddress: (emailAddress) => set({ emailAddress }),
             setSubject: (subject) => set({ subject }),
-            setBody: (body) => set({ body }),
 
-            unsubscribe: async (emailAddress) => {
-                set({ isLoading: true, error: null });
-                try {
-                    const response = await fetch(`${backednUrl}/admins/emails/unsubscribe`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        'body': JSON.stringify({ emailAddress }),
-                    });
-                    const data = await response.json();
-                    if (!response.ok) {
-                        set({ error: data.message, isLoading: false });
-                    }
-                    set({
-                        emailAddress: '',
-                        isLoading: false,
-                    });
-                } catch (error) {
-                    set({ error: error, isLoading: false });
-                }
-            },
             fetchEmailTemplate: async (emailType) => {
                 set({ isLoading: true, error: null });
                 try {
@@ -58,7 +32,6 @@ const useEmailStore = create(
                     }
                     set({
                         subject: data.subject,
-                        body: data.body,
                         isLoading: false,
                     });
                 } catch (error) {
@@ -70,14 +43,14 @@ const useEmailStore = create(
                 try {
                     const { jwtToken } = useAuthStore.getState();
                     const state = get();
-                    const { subject, body } = state;
+                    const { subject } = state;
                     const response = await fetch(`${backednUrl}/admins/emails/email-template/save`, {
                         method: 'PATCH',
                         headers: {
                             'Authorization': `Bearer ${jwtToken}`,
                             'Content-Type': 'application/json',
                         },
-                        'body': JSON.stringify({ emailType, subject, body, }),
+                        'body': JSON.stringify({ emailType, subject }),
                     });
                     const data = await response.json();
                     if (!response.ok) {
@@ -85,7 +58,6 @@ const useEmailStore = create(
                     }
                     set({
                         subject: data.subject,
-                        body: data.body,
                         isLoading: false,
                     });
                 } catch (error) {

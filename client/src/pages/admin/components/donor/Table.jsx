@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 
 import useAdminStore from 'src/stores/Admin';
-import Donor from "src/pages/admin/components/cards/Donor";
+import Donor from "src/pages/admin/components/donor/Card";
 
 const TABLE_HEAD = ["Name", "Email", "Donated", "Donations", "Emails Sent", "Emails Opened", "Status"];
 

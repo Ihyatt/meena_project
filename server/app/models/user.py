@@ -44,7 +44,6 @@ class User(db.Model, SoftDeleteMixin):
         back_populates="user",
         uselist=False,
     )
-    payment_subscriptions = relationship("PaymentSubscription", back_populates="donor")
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

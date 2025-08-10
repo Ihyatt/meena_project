@@ -11,7 +11,6 @@ const DonationBar = ({ raised, goal }) => {
                 style={{ width: `${clampedPercentage}%` }}
                 className='bg-[#DB5758] h-full transition-all duration-500 ease-in-out '
             >
-
             </div>
         </div>
     );

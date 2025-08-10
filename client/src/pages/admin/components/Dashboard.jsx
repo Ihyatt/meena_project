@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import useAdminStore from 'src/stores/Admin';
-import DonationsHeatMap from 'src/pages/admin/components/DonationsHeatMap'
-import DonationsScatterChart from 'src/pages/admin/components/DonationsScatterChart'
-import DonationsBarChart from 'src/pages/admin/components/DonationsBarChart';
-import Campaigns from 'src/pages/admin/components/CampaignsCarousel'
-import { DonorsTable } from 'src/pages/admin/components/DonorsTable'
+import DonationsHeatMap from 'src/pages/admin/components/donation/HeatMap'
+import DonationsScatterChart from 'src/pages/admin/components/donation/ScatterChart'
+import DonationsBarChart from 'src/pages/admin/components/donation/BarChart';
+import Campaigns from 'src/pages/admin/components/campaign/Carousel'
+import { DonorsTable } from 'src/pages/admin/components/donor/Table'
 import { NumericFormat } from 'react-number-format';
 
-import DonationEvents from 'src/components/DonationEvents.jsx'
+import DonationEvents from 'src/pages/donor/donation/components/Events.jsx'
 
 import Loading from "src/components/Loading";
 

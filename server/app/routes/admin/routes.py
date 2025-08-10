@@ -90,8 +90,6 @@ def dashboard():
                 "id",
                 "email_address",
                 "full_name",
-                "total_donated",
-                "total_donations",
             ],
         )
 

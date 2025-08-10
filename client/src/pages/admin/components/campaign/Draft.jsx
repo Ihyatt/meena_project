@@ -1,33 +1,32 @@
 import "src/assets/css/Modal.css"
 
 import { useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import ImageUpload from 'src/components/ImageUpload'
-
-import useAdminStore from 'src/stores/Admin';
 import Loading from "src/components/Loading";
+import useAdminStore from 'src/stores/Admin';
+import ImageUpload from 'src/pages/admin/components/campaign/ImageUpload'
 
-
-export const CampaignDetails = () => {
+export const CampaignDraft = () => {
 
   const modalRef = useRef();
-  const { campaignId } = useParams();
   const navigate = useNavigate();
   const {
-    fetchCampaign,
+    campaignId,
+    fetchCampaignDraft,
     saveCampaign,
     setTitle,
     setDescription,
-    setTargetAmount,
+    setGoal,
     title,
     description,
     goal,
+    shareCampaignDraft,
     isLoading,
   } = useAdminStore();
 
   useEffect(() => {
-    fetchCampaign(campaignId)
+    fetchCampaignDraft()
 
     const observerRefValue = modalRef.current;
     disableBodyScroll(observerRefValue);
@@ -37,9 +36,20 @@ export const CampaignDetails = () => {
         enableBodyScroll(observerRefValue);
       }
     };
-  }, [fetchCampaign, campaignId]);
+  }, [fetchCampaignDraft]);
+
+
+  const descriptionCharacterLimit = 200;
 
   const handleClose = (event) => {
+    navigate('/admins')
+    event.preventDefault();
+  }
+
+
+  const handleShare = (event) => {
+    shareCampaignDraft(campaignId)
+
     navigate('/admins')
     event.preventDefault();
   }
@@ -47,16 +57,15 @@ export const CampaignDetails = () => {
   const handleSave = (event) => {
     saveCampaign(campaignId)
     event.preventDefault();
+
   }
-  const descriptionCharacterLimit = 200;
 
   return (
     <div ref={modalRef} className="modal-wrapper" >
-
+      {isLoading && <Loading />}
 
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
-          {isLoading && <Loading />}
           <div className="input-container">
             <input
               type="text"
@@ -67,6 +76,7 @@ export const CampaignDetails = () => {
               className="w-full border-none box-border resize-none block mb-1 text-2xl focus:outline-none"
               required
             />
+
           </div>
 
           <div className="input-container">
@@ -82,26 +92,39 @@ export const CampaignDetails = () => {
               {description.length}/{descriptionCharacterLimit}
             </div>
           </div>
-
-          <div className="flex items-center border-2 border-solid p-1">
+          <div className="flex items-center border-2 border-solid  p-1 rounded-sm">
             <div className="text-sm text-gray-400 mr-1">
               goal:
             </div>
             <div className="input-container ">
               <input
                 type="number"
-                id="targetAmount"
+                id="goal"
                 value={goal}
-                onChange={(e) => setTargetAmount(e.target.value)}
+                onChange={(e) => setGoal(e.target.value)}
                 className="w-full border-none box-border resize-none input-target-amount text-sm"
                 required
               />
             </div>
           </div>
           <ImageUpload campaignId={campaignId} />
-
-          <div className="flex items-center mt-8 justify-between" >
-            <div></div>
+          <div className="flex items-center mt-8 justify-between">
+            <button
+              type="button"
+              className="
+                h-6
+                w-[110px]
+                cursor-pointer
+                bg-[rgb(234,237,241)]
+                border-none
+                text-[rgb(100,111,124)]
+                rounded-full
+                m-1.5
+              "
+              onClick={handleClose}
+              disabled={isLoading}>
+              Close
+            </button>
             <div>
               <button
                 type="button"
@@ -109,16 +132,18 @@ export const CampaignDetails = () => {
                   h-6
                   w-[110px]
                   cursor-pointer
-                  bg-[rgb(234,237,241)]
-                  border-none
-                  text-[rgb(100,111,124)]
+                  bg-white
+                  text-black
                   rounded-full
                   m-1.5
+                  border-2
+                  border-black
+                  font-medium
                 "
-                onClick={handleClose}
+                onClick={handleSave}
                 disabled={isLoading}
               >
-                Close
+                Save
               </button>
               <button
                 type="button"
@@ -133,16 +158,15 @@ export const CampaignDetails = () => {
                   rounded-full
                   font-medium
                 "
-                onClick={handleSave}
-                disabled={isLoading}
-              >
-                Save
+                onClick={handleShare}
+                disabled={isLoading}>
+                Share
               </button>
             </div>
           </div>
         </form>
 
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }

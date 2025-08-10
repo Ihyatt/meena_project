@@ -30,6 +30,7 @@ def successful_charge(
         payment_transaction = PaymentTransaction.query.filter_by(
             id=payment_transaction_id, idempotency_key=idempotency_key
         ).first()
+        donor = User.query.get_or_404(donor_id)
 
         payment_transaction.charge_id = charge_id
         if payment_transaction.status == PaymentStatus.SUCCEEDED:
@@ -42,7 +43,6 @@ def successful_charge(
         if campaign_id is not None:
             campaign = Campaign.query.get_or_404(campaign_id)
             campaign.raised += payment_transaction.amount
-
             campaign.total_donations += 1
 
         payment_transaction.status = PaymentStatus.SUCCEEDED
@@ -50,24 +50,16 @@ def successful_charge(
         new_donation_notification = DonationNotification(
             donation_id=payment_transaction.donation_id
         )
-        payment_transaction.donation.donor.total_donated += payment_transaction.amount
-
-        payment_transaction.donation.donor.total_donations += 1
 
         db.session.add(new_donation_notification)
         db.session.commit()
 
-        full_name = ""
-        if (
-            payment_transaction.donation.donor.is_anonymous
-            or not payment_transaction.donation.donor.full_name
-        ):
-            full_name = "Anonymous"
-        else:
-            full_name = payment_transaction.donation.donor.full_name
-
         notification_metadata = {
-            "full_name": full_name,
+            "full_name": (
+                donor.full_name
+                if not payment_transaction.donation.is_anonymous
+                else "Anonymous"
+            ),
             "amount": payment_transaction.amount,
             "notification_id": new_donation_notification.id,
             "donation_id": payment_transaction.donation.id,
@@ -93,26 +85,25 @@ def successful_charge(
             DONATION_NOTIFICATIONS_CHANNEL, json.dumps(notification_metadata)
         )
 
-        if email_address:
-            email_handler = EmailHandler(
-                donor_id,
-                email_address,
-                campaign_id,
-                EmailType.DONATION_RECEIPT,
+        email_handler = EmailHandler(
+            donor_id,
+            campaign_id,
+            amount,
+            EmailType.DONATION_RECEIPT,
+        )
+        current_app.logger.info(f"email_handler: {email_handler}")
+        email = email_handler.create_email()
+        current_app.logger.info(f"email: {email}")
+        try:
+            email_handler.send_email()
+            current_app.logger.info(
+                f"Donation receipt email has been sent to {email_address}."
             )
-            current_app.logger.info(f"email_handler: {email_handler}")
-            email = email_handler.create_email()
-            current_app.logger.info(f"email: {email}")
-            try:
-                email_handler.send_email()
-                current_app.logger.info(
-                    f"Donation receipt email has been sent to {email_address}."
-                )
-            except Exception as e:
-                current_app.logger.error(
-                    f"Failed to send donation receipt email to {email_address}: {str(e)}"
-                )
-                raise ValueError(str(e))
+        except Exception as e:
+            current_app.logger.error(
+                f"Failed to send donation receipt email to {email_address}: {str(e)}"
+            )
+            raise ValueError(str(e))
 
     except StaleDataError as e:
         current_app.logger.error(str(e))

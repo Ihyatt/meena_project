@@ -15,9 +15,7 @@ export const EmailTemplate = () => {
     fetchEmailTemplate,
     saveEmailTemplate,
     subject,
-    body,
     setSubject,
-    setBody,
     isLoading
   } = useEmailStore();
 
@@ -48,7 +46,6 @@ export const EmailTemplate = () => {
     saveEmailTemplate(receivedState.emailType)
     event.preventDefault();
   }
-  const bodyCharacterLimit = 1000;
 
   return (
     <div ref={modalRef} className="modal-wrapper" >
@@ -67,19 +64,7 @@ export const EmailTemplate = () => {
               required
             />
           </div>
-          <div className="input-container ">
-            <textarea
-              id="description"
-              placeholder="Body..."
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              rows="4"
-              className="w-full border-none box-border resize-noneblock mb-1 text-sm h-50 focus:outline-none"
-            ></textarea>
-            <div className="text-sm text-gray-400 mt-1">
-              {body.length}/{bodyCharacterLimit}
-            </div>
-          </div>
+
           <div className="flex items-center mt-8 justify-between">
             <div></div>
             <div>

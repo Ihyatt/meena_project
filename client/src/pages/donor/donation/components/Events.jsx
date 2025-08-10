@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { RiGift2Fill } from "react-icons/ri";
-import TimeAgo from 'src/components/TimeAgo';
+import TimeAgo from 'src/pages/admin/utils/TimeAgo';
 
 
 const DonationEvents = () => {

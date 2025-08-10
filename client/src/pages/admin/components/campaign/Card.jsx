@@ -1,6 +1,6 @@
-import { CampaignDropdown } from "src/pages/admin/components/CampaignDropdown"
+import { CampaignDropdown } from "src/pages/admin/components/campaign/Dropdown"
 import { NumericFormat } from 'react-number-format';
-import DonationBar from 'src/pages/admin/components/DonationBar';
+import DonationBar from 'src/pages/admin/components/donation/ProgressBar';
 
 import {
   Card,

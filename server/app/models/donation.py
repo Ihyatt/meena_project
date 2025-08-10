@@ -18,7 +18,6 @@ class Donation(db.Model, SoftDeleteMixin):
     status = mapped_column(
         db.Enum(DonationStatus), default=DonationStatus.PENDING, nullable=False
     )
-    is_recurring = mapped_column(db.Boolean, default=False, nullable=False)
     lat = mapped_column(db.Numeric(10, 8), nullable=True)
     lng = mapped_column(db.Numeric(11, 8), nullable=True)
     is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
@@ -39,13 +38,6 @@ class Donation(db.Model, SoftDeleteMixin):
         db.Integer, db.ForeignKey("campaigns.id"), nullable=True
     )
     campaign = relationship("Campaign", back_populates="donations")
-
-    payment_subscription_id = mapped_column(
-        db.Integer, db.ForeignKey("payment_subscriptions.id"), nullable=True
-    )
-    payment_subscription = relationship(
-        "PaymentSubscription", back_populates="donations"
-    )
 
     donor_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     donor = relationship("User", back_populates="donations")

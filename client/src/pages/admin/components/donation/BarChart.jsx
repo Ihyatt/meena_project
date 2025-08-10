@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { BarChart } from '@mui/x-charts/BarChart';
 import useAdminStore from 'src/stores/Admin';
-import BarChartParser from 'src/components/BarChartParser';
+import BarChartParser from 'src/pages/admin/utils/BarChartParser';
 import { format } from 'date-fns'; // Or any date formatting library
 
 

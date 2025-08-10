@@ -1,6 +1,6 @@
 
 
-import { Campaign } from 'src/pages/admin/components/cards/Campaign';
+import { Campaign } from 'src/pages/admin/components/campaign/Card';
 
 import useAdminStore from 'src/stores/Admin';
 
