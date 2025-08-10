@@ -17,14 +17,6 @@ const DonationsScatterChart = () => {
             })) : [],
             highlightScope: { highlight: 'item', fade: 'global' },
         },
-        {
-            label: 'recurring',
-            data: donationsWindow.recurring ? donationsWindow.recurring.map((data) => ({
-                x: new Date(data.created_at),
-                y: data.amount,
-            })) : [],
-            highlightScope: { highlight: 'item', fade: 'global' },
-        },
     ];
 
 

@@ -32,7 +32,6 @@ const DonationsBarChart = () => {
                 xAxis={[{ dataKey: 'monthYear' }]}
                 series={[
                     { dataKey: 'onetime', label: 'one-time', valueFormatter },
-                    { dataKey: 'recurring', label: 'recurring', valueFormatter },
 
 
                 ]}
