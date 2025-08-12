@@ -11,7 +11,6 @@ from app.utils.constants import (
     MAX_DONATION_NOTIFICATIONS,
     DONATION_NOTIFICATIONS_CHANNEL,
 )
-from app.services.email_handler import EmailHandler
 from werkzeug.exceptions import NotFound
 from decimal import Decimal  # For db.Numeric types
 import asyncio
@@ -85,18 +84,21 @@ def successful_charge(
             DONATION_NOTIFICATIONS_CHANNEL, json.dumps(notification_metadata)
         )
 
-        email_handler = EmailHandler(
+        email = create_email(
             donor_id=donor.id,
             campaign_id=campaign.id,
             email_address=email_address,
-            amount=payment_transaction.amount,
             email_type=EmailType.DONATION_RECEIPT,
         )
-        current_app.logger.info(f"email_handler: {email_handler}")
-        email = email_handler.create_email()
         current_app.logger.info(f"email: {email}")
         try:
-            email_handler.send_email()
+            send_receipt_email(
+                donor_id=donor.id,
+                campaign_id=campaign.id,
+                email_address=email_address,
+                amount=amount,
+                email_id=email.id,
+            )
             current_app.logger.info(
                 f"Donation receipt email has been sent to {email_address}."
             )

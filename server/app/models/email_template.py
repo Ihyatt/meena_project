@@ -15,11 +15,9 @@ class EmailTemplate(db.Model, SoftDeleteMixin):
     id = mapped_column(db.Integer, primary_key=True)
     version_uuid = mapped_column(db.String(32), nullable=False)
 
-    email_type = mapped_column(
-        db.Enum(EmailType), default=EmailType.NA, unique=True, nullable=False
-    )
-    subject = mapped_column(db.String(255), nullable=False)
-    template_id = mapped_column(db.String(255), nullable=False)
+    email_type = mapped_column(db.Enum(EmailType), unique=True, nullable=False)
+    subject = mapped_column(db.String(255), nullable=True)
+    template_id = mapped_column(db.String(255), nullable=True)
 
     created_at = mapped_column(
         db.DateTime(timezone=True),

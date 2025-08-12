@@ -69,35 +69,35 @@ const DashboardLayout = () => {
               icon={<RiMailLine color="black" />}
               style={{ color: 'black', 'fontSize': '15px' }} >
               <MenuItem
-                active={location.pathname === '/admins/emails/email-template/donation-receipt'}
+                active={location.pathname === '/admins/emails/email-template/receipt'}
                 component={
                   <Link
-                    to={"/admins/emails/email-template/donation-receipt"}
-                    state={{ background: location.pathname, emailType: EmailType.DONATION_RECEIPT }}
+                    to={"/admins/emails/email-template/receipt"}
+                    state={{ background: location.pathname, emailType: EmailType.RECEIPT }}
                     style={{ color: 'black', 'fontSize': '15px' }}
                   />
                 }
               >
-                Donation Confirmation
+                Receipt
               </MenuItem>
               <MenuItem
-                active={location.pathname === '/admins/emails/email-template/campaign-update'}
+                active={location.pathname === '/admins/emails/email-template/impact'}
                 component={
                   <Link
-                    to={"/admins/emails/email-template/campaign-update"}
-                    state={{ background: location.pathname, emailType: EmailType.CAMPAIGN_UPDATE }}
+                    to={"/admins/emails/email-template/impact"}
+                    state={{ background: location.pathname, emailType: EmailType.IMPACT }}
                     style={{ color: 'black', textDecoration: 'none', 'fontSize': '15px' }}
                   />
                 }
               >
-                Impact Update
+                Impact
               </MenuItem>
               <MenuItem
-                active={location.pathname === '/admins/emails/email-template/campaign-close'}
+                active={location.pathname === '/admins/emails/email-template/closeout'}
                 component={
                   <Link
-                    to={"/admins/emails/email-template/campaign-close"}
-                    state={{ background: location.pathname, emailType: EmailType.CAMPAIGN_CLOSE }}
+                    to={"/admins/emails/email-template/closeout"}
+                    state={{ background: location.pathname, emailType: EmailType.CLOSEOUT }}
                     style={{ color: 'black', textDecoration: 'none', 'fontSize': '15px' }}
                   />
                 }

@@ -26,7 +26,6 @@ from app.models.donation_notification import DonationNotification
 
 from app.schemas.user import DonorSchema
 
-from app.services.checkout_session import CheckoutSession
 
 from app.utils.user import get_or_create_donor
 from app.utils.donation import create_donation

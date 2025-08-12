@@ -16,6 +16,8 @@ export const EmailTemplate = () => {
     saveEmailTemplate,
     subject,
     setSubject,
+    templateId,
+    setTemplateId,
     isLoading
   } = useEmailStore();
 
@@ -60,6 +62,15 @@ export const EmailTemplate = () => {
               placeholder="Subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
+              className="w-full border-none box-border resize-noneblock mb-1 text-2xl focus:outline-none"
+              required
+            />
+            <input
+              type="text"
+              id="templateId"
+              placeholder="Template ID"
+              value={templateId}
+              onChange={(e) => setTemplateId(e.target.value)}
               className="w-full border-none box-border resize-noneblock mb-1 text-2xl focus:outline-none"
               required
             />

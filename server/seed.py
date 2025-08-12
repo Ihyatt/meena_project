@@ -15,7 +15,8 @@ from app import create_app
 from app.database import db
 from app.models.user import User
 from app.models.email_subscription import EmailSubscription
-from app.utils.constants import SubscriptionStatus
+from app.models.email_template import EmailTemplate
+from app.utils.constants import SubscriptionStatus, EmailType
 
 
 def seed_all():
@@ -25,7 +26,6 @@ def seed_all():
             email_address="admin@example.com",
             full_name="Admin User",
             is_admin=True,
-            is_anonymous=False,
         )
         admin.set_password("password")
         db.session.add(admin)
@@ -37,8 +37,14 @@ def seed_all():
             user_id=admin.id,
         )
         db.session.add(email_subscription)
-        db.session.commit()
+
         print("Email subscription created.")
+
+        for email_type in EmailType:
+            email_template = EmailTemplate(email_type=email_type)
+            db.session.add(email_template)
+
+        db.session.commit()
 
     except Exception as e:
         db.session.rollback()
@@ -52,6 +58,7 @@ if __name__ == "__main__":
 
         db.session.query(User).delete()
         db.session.query(EmailSubscription).delete()
+        db.session.query(EmailTemplate).delete()
         db.session.commit()
         print("Existing data cleared.")
 

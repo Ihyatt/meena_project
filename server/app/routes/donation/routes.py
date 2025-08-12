@@ -10,7 +10,7 @@ from app.models.campaign import Campaign
 from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
-from app.services.checkout_session import CheckoutSession
+from app.services.checkout_session import create_checkout_session
 from app.services.charge_handler import (
     successful_charge,
     failed_charge,
@@ -138,7 +138,9 @@ def create_checkout_session():
 
         current_app.logger.info("created payment transaction")
 
-        checkout_session = CheckoutSession(
+        current_app.logger.info("created checkout session")
+
+        session = create_checkout_session(
             amount=donation.amount,
             domain_url=domain_url,
             campaign_id=active_campaign.id if active_campaign else None,
@@ -148,9 +150,6 @@ def create_checkout_session():
             donation_id=donation.id,
             email_address=donor.email_address,
         )
-        current_app.logger.info("created checkout session")
-
-        session = checkout_session.create_checkout_session()
 
         current_app.logger.info(f"Checkout session created.")
         return (

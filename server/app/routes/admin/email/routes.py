@@ -22,19 +22,13 @@ def fetch_or_create_email_template():
         data = request.get_json()
 
         email_template_schema = EmailTemplateSchema(
-            only=["email_type", "subject", "body"]
+            only=["email_type", "subject", "template_id"]
         )
 
         validated_data = email_template_schema.load(data)
 
         email_type = validated_data["email_type"]
         email_template = EmailTemplate.query.filter_by(email_type=email_type).first()
-
-        if email_template is None:
-            email_template = EmailTemplate(email_type=email_type)
-            db.session.add(email_template)
-            db.session.commit()
-            current_app.logger.info(f"Email template for type '{email_type}' created.")
 
         current_app.logger.info(f"Fetched email template for type '{email_type}'")
         return email_template_schema.dump(email_template), 200
@@ -111,12 +105,12 @@ def save_email_template():
             )
 
         email_template.subject = validated_data["subject"]
-        email_template.body = validated_data["body"]
+        email_template.template_id = validated_data["template_id"]
 
         db.session.commit()
 
         current_app.logger.info(
-            f"Subject and body saved for email template '{email_type}'"
+            f"Subject and template ID saved for email template '{email_type}'"
         )
         return email_template_schema.dump(email_template), 200
 
@@ -329,56 +323,12 @@ def webhook_blocked():
 
 @email_bp.route("/unsubscribe", methods=["PATCH"])
 def unsubsrcibe():
-    try:
-        data = request.get_json()
-        try:
-            emailinfo = validate_email(
-                data["email_address"], check_deliverability=False
-            )
-            email = emailinfo.normalized
-
-        except EmailNotValidError as e:
-            current_app.logger.error(str(e))
-            return jsonify({"status": "failed", "message": str(e)}), 400
-
-        donor = User.query.filter_by(email_address=email_address).first()
-        if donor is None:
-            current_app.logger.error(f"Donor with email '{email_address}' not found.")
-            return (
-                jsonify(
-                    {
-                        "status": "failed",
-                        "message": f"Donor with email '{email_address}' not found.",
-                    }
-                ),
-                404,
-            )
-
-        donor.subscribed = False
-        db.session.commit()
-
-        current_app.logger.info(f"'{donor.email_address}' has been unsubscribed.")
-        return (
-            jsonify(
-                {
-                    "status": "success",
-                    "message": f"'{donor.email_address}' has been unsubscribed.",
-                }
-            ),
-            200,
-        )
-
-    except Exception as e:
-        db.session.rollback()
-        current_app.logger.error(
-            f"Error unsubscribing email '{email_address}': {str(e)}", exc_info=True
-        )
-        return (
-            jsonify(
-                {
-                    "status": "failed",
-                    "message": f"Error unsubscribing email '{email_address}': {str(e)}",
-                }
-            ),
-            500,
-        )
+    return (
+        jsonify(
+            {
+                "status": "success",
+                "message": "Unsubscribe endpoint is not implemented yet.",
+            }
+        ),
+        200,
+    )

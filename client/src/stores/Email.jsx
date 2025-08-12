@@ -10,13 +10,17 @@ const useEmailStore = create(
         (set, get) => ({
             subject: '',
             isLoading: false,
+            templateId: '',
             error: null,
 
             setSubject: (subject) => set({ subject }),
+            setTemplateId: (templateId) => set({ templateId }),
+
 
             fetchEmailTemplate: async (emailType) => {
                 set({ isLoading: true, error: null });
                 try {
+
                     const { jwtToken } = useAuthStore.getState();
                     const response = await fetch(`${backednUrl}/admins/emails/email-template`, {
                         method: 'POST',
@@ -41,16 +45,19 @@ const useEmailStore = create(
             saveEmailTemplate: async (emailType) => {
                 set({ isLoading: true, error: null });
                 try {
+
                     const { jwtToken } = useAuthStore.getState();
                     const state = get();
-                    const { subject } = state;
+                    const { subject, templateId } = state;
+                    console.log(subject, templateId)
+
                     const response = await fetch(`${backednUrl}/admins/emails/email-template/save`, {
                         method: 'PATCH',
                         headers: {
                             'Authorization': `Bearer ${jwtToken}`,
                             'Content-Type': 'application/json',
                         },
-                        'body': JSON.stringify({ emailType, subject }),
+                        'body': JSON.stringify({ emailType, subject, templateId }),
                     });
                     const data = await response.json();
                     if (!response.ok) {

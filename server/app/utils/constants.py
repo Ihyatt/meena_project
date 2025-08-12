@@ -39,10 +39,9 @@ class EmailStatus(enum.Enum):
 
 
 class EmailType(enum.Enum):
-    DONATION_RECEIPT = "donation_receipt"
-    CAMPAIGN_UPDATE = "campaign_update"
-    CAMPAIGN_CLOSE = "campaign_close"
-    NA = "not_applicable"
+    RECEIPT = "receipt"
+    IMPACT = "impact"
+    CLOSEOUT = "closeout"
 
 
 class Currency(enum.Enum):

@@ -53,9 +53,9 @@ function App() {
           <Routes>
             <Route path="/admins/campaigns/:campaignId" element={<CampaignDetails />} />
             <Route path="/admins/campaigns/drafts" element={<CampaignDraft />} />
-            <Route path="/admins/emails/email-template/donation-receipt" element={<EmailTemplate />} />
-            <Route path="/admins/emails/email-template/campaign-update" element={<EmailTemplate />} />
-            <Route path="/admins/emails/email-template/campaign-close" element={<EmailTemplate />} />
+            <Route path="/admins/emails/email-template/receipt" element={<EmailTemplate />} />
+            <Route path="/admins/emails/email-template/impact" element={<EmailTemplate />} />
+            <Route path="/admins/emails/email-template/closeout" element={<EmailTemplate />} />
           </Routes>
         )
       }

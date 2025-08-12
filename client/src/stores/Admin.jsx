@@ -48,14 +48,14 @@ const useAdminStore = create(
             set({ error: data.message });
           }
           set({
-            campaigns: data['campaigns'],
-            donationsLatLng: data['donationsLatLng'],
-            donors: data['donors'],
-            launchedCampaigns: data['launchedCampaigns'],
-            totalHistoricalDonors: data['totalHistoricalDonors'],
-            totalHistoricalDonations: data['totalHistoricalDonations'],
-            totalHistoricalRaised: data['totalHistoricalRaised'],
-            donationsWindow: data['donationsWindow'],
+            campaigns: data['campaigns'] || [],
+            donationsLatLng: data['donationsLatLng'] || [],
+            donors: data['donors'] || [],
+            launchedCampaigns: data['launchedCampaigns'] || 0,
+            totalHistoricalDonors: data['totalHistoricalDonors'] || 0,
+            totalHistoricalDonations: data['totalHistoricalDonations'] || 0,
+            totalHistoricalRaised: data['totalHistoricalRaised'] || 0,
+            donationsWindow: data['donationsWindow'] || [],
             isLoading: false,
           });
         } catch (error) {
