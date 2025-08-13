@@ -36,6 +36,7 @@ const useEmailStore = create(
                     }
                     set({
                         subject: data.subject,
+                        templateId: data.templateId,
                         isLoading: false,
                     });
                 } catch (error) {
@@ -65,6 +66,7 @@ const useEmailStore = create(
                     }
                     set({
                         subject: data.subject,
+                        templateId: data.templateId,
                         isLoading: false,
                     });
                 } catch (error) {

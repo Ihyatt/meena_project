@@ -1,8 +1,8 @@
 
 
-import { Campaign } from 'src/pages/admin/components/campaign/Card';
+import { Campaign } from 'src/pages/admin/campaigns/campaign/Card';
 
-import useAdminStore from 'src/stores/Admin';
+import useAdminStore from 'src/stores/Campaign';
 
 import { Card, CardContent } from "@/components/ui/card"
 import {

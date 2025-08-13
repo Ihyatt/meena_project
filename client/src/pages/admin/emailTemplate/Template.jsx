@@ -48,7 +48,7 @@ export const EmailTemplate = () => {
     saveEmailTemplate(receivedState.emailType)
     event.preventDefault();
   }
-
+  console.log(subject)
   return (
     <div ref={modalRef} className="modal-wrapper" >
       <div className="modal rounded-lg">
@@ -58,7 +58,7 @@ export const EmailTemplate = () => {
           <div className="input-container">
             <input
               type="text"
-              id="title"
+              id="subject"
               placeholder="Subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}

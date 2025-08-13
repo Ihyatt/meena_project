@@ -1,34 +1,60 @@
 import "src/assets/css/Modal.css"
 
-import { useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import ImageUpload from 'src/pages/admin/components/campaign/ImageUpload'
-
-import useAdminStore from 'src/stores/Admin';
 import Loading from "src/components/Loading";
+import useAdminStore from 'src/stores/Campaign';
+import ImageUpload from 'src/pages/admin/components/ImageUpload'
+import useAuthStore from "src/stores/Auth";
 
 
-export const CampaignDetails = () => {
+
+export const CampaignDraft = () => {
+
+  const [campaignId, setCampaignId] = useState(null);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [goal, setGoal] = useState(0);
+  const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+
 
   const modalRef = useRef();
-  const { campaignId } = useParams();
   const navigate = useNavigate();
   const {
-    fetchCampaign,
     saveCampaign,
-    setTitle,
-    setDescription,
-    setTargetAmount,
-    title,
-    description,
-    goal,
+    shareCampaignDraft,
     isLoading,
+    setIsLoading
   } = useAdminStore();
+  const { jwtToken } = useAuthStore();
 
   useEffect(() => {
-    fetchCampaign(campaignId)
+    setIsLoading(true);
+    fetch(`${backednUrl}/admins/campaigns/drafts`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json',
+      },
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to create campaign draft');
+      }
+      return response.json();
+    }).then(data => {
+      setCampaignId(data.id);
+      setTitle(data.title);
+      setDescription(data.description);
+      setGoal(data.goal);
+      setIsLoading(false);
+    }).catch(error => {
+      console.error('Error creating campaign draft:', error);
+      setIsLoading(false);
+    });
+  }, []);
 
+  useEffect(() => {
     const observerRefValue = modalRef.current;
     disableBodyScroll(observerRefValue);
 
@@ -37,9 +63,16 @@ export const CampaignDetails = () => {
         enableBodyScroll(observerRefValue);
       }
     };
-  }, [fetchCampaign, campaignId]);
+  }, []);
 
   const handleClose = (event) => {
+    navigate('/admins')
+    event.preventDefault();
+  }
+
+  const handleShare = (event) => {
+    shareCampaignDraft(campaignId)
+
     navigate('/admins')
     event.preventDefault();
   }
@@ -47,16 +80,16 @@ export const CampaignDetails = () => {
   const handleSave = (event) => {
     saveCampaign(campaignId)
     event.preventDefault();
-  }
-  const descriptionCharacterLimit = 200;
 
+  }
+
+  console.log('CampaignDraft rendered with campaignId:', campaignId);
   return (
     <div ref={modalRef} className="modal-wrapper" >
-
+      {isLoading && <Loading />}
 
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
-          {isLoading && <Loading />}
           <div className="input-container">
             <input
               type="text"
@@ -68,7 +101,6 @@ export const CampaignDetails = () => {
               required
             />
           </div>
-
           <div className="input-container">
             <textarea
               id="description"
@@ -78,30 +110,40 @@ export const CampaignDetails = () => {
               rows="4"
               className="w-full border-none box-border resize-none block mb-1 text-sm h-50 focus:outline-none"
             ></textarea>
-            <div className="text-sm text-gray-400 mt-1">
-              {description.length}/{descriptionCharacterLimit}
-            </div>
           </div>
-
-          <div className="flex items-center border-2 border-solid p-1">
+          <div className="flex items-center border-2 border-solid  p-1 rounded-sm">
             <div className="text-sm text-gray-400 mr-1">
               goal:
             </div>
             <div className="input-container ">
               <input
                 type="number"
-                id="targetAmount"
+                id="goal"
                 value={goal}
-                onChange={(e) => setTargetAmount(e.target.value)}
+                onChange={(e) => setGoal(e.target.value)}
                 className="w-full border-none box-border resize-none input-target-amount text-sm"
                 required
               />
             </div>
           </div>
           <ImageUpload campaignId={campaignId} />
-
-          <div className="flex items-center mt-8 justify-between" >
-            <div></div>
+          <div className="flex items-center mt-8 justify-between">
+            <button
+              type="button"
+              className="
+                h-6
+                w-[110px]
+                cursor-pointer
+                bg-[rgb(234,237,241)]
+                border-none
+                text-[rgb(100,111,124)]
+                rounded-full
+                m-1.5
+              "
+              onClick={handleClose}
+              disabled={isLoading}>
+              Close
+            </button>
             <div>
               <button
                 type="button"
@@ -109,16 +151,18 @@ export const CampaignDetails = () => {
                   h-6
                   w-[110px]
                   cursor-pointer
-                  bg-[rgb(234,237,241)]
-                  border-none
-                  text-[rgb(100,111,124)]
+                  bg-white
+                  text-black
                   rounded-full
                   m-1.5
+                  border-2
+                  border-black
+                  font-medium
                 "
-                onClick={handleClose}
+                onClick={handleSave}
                 disabled={isLoading}
               >
-                Close
+                Save
               </button>
               <button
                 type="button"
@@ -133,16 +177,14 @@ export const CampaignDetails = () => {
                   rounded-full
                   font-medium
                 "
-                onClick={handleSave}
-                disabled={isLoading}
-              >
-                Save
+                onClick={handleShare}
+                disabled={isLoading}>
+                Share
               </button>
             </div>
           </div>
         </form>
-
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }

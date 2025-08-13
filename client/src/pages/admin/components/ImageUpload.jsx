@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { FiUploadCloud } from "react-icons/fi";
-import useAdminStore from "src/stores/Admin";
+import useAdminStore from "src/stores/Campaign";
 
 
 

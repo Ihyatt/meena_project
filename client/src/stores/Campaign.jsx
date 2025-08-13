@@ -54,8 +54,8 @@ const useAdminStore = create(
             launchedCampaigns: data['launchedCampaigns'] || 0,
             totalHistoricalDonors: data['totalHistoricalDonors'] || 0,
             totalHistoricalDonations: data['totalHistoricalDonations'] || 0,
-            totalHistoricalRaised: data['totalHistoricalRaised'] || 0,
-            donationsWindow: data['donationsWindow'] || [],
+            totalHistoricalRaised: data['totalHistoricalRaised'] || null,
+            donationsWindow: data['donationsWindow'] || null,
             isLoading: false,
           });
         } catch (error) {
@@ -121,63 +121,6 @@ const useAdminStore = create(
             description: data.description,
             goal: data.goal,
             imageUrl: data.imageUrl,
-            isLoading: false,
-          }));
-        } catch (error) {
-          set({ error: error, isLoading: false });
-        }
-      },
-      fetchCampaignDraft: async () => {
-        set({ isLoading: true, error: null });
-        try {
-          const { jwtToken } = useAuthStore.getState();
-          const response = await fetch(`${backednUrl}/admins/campaigns/drafts`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${jwtToken}`,
-              'Content-Type': 'application/json',
-            },
-          });
-          const data = await response.json();
-          if (!response.ok) {
-            set({ error: data.message });
-          }
-          set({
-            campaignId: data.id,
-            title: data.title,
-            imageUrl: data.imageUrl,
-            description: data.description,
-            goal: data.goal,
-            isLoading: false,
-          });
-        } catch (error) {
-          set({ error: error, isLoading: false });
-        }
-      },
-      shareCampaignDraft: async (campaignId) => {
-        set({ isLoading: true, error: null });
-        try {
-          const { jwtToken } = useAuthStore.getState();
-          const state = get();
-          const { title, description, goal } = state;
-          const response = await fetch(`${backednUrl}/admins/campaigns/${campaignId}/share`, {
-            method: 'PATCH',
-            headers: {
-              'Authorization': `Bearer ${jwtToken}`,
-              'Content-Type': 'application/json',
-            },
-            'body': JSON.stringify({ title, description, goal }),
-          });
-          const data = await response.json();
-          if (!response.ok) {
-            set({ error: data.message });
-          }
-          set((state) => ({
-            campaigns: [...state.campaigns, { ...data }],
-            title: '',
-            description: '',
-            goal: 0,
-            imageUrl: '',
             isLoading: false,
           }));
         } catch (error) {

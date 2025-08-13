@@ -7,8 +7,8 @@ import {
     CardFooter,
 } from "@material-tailwind/react";
 
-import useAdminStore from 'src/stores/Admin';
-import Donor from "src/pages/admin/components/donor/Card";
+import useAdminStore from 'src/stores/Campaign';
+import Donor from "src/pages/admin/donor/Card";
 
 const TABLE_HEAD = ["Name", "Email", "Donated", "Donations", "Emails Sent", "Emails Opened", "Status"];
 

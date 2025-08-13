@@ -7,11 +7,11 @@ import Login from "src/pages/auth/Login";
 
 import ProtectedRoute from "src/components/ProtectedRoute";
 import DashboardLayout from "src/pages/admin/DashboardLayout";
-import Dashboard from "src/pages/admin/components/Dashboard";
+import Dashboard from "src/pages/admin/Dashboard";
 
-import { EmailTemplate } from "src/pages/admin/components/email/Template";
-import { CampaignDraft } from "src/pages/admin/components/campaign/Draft";
-import { CampaignDetails } from "src/pages/admin/components/campaign/Edit";
+import { EmailTemplate } from "src/pages/admin/emailTemplate/Template";
+import { CampaignDraft } from "src/pages/admin/draft/Draft";
+import { CampaignDetails } from "src/pages/admin/campaigns/campaign/Edit";
 
 
 // donor

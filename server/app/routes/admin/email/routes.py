@@ -17,7 +17,7 @@ from sqlalchemy.exc import IntegrityError
 @email_bp.route("/email-template", methods=["POST"])
 @jwt_required()
 @admin_required()
-def fetch_or_create_email_template():
+def fetch_email_template():
     try:
         data = request.get_json()
 

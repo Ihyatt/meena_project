@@ -10,7 +10,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import useAdminStore from 'src/stores/Admin';
+import useAdminStore from 'src/stores/Campaign';
 
 
 import {
