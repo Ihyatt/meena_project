@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import PaymentSuccess from 'src/pages/donor/donation/components/PaymentSuccess'
 import PaymentFailed from 'src/pages/donor/donation/components/PaymentFailed'
 import Loading from 'src/components/Loading'
-import useDonorStore from 'src/stores/Donor';
+import useDonorStore from 'src/pages/donor/store.jsx'
 
 
 

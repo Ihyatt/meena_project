@@ -16,6 +16,7 @@ class LoginSchema(Schema):
 
 
 class AdminSchema(SQLAlchemyAutoSchema):
+
     class Meta:
         model = User
         include_fk = True
@@ -38,8 +39,23 @@ class AdminSchema(SQLAlchemyAutoSchema):
             data["email_address"] = data["email_address"].lower().strip()
         return data
 
+    email_subscription = fields.Nested(
+        "EmailSubscriptionSchema",
+        only=(
+            "id",
+            "email_address",
+            "status",
+            "blocked",
+            "spam",
+            "bounced",
+            "opened",
+            "queued",
+        ),
+    )
+
 
 class DonorSchema(SQLAlchemyAutoSchema):
+
     class Meta:
         model = User
         include_fk = True
@@ -50,9 +66,6 @@ class DonorSchema(SQLAlchemyAutoSchema):
     )
     email_address = fields.Email(
         required=True, validate=validate.Length(max=255), data_key="emailAddress"
-    )
-    is_email_subscription = fields.Boolean(
-        required=True, data_key="isEmailSubscription"
     )
 
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")
@@ -66,4 +79,18 @@ class DonorSchema(SQLAlchemyAutoSchema):
 
     donations = fields.List(
         fields.Nested("DonationSchema", only=("id", "amount", "status"))
+    )
+
+    email_subscription = fields.Nested(
+        "EmailSubscriptionSchema",
+        only=(
+            "id",
+            "email_address",
+            "status",
+            "blocked",
+            "spam",
+            "bounced",
+            "opened",
+            "queued",
+        ),
     )

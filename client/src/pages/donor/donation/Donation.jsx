@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import useDonorStore from 'src/stores/Donor'
+import useDonorStore from 'src/pages/donor/store.jsx'
 import Loading from "src/components/Loading";
 import DonationBar from 'src/pages/donor/donation/components/ProgressBar';
 import { NumericFormat } from 'react-number-format';
