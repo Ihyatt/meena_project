@@ -40,7 +40,7 @@ class CampaignSchema(SQLAlchemyAutoSchema):
     total_donations = fields.Integer(dump_only=True, data_key="totalDonations")
     is_active = fields.Boolean(data_key="isActive")
     is_draft = fields.Boolean(data_key="isDraft")
-    launched = fields.Boolean(data_key="launched")
+    launched = fields.DateTime()
     closed = fields.DateTime()
 
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")

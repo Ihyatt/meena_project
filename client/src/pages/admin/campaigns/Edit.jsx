@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
 
-import useAdminStore from 'src/stores/Campaign';
+import useAdminStore from 'src/pages/admin/store';
 import Loading from "src/components/Loading";
 
 

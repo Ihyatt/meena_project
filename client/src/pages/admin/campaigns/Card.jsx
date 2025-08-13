@@ -1,4 +1,4 @@
-import { CampaignDropdown } from "src/pages/admin/campaigns/campaign/CardDropdown"
+import { CampaignDropdown } from "src/pages/admin/campaigns/CardDropdown"
 import { NumericFormat } from 'react-number-format';
 import DonationBar from 'src/pages/admin/donation/ProgressBar';
 

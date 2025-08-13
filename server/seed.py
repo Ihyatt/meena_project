@@ -13,9 +13,19 @@ from app import create_app
 
 # Import your database instance and models
 from app.database import db
+
+from app.models.campaign import Campaign
+from app.models.donation import Donation
+from app.models.donation_notification import DonationNotification
+from app.models.email import Email
 from app.models.user import User
 from app.models.email_subscription import EmailSubscription
 from app.models.email_template import EmailTemplate
+from app.models.image import Image
+from app.models.payment_transaction import PaymentTransaction
+from app.models.task import Task
+
+
 from app.utils.constants import SubscriptionStatus, EmailType
 
 
@@ -59,6 +69,13 @@ if __name__ == "__main__":
         db.session.query(User).delete()
         db.session.query(EmailSubscription).delete()
         db.session.query(EmailTemplate).delete()
+        db.session.query(Campaign).delete()
+        db.session.query(Donation).delete()
+        db.session.query(DonationNotification).delete()
+        db.session.query(Email).delete()
+        db.session.query(Image).delete()
+        db.session.query(PaymentTransaction).delete()
+        db.session.query(Task).delete()
         db.session.commit()
         print("Existing data cleared.")
 

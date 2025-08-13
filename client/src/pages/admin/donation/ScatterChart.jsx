@@ -1,5 +1,5 @@
 
-import useAdminStore from 'src/stores/Campaign';
+import useAdminStore from 'src/pages/admin/store';
 import MonthsWindow from 'src/pages/admin/utils/MonthsWindow';
 import { ScatterChart } from '@mui/x-charts/ScatterChart';
 import { format } from 'date-fns'; // Or any date formatting library
@@ -8,6 +8,7 @@ import { format } from 'date-fns'; // Or any date formatting library
 
 const DonationsScatterChart = () => {
     const { donationsWindow } = useAdminStore();
+
     const series = [
         {
             label: 'one-time',

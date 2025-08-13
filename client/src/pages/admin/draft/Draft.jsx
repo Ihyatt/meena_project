@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Loading from "src/components/Loading";
-import useAdminStore from 'src/stores/Campaign';
+import useAdminStore from 'src/pages/admin/store';
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
 import useAuthStore from "src/stores/Auth";
 

@@ -11,7 +11,7 @@ import Dashboard from "src/pages/admin/Dashboard";
 
 import { EmailTemplate } from "src/pages/admin/emailTemplate/Template";
 import { CampaignDraft } from "src/pages/admin/draft/Draft";
-import { CampaignDetails } from "src/pages/admin/campaigns/campaign/Edit";
+import { CampaignDetails } from "src/pages/admin/campaigns/Edit";
 
 
 // donor

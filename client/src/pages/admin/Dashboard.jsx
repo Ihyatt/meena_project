@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import useAdminStore from 'src/stores/Campaign';
+import useAdminStore from 'src/pages/admin/store';
 import DonationsHeatMap from 'src/pages/admin/donation/HeatMap'
 import DonationsScatterChart from 'src/pages/admin/donation/ScatterChart'
 import DonationsBarChart from 'src/pages/admin/donation/BarChart';
-import Campaigns from 'src/pages/admin/campaigns/Carousel'
+import Campaigns from 'src/pages/admin/campaigns/Campaigns'
 import { DonorsTable } from 'src/pages/admin/donor/Table'
 import { NumericFormat } from 'react-number-format';
 
-import DonationEvents from 'src/pages/donor/donation/components/Events.jsx'
 
 import Loading from "src/components/Loading";
 
@@ -90,13 +89,11 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="m-4 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
-        <div className="col-start-1 col-span-2 h-83">
+      <div className="m-4 ">
+        <div className=" h-83">
           <DonationsHeatMap />
         </div >
-        <div className="col-start-3 col-span-1 h-83 mr-10 ml-8">
-          <Campaigns />
-        </div>
+
       </div>
       <div className="m-4 grid grid-cols-4 gap-4">
         <div className="col-start-1 col-span-2 h-70">
@@ -106,7 +103,17 @@ const Dashboard = () => {
           <DonationsScatterChart />
         </div >
       </div>
-
+      <div className="m-4 grid grid-cols-4 gap-4">
+        <div className="col-start-1 col-span-2 h-70">
+          <DonationsBarChart />
+        </div >
+        <div className="col-start-3 col-span-2 h-70">
+          <DonationsScatterChart />
+        </div >
+      </div>
+      <div className="m-4">
+        <Campaigns />
+      </div>
       <div className="m-4">
         <DonorsTable />
       </div>

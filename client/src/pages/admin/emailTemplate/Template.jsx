@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
-import useEmailStore from 'src/stores/Email';
+import useEmailStore from 'src/pages/admin/emailTemplate/store';
 
 import Loading from "src/components/Loading";
 

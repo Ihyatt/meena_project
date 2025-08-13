@@ -1,4 +1,10 @@
+
 import React, { useState, useMemo } from 'react';
+
+import { Campaign } from 'src/pages/admin/campaigns/Card';
+
+import useAdminStore from 'src/pages/admin/store';
+
 import {
     Card,
     CardHeader,
@@ -7,24 +13,21 @@ import {
     CardFooter,
 } from "@material-tailwind/react";
 
-import useAdminStore from 'src/pages/admin/store';
-import Donor from "src/pages/admin/donor/Card";
+const TABLE_HEAD = ["Title", "Description", "Donations", "Raised", "Goal", "Launched", "Closed", "Status", "Edit"];
 
-const TABLE_HEAD = ["Name", "Email", "Donated", "Donations", "Emails Sent", "Emails Opened", "Status"];
-
-export function DonorsTable() {
-    const { donors } = useAdminStore();
+const Campaigns = () => {
+    const { campaigns } = useAdminStore();
 
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 10;
 
-    const totalPages = Math.ceil(donors.length / rowsPerPage);
+    const totalPages = Math.ceil(campaigns.length / rowsPerPage);
 
-    const currentDonors = useMemo(() => {
+    const currentCampaigns = useMemo(() => {
         const startIndex = (currentPage - 1) * rowsPerPage;
         const endIndex = startIndex + rowsPerPage;
-        return donors.slice(startIndex, endIndex);
-    }, [donors, currentPage, rowsPerPage]);
+        return campaigns.slice(startIndex, endIndex);
+    }, [campaigns, currentPage, rowsPerPage]);
 
     const goToNextPage = () => {
         setCurrentPage((prev) => Math.min(prev + 1, totalPages));
@@ -40,7 +43,7 @@ export function DonorsTable() {
                 <CardHeader floated={false} shadow={false} className="rounded-none">
                     <div className="ml-4 flex items-center justify-between gap-8">
                         <Typography variant="h5" color="blue-gray">
-                            Donors
+                            Campaigns
                         </Typography>
                     </div>
                 </CardHeader>
@@ -65,15 +68,15 @@ export function DonorsTable() {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentDonors.length > 0 ? (
-                                currentDonors.map((donor, index) => {
-                                    const isLast = index === currentDonors.length - 1;
+                            {currentCampaigns.length > 0 ? (
+                                currentCampaigns.map((campaign, index) => {
+                                    const isLast = index === currentCampaigns.length - 1;
                                     const classes = isLast
                                         ? "p-4"
                                         : "p-4 border-b border-blue-gray-50";
 
                                     return (
-                                        <Donor key={donor.id} data={donor} decoration={{ classes }} />
+                                        <Campaign key={campaign.id} data={campaign} />
                                     );
                                 })
                             ) : (
@@ -114,4 +117,6 @@ export function DonorsTable() {
             </Card>
         </div>
     );
-}
+};
+
+export default Campaigns;

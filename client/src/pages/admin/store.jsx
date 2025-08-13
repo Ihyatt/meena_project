@@ -55,7 +55,7 @@ const useAdminStore = create(
             totalHistoricalDonors: data['totalHistoricalDonors'] || 0,
             totalHistoricalDonations: data['totalHistoricalDonations'] || 0,
             totalHistoricalRaised: data['totalHistoricalRaised'] || null,
-            donationsWindow: data['donationsWindow'] || null,
+            donationsWindow: data['donationsWindow'] || [],
             isLoading: false,
           });
         } catch (error) {
@@ -142,14 +142,10 @@ const useAdminStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-
           const { campaigns } = get();
-
           const newCampaigns = campaigns
             .filter(item => item.id !== data.id)
             .map(item => ({ ...item, isActive: false }));
-
-
           set({ campaigns: [data, ...newCampaigns], isLoading: false });
         } catch (error) {
           set({ error: error, isLoading: false });

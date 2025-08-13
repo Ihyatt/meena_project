@@ -1,6 +1,6 @@
 import GoogleMapReact from 'google-map-react';
 
-import useAdminStore from 'src/stores/Campaign';
+import useAdminStore from 'src/pages/admin/store';
 
 const googleMapsApi = import.meta.env.VITE_GOOGLE_MAPS_API;
 

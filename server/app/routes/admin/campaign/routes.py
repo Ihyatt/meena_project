@@ -190,7 +190,7 @@ def launch_campaign(campaign_id):
             db.session.commit()
 
         campaign.is_active = True
-        campaign.launched = True
+        campaign.launched = now
         db.session.commit()
         current_app.logger.info(f"Campaign '{campaign_id}' launched successfully.")
         return campaign_schema.dump(campaign), 200
