@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import useAuthStore from "src/stores/Auth";
+import useAuthStore from "src/pages/auth/store";
 
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;

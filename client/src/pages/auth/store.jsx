@@ -25,12 +25,16 @@ const useAuthStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
+          if (data.status !== 'success') {
+            set({ error: data.message });
+            return false;
+          }
           set({
             jwtToken: data.jwtToken,
             isAuthenticated: true,
             isLoading: false,
           });
-          return true
+          return true;
         } catch (error) {
           set({ error: error, isLoading: false });
           return false;

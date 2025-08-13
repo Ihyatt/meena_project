@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useAuthStore from 'src/stores/Auth';
+import { data, useNavigate } from 'react-router-dom';
+import useAuthStore from 'src/pages/auth/store';
 
 const Login = () => {
   const [emailAddress, setEmailAddress] = useState('');
@@ -11,10 +11,15 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await login(emailAddress, password);
-    if (success) {
-      navigate('/admins');
-    }
+    login(emailAddress, password).then((success) => {
+      console.log('Login successful:', success);
+      if (success) {
+        navigate('/admins');
+      }
+    }).catch((error) => {
+      console.error('Login failed:', error);
+      // Handle login error (e.g., show a notification)
+    });
   };
 
   return (

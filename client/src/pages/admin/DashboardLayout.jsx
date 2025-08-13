@@ -16,7 +16,7 @@ import {
 } from "react-pro-sidebar";
 import { FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 
-import useAuthStore from 'src/stores/Auth';
+import useAuthStore from 'src/pages/auth/store';
 import { EmailType } from 'src/utils/Constants'
 import logo from 'src/assets/images/logo.png';
 

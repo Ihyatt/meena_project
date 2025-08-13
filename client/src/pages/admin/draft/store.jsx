@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import useAuthStore from "src/stores/Auth";
-import useAdminStore from "src/stores/Auth";
+import useAuthStore from "src/pages/auth/store";
+import useAdminStore from "src/pages/auth/store";
 
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
@@ -15,6 +15,7 @@ const useDraftStore = create(
                 set({ isLoading: true, error: null });
                 try {
                     const { jwtToken } = useAuthStore.getState();
+                    console.log('jwtToken:', jwtToken);
                     const response = await fetch(`${backednUrl}/admins/campaigns/drafts`, {
                         method: 'POST',
                         headers: {
@@ -23,6 +24,7 @@ const useDraftStore = create(
                         },
                     });
                     const data = await response.json();
+                    console.log(data)
                     if (!response.ok) {
                         set({ error: data.message });
                     }
