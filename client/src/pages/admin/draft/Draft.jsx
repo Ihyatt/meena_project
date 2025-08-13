@@ -4,9 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Loading from "src/components/Loading";
-import useAdminStore from 'src/pages/admin/store';
+import useDraftStore from 'src/pages/admin/draft/store';
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
-import useAuthStore from "src/stores/Auth";
 
 
 
@@ -16,43 +15,31 @@ export const CampaignDraft = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [goal, setGoal] = useState(0);
-  const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+  const [imageUrl, setImageUrl] = useState('');
+  const [file, setFile] = useState(null);
+
+
 
 
   const modalRef = useRef();
   const navigate = useNavigate();
   const {
+    fetchCampaignDraft,
     saveCampaign,
     shareCampaignDraft,
+    upload,
     isLoading,
-    setIsLoading
-  } = useAdminStore();
-  const { jwtToken } = useAuthStore();
+  } = useDraftStore();
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${backednUrl}/admins/campaigns/drafts`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
-      },
-    }).then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to create campaign draft');
-      }
-      return response.json();
-    }).then(data => {
+    fetchCampaignDraft().then((data) => {
       setCampaignId(data.id);
       setTitle(data.title);
       setDescription(data.description);
       setGoal(data.goal);
-      setIsLoading(false);
-    }).catch(error => {
-      console.error('Error creating campaign draft:', error);
-      setIsLoading(false);
+      setImageUrl(data.imageUrl);
     });
-  }, []);
+  }, [fetchCampaignDraft]);
 
   useEffect(() => {
     const observerRefValue = modalRef.current;
@@ -82,6 +69,13 @@ export const CampaignDraft = () => {
     event.preventDefault();
 
   }
+  const uploadFile = (campaignId, file) => {
+    setFile(file);
+    upload(campaignId, file).then((data) => {
+      setImageUrl(data.url);
+      setFile(null);
+    });
+  };
 
   console.log('CampaignDraft rendered with campaignId:', campaignId);
   return (
@@ -126,7 +120,7 @@ export const CampaignDraft = () => {
               />
             </div>
           </div>
-          <ImageUpload campaignId={campaignId} />
+          <ImageUpload campaignId={campaignId} imageUrl={imageUrl} uploadFile={uploadFile} />
           <div className="flex items-center mt-8 justify-between">
             <button
               type="button"

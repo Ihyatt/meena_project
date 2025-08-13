@@ -6,11 +6,8 @@ import useAdminStore from "src/pages/admin/store";
 
 
 
-const ImageUpload = ({ campaignId }) => {
+const ImageUpload = ({ campaignId, imageUrl, uploadFile }) => {
     const [file, setFile] = useState(null);
-    const { upload, imageUrl } = useAdminStore();
-
-
     const fileInputRef = useRef(null);
 
     const handleFileChange = (event) => {
@@ -20,7 +17,7 @@ const ImageUpload = ({ campaignId }) => {
             setFile(file);
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            upload(campaignId, file)
+            uploadFile(campaignId, file);
 
         } else {
             setFile(null);
