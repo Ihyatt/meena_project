@@ -35,21 +35,19 @@ const useEmailStore = create(
                         set({ error: data.message, isLoading: false });
                     }
                     set({
-                        subject: data.subject,
-                        templateId: data.templateId,
                         isLoading: false,
                     });
+                    console.log(data);
+                    return data;
                 } catch (error) {
                     set({ error: error, isLoading: false });
                 }
             },
-            saveEmailTemplate: async (emailType) => {
+            saveEmailTemplate: async (emailType, subject, templateId) => {
                 set({ isLoading: true, error: null });
                 try {
 
                     const { jwtToken } = useAuthStore.getState();
-                    const state = get();
-                    const { subject, templateId } = state;
                     console.log(subject, templateId)
 
                     const response = await fetch(`${backednUrl}/admins/emails/email-template/save`, {
@@ -64,11 +62,11 @@ const useEmailStore = create(
                     if (!response.ok) {
                         set({ error: data.message, isLoading: false });
                     }
+
                     set({
-                        subject: data.subject,
-                        templateId: data.templateId,
                         isLoading: false,
                     });
+                    return data;
                 } catch (error) {
                     set({ error: error, isLoading: false });
                 }

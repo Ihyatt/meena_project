@@ -1,23 +1,28 @@
 import "src/assets/css/Modal.css"
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 import useEmailStore from 'src/pages/admin/emailTemplate/store';
 
 import Loading from "src/components/Loading";
+import ErrorAlert from "src/components/ErrorAlert";
+
 
 
 export const EmailTemplate = () => {
+  const [subject, setSubject] = useState('');
+  const [templateId, setTemplateId] = useState('');
+  const [errors, setErrors] = useState([]);
+
+  const subjectCharactersLimit = 50;
+  const templateIdCharactersLimit = 255;
+
   const modalRef = useRef();
   const navigate = useNavigate();
   const {
     fetchEmailTemplate,
     saveEmailTemplate,
-    subject,
-    setSubject,
-    templateId,
-    setTemplateId,
     isLoading
   } = useEmailStore();
 
@@ -25,8 +30,13 @@ export const EmailTemplate = () => {
   const receivedState = location.state;
 
   useEffect(() => {
-    fetchEmailTemplate(receivedState.emailType);
+    fetchEmailTemplate(receivedState.emailType).then((data) => {
+      setSubject(data.subject);
+      setTemplateId(data.templateId);
+    });
+  }, [fetchEmailTemplate]);
 
+  useEffect(() => {
     const observerRefValue = modalRef.current;
     disableBodyScroll(observerRefValue);
 
@@ -35,7 +45,9 @@ export const EmailTemplate = () => {
         enableBodyScroll(observerRefValue);
       }
     };
-  }, [fetchEmailTemplate, receivedState.emailType]);
+  }, []);
+
+
 
   const handleClose = (event) => {
 
@@ -45,10 +57,48 @@ export const EmailTemplate = () => {
   }
 
   const handleSave = (event) => {
-    saveEmailTemplate(receivedState.emailType)
+    const errors = [];
+    if (!subject) {
+      errors.push('Subject is required.');
+    }
+    if (!templateId) {
+      errors.push('Template ID is required.');
+    }
+    if (errors.length > 0) {
+      setErrors(errors);
+      return;
+    }
+    saveEmailTemplate(receivedState.emailType, subject, templateId).then((data) => {
+      setSubject(data.subject);
+      setTemplateId(data.templateId);
+    });
+    navigate('/admins');
     event.preventDefault();
   }
-  console.log(subject)
+
+  const handleSubjectChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= subjectCharactersLimit) {
+      setSubject(value);
+    } else {
+      window.alert(`Subject cannot exceed ${subjectCharactersLimit} characters.`);
+    }
+  };
+
+  const handleTemplateIdChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= templateIdCharactersLimit) {
+      setTemplateId(value);
+    } else {
+      window.alert(`Template ID cannot exceed ${templateIdCharactersLimit} characters.`);
+    }
+  };
+  const handleErrorClose = () => {
+    console.log('Error alert closed');
+    setErrors([]);
+  };
+
+
   return (
     <div ref={modalRef} className="modal-wrapper" >
       <div className="modal rounded-lg">
@@ -61,7 +111,7 @@ export const EmailTemplate = () => {
               id="subject"
               placeholder="Subject"
               value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              onChange={handleSubjectChange}
               className="w-full border-none box-border resize-noneblock mb-1 text-2xl focus:outline-none"
               required
             />
@@ -70,7 +120,7 @@ export const EmailTemplate = () => {
               id="templateId"
               placeholder="Template ID"
               value={templateId}
-              onChange={(e) => setTemplateId(e.target.value)}
+              onChange={handleTemplateIdChange}
               className="w-full border-none box-border resize-noneblock mb-1 text-2xl focus:outline-none"
               required
             />
@@ -116,8 +166,8 @@ export const EmailTemplate = () => {
               </button>
             </div>
           </div>
+          {errors.length > 0 && <ErrorAlert errors={errors} onClose={handleErrorClose} />}
         </form>
-
       </div>
     </div>
 

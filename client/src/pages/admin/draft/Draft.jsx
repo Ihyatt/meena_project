@@ -7,7 +7,7 @@ import Loading from "src/components/Loading";
 import useDraftStore from 'src/pages/admin/draft/store';
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
 import useAuthStore from "src/pages/auth/store";
-import ErrorAlert from "src/pages/admin/components/ErrorAlert";
+import ErrorAlert from "src/components/ErrorAlert";
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -131,13 +131,19 @@ export const CampaignDraft = () => {
     const value = e.target.value;
     if (value.length <= titlecharactersLimit) {
       setTitle(value);
+    } else {
+      window.alert(`Title cannot exceed ${titlecharactersLimit} characters.`);
     }
+
+
   };
 
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
     if (value.length <= descriptioncharactersLimit) {
       setDescription(value);
+    } else {
+      window.alert(`Description cannot exceed ${descriptioncharactersLimit} characters.`);
     }
   };
 
