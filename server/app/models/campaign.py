@@ -16,6 +16,12 @@ class Campaign(db.Model, SoftDeleteMixin):
             unique=True,
             postgresql_where=(mapped_column("is_active") == True),
         ),
+        db.Index(
+            "uq_global_draft_campaign",
+            "is_draft",
+            unique=True,
+            postgresql_where=(mapped_column("is_draft") == True),
+        ),
     )
 
     id = mapped_column(db.Integer, primary_key=True, nullable=False)

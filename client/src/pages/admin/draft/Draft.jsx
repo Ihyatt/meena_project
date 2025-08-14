@@ -17,6 +17,7 @@ export const CampaignDraft = () => {
   const [goal, setGoal] = useState(0);
   const [imageUrl, setImageUrl] = useState('');
   const [file, setFile] = useState(null);
+  const isCancelled = useRef(false);
 
 
 
@@ -32,12 +33,14 @@ export const CampaignDraft = () => {
   } = useDraftStore();
 
   useEffect(() => {
+    if (isCancelled.current) return;
     fetchCampaignDraft().then((data) => {
       setCampaignId(data.id);
       setTitle(data.title);
       setDescription(data.description);
       setGoal(data.goal);
       setImageUrl(data.imageUrl);
+      isCancelled.current = true;
     });
   }, [fetchCampaignDraft]);
 

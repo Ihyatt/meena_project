@@ -24,6 +24,7 @@ const useDraftStore = create(
                         },
                     });
                     const data = await response.json();
+                    console.log('fetchCampaignDraft response:', data);
                     console.log(data)
                     if (!response.ok) {
                         set({ error: data.message });

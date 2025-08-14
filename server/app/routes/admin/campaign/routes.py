@@ -308,7 +308,7 @@ def fetch_or_create_draft():
             ]
         )
 
-        current_app.logger.info(f"Draft campaign fetched for'{admin_id}'.")
+        current_app.logger.info(f"Draft campaign fetched for '{draft_campaign.id}'.")
         return campaign_schema.dump(draft_campaign), 200
 
     except Exception as e:
