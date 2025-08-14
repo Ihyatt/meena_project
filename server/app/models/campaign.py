@@ -19,6 +19,7 @@ class Campaign(db.Model, SoftDeleteMixin):
         db.Index(
             "uq_global_draft_campaign",
             "is_draft",
+            "admin_id",
             unique=True,
             postgresql_where=(mapped_column("is_draft") == True),
         ),
@@ -38,7 +39,7 @@ class Campaign(db.Model, SoftDeleteMixin):
     description = mapped_column(db.String(200), default="", nullable=False)
     image_url = mapped_column(
         db.String(500),
-        default="https://meena-project.s3.us-east-2.amazonaws.com/no-photo-available-icon-vector-40343347.jpg",
+        default="",
         nullable=True,
     )
     goal = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)

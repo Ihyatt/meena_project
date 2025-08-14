@@ -31,7 +31,8 @@ const useDraftStore = create(
                     });
                     return data;
                 } catch (error) {
-                    set({ error: error, isLoading: false });
+                    console.error('Error fetching campaign draft:', error);
+                    set({ error: error.message, isLoading: false });
                 }
             },
             shareCampaignDraft: async (campaignId, title, description, goal) => {
@@ -80,7 +81,7 @@ const useDraftStore = create(
                     });
                     return data;
                 } catch (error) {
-                    set({ error: error, isLoading: false });
+                    set({ error: error.message, isLoading: false });
                 }
             },
             upload: async (campaignId, file) => {
@@ -105,7 +106,7 @@ const useDraftStore = create(
                     });
                     return data;
                 } catch (error) {
-                    set({ error: error, isLoading: false });
+                    set({ error: error.message, isLoading: false });
                 }
             },
         }), {

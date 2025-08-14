@@ -7,7 +7,7 @@ import Loading from "src/components/Loading";
 import useDraftStore from 'src/pages/admin/draft/store';
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
 import useAuthStore from "src/pages/auth/store";
-
+import ErrorAlert from "src/pages/admin/components/ErrorAlert";
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -20,10 +20,10 @@ export const CampaignDraft = () => {
   const [goal, setGoal] = useState(0);
   const [imageUrl, setImageUrl] = useState('');
   const [file, setFile] = useState(null);
-  const isCancelled = useRef(false);
-  const anchor = useRef(null);
+  const [errors, setErrors] = useState([]);
 
-
+  const descriptioncharactersLimit = 200;
+  const titlecharactersLimit = 50;
 
   const modalRef = useRef();
   const navigate = useNavigate();
@@ -51,7 +51,6 @@ export const CampaignDraft = () => {
       setDescription(data.description);
       setGoal(data.goal);
       setImageUrl(data.imageUrl);
-      console.log('fetchCampaignDraft response:', data);
     }
     fetchCampaignDraft();
   }, [fetchCampaignDraft]);
@@ -73,13 +72,46 @@ export const CampaignDraft = () => {
   }
 
   const handleShare = (event) => {
+    if (!title || !description || !goal || !imageUrl) {
+      const errors = [];
+      if (!title) {
+        errors.push('Title is required.');
+      }
+      if (!description) {
+        errors.push('Description is required.');
+      }
+      if (goal <= 0) {
+        errors.push('Goal must be greater than 0.');
+      }
+      if (!imageUrl) {
+        errors.push('Image is required.');
+      }
+      setErrors(errors);
+      return;
+    }
     shareCampaignDraft(campaignId)
-
     navigate('/admins')
     event.preventDefault();
   }
 
   const handleSave = (event) => {
+    if (!title || !description || !goal || !imageUrl) {
+      const errors = [];
+      if (!title) {
+        errors.push('Title is required.');
+      }
+      if (!description) {
+        errors.push('Description is required.');
+      }
+      if (goal <= 0) {
+        errors.push('Goal must be greater than 0.');
+      }
+      if (!imageUrl) {
+        errors.push('Image is required.');
+      }
+      setErrors(errors);
+      return;
+    }
     saveCampaign(campaignId, title, description, goal).then((data) => {
       setTitle(data.title);
       setDescription(data.description);
@@ -88,13 +120,32 @@ export const CampaignDraft = () => {
     event.preventDefault();
   }
 
-  const uploadFile = (campaignId, file) => {
-    setFile(file);
+  const uploadFile = (file) => {
     upload(campaignId, file).then((data) => {
       setImageUrl(data.url);
       setFile(null);
     });
   };
+
+  const handleTitleChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= titlecharactersLimit) {
+      setTitle(value);
+    }
+  };
+
+  const handleDescriptionChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= descriptioncharactersLimit) {
+      setDescription(value);
+    }
+  };
+
+  const handleErrorClose = () => {
+    console.log('Error alert closed');
+    setErrors([]);
+  };
+
 
   return (
     <div ref={modalRef} className="modal-wrapper" >
@@ -107,7 +158,7 @@ export const CampaignDraft = () => {
               id="title"
               placeholder="Title"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleTitleChange}
               className="w-full border-none box-border resize-none block mb-1 text-2xl focus:outline-none"
               required
             />
@@ -117,7 +168,7 @@ export const CampaignDraft = () => {
               id="description"
               placeholder="Description..."
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={handleDescriptionChange}
               rows="4"
               className="w-full border-none box-border resize-none block mb-1 text-sm h-50 focus:outline-none"
             ></textarea>
@@ -132,7 +183,7 @@ export const CampaignDraft = () => {
                 id="goal"
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
-                className="w-full border-none box-border resize-none input-target-amount text-sm"
+                className="w-full border-none box-border resize-none input-target-amount text-sm focus:outline-none"
                 required
               />
             </div>
@@ -189,11 +240,13 @@ export const CampaignDraft = () => {
                   font-medium
                 "
                 onClick={handleShare}
-                disabled={isLoading}>
+                disabled={isLoading}
+              >
                 Share
               </button>
             </div>
           </div>
+          {errors.length > 0 && <ErrorAlert errors={errors} onClose={handleErrorClose} />}
         </form>
       </div>
     </div>

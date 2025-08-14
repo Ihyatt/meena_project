@@ -6,7 +6,7 @@ import useAdminStore from "src/pages/admin/store";
 
 
 
-const ImageUpload = ({ campaignId, imageUrl, uploadFile }) => {
+const ImageUpload = ({ imageUrl, uploadFile }) => {
     const [file, setFile] = useState(null);
     const fileInputRef = useRef(null);
 
@@ -17,7 +17,7 @@ const ImageUpload = ({ campaignId, imageUrl, uploadFile }) => {
             setFile(file);
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            uploadFile(campaignId, file);
+            uploadFile(file);
 
         } else {
             setFile(null);
@@ -46,7 +46,7 @@ const ImageUpload = ({ campaignId, imageUrl, uploadFile }) => {
             </div>
 
             {imageUrl && (
-                <a href={imageUrl} target="_blank" rel="noopener noreferrer" className='text-blue-500 underline' >
+                <a href={imageUrl} target="_blank" rel="noopener noreferrer" className='text-gray-300 text-sm hover:underline' >
                     view uploaded image
                 </a>
             )}
