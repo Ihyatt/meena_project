@@ -12,11 +12,9 @@ const stripePromise = loadStripe(stripePublishableKey)
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Elements stripe={stripePromise}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Elements>
-  </React.StrictMode>
+  <Elements stripe={stripePromise}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Elements>
 );

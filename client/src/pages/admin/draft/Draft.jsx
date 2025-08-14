@@ -6,7 +6,10 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Loading from "src/components/Loading";
 import useDraftStore from 'src/pages/admin/draft/store';
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
+import useAuthStore from "src/pages/auth/store";
 
+
+const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 
 export const CampaignDraft = () => {
@@ -18,7 +21,7 @@ export const CampaignDraft = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [file, setFile] = useState(null);
   const isCancelled = useRef(false);
-
+  const anchor = useRef(null);
 
 
 
@@ -33,15 +36,24 @@ export const CampaignDraft = () => {
   } = useDraftStore();
 
   useEffect(() => {
-    if (isCancelled.current) return;
-    fetchCampaignDraft().then((data) => {
+    const fetchCampaignDraft = async () => {
+      const { jwtToken } = useAuthStore.getState();
+      const response = await fetch(`${backednUrl}/admins/campaigns/drafts`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
       setCampaignId(data.id);
       setTitle(data.title);
       setDescription(data.description);
       setGoal(data.goal);
       setImageUrl(data.imageUrl);
-      isCancelled.current = true;
-    });
+      console.log('fetchCampaignDraft response:', data);
+    }
+    fetchCampaignDraft();
   }, [fetchCampaignDraft]);
 
   useEffect(() => {
@@ -68,10 +80,14 @@ export const CampaignDraft = () => {
   }
 
   const handleSave = (event) => {
-    saveCampaign(campaignId)
+    saveCampaign(campaignId, title, description, goal).then((data) => {
+      setTitle(data.title);
+      setDescription(data.description);
+      setGoal(data.goal);
+    });
     event.preventDefault();
-
   }
+
   const uploadFile = (campaignId, file) => {
     setFile(file);
     upload(campaignId, file).then((data) => {
@@ -80,11 +96,9 @@ export const CampaignDraft = () => {
     });
   };
 
-  console.log('CampaignDraft rendered with campaignId:', campaignId);
   return (
     <div ref={modalRef} className="modal-wrapper" >
       {isLoading && <Loading />}
-
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
           <div className="input-container">
