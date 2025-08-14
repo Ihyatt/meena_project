@@ -46,7 +46,7 @@ const ImageUpload = ({ imageUrl, uploadFile }) => {
             </div>
 
             {imageUrl && (
-                <a href={imageUrl} target="_blank" rel="noopener noreferrer" className='text-gray-300 text-sm hover:underline' >
+                <a href={imageUrl} target="_blank" rel="noopener noreferrer" className='text-gray-300text-sm hover:underline' >
                     view uploaded image
                 </a>
             )}

@@ -13,7 +13,7 @@ import {
     CardFooter,
 } from "@material-tailwind/react";
 
-const TABLE_HEAD = ["Title", "Description", "Donations", "Raised", "Goal", "Launched", "Closed", "Status", "Edit"];
+const TABLE_HEAD = ["Title", "Description", "Donations", "Raised", "Goal", "Launched", "Closed", "Status", ""];
 
 const Campaigns = () => {
     const { campaigns } = useAdminStore();
@@ -40,7 +40,7 @@ const Campaigns = () => {
     return (
         <div className=" mt-8 bg-white shadow-sm rounded-lg">
             <Card className="h-full w-full shadow-none">
-                <CardHeader floated={false} shadow={false} className="rounded-none">
+                <CardHeader floated={false} shadow={false} className="rounded-none ">
                     <div className="ml-4 flex items-center justify-between gap-8">
                         <Typography variant="h5" color="blue-gray">
                             Campaigns

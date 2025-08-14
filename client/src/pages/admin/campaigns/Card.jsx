@@ -1,6 +1,7 @@
 import { CampaignDropdown } from "src/pages/admin/campaigns/CardDropdown"
 import { NumericFormat } from 'react-number-format';
 import DonationBar from 'src/pages/admin/donation/ProgressBar';
+import EllipsisText from "react-ellipsis-text";
 
 
 
@@ -16,94 +17,65 @@ import {
   Chip,
 
 } from "@material-tailwind/react";
+import { RiPencilLine } from "react-icons/ri";
+
 
 export const Campaign = ({ data }) => {
 
   return (
 
     <tr key={data.id}>
-      <td className="p-4 border-b border-blue-gray-50">
-        <Typography
-          variant="small"
-          color="blue-gray"
-          className="font-normal"
-        >
-          {data.title}
-        </Typography>
+      <td className="max-w-60 break-all p-4 border-b border-blue-gray-50" >
+        <div className="flex items-center gap-4">
+          <img
+            src={data.imageUrl}
+            className="h-10 rounded-lg object-cover"
+          />
+          <div className="text-xs ">
+            {data.title}
+          </div></div>
 
       </td>
-      <td className="p-4 border-b border-blue-gray-50">
-        <Typography
-          variant="small"
-          color="blue-gray"
-          className="font-normal"
-        >
-          {data.description}
-        </Typography>
-
+      <td className="max-w-40 p-4 border-b  break-all border-blue-gray-50 text-xs ">
+        <EllipsisText text={data.description} length={"60"} />
       </td>
       <td className="p-4 border-b border-blue-gray-50">
-        <Typography
-          variant="small"
-          color="blue-gray"
-          className="font-normal"
-        >
+        <div className="text-xs ">
           {data.totalDonations}
-        </Typography>
+        </div>
       </td>
-      <td className="p-4 border-b border-blue-gray-50">
-        <Typography
-          variant="small"
-          color="blue-gray"
-          className="font-normal"
-        >
-          <NumericFormat
-            value={data.goal}
-            thousandSeparator={true}
-            prefix="$"
-            decimalScale={2}
-            displayType="text"
-          /> {' '}
-        </Typography>
+      <td className="p-4 border-b border-blue-gray-50 text-xs">
+        <NumericFormat
+          value={data.goal}
+          thousandSeparator={true}
+          prefix="$"
+          decimalScale={2}
+          displayType="text"
+          className="text-xs"
+        />
       </td>
-      <td className="p-4 border-b border-blue-gray-50">
-        <Typography
-          variant="small"
-          color="blue-gray"
-          className="font-normal"
-        >
-          <NumericFormat
-            value={data.raised}
-            thousandSeparator={true}
-            prefix="$"
-            decimalScale={2}
-            displayType="text"
-          /> {' '}
-        </Typography>
+      <td className="p-4 border-b border-blue-gray-50 text-xs ">
+
+        <NumericFormat
+          value={data.raised}
+          thousandSeparator={true}
+          prefix="$"
+          decimalScale={2}
+          displayType="text"
+          className="text-xs"
+        />
+      </td>
+      <td className="p-4 border-b border-blue-gray-50 text-xs ">
+        <div className="text-xs">{data.launched || "N/A"}</div>
       </td>
 
-
-      <td className="p-4 border-b border-blue-gray-50 ">
-        <Typography
-          variant="small"
-          color="blue-gray"
-          className="font-normal"
-        >
-          {data.launched}
-        </Typography>
+      <td className="p-4 border-b border-blue-gray-50 text-xs ">
+        <div className="text-xs">
+          {data.closed || "N/A"}
+        </div>
       </td>
 
-      <td className="p-4 border-b border-blue-gray-50 ">
-        <Typography
-          variant="small"
-          color="blue-gray"
-          className="font-normal"
-        >
-          {data.closed}
-        </Typography>
-      </td>
-
-      <td className="p-4 border-b border-blue-gray-50">
+      <td className="p-4 border-b border-blue-gray-50 text-xs ">
         <div className="w-max ">
           <Chip
             variant="ghost"
@@ -113,14 +85,8 @@ export const Campaign = ({ data }) => {
           />
         </div>
       </td>
-      <td className="p-4 border-b border-blue-gray-50 ">
-        <Typography
-          variant="small"
-          color="blue-gray"
-          className="font-normal"
-        >
-          pencil
-        </Typography>
+      <td className="p-4 border-b border-blue-gray-50 font-semibold text-xs ">
+        <CampaignDropdown data={data} />
       </td>
     </tr>
 

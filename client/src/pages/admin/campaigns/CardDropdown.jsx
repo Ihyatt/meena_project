@@ -10,17 +10,21 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import useAdminStore from 'src/pages/admin/store';
+import useCampaignStore from 'src/pages/admin/campaigns/store.jsx';
 
 
-import {
-    RiMoreFill,
-} from "react-icons/ri";
+
+import { RiPencilLine } from "react-icons/ri";
+
 
 
 
 export function CampaignDropdown({ data }) {
-    const { launchCampaign, closeCampaign } = useAdminStore();
+    const {
+        launchCampaign,
+        closeCampaign,
+
+    } = useCampaignStore();
 
     const handleLaunchClick = () => {
         launchCampaign(data.id)
@@ -34,7 +38,7 @@ export function CampaignDropdown({ data }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="clear"><RiMoreFill size={25} /></Button>
+                <Button variant="clear" ><RiPencilLine size={25} /></Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-5" align="start">
                 <DropdownMenuGroup>

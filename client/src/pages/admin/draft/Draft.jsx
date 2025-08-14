@@ -7,7 +7,7 @@ import Loading from "src/components/Loading";
 import useDraftStore from 'src/pages/admin/draft/store';
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
 import useAuthStore from "src/pages/auth/store";
-import ErrorAlert from "src/components/ErrorAlert";
+import ErrorAlert from "src/pages/admin/components/ErrorAlert";
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -36,23 +36,15 @@ export const CampaignDraft = () => {
   } = useDraftStore();
 
   useEffect(() => {
-    const fetchCampaignDraft = async () => {
-      const { jwtToken } = useAuthStore.getState();
-      const response = await fetch(`${backednUrl}/admins/campaigns/drafts`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${jwtToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
+
+    fetchCampaignDraft().then((data) => {
       setCampaignId(data.id);
       setTitle(data.title);
       setDescription(data.description);
       setGoal(data.goal);
       setImageUrl(data.imageUrl);
-    }
-    fetchCampaignDraft();
+    })
+
   }, [fetchCampaignDraft]);
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import useEmailStore from 'src/pages/admin/emailTemplate/store';
 
 import Loading from "src/components/Loading";
-import ErrorAlert from "src/components/ErrorAlert";
+import ErrorAlert from "src/pages/admin/components/ErrorAlert";
 
 
 
