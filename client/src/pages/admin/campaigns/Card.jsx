@@ -1,6 +1,7 @@
 import { CampaignDropdown } from "src/pages/admin/campaigns/CardDropdown"
 import { NumericFormat } from 'react-number-format';
 import EllipsisText from "react-ellipsis-text";
+import FormatDate from "src/components/FormatDate";
 
 
 
@@ -65,12 +66,12 @@ export const Campaign = ({ data }) => {
         />
       </td>
       <td className="p-4 border-b border-blue-gray-50 text-xs ">
-        <div className="text-xs">{data.launched || "N/A"}</div>
+        <div className="text-xs">{<FormatDate date={data.launched} /> || "N/A"}</div>
       </td>
 
       <td className="p-4 border-b border-blue-gray-50 text-xs ">
         <div className="text-xs">
-          {data.closed || "N/A"}
+          {<FormatDate date={data.closed} /> || "N/A"}
         </div>
       </td>
 

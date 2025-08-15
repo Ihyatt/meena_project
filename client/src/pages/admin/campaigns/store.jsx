@@ -95,7 +95,7 @@ const useCampaignStore = create(
                     const newCampaigns = campaigns
                         .filter(item => item.id !== data.id)
                         .map(item => ({ ...item, isActive: false }));
-                    useAdminStore.setState({ campaigns: [...newCampaigns, { ...data }] });
+                    useAdminStore.setState({ campaigns: [{ ...data }, ...newCampaigns] });
                     set({ isLoading: false });
                 } catch (error) {
                     set({ error: error, isLoading: false });

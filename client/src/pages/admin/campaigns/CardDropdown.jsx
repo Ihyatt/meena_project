@@ -41,19 +41,21 @@ export function CampaignDropdown({ data }) {
                         <Link
                             to={`/admins/campaigns/${data.id}`}
                             state={{ background: location }}
-                            style={{ color: 'black', textDecoration: 'none', 'fontSize': '14px' }}
+                            className="w-full h-full px-2 py-1.5 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                         >
                             Edit
                         </Link>
                     </DropdownMenuItem>
                     {data.isActive ? (
                         <DropdownMenuItem>
-                            <div onClick={handleCloseClick}>
+                            <div onClick={handleCloseClick} className="w-full h-full px-2 py-1.5 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                            >
                                 Close
                             </div>
                         </DropdownMenuItem>) : (
                         <DropdownMenuItem>
-                            <div onClick={handleLaunchClick}>
+                            <div onClick={handleLaunchClick} className="w-full h-full px-2 py-1.5 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                            >
                                 Launch
                             </div>
                         </DropdownMenuItem>
