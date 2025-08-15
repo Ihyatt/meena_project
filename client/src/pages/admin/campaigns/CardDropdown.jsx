@@ -34,6 +34,7 @@ export function CampaignDropdown({ data }) {
         closeCampaign(data.id)
     }
     const location = useLocation();
+    console.log(data)
 
     return (
         <DropdownMenu>

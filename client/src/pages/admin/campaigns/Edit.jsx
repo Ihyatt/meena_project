@@ -1,6 +1,6 @@
 import "src/assets/css/Modal.css"
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
@@ -112,6 +112,11 @@ export const CampaignDetails = () => {
     });
   };
 
+  const handleErrorClose = () => {
+    console.log('Error alert closed');
+    setErrors([]);
+  };
+
   return (
     <div ref={modalRef} className="modal-wrapper" >
       {isLoading && <Loading />}
@@ -154,7 +159,7 @@ export const CampaignDetails = () => {
             </div>
           </div>
           <ImageUpload campaignId={campaignId} imageUrl={imageUrl} uploadFile={uploadFile} />
-          <div className="flex items-center mt-8 justify-between">
+          <div className="flex  justify-end mt-4">
             <button
               type="button"
               className="
@@ -171,30 +176,10 @@ export const CampaignDetails = () => {
               disabled={isLoading}>
               Close
             </button>
-            <div>
-              <button
-                type="button"
-                className="
-                  h-6
-                  w-[110px]
-                  cursor-pointer
-                  bg-white
-                  text-black
-                  rounded-full
-                  m-1.5
-                  border-2
-                  border-black
-                  font-medium
-                "
-                onClick={handleSave}
-                disabled={isLoading}
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className="
-                  m-1.5
+            <button
+              type="button"
+              className="
+                    m-1.5
                   h-6
                   w-[110px]
                   bg-[#40bf51]
@@ -204,12 +189,12 @@ export const CampaignDetails = () => {
                   rounded-full
                   font-medium
                 "
-                onClick={handleShare}
-                disabled={isLoading}
-              >
-                Share
-              </button>
-            </div>
+              onClick={handleSave}
+              disabled={isLoading}
+            >
+              Save
+            </button>
+
           </div>
           {errors.length > 0 && <ErrorAlert errors={errors} onClose={handleErrorClose} />}
         </form>

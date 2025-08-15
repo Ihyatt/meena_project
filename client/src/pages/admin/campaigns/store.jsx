@@ -128,14 +128,7 @@ const useCampaignStore = create(
                     set({
                         isLoading: false,
                     });
-                    useAdminStore.setState({
-                        campaigns: campaigns.map((item) =>
-                            data.id === item.id ? {
-                                ...item,
-                                isActive: data.isActive,
-                            } : item,
-                        ),
-                    });
+
                 } catch (error) {
                     set({ error: error, isLoading: false });
                 }
@@ -169,6 +162,7 @@ const useCampaignStore = create(
                     });
 
                     set({ isLoading: false, })
+                    return data
 
                 } catch (error) {
                     set({ error: error, isLoading: false });
