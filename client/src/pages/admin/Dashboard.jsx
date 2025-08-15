@@ -4,7 +4,7 @@ import DonationsHeatMap from 'src/pages/admin/donation/HeatMap'
 import DonationsScatterChart from 'src/pages/admin/donation/ScatterChart'
 import DonationsBarChart from 'src/pages/admin/donation/BarChart';
 import Campaigns from 'src/pages/admin/campaigns/Campaigns'
-import { DonorsTable } from 'src/pages/admin/donor/Table'
+import Donors from 'src/pages/admin/donor/Donors'
 import { NumericFormat } from 'react-number-format';
 
 
@@ -95,27 +95,21 @@ const Dashboard = () => {
         </div >
 
       </div>
-      <div className="m-4 grid grid-cols-4 gap-4">
-        <div className="col-start-1 col-span-2 h-70">
+      <div className=" flex  ">
+        <div className="m-4  h-70">
           <DonationsBarChart />
         </div >
-        <div className="col-start-3 col-span-2 h-70">
+        <div className="m-4  h-70">
           <DonationsScatterChart />
         </div >
       </div>
-      <div className="m-4 grid grid-cols-4 gap-4">
-        <div className="col-start-1 col-span-2 h-70">
+      <div className=" flex ">
+        <div className="  m-4 h-70">
           <DonationsBarChart />
         </div >
-        <div className="col-start-3 col-span-2 h-70">
+        <div className=" m-4 h-70">
           <DonationsScatterChart />
         </div >
-      </div>
-      <div className="m-4">
-        <Campaigns />
-      </div>
-      <div className="m-4">
-        <DonorsTable />
       </div>
     </div >
   );

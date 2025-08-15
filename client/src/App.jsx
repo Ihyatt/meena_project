@@ -9,6 +9,8 @@ import ProtectedRoute from "src/components/ProtectedRoute";
 import DashboardLayout from "src/pages/admin/DashboardLayout";
 import Dashboard from "src/pages/admin/Dashboard";
 
+import Campaigns from "src/pages/admin/campaigns/Campaigns";
+import Donors from "src/pages/admin/donor/Donors";
 import { EmailTemplate } from "src/pages/admin/emailTemplate/Template";
 import { CampaignDraft } from "src/pages/admin/draft/Draft";
 import { CampaignDetails } from "src/pages/admin/campaigns/Edit";
@@ -44,7 +46,11 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="/admins" element={<Dashboard />} />
+          <Route path="/admins"  >
+            <Route index element={<Dashboard />} />
+            <Route path="campaigns" element={<Campaigns />} />
+            <Route path="donors" element={<Donors />} />
+          </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -12,7 +12,7 @@ import Donor from "src/pages/admin/donor/Card";
 
 const TABLE_HEAD = ["Name", "Email", "Donated", "Donations", "Emails Sent", "Emails Opened", "Status"];
 
-export function DonorsTable() {
+const Donors = () => {
     const { donors } = useAdminStore();
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -114,4 +114,6 @@ export function DonorsTable() {
             </Card>
         </div>
     );
-}
+};
+
+export default Donors;

@@ -72,7 +72,7 @@ export const EmailTemplate = () => {
       setSubject(data.subject);
       setTemplateId(data.templateId);
     });
-    navigate('/admins');
+    navigate(-1);
     event.preventDefault();
   }
 

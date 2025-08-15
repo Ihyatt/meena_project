@@ -26,22 +26,33 @@ const DonationsBarChart = () => {
     }));
 
     return (
-        <div className="rounded-lg shadow-sm">
-            <BarChart
-                dataset={transformedDataset}
-                xAxis={[{ dataKey: 'monthYear' }]}
-                series={[
-                    { dataKey: 'onetime', label: 'one-time', valueFormatter },
+        <div>
+            {
+                donationsWindow.onetime && donationsWindow.onetime.length === 0 ? (
+                    <div className=' text-center text-gray-500 p-4 '>
+                        No donations available for the selected period.
+                    </div>
+                ) : (
+                    <div className="rounded-lg shadow-sm">
+                        <BarChart
+                            dataset={transformedDataset}
+                            xAxis={[{ dataKey: 'monthYear' }]}
+                            series={[
+                                { dataKey: 'onetime', label: 'one-time', valueFormatter },
 
 
-                ]}
-                colors={['green', 'red']}
-                slotProps={{
-                    legend: { hidden: true }, // 👈 Hides the legend
-                }}
-                height={300}
-            />
-        </div>
+                            ]}
+                            colors={['green', 'red']}
+                            slotProps={{
+                                legend: { hidden: true }, // 👈 Hides the legend
+                            }}
+                            height={300}
+                        />
+                    </div>
+                )
+            }
+
+        </div >
     );
 }
 

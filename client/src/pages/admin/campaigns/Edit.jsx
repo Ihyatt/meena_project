@@ -60,7 +60,7 @@ export const CampaignDetails = () => {
   }, []);
 
   const handleClose = (event) => {
-    navigate('/admins')
+    navigate(-1)
     event.preventDefault();
   }
 

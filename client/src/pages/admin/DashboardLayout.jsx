@@ -51,6 +51,30 @@ const DashboardLayout = () => {
           <img className="w-40 mx-auto my-3" src={logo} alt="A descriptive alt text for my image" />
           <Menu>
             <MenuItem
+              active={location.pathname === '/admins'}
+              icon={<RiHome4Line />}
+              component={
+                <Link
+                  to={"/admins"}
+                  style={{ color: 'black', 'fontSize': '15px' }}
+                />
+              }
+            >
+              Home
+            </MenuItem>
+            <MenuItem
+              active={location.pathname === '/admins/campaigns'}
+              icon={<RiDraftLine />}
+              component={
+                <Link
+                  to={"/admins/campaigns"}
+                  style={{ color: 'black', 'fontSize': '15px' }}
+                />
+              }
+            >
+              Campaigns
+            </MenuItem>
+            <MenuItem
               active={location.pathname === '/admins/campaigns/drafts'}
               icon={<RiDraftLine />}
               component={
@@ -62,6 +86,19 @@ const DashboardLayout = () => {
               }
             >
               Campaign Draft
+            </MenuItem>
+
+            <MenuItem
+              active={location.pathname === '/admins/donors'}
+              icon={<RiDraftLine />}
+              component={
+                <Link
+                  to={"/admins/donors"}
+                  style={{ color: 'black', 'fontSize': '15px' }}
+                />
+              }
+            >
+              Donors
             </MenuItem>
             <SubMenu
               defaultOpen

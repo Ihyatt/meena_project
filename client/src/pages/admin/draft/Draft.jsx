@@ -59,7 +59,7 @@ export const CampaignDraft = () => {
   }, []);
 
   const handleClose = (event) => {
-    navigate('/admins')
+    navigate(-1)
     event.preventDefault();
   }
 
@@ -82,7 +82,7 @@ export const CampaignDraft = () => {
       return;
     }
     shareCampaignDraft(campaignId)
-    navigate('/admins')
+    navigate(-1)
     event.preventDefault();
   }
 
