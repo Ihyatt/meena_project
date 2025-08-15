@@ -1,7 +1,7 @@
 import os
 import uuid
 from datetime import datetime, timezone, timedelta
-from decimal import Decimal  # For db.Numeric types
+from decimal import Decimal
 import random
 from faker import Faker
 
@@ -9,7 +9,6 @@ from werkzeug.security import generate_password_hash
 
 # Import your Flask app creation function from your app/__init__.py
 from app import create_app
-
 
 # Import your database instance and models
 from app.database import db
@@ -25,13 +24,23 @@ from app.models.image import Image
 from app.models.payment_transaction import PaymentTransaction
 from app.models.task import Task
 
+# Import missing constants
+from app.utils.constants import (
+    SubscriptionStatus,
+    EmailType,
+    DonationStatus,
+    PaymentStatus,
+    EmailStatus,
+)
 
-from app.utils.constants import SubscriptionStatus, EmailType
+# Initialize Faker outside the function
+fake = Faker()
 
 
 def seed_all():
+    """Seeds the database with fake data."""
     try:
-
+        # Create an admin user and email subscription
         admin = User(
             email_address="admin@example.com",
             full_name="Admin User",
@@ -39,54 +48,74 @@ def seed_all():
         )
         admin.set_password("password")
         db.session.add(admin)
-        db.session.commit()
-        print("Admin user created.")
+        db.session.flush()  # Flush to get admin.id
+
         email_subscription = EmailSubscription(
             email_address="admin@example.com",
             status=SubscriptionStatus.ACTIVE,
             user_id=admin.id,
         )
         db.session.add(email_subscription)
+        db.session.commit()
+        print("Admin user and email subscription created.")
 
-        print("Email subscription created.")
-
+        # Create email templates
         for email_type in EmailType:
             email_template = EmailTemplate(email_type=email_type)
             db.session.add(email_template)
-
         db.session.commit()
+        print("Email templates created.")
 
+        # Create campaigns
         campaigns = []
+        causes = [
+            "fight literacy rates",
+            "overcome cancer",
+            "receive surgery",
+        ]
+        group = ["families", "children", "women"]
+        nationalities = ["Afghani", "Pakistani"]
+        actions = ["Help", "Support"]
         for i in range(10):
+            title = f"{random.choice(actions)} {random.choice(nationalities)} {random.choice(group)} {random.choice(causes)}"
+
             text = fake.text(max_nb_chars=200)
             campaign = Campaign(
                 admin_id=admin.id,
-                title=f"Campaign {i + 1}",
+                title=title,
                 description=text,
                 is_draft=False,
-                launched=True,
                 goal=Decimal(random.uniform(1000.0, 10000.0)),
             )
-            master_campaign.goal += campaign.goal
-            campaigns.append(campaign)
             db.session.add(campaign)
+            campaigns.append(campaign)
         db.session.commit()
-
         print("Campaigns created.")
 
+        # Create donors and their email subscriptions
         donors = []
-        for i in range(50):
+        for _ in range(50):
+            subscribed = [True, False][random.randint(0, 1)]
             donor = User(
-                email_address=f"donor{i +i}@example.com",
+                email_address=fake.email(),  # Corrected email creation
                 full_name=fake.name(),
-                subscribed=[True, False][random.randint(0, 1)],
-                is_anonymous=[True, False][random.randint(0, 1)],
             )
-
-            donors.append(donor)
             db.session.add(donor)
+            db.session.flush()  # Flush to get donor.id
+            donors.append(donor)
+
+            email_subscription = EmailSubscription(
+                email_address=donor.email_address,
+                status=(
+                    SubscriptionStatus.ACTIVE
+                    if subscribed
+                    else SubscriptionStatus.INACTIVE
+                ),
+                user_id=donor.id,
+            )
+            db.session.add(email_subscription)
         db.session.commit()
-        print("Donors created.")
+        print("Donors and email subscriptions created.")
 
         lat_lngs = [
             {"lat": 34.0522, "lng": -118.2437},  # Los Angeles
@@ -202,31 +231,27 @@ def seed_all():
             {"lat": 38.9327, "lng": -120.0324},  # South Lake Tahoe (Sierra Nevada)
         ]
 
-        for i in range(100):
-            amount = Decimal(random.uniform(10.0, 1000.0))
+        # Create donations, payment transactions, and emails
+        for i in range(len(lat_lngs)):  # Corrected loop to prevent IndexError
+            amount = random.choice([15, 30, 100, 500])
             donor = random.choice(donors)
             campaign = random.choice(campaigns)
+
             donation = Donation(
                 amount=amount,
                 donor_id=donor.id,
                 campaign_id=campaign.id,
                 lat=lat_lngs[i]["lat"],
                 lng=lat_lngs[i]["lng"],
-                recurring=random.choice([True, False]),
                 status=DonationStatus.SUCCEEDED,
+                is_anonymous=random.choice([True, False]),
             )
             db.session.add(donation)
-            db.session.commit()
+            db.session.flush()  # Flush to get donation.id
 
             today = datetime.now(timezone.utc)
-
-            # Generate a random number of days between 1 and 365
             random_days = random.randint(1, 365)
-
-            # Create a timedelta object with the random number of days
             delta = timedelta(days=random_days)
-
-            # Subtract the timedelta from today's date
             random_date = today - delta
             donation.created_at = datetime.combine(
                 random_date, datetime.min.time(), tzinfo=timezone.utc
@@ -236,39 +261,31 @@ def seed_all():
                 amount=donation.amount,
                 donor_id=donation.donor_id,
                 donation_id=donation.id,
-                idempotency_key=str(uuid.uuid4()),  # Unique key for idempotency
-                charge_id=str(uuid.uuid4()),  # Simulating a charge ID
-                status=[PaymentStatus.SUCCEEDED, PaymentStatus.FAILED][
-                    random.randint(0, 1)
-                ],
+                idempotency_key=str(uuid.uuid4()),
+                charge_id=str(uuid.uuid4()),
+                status=random.choice([PaymentStatus.SUCCEEDED, PaymentStatus.FAILED]),
             )
-
             db.session.add(payment_transaction)
+
             if payment_transaction.status == PaymentStatus.SUCCEEDED:
-                master_campaign.total_donations += 1
-                master_campaign.raised += donation.amount
-                donor.total_donated += donation.amount
-                donor.total_donations += 1
                 campaign.raised += donation.amount
                 campaign.total_donations += 1
-            db.session.commit()
-            email = Email(
-                recipient_id=donor.id,
-                recipient_email_address=donor.email_address,
-                campaign_id=campaign.id,
-                email_type=EmailType.RECEIPT,
-                status=[EmailStatus.FAILED, EmailStatus.SENT, EmailStatus.OPENED][
-                    random.randint(0, 2)
-                ],
-            )
-            master_campaign.emails_queued += 1
-            donor.emails_queued += 1
-            db.session.add(email)
-            if email.status == EmailStatus.OPENED:
-                donor.emails_opened += 1
-                master_campaign.emails_opened += 1
 
-            db.session.commit()
+            email = Email(
+                email_subscription_id=donor.email_subscription.id,
+                recipient_email_address=donor.email_address,
+                email_type=EmailType.RECEIPT,
+                status=random.choice(
+                    [EmailStatus.FAILED, EmailStatus.SENT, EmailStatus.OPENED]
+                ),
+            )
+            db.session.add(email)
+            donor.email_subscription.queued += 1
+            if email.status == EmailStatus.OPENED:
+                donor.email_subscription.opened += 1
+
+        db.session.commit()  # Commit all changes at the end of the loop
+        print(f"Created {len(lat_lngs)} donations, transactions, and emails.")
 
     except Exception as e:
         db.session.rollback()
@@ -279,17 +296,22 @@ if __name__ == "__main__":
     app = create_app()
 
     with app.app_context():
-
-        db.session.query(User).delete()
-        db.session.query(EmailSubscription).delete()
-        db.session.query(EmailTemplate).delete()
-        db.session.query(Campaign).delete()
-        db.session.query(Donation).delete()
+        # Corrected order: Delete dependent tables first
         db.session.query(DonationNotification).delete()
+        db.session.query(PaymentTransaction).delete()
+        db.session.query(Donation).delete()
         db.session.query(Email).delete()
         db.session.query(Image).delete()
-        db.session.query(PaymentTransaction).delete()
         db.session.query(Task).delete()
+        db.session.query(Campaign).delete()  # This must be deleted before users
+        db.session.query(
+            EmailSubscription
+        ).delete()  # This must also be deleted before users
+
+        # Now you can safely delete the core users and email templates
+        db.session.query(User).delete()
+        db.session.query(EmailTemplate).delete()
+
         db.session.commit()
         print("Existing data cleared.")
 

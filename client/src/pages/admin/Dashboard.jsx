@@ -3,8 +3,6 @@ import useAdminStore from 'src/pages/admin/store';
 import DonationsHeatMap from 'src/pages/admin/donation/HeatMap'
 import DonationsScatterChart from 'src/pages/admin/donation/ScatterChart'
 import DonationsBarChart from 'src/pages/admin/donation/BarChart';
-import Campaigns from 'src/pages/admin/campaigns/Campaigns'
-import Donors from 'src/pages/admin/donor/Donors'
 import { NumericFormat } from 'react-number-format';
 
 
@@ -12,10 +10,6 @@ import Loading from "src/components/Loading";
 
 
 import {
-  RiHandHeartLine,
-  RiUserHeartLine,
-  RiMoneyDollarBoxLine,
-  RiMegaphoneLine,
   RiHandHeartFill,
   RiMegaphoneFill,
   RiMoneyDollarCircleFill,
@@ -24,7 +18,7 @@ import {
 
 const Dashboard = () => {
 
-  const { fetchCampaigns, launchedCampaigns, totalHistoricalDDonors, isLoading, totalHistoricalDonations, totalHistoricalRaised, error } = useAdminStore();
+  const { fetchCampaigns, launchedCampaigns, totalHistoricalDonors, isLoading, totalHistoricalDonations, totalHistoricalRaised } = useAdminStore();
 
   useEffect(() => {
     fetchCampaigns();
@@ -82,7 +76,7 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiUserHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{totalHistoricalDDonors}</span>
+            <RiUserHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{totalHistoricalDonors}</span>
           </div>
           <div className="text-black">
             DONORS
@@ -93,23 +87,15 @@ const Dashboard = () => {
         <div className=" h-83">
           <DonationsHeatMap />
         </div >
+      </div>
 
-      </div>
-      <div className=" flex  ">
-        <div className="m-4  h-70">
+      <div className="flex mb-4">
+        <div className="w-1/2  mr-1 rounded-lg shadow-md">
           <DonationsBarChart />
-        </div >
-        <div className="m-4  h-70">
+        </div>
+        <div className="w-1/2 ml-1 rounded-lg shadow-md">
           <DonationsScatterChart />
-        </div >
-      </div>
-      <div className=" flex ">
-        <div className="  m-4 h-70">
-          <DonationsBarChart />
-        </div >
-        <div className=" m-4 h-70">
-          <DonationsScatterChart />
-        </div >
+        </div>
       </div>
     </div >
   );

@@ -33,6 +33,7 @@ const useAdminStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
+          console.log(data.donors);
           set({
             campaigns: data['campaigns'] || [],
             donationsLatLng: data['donationsLatLng'] || [],

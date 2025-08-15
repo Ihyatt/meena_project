@@ -55,6 +55,7 @@ class AdminSchema(SQLAlchemyAutoSchema):
 
 
 class DonorSchema(SQLAlchemyAutoSchema):
+    from app.schemas.email_subscription import EmailSubscriptionSchema
 
     class Meta:
         model = User
@@ -87,10 +88,8 @@ class DonorSchema(SQLAlchemyAutoSchema):
             "id",
             "email_address",
             "status",
-            "blocked",
-            "spam",
-            "bounced",
             "opened",
             "queued",
         ),
+        data_key="emailSubscription",
     )

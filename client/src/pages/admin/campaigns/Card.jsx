@@ -22,6 +22,9 @@ import { RiPencilLine } from "react-icons/ri";
 
 export const Campaign = ({ data }) => {
 
+
+  console.log(data)
+
   return (
 
     <tr key={data.id}>
@@ -66,12 +69,12 @@ export const Campaign = ({ data }) => {
         />
       </td>
       <td className="p-4 border-b border-blue-gray-50 text-xs ">
-        <div className="text-xs">{<FormatDate date={data.launched} /> || "N/A"}</div>
+        <div className="text-xs">{data.launched ? <FormatDate date={data.launched} /> : "N/A"}</div>
       </td>
 
       <td className="p-4 border-b border-blue-gray-50 text-xs ">
         <div className="text-xs">
-          {<FormatDate date={data.closed} /> || "N/A"}
+          {data.closed ? <FormatDate date={data.closed} /> : "N/A"}
         </div>
       </td>
 

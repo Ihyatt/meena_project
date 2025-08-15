@@ -52,26 +52,24 @@ const DonationsScatterChart = () => {
 
         <div>
             {donationsWindow.onetime && donationsWindow.onetime.length === 0 ? (
-                <div className=' text-center text-gray-500 p-4 '>
+                <div className='text-center text-gray-500 '>
                     No donations available for the selected period.
                 </div>
             ) : (
-                <div className='rounded-lg shadow-sm '>
-                    <ScatterChart
-                        height={300}
-                        colors={['green', 'red']}
-                        voronoiMaxRadius={30}
-                        series={series}
-                        disableAxisListener={false}
-                        axisTick={'line'}
-                        axisTickLabel
-                        xAxis={xAxisConfig}
-                        yAxis={yAxisConfig}
-                        slotProps={{
-                            legend: { hidden: true }, // 👈 Hides the legend
-                        }}
-                    />
-                </div>
+                <ScatterChart
+                    height={300}
+                    colors={['green', 'red']}
+                    voronoiMaxRadius={30}
+                    series={series}
+                    disableAxisListener={false}
+                    axisTick={'line'}
+                    axisTickLabel
+                    xAxis={xAxisConfig}
+                    yAxis={yAxisConfig}
+                    slotProps={{
+                        legend: { hidden: true }, // 👈 Hides the legend
+                    }}
+                />
             )}
         </div >
 

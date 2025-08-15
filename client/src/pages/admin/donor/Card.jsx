@@ -6,6 +6,12 @@ import { NumericFormat } from 'react-number-format';
 
 
 const Donor = ({ data }) => {
+
+    const totalDonated = data.donations.reduce(
+        (accumulator, currentValue) => accumulator + parseInt(currentValue.amount),
+        0,
+    );
+
     return (
         <tr key={data.id}>
             <td className="p-4 border-b border-blue-gray-50">
@@ -35,12 +41,12 @@ const Donor = ({ data }) => {
                     className="font-normal"
                 >
                     <NumericFormat
-                        value={data.totalDonated}
+                        value={totalDonated}
                         thousandSeparator={true}
                         prefix="$"
                         decimalScale={2}
                         displayType="text"
-                    /> {' '}
+                    />
                 </Typography>
             </td>
 
@@ -50,7 +56,7 @@ const Donor = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                 >
-                    {data.totalDonations}
+                    {data.donations.length}
                 </Typography>
             </td>
             <td className="p-4 border-b border-blue-gray-50 ">
@@ -59,7 +65,7 @@ const Donor = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                 >
-                    {data.emailsQueued}
+                    {data.emailSubscription.queued}
                 </Typography>
             </td>
             <td className="p-4 border-b border-blue-gray-50 ">
@@ -68,7 +74,7 @@ const Donor = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                 >
-                    {data.emailsOpened}
+                    {data.emailSubscription.opened}
                 </Typography>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
@@ -76,8 +82,8 @@ const Donor = ({ data }) => {
                     <Chip
                         variant="ghost"
                         size="sm"
-                        value={data.subscribed ? "subscribed" : "unsubscribed"}
-                        className={`font-normal ${data.subscribed ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}
+                        value={data.emailSubscription.status == "ACTIVE" ? "subscribed" : "unsubscribed"}
+                        className={`font-normal ${data.emailSubscription.status == "ACTIVE" ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}
                     />
                 </div>
             </td>

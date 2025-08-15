@@ -83,6 +83,8 @@ def dashboard():
                 "id",
                 "email_address",
                 "full_name",
+                "donations",
+                "email_subscription",
             ],
         )
 

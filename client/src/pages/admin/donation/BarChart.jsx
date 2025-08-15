@@ -33,22 +33,22 @@ const DonationsBarChart = () => {
                         No donations available for the selected period.
                     </div>
                 ) : (
-                    <div className="rounded-lg shadow-sm">
-                        <BarChart
-                            dataset={transformedDataset}
-                            xAxis={[{ dataKey: 'monthYear' }]}
-                            series={[
-                                { dataKey: 'onetime', label: 'one-time', valueFormatter },
+
+                    <BarChart
+                        dataset={transformedDataset}
+                        xAxis={[{ dataKey: 'monthYear' }]}
+                        series={[
+                            { dataKey: 'onetime', label: 'one-time', valueFormatter },
 
 
-                            ]}
-                            colors={['green', 'red']}
-                            slotProps={{
-                                legend: { hidden: true }, // 👈 Hides the legend
-                            }}
-                            height={300}
-                        />
-                    </div>
+                        ]}
+                        colors={['green', 'red']}
+                        slotProps={{
+                            legend: { hidden: true }, // 👈 Hides the legend
+                        }}
+                        height={300}
+                    />
+
                 )
             }
 

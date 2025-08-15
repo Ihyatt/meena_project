@@ -6,7 +6,9 @@ import {
   RiHome4Line,
   RiDraftLine,
   RiMailLine,
-  RiLogoutBoxRLine
+  RiLogoutBoxRLine,
+  RiMegaphoneLine,
+  RiUserHeartLine
 } from "react-icons/ri";
 import {
   Sidebar,
@@ -64,7 +66,7 @@ const DashboardLayout = () => {
             </MenuItem>
             <MenuItem
               active={location.pathname === '/admins/campaigns'}
-              icon={<RiDraftLine />}
+              icon={<RiMegaphoneLine />}
               component={
                 <Link
                   to={"/admins/campaigns"}
@@ -90,7 +92,7 @@ const DashboardLayout = () => {
 
             <MenuItem
               active={location.pathname === '/admins/donors'}
-              icon={<RiDraftLine />}
+              icon={<RiUserHeartLine />}
               component={
                 <Link
                   to={"/admins/donors"}
