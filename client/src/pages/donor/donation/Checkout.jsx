@@ -1,7 +1,7 @@
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Loading from "src/components/Loading";
-import useDonorStore from 'src/pages/donor/store.jsx'
+import useDonorStore from 'src/pages/donor/store'
 
 
 const stripePublishableKey = import.meta.env.VITE_STRIPE_PK;

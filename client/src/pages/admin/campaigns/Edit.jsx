@@ -1,18 +1,24 @@
 import "src/assets/css/Modal.css"
 
 import { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import ImageUpload from 'src/pages/admin/components/ImageUpload'
-import useAuthStore from "src/pages/auth/store";
 import ErrorAlert from "src/pages/admin/components/ErrorAlert";
 
-import useCampaignStore from 'src/pages/admin/campaigns/store.jsx';
+import useCampaignStore from 'src/pages/admin/campaigns/store';
 import Loading from "src/components/Loading";
-const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 
 export const CampaignDetails = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isModal = location.state?.isModal;
+  const modalRef = useRef();
+  const { campaignId } = useParams();
+
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [goal, setGoal] = useState(0);
@@ -20,15 +26,15 @@ export const CampaignDetails = () => {
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState([]);
 
-  const modalRef = useRef();
-  const { campaignId } = useParams();
-  const navigate = useNavigate();
+
   const {
     fetchCampaign,
     saveCampaign,
     isLoading,
     upload
   } = useCampaignStore();
+
+  console.log("why is it not working", campaignId);
 
   useEffect(() => {
 

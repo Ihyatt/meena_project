@@ -10,14 +10,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import useCampaignStore from 'src/pages/admin/campaigns/store.jsx';
-
-
-
+import useCampaignStore from 'src/pages/admin/campaigns/store';
 import { RiPencilLine } from "react-icons/ri";
-
-
-
 
 export function CampaignDropdown({ data }) {
     const {
@@ -39,7 +33,7 @@ export function CampaignDropdown({ data }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="clear" ><RiPencilLine size={25} /></Button>
+                <Button variant="clear" className="focus:outline-none"><RiPencilLine size={25} /></Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-5" align="start">
                 <DropdownMenuGroup>

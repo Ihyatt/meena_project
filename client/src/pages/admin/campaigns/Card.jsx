@@ -1,6 +1,5 @@
 import { CampaignDropdown } from "src/pages/admin/campaigns/CardDropdown"
 import { NumericFormat } from 'react-number-format';
-import DonationBar from 'src/pages/admin/donation/ProgressBar';
 import EllipsisText from "react-ellipsis-text";
 
 
@@ -85,7 +84,7 @@ export const Campaign = ({ data }) => {
           />
         </div>
       </td>
-      <td className="p-4 border-b border-blue-gray-50 font-semibold text-xs ">
+      <td className="p-4 border-b border-blue-gray-50  ">
 
         <CampaignDropdown key={data.id} data={data} />
       </td>

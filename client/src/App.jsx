@@ -44,7 +44,8 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route element={<Dashboard />} path="/admins" />
+          <Route path="/admins" element={<Dashboard />} />
+          <Route path="campaigns/:campaignId" element={<CampaignDetails />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
