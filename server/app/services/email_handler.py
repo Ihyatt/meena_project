@@ -19,34 +19,19 @@ from tenacity import (
 )
 
 import asyncio
+from app.utils.constants import EmailType
 
 
-def create_email(donor_id, campaign_id, email_address, email_type):
-
-    new_email = Email(
-        recipient_id=donor_id,
-        recipient_email_address=email_address,
-        campaign_id=campaign_id,
-        email_type=email_type,
-    )
-    db.session.add(new_email)
-    db.session.commit()
-    return new_email
-
-
-@retry(
-    stop=stop_after_attempt(3),  # 3 attempts total
-    wait=wait_exponential_jitter(
-        initial=1, max=10
-    ),  # Adds randomness to avoid thundering herds
-    retry=retry_if_exception_type(ValueError),
-)
-def send_receipt_email(donor_id, campaign_id, email_address, amount, email_id):
+def send_receipt_email(donor_id, email_address, amount, email_id):
     try:
         mailjet_client = current_app.mailjet
         email_template = EmailTemplate.query.filter_by(
-            email_type=EmailType.DONATION_RECEIPT
+            email_type=EmailType.RECEIPT
         ).first()
+
+        current_app.logger.info(
+            f"Preparing to send receipt email for donor '{donor_id}'."
+        )
 
         email = Email.query.get_or_404(email_id)
         donor = User.query.get_or_404(donor_id)
@@ -57,18 +42,26 @@ def send_receipt_email(donor_id, campaign_id, email_address, amount, email_id):
                         "Email": "inas.raheema@gmail.com",
                         "Name": "Meena Project",
                     },
-                    "To": [{"Email": donor.email_address, "Name": donor.full_name}],
+                    "To": [
+                        {
+                            "Email": "inas.raheema@gmail.com",  # Ensure this is a valid email string
+                            "Name": donor.full_name,  # Ensure this is a string (not None)
+                        }
+                    ],
                     "Subject": email_template.subject,
-                    "TemplateID": email_template.template_id,
-                    "TemplateLanguage": true,
+                    "TemplateID": int(email_template.template_id),
+                    "TemplateLanguage": True,
                     "CustomID": str(email.id),
-                    "Variables": {"name": donor.full_name, "amount": amount},
+                    "Variables": {"name": donor.full_name, "amount": str(amount)},
                 }
             ]
         }
-
+        current_app.logger.info(
+            f"Sending receipt email to {donor.full_name} with amount {amount}."
+        )
         try:
             result = mailjet_client.send.create(data=data)
+            current_app.logger.info(result.json())
             message_uuid = result.json()["Messages"][0]["To"][0]["MessageUUID"]
             message_id = result.json()["Messages"][0]["To"][0]["MessageID"]
 
@@ -77,18 +70,12 @@ def send_receipt_email(donor_id, campaign_id, email_address, amount, email_id):
             if result.status_code != 200:
                 email.status = EmailStatus.FAILED
             else:
-                email.recipient.emails_queued += 1
+                email.email_subscription.queued += 1
             db.session.commit()
             current_app.logger.info(
                 f"Email '{email.id}' sent with message_uuid'{message_uuid} and message_id'{message_id}"
             )
-            return {
-                "status": "success",
-                "message_uuid": message_uuid,
-                "message_id": message_id,
-                "email_id": email.id,
-                "response": 200,
-            }
+
         except Exception as e:
             current_app.logger.error(f"Failed to send email '{email.id}': {str(e)}")
             email.status = EmailStatus.FAILED
@@ -100,23 +87,20 @@ def send_receipt_email(donor_id, campaign_id, email_address, amount, email_id):
         raise ValueError(str(e))
 
 
-@retry(
-    stop=stop_after_attempt(3),  # 3 attempts total
-    wait=wait_exponential_jitter(
-        initial=1, max=10
-    ),  # Adds randomness to avoid thundering herds
-    retry=retry_if_exception_type(ValueError),
-)
-def send_impact_email(donor_id, campaign_id, email_id):
+def send_impact_email(donor_id, email_address, campaign_id, email_id):
     try:
+        mailjet_client = current_app.mailjet
         email_template = EmailTemplate.query.filter_by(
-            email_type=EmailType.IMPACT_UPDATE
+            email_type=EmailType.IMPACT
         ).first()
 
-        campaign = Campaign.query.get_or_404(campaign_id)
-        donor = User.query.get_or_404(donor_id)
-        email = Email.query.get_or_404(email_id)
+        current_app.logger.info(
+            f"Preparing to send impact email for donor '{donor_id}'."
+        )
 
+        email = Email.query.get_or_404(email_id)
+        donor = User.query.get_or_404(donor_id)
+        campaign = Campaign.query.get_or_404(campaign_id)
         data = {
             "Messages": [
                 {
@@ -124,18 +108,31 @@ def send_impact_email(donor_id, campaign_id, email_id):
                         "Email": "inas.raheema@gmail.com",
                         "Name": "Meena Project",
                     },
-                    "To": [{"Email": donor.email_address, "Name": donor.full_name}],
+                    "To": [
+                        {
+                            "Email": "inas.raheema@gmail.com",  # Ensure this is a valid email string
+                            "Name": donor.full_name,  # Ensure this is a string (not None)
+                        }
+                    ],
                     "Subject": email_template.subject,
-                    "TemplateID": email_template.template_id,
-                    "TemplateLanguage": true,
+                    "TemplateID": int(email_template.template_id),
+                    "TemplateLanguage": True,
                     "CustomID": str(email.id),
-                    "Variables": {"name": donor.full_name, "goal": campaign.goal},
+                    "Variables": {
+                        "name": donor.full_name,
+                        "title": campaign.title,
+                        "raised": str(campaign.raised),
+                        "goal": str(campaign.goal),
+                    },
                 }
             ]
         }
-
+        current_app.logger.info(
+            f"Sending receipt email to {donor.full_name} with amount {amount}."
+        )
         try:
             result = mailjet_client.send.create(data=data)
+            current_app.logger.info(result.json())
             message_uuid = result.json()["Messages"][0]["To"][0]["MessageUUID"]
             message_id = result.json()["Messages"][0]["To"][0]["MessageID"]
 
@@ -144,18 +141,12 @@ def send_impact_email(donor_id, campaign_id, email_id):
             if result.status_code != 200:
                 email.status = EmailStatus.FAILED
             else:
-                email.recipient.emails_queued += 1
+                email.email_subscription.queued += 1
             db.session.commit()
             current_app.logger.info(
                 f"Email '{email.id}' sent with message_uuid'{message_uuid} and message_id'{message_id}"
             )
-            return {
-                "status": "success",
-                "message_uuid": message_uuid,
-                "message_id": message_id,
-                "email_id": email.id,
-                "response": 200,
-            }
+
         except Exception as e:
             current_app.logger.error(f"Failed to send email '{email.id}': {str(e)}")
             email.status = EmailStatus.FAILED
@@ -167,23 +158,20 @@ def send_impact_email(donor_id, campaign_id, email_id):
         raise ValueError(str(e))
 
 
-@retry(
-    stop=stop_after_attempt(3),  # 3 attempts total
-    wait=wait_exponential_jitter(
-        initial=1, max=10
-    ),  # Adds randomness to avoid thundering herds
-    retry=retry_if_exception_type(ValueError),
-)
-def send_closeout_email(donor_id, campaign_id, email_id):
+def send_closeout_email(donor_id, email_address, campaign_id, email_id):
     try:
+        mailjet_client = current_app.mailjet
         email_template = EmailTemplate.query.filter_by(
             email_type=EmailType.CLOSEOUT
         ).first()
 
-        campaign = Campaign.query.get_or_404(campaign_id)
-        donor = User.query.get_or_404(donor_id)
-        email = Email.query.get_or_404(email_id)
+        current_app.logger.info(
+            f"Preparing to send closeout email for donor '{donor_id}'."
+        )
 
+        email = Email.query.get_or_404(email_id)
+        donor = User.query.get_or_404(donor_id)
+        campaign = Campaign.query.get_or_404(campaign_id)
         data = {
             "Messages": [
                 {
@@ -191,22 +179,31 @@ def send_closeout_email(donor_id, campaign_id, email_id):
                         "Email": "inas.raheema@gmail.com",
                         "Name": "Meena Project",
                     },
-                    "To": [{"Email": donor.email_address, "Name": donor.full_name}],
+                    "To": [
+                        {
+                            "Email": "inas.raheema@gmail.com",  # Ensure this is a valid email string
+                            "Name": donor.full_name,  # Ensure this is a string (not None)
+                        }
+                    ],
                     "Subject": email_template.subject,
-                    "TemplateID": email_template.template_id,
-                    "TemplateLanguage": true,
+                    "TemplateID": int(email_template.template_id),
+                    "TemplateLanguage": True,
                     "CustomID": str(email.id),
                     "Variables": {
                         "name": donor.full_name,
-                        "goal": campaign.goal,
-                        "raised": campaign.raised,
+                        "title": campaign.title,
+                        "raised": str(campaign.raised),
+                        "goal": str(campaign.goal),
                     },
                 }
             ]
         }
-
+        current_app.logger.info(
+            f"Sending receipt email to {donor.full_name} with amount {amount}."
+        )
         try:
             result = mailjet_client.send.create(data=data)
+            current_app.logger.info(result.json())
             message_uuid = result.json()["Messages"][0]["To"][0]["MessageUUID"]
             message_id = result.json()["Messages"][0]["To"][0]["MessageID"]
 
@@ -215,18 +212,12 @@ def send_closeout_email(donor_id, campaign_id, email_id):
             if result.status_code != 200:
                 email.status = EmailStatus.FAILED
             else:
-                email.recipient.emails_queued += 1
+                email.email_subscription.queued += 1
             db.session.commit()
             current_app.logger.info(
                 f"Email '{email.id}' sent with message_uuid'{message_uuid} and message_id'{message_id}"
             )
-            return {
-                "status": "success",
-                "message_uuid": message_uuid,
-                "message_id": message_id,
-                "email_id": email.id,
-                "response": 200,
-            }
+
         except Exception as e:
             current_app.logger.error(f"Failed to send email '{email.id}': {str(e)}")
             email.status = EmailStatus.FAILED

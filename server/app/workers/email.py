@@ -15,9 +15,11 @@ from app.services.charge_handler import (
 )
 from app import create_app
 
-CHARGE_DEAD_LETTER_QUEUE = "charge_dlq"
-CHARGE_RETRY_QUEUE = "charge_retry_queue"
-CHARGE_PROCESS_QUEUE = "charge_process_queue"
+from app.utils.constants import EmailType
+
+EMAIL_DEAD_LETTER_QUEUE = "email_dlq"
+EMAIL_RETRY_QUEUE = "email_retry_queue"
+EMAIL_PROCESS_QUEUE = "email_process_queue"
 RETRY_COUNTS = "retry_counts"
 DELAYED_QUEUE = "delayed_queue"
 
@@ -30,29 +32,27 @@ def process_message(db, message_json: str):
         message = json.loads(message_json)
         data = message["data"]
 
-        if message["value"] == "charge.succeeded":
-            successful_charge(
-                donor_id=data["donor_id"],
-                email_address=data["email_address"],
-                campaign_id=data["campaign_id"],
-                payment_transaction_id=data["payment_transaction_id"],
-                donation_id=data["donation_id"],
-                idempotency_key=data["idempotency_key"],
-                amount=data["amount"],
-                charge_id=data["charge_id"],
+        if message["value"] == EmailType.RECEIPT:
+            send_receipt_email(
+                data["donor_id"],
+                data["email_address"],
+                data["amount"],
+                data["email_id"],
             )
-        elif message["value"] == "charge.failed":
-            failed_charge(
-                payment_transaction_id=data["payment_transaction_id"],
-                idempotency_key=data["idempotency_key"],
-                charge_id=data["charge_id"],
+
+        elif message["value"] == EmailType.IMPACT:
+            send_impact_email(
+                data["donor_id"],
+                data["email_address"],
+                data["amount"],
+                data["email_id"],
             )
-        elif message["value"] == "charge.refunded":
-            refunded_charge(
-                payment_transaction_id=data["payment_transaction_id"],
-                idempotency_key=data["idempotency_key"],
-                charge_id=data["charge_id"],
-                campaign_id=data["campaign_id"],
+        elif message["value"] == EmailType.CLOSEOUT:
+            send_closeout_email(
+                data["donor_id"],
+                data["email_address"],
+                data["amount"],
+                data["email_id"],
             )
         db.hdel(RETRY_COUNTS, message_json)  # Clear retry count on success
         print("\t>> Processed successfully.")
@@ -71,7 +71,7 @@ def process_message(db, message_json: str):
             db.zadd(DELAYED_QUEUE, {message_json: next_retry})
 
         else:
-            redis_access.redis_queue_push(db, CHARGE_DEAD_LETTER_QUEUE, message_json)
+            redis_access.redis_queue_push(db, EMAIL_DEAD_LETTER_QUEUE, message_json)
             print("\tProcessing failed - moving to dead letter queue (DLQ).")
 
 
@@ -90,7 +90,7 @@ def push_to_queue(db):
 
         # score <= now – task is really due; process it
         print(f"Popped task={task}  due={score}")
-        redis_access.redis_queue_push(db, CHARGE_RETRY_QUEUE, task)
+        redis_access.redis_queue_push(db, EMAIL_RETRY_QUEUE, task)
 
 
 def main():
@@ -105,7 +105,7 @@ def main():
             print("Waiting for messages in the charge process queue...")
             push_to_queue(app.redis)
 
-            message_json = redis_access.redis_queue_pop(app.redis, CHARGE_PROCESS_QUEUE)
+            message_json = redis_access.redis_queue_pop(app.redis, EMAIL_PROCESS_QUEUE)
             print(f"Processing message: {message_json}")
             process_message(app.redis, message_json)
 

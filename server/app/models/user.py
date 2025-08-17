@@ -18,7 +18,7 @@ class User(db.Model, SoftDeleteMixin):
     email_address = mapped_column(db.String(255), nullable=False, index=True)
     password_hash = mapped_column(db.String(255), nullable=True)
     customer_id = mapped_column(db.String(500), nullable=True)  # stripe customer ID
-    full_name = mapped_column(db.String(100), nullable=True)
+    full_name = mapped_column(db.String(100), nullable=False)
     is_admin = mapped_column(db.Boolean, default=False, nullable=False)
 
     created_at = mapped_column(

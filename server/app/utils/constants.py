@@ -36,6 +36,7 @@ class EmailStatus(enum.Enum):
     BLOCKED = "blocked"
     SPAM = "spam"
     BOUNCED = "bounced"
+    UNSUB = "unsubscribed"
 
 
 class EmailType(enum.Enum):

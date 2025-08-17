@@ -37,7 +37,7 @@ class DonationSchema(SQLAlchemyAutoSchema):
         allow_none=True,
         validate=validate.Range(min=Decimal("-180.0"), max=Decimal("180.0")),
     )
-    is_anonymous = fields.Boolean(allow_none=False, data_key="isAnonymous")
+    is_anonymous = fields.Boolean(required=True, data_key="isAnonymous")
 
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")
     updated_at = fields.DateTime(dump_only=True, data_key="updatedAt")

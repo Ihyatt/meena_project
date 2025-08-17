@@ -9,13 +9,18 @@ import DonationBar from 'src/pages/donor/donation/components/ProgressBar';
 import { NumericFormat } from 'react-number-format';
 import { RiInstagramLine } from "react-icons/ri";
 import DonationEvents from "src/pages/donor/donation/components/Events"
-import TermsAndConditions from 'src/pages/donor/donation/components/TermsAndConditions';
 
 import defaultImg from 'src/assets/images/defaultImg.jpg';
 
 
 
 const Donation = () => {
+  const [imageUrl, setImageUrl] = useState(defaultImg);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [raised, setRaised] = useState(0);
+  const [goal, setGoal] = useState(0);
+  const [totalDonations, setTotalDonations] = useState(0);
   const navigate = useNavigate();
 
   const {
@@ -34,20 +39,18 @@ const Donation = () => {
     isEmailSubscription,
     activeButton,
     setActiveButton,
-    imageUrl,
-    title,
-    description,
-    raised,
-    goal,
-    totalDonations,
-
   } = useDonorStore();
-
-
 
   useEffect(() => {
     getUserLocation()
-    fetchCampaign()
+    fetchCampaign().then(data => {
+      setImageUrl(data.image_url || defaultImg);
+      setTitle(data.title || '');
+      setDescription(data.description || '');
+      setRaised(data.raised || 0);
+      setGoal(data.goal || 0);
+      setTotalDonations(data.total_donations || 0);
+    });
   }, [fetchCampaign]);
 
   const handleClick = (buttonId, amount) => {
@@ -58,13 +61,6 @@ const Donation = () => {
   const handleDonateClick = () => {
     navigate(`/checkout`);
   }
-
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
@@ -83,7 +79,6 @@ const Donation = () => {
       console.error('Geolocation is not supported by this browser.');
     }
   };
-  const [agreement, setAgreement] = useState(false);
 
   return (
     <div>
@@ -286,27 +281,6 @@ const Donation = () => {
                           </span>
                         </label>
                         <label >I would like my donation to be anonymous</label>
-
-                      </div>
-
-
-                      <div className="inline-flex items-center mr-1">
-                        <label className="flex items-center cursor-pointer relative">
-                          <input
-                            checked={agreement}
-                            onChange={setAgreement}
-                            type="checkbox"
-                            className="peer h-3.5 w-3.5 cursor-pointer transition-all appearance-none rounded  hover:shadow-sm border border-slate-300 checked:bg-slate-800 checked:border-slate-800" id="check-custom-icon"
-                          />
-                          <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-2.5 h-2.5">
-                              <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-                            </svg>
-                          </span>
-                        </label>
-
-                        I accept and agree to the  <div className="ml-1 inline font-semibold cursor-pointer hover:underline" onClick={handleOpen}>terms and conditions</div>
-                        {open && <TermsAndConditions open={open} handleClose={handleClose} handleOpen={handleOpen} />}
                       </div>
                     </div>
                   </div>

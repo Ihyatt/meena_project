@@ -18,14 +18,6 @@ const useDonorStore = create(
       isLoading: false,
       activeButton: null,
       error: null,
-      status: '',
-      id: '',
-      image_url: '',
-      title: '',
-      description: '',
-      raised: 0,
-      goal: 0,
-      total_donations: 0,
 
       setFullName: (fullName) => set({ fullName }),
       setEmailAddress: (emailAddress) => set({ emailAddress }),
@@ -42,14 +34,9 @@ const useDonorStore = create(
           const response = await fetch(`${backendUrl}/donations`);
           const data = await response.json();
           set({
-            image_url: data.image_url,
-            title: data.title,
-            description: data.description,
-            raised: data.raised,
-            goal: data.goal,
-            total_donations: data.total_donations,
             isLoading: false,
           });
+          return data;
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -58,7 +45,6 @@ const useDonorStore = create(
       fetchClientSecret: async () => {
         set({ isLoading: true, error: null });
         try {
-
           const state = get();
           const { emailAddress, fullName, isEmailSubscription, amount, isAnonymous, lat, lng } = state;
 
@@ -95,10 +81,32 @@ const useDonorStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          set({ isLoading: false, status: data.status });
+          set({
+            fullName: '',
+            emailAddress: '',
+            isEmailSubscription: false,
+            isAnonymous: false,
+            amount: 0.0,
+            lat: null,
+            lng: null,
+            activeButton: null,
+            isLoading: false,
+            status: data.status
+          });
 
         } catch (error) {
-          set({ error: error, isLoading: false });
+          set({
+            fullName: '',
+            emailAddress: '',
+            isEmailSubscription: false,
+            isAnonymous: false,
+            amount: 0.0,
+            lat: null,
+            lng: null,
+            isLoading: false,
+            activeButton: null,
+            error: error,
+          });
         }
       },
     }),

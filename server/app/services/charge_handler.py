@@ -4,6 +4,8 @@ from app.database import db
 from app.models.campaign import Campaign
 from app.models.donation_notification import DonationNotification
 from app.models.payment_transaction import PaymentTransaction
+from app.models.donation import Donation
+from app.models.user import User
 from app.utils.constants import (
     PaymentStatus,
     EmailType,
@@ -14,6 +16,10 @@ from app.utils.constants import (
 from werkzeug.exceptions import NotFound
 from decimal import Decimal  # For db.Numeric types
 import asyncio
+from datetime import datetime, timezone
+
+from app.utils.email import create_email
+from app.services.email_handler import send_receipt_email
 
 
 def successful_charge(
@@ -21,6 +27,7 @@ def successful_charge(
     email_address,
     campaign_id,
     payment_transaction_id,
+    donation_id,
     idempotency_key,
     amount,
     charge_id,
@@ -30,6 +37,7 @@ def successful_charge(
             id=payment_transaction_id, idempotency_key=idempotency_key
         ).first()
         donor = User.query.get_or_404(donor_id)
+        donation = Donation.query.get_or_404(donation_id)
 
         payment_transaction.charge_id = charge_id
         if payment_transaction.status == PaymentStatus.SUCCEEDED:
@@ -39,15 +47,24 @@ def successful_charge(
             raise ValueError(
                 f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
             )
-        if campaign_id is not None and campaign_id != "":
+        if campaign_id:
+            current_app.logger.info(
+                f"Campaign ID provided: {campaign_id}. Updating campaign raised amount."
+            )
             campaign = Campaign.query.get_or_404(campaign_id)
             campaign.raised += payment_transaction.amount
             campaign.total_donations += 1
 
         payment_transaction.status = PaymentStatus.SUCCEEDED
 
+        now = datetime.now(timezone.utc)
+
+        current_app.logger.info(
+            f"Payment transaction '{payment_transaction.id}' has been marked as succeeded."
+        )
         new_donation_notification = DonationNotification(
-            donation_id=payment_transaction.donation_id
+            donation_id=donation.id,
+            sent_at=now,
         )
 
         db.session.add(new_donation_notification)
@@ -55,15 +72,16 @@ def successful_charge(
 
         notification_metadata = {
             "full_name": (
-                donor.full_name
-                if not payment_transaction.donation.is_anonymous
-                else "Anonymous"
+                donor.full_name if not donation.is_anonymous else "Anonymous"
             ),
             "amount": payment_transaction.amount,
             "notification_id": new_donation_notification.id,
-            "donation_id": payment_transaction.donation.id,
-            "donation_created_at": payment_transaction.donation.created_at.isoformat(),
+            "donation_id": donation.id,
+            "donation_created_at": donation.created_at.isoformat(),
         }
+        current_app.logger.info(
+            f"Donation notification metadata: {notification_metadata}"
+        )
 
         current_app.redis.zadd(
             DONATION_NOTIFICATIONS,
@@ -83,18 +101,19 @@ def successful_charge(
         current_app.redis.publish(
             DONATION_NOTIFICATIONS_CHANNEL, json.dumps(notification_metadata)
         )
+        current_app.logger.info(
+            f"Donation notification for donation '{donation.id}' has been published to channel '{DONATION_NOTIFICATIONS_CHANNEL}'."
+        )
 
         email = create_email(
-            donor_id=donor.id,
-            campaign_id=campaign.id,
-            email_address=email_address,
-            email_type=EmailType.DONATION_RECEIPT,
+            email_subscription_id=donor.email_subscription.id,
+            recipient_email_address=email_address,
+            email_type=EmailType.RECEIPT,
         )
         current_app.logger.info(f"email: {email}")
         try:
             send_receipt_email(
                 donor_id=donor.id,
-                campaign_id=campaign.id,
                 email_address=email_address,
                 amount=amount,
                 email_id=email.id,

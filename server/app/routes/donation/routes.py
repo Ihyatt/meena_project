@@ -10,7 +10,7 @@ from app.models.campaign import Campaign
 from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
-from app.services.checkout_session import create_checkout_session
+from app.services.checkout_session import checkout_session
 from app.services.charge_handler import (
     successful_charge,
     failed_charge,
@@ -24,6 +24,12 @@ from marshmallow import EXCLUDE
 import asyncio
 from datetime import datetime, timedelta, timezone
 from app.utils.constants import CHARGE_PROCESS_QUEUE
+
+from app.services.charge_handler import (
+    successful_charge,
+    failed_charge,
+    refunded_charge,
+)
 
 
 @donation_bp.route("/", methods=["GET"])
@@ -46,13 +52,12 @@ def fetch_campaign():
             return (
                 jsonify(
                     {
-                        "id": None,
-                        "image_url": None,
-                        "title": None,
-                        "description": None,
-                        "raised": None,
-                        "goal": None,
-                        "totalDonations": None,
+                        "image_url": "",
+                        "title": "",
+                        "description": "",
+                        "raised": 0,
+                        "goal": 0,
+                        "totalDonations": 0,
                     }
                 ),
                 200,
@@ -103,17 +108,13 @@ def create_checkout_session():
 
         donor = get_or_create_donor(
             email_address=validated_donor_data["email_address"],
-            is_email_subscription=validated_donor_data["is_email_subscription"],
+            is_email_subscription=data["isEmailSubscription"],
             full_name=validated_donor_data["full_name"],
         )
 
         current_app.logger.info("created donor data")
 
-        combined = {
-            **data,
-        }
-
-        validated_donation_data = donation_schema.load(combined)
+        validated_donation_data = donation_schema.load(data)
 
         donation = create_donation(
             donor_id=donor.id,
@@ -140,12 +141,12 @@ def create_checkout_session():
 
         current_app.logger.info("created checkout session")
 
-        session = create_checkout_session(
+        session = checkout_session(
             amount=donation.amount,
             domain_url=domain_url,
-            campaign_id=active_campaign.id if active_campaign else None,
+            campaign_id=active_campaign.id if active_campaign else "",
             payment_transaction_id=payment_transaction.id,
-            idempotency_key=idempotency_key,
+            idempotency_key=payment_transaction.idempotency_key,
             donor_id=donor.id,
             donation_id=donation.id,
             email_address=donor.email_address,
@@ -195,7 +196,7 @@ def check_session_status():
 
 
 @donation_bp.route("/webhook", methods=["POST"])
-async def stripe_webhook():
+def stripe_webhook():
     try:
         payload = request.data
         sig_header = request.headers.get("Stripe-Signature")
@@ -212,6 +213,7 @@ async def stripe_webhook():
             "campaign_id": metadata.get("campaign_id", ""),
             "email_address": metadata.get("email_address", ""),
             "donor_id": metadata.get("donor_id", ""),
+            "donation_id": metadata.get("donation_id", ""),
             "payment_transaction_id": metadata.get("payment_transaction_id", ""),
             "idempotency_key": metadata.get("idempotency_key", ""),
             "amount": metadata.get("amount", ""),

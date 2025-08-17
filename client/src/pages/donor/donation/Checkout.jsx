@@ -20,6 +20,7 @@ const Checkout = () => {
       rounded-lg
       shadow-md
       bg-white
+      mt-16
     ">
       {isLoading && <Loading />}
       <div id="checkout">

@@ -2,7 +2,7 @@ import stripe
 from flask import current_app
 
 
-def create_checkout_session(
+def checkout_session(
     amount,
     domain_url,
     campaign_id,

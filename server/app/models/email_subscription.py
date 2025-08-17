@@ -24,7 +24,9 @@ class EmailSubscription(db.Model, SoftDeleteMixin):
     blocked = mapped_column(db.Boolean, default=False, nullable=False)
     spam = mapped_column(db.Boolean, default=False, nullable=False)
     bounced = mapped_column(db.Integer, default=0, nullable=False)
+    clicked = mapped_column(db.Integer, default=0, nullable=False)
     opened = mapped_column(db.Integer, default=0, nullable=False)
+    sent = mapped_column(db.Integer, default=0, nullable=False)
     queued = mapped_column(db.Integer, default=0, nullable=False)
     status = mapped_column(
         db.Enum(SubscriptionStatus), default=SubscriptionStatus.PENDING, nullable=False
