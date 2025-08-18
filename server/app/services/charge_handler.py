@@ -8,6 +8,7 @@ from app.models.donation import Donation
 from app.models.user import User
 from app.utils.constants import (
     PaymentStatus,
+    DonationStatus,
     EmailType,
     DONATION_NOTIFICATIONS,
     MAX_DONATION_NOTIFICATIONS,
@@ -54,7 +55,7 @@ def successful_charge(
             campaign = Campaign.query.get_or_404(campaign_id)
             campaign.raised += payment_transaction.amount
             campaign.total_donations += 1
-
+        donation.status = DonationStatus.SUCCEEDED
         payment_transaction.status = PaymentStatus.SUCCEEDED
 
         now = datetime.now(timezone.utc)
@@ -113,14 +114,10 @@ def successful_charge(
         current_app.logger.info(f"email: {email}")
 
         data = {
-            "campaign_id": metadata.get("campaign_id", ""),
-            "email_address": metadata.get("email_address", ""),
-            "donor_id": metadata.get("donor_id", ""),
-            "donation_id": metadata.get("donation_id", ""),
-            "payment_transaction_id": metadata.get("payment_transaction_id", ""),
-            "idempotency_key": metadata.get("idempotency_key", ""),
-            "amount": metadata.get("amount", ""),
-            "charge_id": session.get("payment_intent", ""),
+            "donor_id": donor_id,
+            "email_address": email_address,
+            "amount": amount,
+            "email_id": email.id,
         }
 
         message = {
@@ -129,24 +126,8 @@ def successful_charge(
             "value": event_type,
             "data": data,
         }
-
+        EMAIL_PROCESS_QUEUE = "email_process_queue"
         current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
-
-        try:
-            send_receipt_email(
-                donor_id=donor.id,
-                email_address=email_address,
-                amount=amount,
-                email_id=email.id,
-            )
-            current_app.logger.info(
-                f"Donation receipt email has been sent to {email_address}."
-            )
-        except Exception as e:
-            current_app.logger.error(
-                f"Failed to send donation receipt email to {email_address}: {str(e)}"
-            )
-            raise ValueError(str(e))
 
     except StaleDataError as e:
         current_app.logger.error(str(e))
