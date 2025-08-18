@@ -35,28 +35,27 @@ def impact_email():
             )
 
 
-# def closeout_email():
-#     app = create_app()
-#     with app.app_context():  # Create application context
-#         app.logger.info("Running closeout email job...")
-#         EMAIL_PROCESS_QUEUE = "email_process_queue"
-#         active_campaigns = Campaign.query.filter_by(is_active=True).first()
-#         if not active_campaigns:
-#             app.logger.info("No active campaigns found for closeout emails.")
-#             return
+def closeout_email():
 
-#         email_subscriptions = EmailSubscription.query.filter_by(
-#             status=SubscriptionStatus.ACTIVE
-#         ).all()
+    current_app.logger.info("Running closeout email job...")
+    EMAIL_PROCESS_QUEUE = "email_process_queue"
+    active_campaigns = Campaign.query.filter_by(is_active=True).first()
+    if not active_campaigns:
+        current_app.logger.info("No active campaigns found for closeout emails.")
+        return
 
-#         for subscription in email_subscriptions:
-#             donor = subscription.user
-#             email = create_email(
-#                 subscription.id, subscription.email_address, EmailType.CLOSEOUT
-#             )
-#             send_closeout_email(
-#                 donor.id,
-#                 subscription.email_address,
-#                 active_campaigns.id,
-#                 email.id,
-#             )
+    email_subscriptions = EmailSubscription.query.filter_by(
+        status=SubscriptionStatus.ACTIVE
+    ).all()
+
+    for subscription in email_subscriptions:
+        donor = subscription.user
+        email = create_email(
+            subscription.id, subscription.email_address, EmailType.CLOSEOUT
+        )
+        send_closeout_email(
+            donor.id,
+            subscription.email_address,
+            active_campaigns.id,
+            email.id,
+        )

@@ -7,7 +7,7 @@ import time
 from app import create_app
 import schedule
 import time
-from app.scheduler.email_campaign import impact_email
+from app.scheduler.email_campaign import impact_email, closeout_email
 
 app = create_app()
 
@@ -17,9 +17,15 @@ def run_impact_email():
         impact_email()
 
 
+def run_closeout_email():
+    with app.app_context():
+        closeout_email()
+
+
 def main():
     print("Starting scheduler...")
-    schedule.every(30).seconds.do(run_impact_email)
+    # schedule.every(30).seconds.do(run_impact_email)
+    schedule.every(30).seconds.do(run_closeout_email)
 
     while True:
         schedule.run_pending()
