@@ -26,7 +26,7 @@ const DonationsBarChart = () => {
     }));
 
     return (
-        <div>
+        <div >
             {
                 donationsWindow.onetime && donationsWindow.onetime.length === 0 ? (
                     <div className=' text-center text-gray-500 p-4 '>

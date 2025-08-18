@@ -111,6 +111,27 @@ def successful_charge(
             email_type=EmailType.RECEIPT,
         )
         current_app.logger.info(f"email: {email}")
+
+        data = {
+            "campaign_id": metadata.get("campaign_id", ""),
+            "email_address": metadata.get("email_address", ""),
+            "donor_id": metadata.get("donor_id", ""),
+            "donation_id": metadata.get("donation_id", ""),
+            "payment_transaction_id": metadata.get("payment_transaction_id", ""),
+            "idempotency_key": metadata.get("idempotency_key", ""),
+            "amount": metadata.get("amount", ""),
+            "charge_id": session.get("payment_intent", ""),
+        }
+
+        message = {
+            "id": str(uuid.uuid4()),
+            "timestamp": datetime.now().isoformat(),
+            "value": event_type,
+            "data": data,
+        }
+
+        current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
+
         try:
             send_receipt_email(
                 donor_id=donor.id,

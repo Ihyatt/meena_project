@@ -2,6 +2,7 @@ from app.database import db
 from app.utils.constants import EmailStatus
 from app.models.email import Email
 from app.models.user import User
+from app.models.campaign import Campaign
 from app.models.email_template import EmailTemplate
 from flask import current_app
 import textwrap
@@ -127,9 +128,7 @@ def send_impact_email(donor_id, email_address, campaign_id, email_id):
                 }
             ]
         }
-        current_app.logger.info(
-            f"Sending receipt email to {donor.full_name} with amount {amount}."
-        )
+        current_app.logger.info(f"Sending receipt email to {donor.full_name}.")
         try:
             result = mailjet_client.send.create(data=data)
             current_app.logger.info(result.json())
@@ -198,9 +197,7 @@ def send_closeout_email(donor_id, email_address, campaign_id, email_id):
                 }
             ]
         }
-        current_app.logger.info(
-            f"Sending receipt email to {donor.full_name} with amount {amount}."
-        )
+        current_app.logger.info(f"Sending receipt email to {donor.full_name}.")
         try:
             result = mailjet_client.send.create(data=data)
             current_app.logger.info(result.json())

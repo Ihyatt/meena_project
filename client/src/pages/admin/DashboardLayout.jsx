@@ -155,7 +155,7 @@ const DashboardLayout = () => {
           </Menu>
         </main>
       </Sidebar>
-      <main style={{ flexGrow: 1, overflowY: 'auto' }}>
+      <main style={{ flexGrow: 1, overflowY: 'auto', backgroundColor: '#f0f2f5' }}>
         <Outlet />
       </main>
     </div >

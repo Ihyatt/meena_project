@@ -10,7 +10,7 @@ import {
 import useAdminStore from 'src/pages/admin/store';
 import Donor from "src/pages/admin/donor/Card";
 
-const TABLE_HEAD = ["Name", "Email", "Donated", "Donations", "Emails Sent", "Emails Opened", "Status"];
+const TABLE_HEAD = ["Name", "Email", "Donated", "Donations", "Emails Sent", "Emails Opened", "Status", ""];
 
 const Donors = () => {
     const { donors } = useAdminStore();

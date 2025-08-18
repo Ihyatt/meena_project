@@ -8,7 +8,8 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from apscheduler.schedulers.background import BackgroundScheduler
+from flask_apscheduler import APScheduler
+
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
@@ -30,14 +31,6 @@ from flask_jwt_extended import JWTManager
 import stripe
 from mailjet_rest import Client
 from datetime import timedelta
-
-from app.scheduler.email_campaign.close import campaign_close_emails
-from app.scheduler.email_campaign.reminder import campaign_reminder_emails
-
-from app.scheduler.reconciliation.email import email_reconciliation
-from app.scheduler.reconciliation.campaign import campaign_reconciliation
-from app.scheduler.reconciliation.donor import donor_reconciliation
-from app.scheduler.reconciliation.payment import payment_reconciliation
 
 
 from app.database import db
@@ -125,77 +118,5 @@ def create_app():
     audit_logger = AuditLogger(db)
 
     app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
-
-    jobstores = {
-        "default": SQLAlchemyJobStore(url=app.config["SQLALCHEMY_DATABASE_URI"])
-    }
-    executors = {
-        "default": ThreadPoolExecutor(20),
-        "processpool": ProcessPoolExecutor(5),
-    }
-
-    job_defaults = {"coalesce": False, "max_instances": 3}
-
-    scheduler = BackgroundScheduler(
-        jobstores=jobstores,
-        executors=executors,
-        job_defaults=job_defaults,
-        timezone=utc,
-    )
-
-    scheduler.start()
-
-    scheduler.add_job(
-        email_reconciliation,
-        "cron",
-        hour=23,
-        day_of_week="sun",
-        id="email_reconciliation",
-        replace_existing=True,
-    )
-
-    scheduler.add_job(
-        payment_reconciliation,
-        "cron",
-        hour=23,
-        day_of_week="sun",
-        id="payment_reconciliation",
-        replace_existing=True,
-    )
-
-    scheduler.add_job(
-        campaign_reconciliation,
-        "cron",
-        hour=23,
-        day_of_week="sun",
-        id="campaign_reconciliation",
-        replace_existing=True,
-    )
-
-    scheduler.add_job(
-        donor_reconciliation,
-        "cron",
-        hour=23,
-        day_of_week="sun",
-        id="donor_reconciliation",
-        replace_existing=True,
-    )
-
-    scheduler.add_job(
-        campaign_reminder_emails,
-        "cron",
-        hour=23,
-        day="last thu",
-        id="campaign_reminder_emails",
-        replace_existing=True,
-    )
-
-    scheduler.add_job(
-        campaign_close_emails,
-        "cron",
-        hour=23,
-        id="campaign_close_emails",
-        replace_existing=True,
-    )
 
     return app

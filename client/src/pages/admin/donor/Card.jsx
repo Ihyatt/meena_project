@@ -4,6 +4,7 @@ import {
 } from "@material-tailwind/react";
 import { NumericFormat } from 'react-number-format';
 
+import { RiPencilLine } from "react-icons/ri";
 
 const Donor = ({ data }) => {
 
@@ -54,9 +55,12 @@ const Donor = ({ data }) => {
                 </div>
             </td>
             <td className="p-4 border-b border-blue-gray-50">
-                <div className={`py-1 px-2 rounded-md w-max text-xs  ${data.emailSubscription.status == "ACTIVE" ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                <div className={`py-1 px-2 rounded-md w-max text-xs  ${data.emailSubscription.status == "ACTIVE" ? 'bg-green-100 text-green-600 text-xs' : 'bg-red-100 text-red-600 text-xs'}`}>
                     {data.emailSubscription.status == "ACTIVE" ? "subscribed" : "unsubscribed"}
                 </div>
+            </td>
+            <td className="p-4 border-b border-blue-gray-50  ">
+                <RiPencilLine />
             </td>
         </tr >
     );

@@ -131,7 +131,7 @@ const Donation = () => {
                 <div className="text-2xl font-bold">
                   {title || 'Select Gift Amount'}
                 </div>
-                <div className="text-md m-3 text-gray-600">
+                <div className="text-md m-3 text-gray-600 whitespace-pre-wrap">
                   {description || 'Your donation will help us achieve our goals and make a difference in the community.'}
                 </div>
                 <div className="mb-3 text-gray-400">

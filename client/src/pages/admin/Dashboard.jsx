@@ -89,11 +89,11 @@ const Dashboard = () => {
         </div >
       </div>
 
-      <div className="flex mb-4">
-        <div className="w-1/2  mr-1 rounded-lg shadow-md">
+      <div className="flex m-4">
+        <div className="w-1/2  mr-1 rounded-lg shadow-md bg-white">
           <DonationsBarChart />
         </div>
-        <div className="w-1/2 ml-1 rounded-lg shadow-md">
+        <div className="w-1/2 ml-1 rounded-lg shadow-md bg-white">
           <DonationsScatterChart />
         </div>
       </div>

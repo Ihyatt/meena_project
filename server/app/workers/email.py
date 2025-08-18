@@ -44,14 +44,15 @@ def process_message(db, message_json: str):
             send_impact_email(
                 data["donor_id"],
                 data["email_address"],
-                data["amount"],
+                data["campaign_id"],
                 data["email_id"],
             )
+
         elif message["value"] == EmailType.CLOSEOUT:
             send_closeout_email(
                 data["donor_id"],
                 data["email_address"],
-                data["amount"],
+                data["campaign_id"],
                 data["email_id"],
             )
         db.hdel(RETRY_COUNTS, message_json)  # Clear retry count on success

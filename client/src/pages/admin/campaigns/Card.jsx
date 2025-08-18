@@ -89,7 +89,6 @@ export const Campaign = ({ data }) => {
         </div>
       </td>
       <td className="p-4 border-b border-blue-gray-50  ">
-
         <CampaignDropdown key={data.id} data={data} />
       </td>
     </tr>

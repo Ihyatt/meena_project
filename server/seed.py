@@ -302,7 +302,6 @@ if __name__ == "__main__":
         db.session.query(Donation).delete()
         db.session.query(Email).delete()
         db.session.query(Image).delete()
-        db.session.query(Task).delete()
         db.session.query(Campaign).delete()  # This must be deleted before users
         db.session.query(
             EmailSubscription
