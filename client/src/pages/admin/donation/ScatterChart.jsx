@@ -52,7 +52,7 @@ const DonationsScatterChart = () => {
 
         <div>
             {donationsWindow.onetime && donationsWindow.onetime.length === 0 ? (
-                <div className='text-center text-gray-500 '>
+                <div className='text-center text-gray-500 p-4'>
                     No donations available for the selected period.
                 </div>
             ) : (

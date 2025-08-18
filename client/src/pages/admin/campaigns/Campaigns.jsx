@@ -83,7 +83,7 @@ const Campaigns = () => {
                                 <tr>
                                     <td colSpan={TABLE_HEAD.length} className="text-center p-4">
                                         <Typography variant="small" color="blue-gray" className="font-normal">
-                                            No donors to display for this page.
+                                            No campaigns to display for this page.
                                         </Typography>
                                     </td>
                                 </tr>

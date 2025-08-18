@@ -10,11 +10,11 @@ import DashboardLayout from "src/pages/admin/DashboardLayout";
 import Dashboard from "src/pages/admin/Dashboard";
 
 import Campaigns from "src/pages/admin/campaigns/Campaigns";
-import Donors from "src/pages/admin/donor/Donors";
+import Donors from "src/pages/admin/donors/Donors";
 import { EmailTemplate } from "src/pages/admin/emailTemplate/Template";
 import { CampaignDraft } from "src/pages/admin/draft/Draft";
 import { CampaignDetails } from "src/pages/admin/campaigns/Edit";
-
+import { DonorDetails } from "src/pages/admin/donors/Edit";
 
 // donor
 import DonorLayout from "src/pages/donor/DonationLayout";
@@ -57,6 +57,7 @@ function App() {
       {
         background && (
           <Routes>
+            <Route path="/admins/donors/:donorId" element={<DonorDetails />} />
             <Route path="/admins/campaigns/:campaignId" element={<CampaignDetails />} />
             <Route path="/admins/campaigns/drafts" element={<CampaignDraft />} />
             <Route path="/admins/emails/email-template/receipt" element={<EmailTemplate />} />

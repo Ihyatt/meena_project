@@ -14,7 +14,7 @@ const useAuthStore = create(
       isLoading: false,
       error: null,
       login: async (emailAddress, password) => {
-        set({ isLoading: true, error: null });
+        set({ isLoading: false, error: null });
         try {
           const response = await fetch(`${backednUrl}/login`, {
             method: 'POST',
@@ -23,10 +23,10 @@ const useAuthStore = create(
           });
           const data = await response.json();
           if (!response.ok) {
-            set({ error: data.message });
+            set({ error: data.message, isLoading: false });
           }
           if (data.status !== 'success') {
-            set({ error: data.message });
+            set({ error: data.message, isLoading: false });
             return false;
           }
           set({

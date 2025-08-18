@@ -21,6 +21,7 @@ const Checkout = () => {
       shadow-md
       bg-white
       mt-16
+      h-screen w-full
     ">
       {isLoading && <Loading />}
       <div id="checkout">

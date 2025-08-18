@@ -52,6 +52,7 @@ def fetch_campaign():
             return (
                 jsonify(
                     {
+                        "activeCampaign": False,
                         "image_url": "",
                         "title": "",
                         "description": "",
@@ -62,8 +63,10 @@ def fetch_campaign():
                 ),
                 200,
             )
+        campaign_data = campaign_schema.dump(campaign)
+        campaign_data["activeCampaign"] = True
         current_app.logger.info(f"Active Campaign {campaign.id} successfully fetched.")
-        return campaign_schema.dump(campaign), 200
+        return campaign_data, 200
 
     except Exception as e:
         current_app.logger.error(

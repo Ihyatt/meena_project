@@ -8,11 +8,12 @@ from app.workers.redis_client import redis_access
 from app.workers.utils import backoff
 
 
-from app.services.charge_handler import (
-    successful_charge,
-    failed_charge,
-    refunded_charge,
+from app.services.email_handler import (
+    send_receipt_email,
+    send_impact_email,
+    send_closeout_email,
 )
+
 from app import create_app
 
 from app.utils.constants import EmailType

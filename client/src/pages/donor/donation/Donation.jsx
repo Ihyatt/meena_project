@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import useDonorStore from 'src/pages/donor/store'
@@ -21,6 +21,7 @@ const Donation = () => {
   const [raised, setRaised] = useState(0);
   const [goal, setGoal] = useState(0);
   const [totalDonations, setTotalDonations] = useState(0);
+  const [activeCampaign, setActiveCampaign] = useState(true);
   const navigate = useNavigate();
 
   const {
@@ -50,6 +51,8 @@ const Donation = () => {
       setRaised(data.raised || 0);
       setGoal(data.goal || 0);
       setTotalDonations(data.total_donations || 0);
+      setActiveCampaign(data.activeCampaign);
+      console.log('Campaign data fetched:', data, activeCampaign);
     });
   }, [fetchCampaign]);
 
@@ -92,13 +95,13 @@ const Donation = () => {
                 alt="ui/ux review check"
                 className='rounded-t-lg shadow-none  h-100 w-full object-cover'
               />
-              {goal &&
+              {activeCampaign &&
                 <DonationBar
                   raised={raised || 0}
                   goal={goal || 0}
                 />
               }
-              {goal &&
+              {activeCampaign &&
                 <div className="pt-2 pb-7 px-8 bg-white rounded-b-lg ">
                   <div className=' mt-3 text-right'>
                     <div className="text-md">
@@ -251,7 +254,7 @@ const Donation = () => {
                     <div className=" m-2 text-sm text-gray-400 font-light">
 
                       <div className="inline-flex items-center mr-1">
-                        <label className="flex items-center cursor-pointer relative">
+                        <label className="flex items-center cursor-pointer relative mr-1">
                           <input
                             checked={isEmailSubscription}
                             onChange={setIsEmailSubscription}
@@ -268,7 +271,7 @@ const Donation = () => {
                       </div>
 
                       <div className="inline-flex items-center mr-1">
-                        <label className="flex items-center cursor-pointer relative">
+                        <label className="flex items-center cursor-pointer relative mr-1">
                           <input
                             type="checkbox"
                             checked={isAnonymous}

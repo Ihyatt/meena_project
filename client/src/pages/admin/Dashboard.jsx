@@ -90,10 +90,10 @@ const Dashboard = () => {
       </div>
 
       <div className="flex m-4">
-        <div className="w-1/2  mr-1 rounded-lg shadow-md bg-white">
+        <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white">
           <DonationsBarChart />
         </div>
-        <div className="w-1/2 ml-1 rounded-lg shadow-md bg-white">
+        <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
           <DonationsScatterChart />
         </div>
       </div>

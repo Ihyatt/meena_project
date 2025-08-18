@@ -13,16 +13,15 @@ function PaymentSuccess() {
     };
     return (
 
-        <div className="grid grid-cols-9 gap-4 items-center justify-center h-screen">
-            <div className=" col-start-4 col-span-3 shadow-lg mt-4 mb-4">
-                <div className="w-full p-10">
-                    <div className="pt-2 pb-2 px-7">
-                        <div className="m-5 text-center font-bold text-2xl">Thank you for your Donation!</div>
-                        <form onSubmit={handleDonateClick}>
+        <div className="bg-[#86c88b] h-screen w-full flex items-center justify-center">
+            <div className=" bg-[#ffffff] w-110 rounded-lg  shadow-lg mt-4 mb-4 p-10 ">
 
-                            <div className="my-6">
-                                <input
-                                    className="
+                <div className="m-5 text-center font-bold text-2xl">Thank you for your Donation!</div>
+                <form onSubmit={handleDonateClick}>
+
+                    <div className="my-6">
+                        <input
+                            className="
                                         font-medium                 
                                         text-base                  
                                         max-w-[400px]               
@@ -40,25 +39,16 @@ function PaymentSuccess() {
                                         mx-auto                      
                                         hover:bg-[#D22D2E]           
                                         "
-                                    type="submit" name=""
-                                    value="Donate"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <a href="https://www.instagram.com/themeenaproject/" className=" font-light text-gray-400 inline-flex items-center vertical-align-middle hover:text-gray-500"> Follow Meena on instagram<RiInstagramLine /></a>
-                            </div>
-
-
-                        </form>
+                            type="submit" name=""
+                            value="Donate"
+                        />
                     </div>
-                </div>
+                    <div className="mb-4">
+                        <a href="https://www.instagram.com/themeenaproject/" className=" font-light text-gray-400 inline-flex items-center vertical-align-middle hover:text-gray-500"> Follow Meena on instagram<RiInstagramLine /></a>
+                    </div>
+                </form>
             </div>
-
-        </div >
-
-
-
-
+        </div>
 
     );
 }
