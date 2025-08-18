@@ -83,3 +83,5 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 - Current focus: Improving production readiness
 
 > **Note**: This project demonstrates rapid learning and implementation of complex systems. Several production-grade features are already implemented, with more enhancements planned.
+
+To view UI and flow --> <https://excalidraw.com/#json=NVzKdgtxa0izQCNrEG_nE,6745Dnp7jvstL9GxZH_QIw>
