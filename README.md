@@ -92,7 +92,6 @@ DONOR FLOW
 
 <img width="100"  alt="Image" src="https://github.com/user-attachments/assets/4dbfe252-10a1-4ba2-b1a4-736d40fe7af7" />
 
-email
 <img width="100" alt="Image" src="https://github.com/user-attachments/assets/20c4340e-c13f-4212-854e-59054a5c105a" />
 
 ADMIN FLOW
