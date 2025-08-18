@@ -24,8 +24,8 @@ def run_closeout_email():
 
 def main():
     print("Starting scheduler...")
-    # schedule.every(30).seconds.do(run_impact_email)
-    schedule.every(30).seconds.do(run_closeout_email)
+    schedule.every(5).minutes.do(run_impact_email)
+    schedule.every(5).minutes.do(run_closeout_email)
 
     while True:
         schedule.run_pending()

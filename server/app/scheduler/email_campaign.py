@@ -27,12 +27,22 @@ def impact_email():
             email = create_email(
                 subscription.id, subscription.email_address, EmailType.IMPACT
             )
-            send_impact_email(
-                donor.id,
-                subscription.email_address,
-                active_campaigns.id,
-                email.id,
-            )
+
+            data = {
+                "donor_id": donor.id,
+                "email_address": donor.email_address,
+                "campaign_id": active_campaigns.id,
+                "email_id": email.id,
+            }
+
+            message = {
+                "id": str(uuid.uuid4()),
+                "timestamp": datetime.now().isoformat(),
+                "value": EmailType.IMPACT,
+                "data": data,
+            }
+
+            current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
 
 
 def closeout_email():
@@ -53,9 +63,19 @@ def closeout_email():
         email = create_email(
             subscription.id, subscription.email_address, EmailType.CLOSEOUT
         )
-        send_closeout_email(
-            donor.id,
-            subscription.email_address,
-            active_campaigns.id,
-            email.id,
-        )
+
+        data = {
+            "donor_id": donor.id,
+            "email_address": donor.email_address,
+            "campaign_id": active_campaigns.id,
+            "email_id": email.id,
+        }
+
+        message = {
+            "id": str(uuid.uuid4()),
+            "timestamp": datetime.now().isoformat(),
+            "value": EmailType.CLOSEOUT,
+            "data": data,
+        }
+
+        current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
