@@ -85,3 +85,22 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 > **Note**: This project demonstrates rapid learning and implementation of complex systems. Several production-grade features are already implemented, with more enhancements planned.
 
 To view UI and flow --> <https://excalidraw.com/#json=NVzKdgtxa0izQCNrEG_nE,6745Dnp7jvstL9GxZH_QIw>
+
+DONOR FLOW
+
+<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/da487134-e2ec-489d-aead-5e4b9d0d2708" />
+
+<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/4dbfe252-10a1-4ba2-b1a4-736d40fe7af7" />
+
+email
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/20c4340e-c13f-4212-854e-59054a5c105a" />
+
+ADMIN FLOW
+
+<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/3b87ba42-577e-476b-ab53-4aa43e88afbe" />
+
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/39e51ddc-6c46-4a70-af11-b465bb600c7f" />
+
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/f50c0aa2-3aa7-489b-a539-878e20277561" />
+
+<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/6686a9b6-dd95-4a98-988c-5ff3666a15e8" />
