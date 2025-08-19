@@ -6,7 +6,7 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 
 ### Donor Flow
 
-- Accept/reject donations based on location (Google Maps API)
+- Accept/reject providing location (Google Maps API)
 - Anonymous donation option
 - Email subscription opt-in
 - Stripe Checkout with webhook verification
@@ -78,13 +78,11 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 
 ## 🏗️ Development Notes
 
-- Built in 2.5 months with 2 weeks off
 - First-time use of several technologies (Redis, Stripe, SSE)
 - Current focus: Improving production readiness
 
 > **Note**: This project demonstrates rapid learning and implementation of complex systems. Several production-grade features are already implemented, with more enhancements planned.
 
-To view UI and flow --> <https://excalidraw.com/#json=NVzKdgtxa0izQCNrEG_nE,6745Dnp7jvstL9GxZH_QIw>
 
 DONOR FLOW
 
