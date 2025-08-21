@@ -16,7 +16,6 @@ from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
 
-from imagekitio import ImageKit
 
 from app.database import db
 from app.models.campaign import Campaign

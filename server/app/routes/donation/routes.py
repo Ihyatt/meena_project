@@ -1,6 +1,5 @@
 import uuid
 import stripe
-from retrying import retry
 from flask import jsonify, request, current_app
 from marshmallow.exceptions import ValidationError
 from werkzeug.exceptions import NotFound

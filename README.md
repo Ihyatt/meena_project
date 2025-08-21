@@ -78,6 +78,12 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 
 ## 🏗️ Development Notes
 
+
+
+
+
+
+
 - First-time use of several technologies (Redis, Stripe, SSE)
 - Current focus: Improving production readiness
 

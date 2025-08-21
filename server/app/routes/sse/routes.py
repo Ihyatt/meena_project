@@ -8,7 +8,6 @@ from app.database import db
 from redis import Redis
 
 
-from retrying import retry
 from app.utils.constants import (
     PaymentStatus,
     EmailType,

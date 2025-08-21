@@ -9,7 +9,7 @@ import DonationBar from 'src/pages/donor/donation/components/ProgressBar';
 import { NumericFormat } from 'react-number-format';
 import { RiInstagramLine } from "react-icons/ri";
 import DonationEvents from "src/pages/donor/donation/components/Events"
-
+import About from "src/pages/donor/donation/components/About";
 import defaultImg from 'src/assets/images/defaultImg.jpg';
 
 
@@ -262,9 +262,14 @@ const Donation = () => {
                             className="peer h-3.5 w-3.5 cursor-pointer transition-all appearance-none rounded  hover:shadow-sm border border-slate-300 checked:bg-slate-800 checked:border-slate-800" id="check-custom-icon" />
 
                           <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-2.5 h-2.5">
-                              <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-                            </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" 
+       fill="none" 
+       viewBox="0 0 24 24" 
+       strokeWidth={3} 
+       stroke="currentColor" 
+       className="w-3 h-3">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
                           </span>
                         </label>
                         <label >I would like to recieve email updates</label>
@@ -278,9 +283,14 @@ const Donation = () => {
                             onChange={setIsAnonymous}
                             className="peer h-3.5 w-3.5 cursor-pointer transition-all appearance-none rounded  hover:shadow-sm border border-slate-300 checked:bg-slate-800 checked:border-slate-800" id="check-custom-icon" />
                           <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-2.5 h-2.5">
-                              <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-                            </svg>
+                              <svg xmlns="http://www.w3.org/2000/svg" 
+       fill="none" 
+       viewBox="0 0 24 24" 
+       strokeWidth={3} 
+       stroke="currentColor" 
+       className="w-3 h-3">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
                           </span>
                         </label>
                         <label >I would like my donation to be anonymous</label>
@@ -318,7 +328,8 @@ const Donation = () => {
               </div>
             </div>
           </div>
-          <div className="mt-2 ml-5 w-70">
+          <div className="mt-4 ml-5 w-70">
+            <About />
             <DonationEvents />
           </div>
         </div>

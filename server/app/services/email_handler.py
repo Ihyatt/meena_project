@@ -5,19 +5,8 @@ from app.models.user import User
 from app.models.campaign import Campaign
 from app.models.email_template import EmailTemplate
 from flask import current_app
-import textwrap
-from retrying import retry
 
-from tenacity import retry
-from tenacity import (
-    retry,
-    stop_after_attempt,
-    wait_exponential,
-    before_sleep_log,
-    RetryError,
-    wait_exponential_jitter,
-    retry_if_exception_type,
-)
+
 
 import asyncio
 from app.utils.constants import EmailType
