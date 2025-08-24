@@ -14,22 +14,12 @@ export default defineConfig({
 
   },
   server: {
-    port: 3000,
-    // Allow all ngrok-free.app subdomains (recommended for flexibility)
-    host: true, // Ensures Vite listens on all network interfaces
-    strictPort: true, // Exit if port 3000 is occupied
-    allowedHosts: [
-      '.ngrok-free.app', // Allows ANY ngrok URL (wildcard)
-      // OR for a specific URL (less flexible):
-      // 'ad79-23-124-111-47.ngrok-free.app',
-    ],
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // Your backend server
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
-        secure: false, // Disable SSL verification for local proxies
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   },
 });

@@ -8,10 +8,6 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
-from flask_apscheduler import APScheduler
-
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 from datetime import datetime
 import pytz  # or use zoneinfo in Python 3.9+
@@ -37,7 +33,6 @@ from app.database import db
 from sqlalchemy_continuum import make_versioned
 from flask_audit_logger import AuditLogger
 from flask_marshmallow import Marshmallow
-from apscheduler.schedulers.background import BackgroundScheduler
 
 
 from app.config import Config
@@ -61,7 +56,7 @@ from app.models.payment_transaction import PaymentTransaction
 
 app = Flask(__name__)
 jwt = JWTManager()
-cors = CORS()
+CORS(app)  # Enable CORS
 migrate = Migrate()
 ma = Marshmallow()
 
@@ -91,7 +86,6 @@ def create_app():
 
     app.redis = Redis(host="127.0.0.1", port=6379, decode_responses=True, db=0)
 
-    cors.init_app(app)
     jwt.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)

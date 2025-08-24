@@ -30,7 +30,7 @@ class Config:
     BUCKET = os.getenv("BUCKET_NAME")
 
     HOST = os.environ.get("HOST", "127.0.0.1")
-    PORT = int(os.environ.get("PORT", 5000))
+    PORT = int(os.environ.get("PORT", 8000))
     DEBUG = os.environ.get("DEBUG", "True").lower() in ["true", "1", "yes"]
 
     redis_host = "127.0.0.1"

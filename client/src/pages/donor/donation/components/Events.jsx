@@ -9,7 +9,7 @@ const DonationEvents = () => {
     // This useEffect for initial fetch is fine
     useEffect(() => {
         // Assuming backednUrl is defined elsewhere or passed as a prop
-        const backednUrl = 'http://localhost:5000'; // Replace with your actual backend URL
+        const backednUrl = 'http://localhost:8000'; // Replace with your actual backend URL
 
         fetch(`${backednUrl}/events/init`)
             .then((res) => res.json())
@@ -20,7 +20,7 @@ const DonationEvents = () => {
     }, []);
 
     useEffect(() => {
-        const backednUrl = 'http://localhost:5000'; // Replace with your actual backend URL
+        const backednUrl = 'http://localhost:8000'; // Replace with your actual backend URL
 
         const source = new EventSource(`${backednUrl}/events/stream`);
 
