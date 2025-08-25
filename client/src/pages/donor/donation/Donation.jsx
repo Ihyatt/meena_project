@@ -19,6 +19,7 @@ const Donation = () => {
   const [raised, setRaised] = useState(0);
   const [goal, setGoal] = useState(0);
   const [totalDonations, setTotalDonations] = useState(0);
+  const [copyText, setCopyText] = useState("SHARE LINK");
   const [activeCampaign, setActiveCampaign] = useState(true);
   const targetRef = useRef(null);
 
@@ -40,7 +41,11 @@ const Donation = () => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText("http://localhost:5173/");
-      alert("Copied to clipboard!");
+      console.log("URL copied to clipboard");
+      setCopyText("COPIED!");
+      setTimeout(() => {
+        setCopyText("SHARE LINK");
+      }, 5000); // 3000 milliseconds = 3 seconds
     } catch (err) {
       console.error("Failed to copy url: ", err);
     }
@@ -169,7 +174,7 @@ const Donation = () => {
               "
               onClick={handleCopy}
             >
-              SHARE
+              {copyText}
             </button>
             <div className="mt-10">
               <div className="text-gray-400 ">RECENT DONATIONS</div>

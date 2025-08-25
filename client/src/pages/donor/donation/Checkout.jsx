@@ -1,17 +1,20 @@
-import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import {
+  EmbeddedCheckoutProvider,
+  EmbeddedCheckout,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import Loading from "src/components/Loading";
-import useDonorStore from 'src/pages/donor/store'
-
+import useDonorStore from "src/pages/donor/store";
 
 const stripePublishableKey = import.meta.env.VITE_STRIPE_PK;
 
 const Checkout = () => {
   const { fetchClientSecret, isLoading } = useDonorStore();
-  const stripePromise = loadStripe(stripePublishableKey)
+  const stripePromise = loadStripe(stripePublishableKey);
 
   return (
-    <div className="
+    <div
+      className="
       max-w-md
       mx-auto
       p-4
@@ -21,8 +24,10 @@ const Checkout = () => {
       shadow-md
       bg-white
       mt-16
-      h-screen w-full
-    ">
+      h-screen 
+      w-full
+    "
+    >
       {isLoading && <Loading />}
       <div id="checkout">
         <EmbeddedCheckoutProvider
