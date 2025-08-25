@@ -145,39 +145,39 @@ export const CampaignDraft = () => {
       {isLoading && <Loading />}
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
-          <div className="input-container">
+          <div className="p-2">
+            <label class="block mb-2 text-sm text-slate-600">Title</label>
             <input
               type="text"
               id="title"
               placeholder="Title"
               value={title}
               onChange={handleTitleChange}
-              className="w-full border-none box-border resize-none block mb-1 text-2xl focus:outline-none"
+              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
               required
             />
           </div>
-          <div className="input-container">
+          <div className="p-2">
+            <label class="block mb-2 text-sm text-slate-600">Description</label>
             <textarea
               id="description"
               placeholder="Description..."
               value={description}
               onChange={handleDescriptionChange}
               rows="4"
-              className="w-full border-none box-border resize-none block mb-1 text-sm h-50 focus:outline-none"
+              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
             ></textarea>
           </div>
-          <div className="flex items-center border-2 border-solid  p-1 rounded-sm">
-            <div className="text-sm text-gray-400 mr-1">goal:</div>
-            <div className="input-container ">
-              <input
-                type="number"
-                id="goal"
-                value={goal}
-                onChange={(e) => setGoal(e.target.value)}
-                className="w-full border-none box-border resize-none input-target-amount text-sm focus:outline-none"
-                required
-              />
-            </div>
+          <div className="p-2">
+            <label class="block mb-2 text-sm text-slate-600">Goal</label>
+            <input
+              type="number"
+              id="goal"
+              value={goal}
+              onChange={(e) => setGoal(e.target.value)}
+              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+              required
+            />
           </div>
           <ImageUpload
             campaignId={campaignId}

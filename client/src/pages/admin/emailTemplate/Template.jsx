@@ -100,23 +100,30 @@ export const EmailTemplate = () => {
         <form className="max-w-xl mx-auto p-5">
           {isLoading && <Loading />}
 
-          <div className="input-container">
+          <div className="p-2">
+            <label class="block mb-2 text-sm text-slate-600">Subject</label>
+
             <input
               type="text"
               id="subject"
-              placeholder="Subject"
+              placeholder="Email subject..."
               value={subject}
               onChange={handleSubjectChange}
-              className="w-full border-none box-border resize-noneblock mb-1 text-2xl focus:outline-none"
+              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
               required
             />
+          </div>
+
+          <div className="p-2">
+            <label class="block mb-2 text-sm text-slate-600">Template ID</label>
+
             <input
               type="text"
               id="templateId"
-              placeholder="Template ID"
+              placeholder="Mailjet template ID..."
               value={templateId}
               onChange={handleTemplateIdChange}
-              className="w-full border-none box-border resize-noneblock mb-1 text-2xl focus:outline-none"
+              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
               required
             />
           </div>
