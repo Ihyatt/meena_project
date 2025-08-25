@@ -1,28 +1,10 @@
-import React, { act, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import useDonorStore from "src/pages/donor/store";
-import Loading from "src/components/Loading";
-import { NumericFormat } from "react-number-format";
 import { RiInstagramLine } from "react-icons/ri";
-import DonationEvents from "src/pages/donor/donation/components/Events";
-import About from "src/pages/donor/donation/components/About";
-import defaultImg from "src/assets/images/defaultImg.jpg";
-import logo from "src/assets/images/logo.png";
-import din from "src/assets/images/din.png";
-import { DefaultTitle, DefaultDescription } from "src/utils/constants";
-import DonationBar from "src/pages/donor/donation/components/DonationBar";
 
 const DonationForm = ({ targetRef }) => {
-  const [imageUrl, setImageUrl] = useState(defaultImg);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [raised, setRaised] = useState(0);
-  const [goal, setGoal] = useState(0);
-  const [totalDonations, setTotalDonations] = useState(0);
-  const [activeCampaign, setActiveCampaign] = useState(true);
   const [customAmount, setCustomAmount] = useState("");
-  const [textToCopy, setTextToCopy] = useState("");
   const navigate = useNavigate();
 
   const {
@@ -30,33 +12,19 @@ const DonationForm = ({ targetRef }) => {
     setFullName,
     setAmount,
     emailAddress,
-    setLat,
-    setLng,
     setEmailAddress,
     setIsAnonymous,
     isAnonymous,
-    fetchCampaign,
-    isLoading,
     setIsEmailSubscription,
     isEmailSubscription,
     activeButton,
     setActiveButton,
-    amount,
   } = useDonorStore();
 
   const handleClick = (buttonId, amount) => {
     setActiveButton(buttonId);
     setAmount(amount);
     setCustomAmount("");
-  };
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText("http://localhost:5173/");
-      alert("Copied to clipboard!");
-    } catch (err) {
-      console.error("Failed to copy url: ", err);
-    }
   };
 
   const handleCustomAmount = (e) => {
@@ -84,13 +52,21 @@ const DonationForm = ({ targetRef }) => {
               key={index}
               type="button"
               className={`
-          font-medium text-base flex-1 p-2 border border-[#cecfdb] rounded text-gray-800 cursor-pointer
-          ${
-            activeButton === `button${index + 1}`
-              ? "bg-[#0fa347] text-white border-none hover:bg-[#2bbd62]  hover:text-white hover:border-none transition-colors duration-300"
-              : ""
-          }
-        `}
+                font-medium 
+                text-base 
+                flex-1 
+                p-2 
+                border 
+                border-[#cecfdb] 
+                rounded 
+                text-gray-800 
+                cursor-pointer
+              ${
+                activeButton === `button${index + 1}`
+                  ? "bg-[#0fa347] text-white border-none hover:bg-[#2bbd62] transition-colors duration-300"
+                  : ""
+              }
+            `}
               onClick={() => handleClick(`button${index + 1}`, amount)}
             >
               ${amount}
@@ -165,10 +141,35 @@ const DonationForm = ({ targetRef }) => {
                   type="checkbox"
                   checked={isAnonymous}
                   onChange={setIsAnonymous}
-                  className="peer h-3.5 w-3.5 cursor-pointer transition-all appearance-none rounded hover:shadow-sm border border-slate-300 checked:bg-slate-800 checked:border-slate-800"
+                  className="
+                    peer 
+                    h-3.5 
+                    w-3.5 
+                    cursor-pointer 
+                    transition-all 
+                    appearance-none 
+                    rounded 
+                    hover:shadow-sm 
+                    border 
+                    border-slate-300 
+                    checked:bg-slate-800 
+                    checked:border-slate-800
+                  "
                   id="check-custom-icon"
                 />
-                <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <span
+                  className="
+                    absolute
+                    text-white
+                    opacity-0
+                    peer-checked:opacity-100
+                    top-1/2
+                    left-1/2
+                    transform
+                    -translate-x-1/2
+                    -translate-y-1/2
+                  "
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -193,9 +194,20 @@ const DonationForm = ({ targetRef }) => {
         <div className="my-6" ref={targetRef}>
           <input
             className="
-        font-medium text-base w-full p-[15px] bg-[#0fa347] text-white border-none rounded cursor-pointer
-        transition-colors duration-300 block mx-auto hover:bg-[#2bbd62] 
-      "
+            font-medium 
+            text-base 
+            w-full 
+            p-[15px] 
+            bg-[#0fa347] 
+            text-white 
+            rounded 
+            cursor-pointer
+            transition-colors
+            duration-300 
+            block
+            mx-auto 
+            hover:bg-[#2bbd62] 
+            "
             type="submit"
             value="Donate"
           />
@@ -203,7 +215,13 @@ const DonationForm = ({ targetRef }) => {
         <div className="mb-4">
           <a
             href="https://www.instagram.com/themeenaproject/"
-            className="font-light text-gray-400 inline-flex items-center vertical-align-middle hover:text-gray-500"
+            className="
+            font-light 
+            text-gray-400 
+            inline-flex 
+            items-center 
+            vertical-align-middle 
+            hover:text-gray-500"
           >
             Follow Meena on Instagram <RiInstagramLine />
           </a>

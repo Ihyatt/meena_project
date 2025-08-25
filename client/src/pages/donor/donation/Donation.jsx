@@ -1,18 +1,16 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import useDonorStore from "src/pages/donor/store";
 import Loading from "src/components/Loading";
 import { NumericFormat } from "react-number-format";
-import { RiInstagramLine } from "react-icons/ri";
 import DonationEvents from "src/pages/donor/donation/components/Events";
 import About from "src/pages/donor/donation/components/About";
 import defaultImg from "src/assets/images/defaultImg.jpg";
 import logo from "src/assets/images/logo.png";
 import din from "src/assets/images/din.png";
-import { DefaultTitle, DefaultDescription } from "src/utils/constants";
-import DonationBar from "src/pages/donor/donation/components/DonationBar";
+import { DefaultTitle } from "src/utils/constants";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
+import DonationData from "src/pages/donor/donation/components/DonationData";
 
 const Donation = () => {
   const [imageUrl, setImageUrl] = useState(defaultImg);
@@ -22,7 +20,6 @@ const Donation = () => {
   const [goal, setGoal] = useState(0);
   const [totalDonations, setTotalDonations] = useState(0);
   const [activeCampaign, setActiveCampaign] = useState(true);
-  const [textToCopy, setTextToCopy] = useState("");
   const targetRef = useRef(null);
 
   const { setLat, setLng, fetchCampaign, isLoading } = useDonorStore();
@@ -110,11 +107,17 @@ const Donation = () => {
             <div className="text-2xl">SUMAYYAH DIN</div>
           </div>
 
-          <div className="flex w-58 flex-col mt-10 mb-5">
-            <div>
+          {activeCampaign == true ? (
+            <DonationData
+              goal={goal}
+              raised={raised}
+              totalDonations={totalDonations}
+            />
+          ) : (
+            <div className="flex w-58 flex-col mt-10 mb-2">
               <div className="text-lg">
                 <NumericFormat
-                  value={raised || 50}
+                  value={raised || 0}
                   thousandSeparator={true}
                   prefix="$"
                   decimalScale={2}
@@ -122,27 +125,8 @@ const Donation = () => {
                 />{" "}
                 raised
               </div>
-              <div className="text-md text-gray-400 font-light">
-                <NumericFormat
-                  value={goal || 100}
-                  thousandSeparator={true}
-                  prefix="$"
-                  decimalScale={2}
-                  displayType="text"
-                />{" "}
-                goal ·{" "}
-                <NumericFormat
-                  value={totalDonations || 5}
-                  thousandSeparator={true}
-                  displayType="text"
-                />{" "}
-                donations
-              </div>
             </div>
-            <div className="mt-2 mb-1">
-              <DonationBar raised={50} goal={100} />
-            </div>
-          </div>
+          )}
 
           <div>
             <button
