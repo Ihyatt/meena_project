@@ -75,7 +75,7 @@ const DonationEvents = () => {
     return (
         <div className="pt-2 h-105">
             {notifications.length === 0 ? (
-                <p className="">No donations yet.</p>
+                <p className="">No recvent donations.</p>
             ) : (
                 <ul className=" space-y-2">
                     {notifications.map((note) => (
