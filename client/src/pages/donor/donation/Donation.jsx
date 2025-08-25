@@ -11,8 +11,7 @@ import defaultImg from 'src/assets/images/defaultImg.jpg';
 import logo from 'src/assets/images/logo.png';
 import din from 'src/assets/images/din.png';
 import { DefaultTitle, DefaultDescription } from 'src/utils/constants';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import DonationBar from 'src/pages/donor/donation/components/DonationBar';
 
 const Donation = () => {
   const [imageUrl, setImageUrl] = useState(defaultImg);
@@ -111,7 +110,7 @@ const Donation = () => {
           
           <img className="w-40" src={logo} alt="meena project logo" />
           <div className="flex flex-col justify-center pl-20 pr-3 pt-8">
-            <div className="text-3xl font-bold mb-4">
+            <div className="text-4xl font-bold mb-4">
             {title || DefaultTitle}
             </div>
             <img
@@ -141,7 +140,7 @@ const Donation = () => {
                             font-medium text-base flex-1 p-2 border border-[#cecfdb] rounded text-gray-800 cursor-pointer
                             ${
                               activeButton === `button${index + 1}`
-                                ? 'bg-[#0fa347] text-white border-none hover:bg-[#D22D2E] hover:text-white hover:border-none transition-colors duration-300'
+                                ? 'bg-[#0fa347] text-white border-none hover:bg-[#2bbd62]  hover:text-white hover:border-none transition-colors duration-300'
                                 : ''
                             }
                           `}
@@ -248,7 +247,7 @@ const Donation = () => {
                       <input
                         className="
                           font-medium text-base w-full p-[15px] bg-[#0fa347] text-white border-none rounded cursor-pointer
-                          transition-colors duration-300 block mx-auto hover:bg-[#0fa347]
+                          transition-colors duration-300 block mx-auto hover:bg-[#2bbd62] 
                         "
                         type="submit"
                         value="Donate"
@@ -269,7 +268,7 @@ const Donation = () => {
           </div>
         </div>
 
-        <div className="px-2 py-30 ">
+        <div className="px-2 py-40 ">
           <img className="w-40 h-40 rounded-full object-cover" src={din} alt="sumayyah" />
           <div className="mt-5">
           <div className="text-sm">CEO & FOUNDER</div>
@@ -277,11 +276,11 @@ const Donation = () => {
           </div>
           
    
-              <div className="flex w-6/10 justify-between items-center mt-10 mb-5">
+              <div className="flex w-58 flex-col mt-10 mb-5">
 <div>
                   <div className="text-lg">
                     <NumericFormat
-                      value={raised || 0}
+                      value={raised || 50}
                       thousandSeparator={true}
                       prefix="$"
                       decimalScale={2}
@@ -291,7 +290,7 @@ const Donation = () => {
                   </div>
                   <div className="text-md text-gray-400 font-light">
                     <NumericFormat
-                      value={goal || 0}
+                      value={goal || 100}
                       thousandSeparator={true}
                       prefix="$"
                       decimalScale={2}
@@ -299,33 +298,18 @@ const Donation = () => {
                     />
                     {' '}goal ·{' '}
                     <NumericFormat
-                      value={totalDonations || 0}
+                      value={totalDonations || 5}
                       thousandSeparator={true}
                       displayType="text"
                     />{' '}
                     donations
                   </div>
                   </div>
-                  <div className="w-15 h-15  ">
-              <CircularProgressbar
-  value={55}
-  text={`${55}%`}
-  styles={buildStyles({
- 
-    strokeLinecap: 'butt',
-
-    textSize: '16px',
-
-    pathTransitionDuration: 0.5,
-
-    pathColor: `#DB5758`,
-    textColor: '#bcbcbc',
-    trailColor: '#f4f2ec',
-    backgroundColor: '#3e98c7',
-  })}
-/>
-              </div>
+                  <div className="mt-2 mb-4">
+                  <DonationBar raised={50} goal={100} />
+                  </div>
                 </div>
+                
                 <div>
 
                 <button
@@ -361,6 +345,8 @@ const Donation = () => {
               py-2
                border
                border-[#0fa347] 
+                hover:border-[#2bbd62] 
+                hover:text-[#2bbd62] 
                rounded-sm  
                cursor-pointer
                 ml-1 

@@ -92,9 +92,9 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 
 DONOR FLOW
 
-<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/da487134-e2ec-489d-aead-5e4b9d0d2708" />
+<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/87eab711-e1df-4d3b-899f-d3bb3ef8e93c" />
 
-<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/4dbfe252-10a1-4ba2-b1a4-736d40fe7af7" />
+<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/3a792611-d0a5-45ec-ab2a-ddb49de4a85e" />
 
 <img width="100" alt="Image" src="https://github.com/user-attachments/assets/20c4340e-c13f-4212-854e-59054a5c105a" />
 
