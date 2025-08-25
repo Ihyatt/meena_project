@@ -34,7 +34,6 @@ const Donation = () => {
       setGoal(data.goal || 0);
       setTotalDonations(data.total_donations || 0);
       setActiveCampaign(data.activeCampaign);
-      console.log("Campaign data fetched:", data, activeCampaign);
     });
   }, [fetchCampaign]);
 

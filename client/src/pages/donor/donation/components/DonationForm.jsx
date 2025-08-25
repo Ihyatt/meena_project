@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDonorStore from "src/pages/donor/store";
 import { RiInstagramLine } from "react-icons/ri";
+import ErrorAlert from "src/components/ErrorAlert";
+import { ErrorSharp } from "@mui/icons-material";
+import { set } from "date-fns";
 
 const DonationForm = ({ targetRef }) => {
   const [customAmount, setCustomAmount] = useState("");
+  const [errors, setErrors] = useState([]);
+
   const navigate = useNavigate();
 
   const {
@@ -19,6 +24,7 @@ const DonationForm = ({ targetRef }) => {
     isEmailSubscription,
     activeButton,
     setActiveButton,
+    amount,
   } = useDonorStore();
 
   const handleClick = (buttonId, amount) => {
@@ -33,9 +39,38 @@ const DonationForm = ({ targetRef }) => {
     setActiveButton("");
   };
 
-  const handleDonateClick = () => {
-    navigate(`/checkout`);
+  const handleDonateClick = (event) => {
+    // Always prevent default form submission first
+    event.preventDefault();
+
+    // Create a new array to hold the errors
+    const newErrors = [];
+
+    if (!fullName) {
+      newErrors.push("Full name is required");
+    }
+    if (!emailAddress) {
+      newErrors.push("Email address is required");
+    }
+    if (!amount || amount <= 0.01) {
+      newErrors.push("Amount must be greater than $0.01");
+    }
+
+    // Set the state with the new array of errors
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+    } else {
+      // If there are no errors, proceed with navigation
+      setErrors([]); // Clear any existing errors
+      navigate(`/checkout`);
+    }
   };
+
+  const handleErrorClose = () => {
+    console.log("Error alert closed");
+    setErrors([]);
+  };
+  console.log(errors);
 
   return (
     <div className="p-15 bg-white rounded-sm shadow-lg mt-6 w-7/8">
@@ -76,7 +111,6 @@ const DonationForm = ({ targetRef }) => {
 
         <div className="flex flex-col">
           <input
-            required
             type="number"
             id="number"
             value={customAmount}
@@ -226,6 +260,9 @@ const DonationForm = ({ targetRef }) => {
             Follow Meena on Instagram <RiInstagramLine />
           </a>
         </div>
+        {errors.length > 0 && (
+          <ErrorAlert errors={errors} onClose={handleErrorClose} />
+        )}
       </form>
     </div>
   );

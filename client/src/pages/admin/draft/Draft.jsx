@@ -1,24 +1,22 @@
-import "src/assets/css/Modal.css"
+import "src/assets/css/Modal.css";
 
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Loading from "src/components/Loading";
-import useDraftStore from 'src/pages/admin/draft/store';
-import ImageUpload from 'src/pages/admin/components/ImageUpload'
+import useDraftStore from "src/pages/admin/draft/store";
+import ImageUpload from "src/pages/admin/components/ImageUpload";
 import useAuthStore from "src/pages/auth/store";
-import ErrorAlert from "src/pages/admin/components/ErrorAlert";
+import ErrorAlert from "src/components/ErrorAlert";
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
-
 export const CampaignDraft = () => {
-
   const [campaignId, setCampaignId] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [goal, setGoal] = useState(0);
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState([]);
 
@@ -36,15 +34,13 @@ export const CampaignDraft = () => {
   } = useDraftStore();
 
   useEffect(() => {
-
     fetchCampaignDraft().then((data) => {
       setCampaignId(data.id);
       setTitle(data.title);
       setDescription(data.description);
       setGoal(data.goal);
       setImageUrl(data.imageUrl);
-    })
-
+    });
   }, [fetchCampaignDraft]);
 
   useEffect(() => {
@@ -59,47 +55,47 @@ export const CampaignDraft = () => {
   }, []);
 
   const handleClose = (event) => {
-    navigate(-1)
+    navigate(-1);
     event.preventDefault();
-  }
+  };
 
   const handleShare = (event) => {
     if (!title || !description || !goal || !imageUrl) {
       const errors = [];
       if (!title) {
-        errors.push('Title is required.');
+        errors.push("Title is required.");
       }
       if (!description) {
-        errors.push('Description is required.');
+        errors.push("Description is required.");
       }
       if (goal <= 0) {
-        errors.push('Goal must be greater than 0.');
+        errors.push("Goal must be greater than 0.");
       }
       if (!imageUrl) {
-        errors.push('Image is required.');
+        errors.push("Image is required.");
       }
       setErrors(errors);
       return;
     }
-    shareCampaignDraft(campaignId)
-    navigate(-1)
+    shareCampaignDraft(campaignId);
+    navigate(-1);
     event.preventDefault();
-  }
+  };
 
   const handleSave = (event) => {
     if (!title || !description || !goal || !imageUrl) {
       const errors = [];
       if (!title) {
-        errors.push('Title is required.');
+        errors.push("Title is required.");
       }
       if (!description) {
-        errors.push('Description is required.');
+        errors.push("Description is required.");
       }
       if (goal <= 0) {
-        errors.push('Goal must be greater than 0.');
+        errors.push("Goal must be greater than 0.");
       }
       if (!imageUrl) {
-        errors.push('Image is required.');
+        errors.push("Image is required.");
       }
       setErrors(errors);
       return;
@@ -110,7 +106,7 @@ export const CampaignDraft = () => {
       setGoal(data.goal);
     });
     event.preventDefault();
-  }
+  };
 
   const uploadFile = (file) => {
     upload(campaignId, file).then((data) => {
@@ -126,8 +122,6 @@ export const CampaignDraft = () => {
     } else {
       window.alert(`Title cannot exceed ${titlecharactersLimit} characters.`);
     }
-
-
   };
 
   const handleDescriptionChange = (e) => {
@@ -135,18 +129,19 @@ export const CampaignDraft = () => {
     if (value.length <= descriptioncharactersLimit) {
       setDescription(value);
     } else {
-      window.alert(`Description cannot exceed ${descriptioncharactersLimit} characters.`);
+      window.alert(
+        `Description cannot exceed ${descriptioncharactersLimit} characters.`
+      );
     }
   };
 
   const handleErrorClose = () => {
-    console.log('Error alert closed');
+    console.log("Error alert closed");
     setErrors([]);
   };
 
-
   return (
-    <div ref={modalRef} className="modal-wrapper" >
+    <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
@@ -172,9 +167,7 @@ export const CampaignDraft = () => {
             ></textarea>
           </div>
           <div className="flex items-center border-2 border-solid  p-1 rounded-sm">
-            <div className="text-sm text-gray-400 mr-1">
-              goal:
-            </div>
+            <div className="text-sm text-gray-400 mr-1">goal:</div>
             <div className="input-container ">
               <input
                 type="number"
@@ -186,7 +179,11 @@ export const CampaignDraft = () => {
               />
             </div>
           </div>
-          <ImageUpload campaignId={campaignId} imageUrl={imageUrl} uploadFile={uploadFile} />
+          <ImageUpload
+            campaignId={campaignId}
+            imageUrl={imageUrl}
+            uploadFile={uploadFile}
+          />
           <div className="flex items-center mt-8 justify-between">
             <button
               type="button"
@@ -201,7 +198,8 @@ export const CampaignDraft = () => {
                 m-1.5
               "
               onClick={handleClose}
-              disabled={isLoading}>
+              disabled={isLoading}
+            >
               Close
             </button>
             <div>
@@ -244,9 +242,11 @@ export const CampaignDraft = () => {
               </button>
             </div>
           </div>
-          {errors.length > 0 && <ErrorAlert errors={errors} onClose={handleErrorClose} />}
+          {errors.length > 0 && (
+            <ErrorAlert errors={errors} onClose={handleErrorClose} />
+          )}
         </form>
       </div>
     </div>
   );
-}
+};
