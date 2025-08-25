@@ -45,7 +45,7 @@ const About =({description}) => {
               }
             
             >  
-                 OUR CURRENT GOAL       
+                 CAMPAIGN       
             
             </div>
 

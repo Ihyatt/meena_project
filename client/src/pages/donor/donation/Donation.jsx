@@ -11,7 +11,7 @@ import defaultImg from 'src/assets/images/defaultImg.jpg';
 import logo from 'src/assets/images/logo.png';
 import din from 'src/assets/images/din.png';
 import { DefaultTitle, DefaultDescription } from 'src/utils/constants';
-import { CircularProgressbar } from 'react-circular-progressbar';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const Donation = () => {
@@ -22,6 +22,9 @@ const Donation = () => {
   const [goal, setGoal] = useState(0);
   const [totalDonations, setTotalDonations] = useState(0);
   const [activeCampaign, setActiveCampaign] = useState(true);
+  const [customAmount, setCustomAmount] = useState(0);
+  const [textToCopy, setTextToCopy] = useState('');
+
   const navigate = useNavigate();
 
   const {
@@ -40,6 +43,7 @@ const Donation = () => {
     isEmailSubscription,
     activeButton,
     setActiveButton,
+    amount,
   } = useDonorStore();
 
   useEffect(() => {
@@ -59,6 +63,23 @@ const Donation = () => {
   const handleClick = (buttonId, amount) => {
     setActiveButton(buttonId);
     setAmount(amount);
+    setCustomAmount('');
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText('http://localhost:5173/');
+      alert('Copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy url: ', err);
+    }
+  };
+
+
+
+  const handleCustomAmount = (e) => {
+    setAmount(e.target.value);
+    setCustomAmount(e.target.value);
   };
 
   const handleDonateClick = () => {
@@ -85,18 +106,14 @@ const Donation = () => {
   return (
     <div>
       {isLoading && <Loading />}
-      <div className="grid grid-cols-3 gap-4  mt-5 mb-10">
+      <div className="grid grid-cols-3 gap-4 px-30  mt-5 mb-10 ">
         <div className="col-span-2  grid place-items-center">
           
           <img className="w-40" src={logo} alt="meena project logo" />
-          <div className="flex flex-col justify-center px-20 pt-8">
+          <div className="flex flex-col justify-center pl-20 pr-3 pt-8">
             <div className="text-3xl font-bold mb-4">
-
-
             {title || DefaultTitle}
             </div>
-            
-            
             <img
               src={imageUrl || defaultImg}
               alt="ui/ux review check"
@@ -107,7 +124,7 @@ const Donation = () => {
                 <About description={description} />
               </div>
               <div>
-                <div className="p-25 bg-white rounded-sm shadow-lg mt-6 w-7/8">
+                <div className="p-15 bg-white rounded-sm shadow-lg mt-6 w-7/8">
                   <div className="text-2xl font-bold">Select Gift Amount</div>
                   <div className="mb-3 text-gray-400 text-xs">_ _ _</div>
                   <form onSubmit={handleDonateClick}>
@@ -140,10 +157,10 @@ const Donation = () => {
                         required
                         type="number"
                         id="number"
-                        value={emailAddress}
-                        onChange={(e) => setEmailAddress(e.target.value)}
+                        value={customAmount }
+                        onChange={handleCustomAmount}
                         placeholder="$ Custom Amount"
-                        className="border border-gray-400 w-3/4 p-2 mb-2 focus:outline-none"
+                        className="border border-gray-400 rounded-sm w-3/4 p-2 mb-2 focus:outline-none"
                       />
                       <input
                         required
@@ -254,17 +271,15 @@ const Donation = () => {
 
         <div className="px-2 py-30 ">
           <img className="w-40 h-40 rounded-full object-cover" src={din} alt="sumayyah" />
+          <div className="mt-5">
           <div className="text-sm">CEO & FOUNDER</div>
-          <div className="text-xl">SUMAYYAH DIN</div>
-
-          {activeCampaign && (
-            <div>
-              <div className="w-24 h-24">
-                <CircularProgressbar value={goal / raised} text={`${goal / raised}%`} />
-              </div>
-              <div className="pt-2 pb-7 px-8 bg-white rounded-b-lg">
-                <div className="mt-3 text-right">
-                  <div className="text-md">
+          <div className="text-2xl">SUMAYYAH DIN</div>
+          </div>
+          
+   
+              <div className="flex w-6/10 justify-between items-center mt-10 mb-5">
+<div>
+                  <div className="text-lg">
                     <NumericFormat
                       value={raised || 0}
                       thousandSeparator={true}
@@ -274,7 +289,7 @@ const Donation = () => {
                     />{' '}
                     raised
                   </div>
-                  <div className="text-sm text-gray-400 font-light">
+                  <div className="text-md text-gray-400 font-light">
                     <NumericFormat
                       value={goal || 0}
                       thousandSeparator={true}
@@ -290,46 +305,81 @@ const Donation = () => {
                     />{' '}
                     donations
                   </div>
-                </div>
-              </div>
-            </div>
-          )}
+                  </div>
+                  <div className="w-15 h-15  ">
+              <CircularProgressbar
+  value={55}
+  text={`${55}%`}
+  styles={buildStyles({
+ 
+    strokeLinecap: 'butt',
 
-          <button
+    textSize: '16px',
+
+    pathTransitionDuration: 0.5,
+
+    pathColor: `#DB5758`,
+    textColor: '#bcbcbc',
+    trailColor: '#f4f2ec',
+    backgroundColor: '#3e98c7',
+  })}
+/>
+              </div>
+                </div>
+                <div>
+
+                <button
             type="button"
-            className={`
-            text-[#0fa347]
-              font-medium text-base flex-1 p-2 border border-[#0fa347] rounded-sm text-[#0fa347] cursor-pointer mr-1 text-sm
-              ${activeButton === 'button3'
-                ? 'bg-[#0fa347] text-white border-none hover:bg-[#D22D2E] hover:text-white hover:border-none transition-colors duration-300'
-                : 'text-[#0fa347]'
-              }
-            `}
-            onClick={() => handleClick('button3', 100)}
+            className="
+            text-white
+            bg-[#0fa347] 
+            hover:bg-[#2bbd62] 
+            transition-colors 
+            duration-300
+            font-medium 
+            text-base 
+            flex-1 
+            px-5 
+            py-2 
+            rounded-sm  
+            cursor-pointer 
+            mr-1 
+            text-sm
+            "
+          
           >
-            DONATE
+            DONATE NOW
           </button>
           <button
             type="button"
-            className={`
-            text-[#0fa347]
-              font-medium text-base flex-1 p-2 border border-[#0fa347] rounded-sm text-[#0fa347] cursor-pointer ml-1 text-sm
-              ${activeButton === 'button4'
-                ? 'bg-[#0fa347] text-white border-none hover:bg-[#D22D2E] hover:text-white hover:border-none transition-colors duration-300'
-                : 'text-[#0fa347]'
-              }
-            `}
-            onClick={() => handleClick('button4', 500)}
+            className="
+              text-[#0fa347]
+              font-medium 
+              text-base flex-1 
+             
+              px-5 
+              py-2
+               border
+               border-[#0fa347] 
+               rounded-sm  
+               cursor-pointer
+                ml-1 
+                text-sm
+              "
           >
             SHARE
           </button>
-          <div>
+          <div className="mt-10"> 
+            <div className="text-gray-400 ">
             RECENT DONATIONS
+            </div>
             <DonationEvents />
           </div>
+                </div>
+              </div>
         </div>
+        
       </div>
-    </div>
   );
 };
 
