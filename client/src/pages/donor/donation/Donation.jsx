@@ -305,7 +305,7 @@ const Donation = () => {
                     donations
                   </div>
                   </div>
-                  <div className="mt-2 mb-4">
+                  <div className="mt-2 mb-1">
                   <DonationBar raised={50} goal={100} />
                   </div>
                 </div>

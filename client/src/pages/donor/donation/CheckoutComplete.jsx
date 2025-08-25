@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import PaymentSuccess from 'src/pages/donor/donation/components/PaymentSuccess'
-import PaymentFailed from 'src/pages/donor/donation/components/PaymentFailed'
 import Loading from 'src/components/Loading'
 import useDonorStore from 'src/pages/donor/store'
 
@@ -25,9 +23,9 @@ const CheckoutComplete = () => {
 
   { isLoading && <Loading /> }
   if (status == 'paid') {
-    return <PaymentSuccess />
+    return <div> Success! Thank you for your donation</div>
   } else if (status === 'failed') {
-    <PaymentFailed />
+    <div> Your payment has failed. Please try again later or contact Stripe.com</div>
   }
 
   return <div>Something went wrong.</div>;
