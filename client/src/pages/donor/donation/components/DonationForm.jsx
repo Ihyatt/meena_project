@@ -34,8 +34,12 @@ const DonationForm = ({ targetRef }) => {
   };
 
   const handleCustomAmount = (e) => {
-    setAmount(e.target.value);
-    setCustomAmount(e.target.value);
+    const value = e.target.value;
+    const cleanedValue = value.replace(/[^0-9]/g, "");
+
+    setAmount(cleanedValue);
+
+    setCustomAmount(cleanedValue);
     setActiveButton("");
   };
 
@@ -52,8 +56,10 @@ const DonationForm = ({ targetRef }) => {
     if (!emailAddress) {
       newErrors.push("Email address is required");
     }
-    if (!amount || amount <= 0.01) {
-      newErrors.push("Amount must be greater than $0.01");
+    if (!amount || amount <= 0.01 || amount >= 1000.01) {
+      newErrors.push(
+        "Amount must be greater than $0.01 and less than $1,000.01"
+      );
     }
 
     // Set the state with the new array of errors
@@ -110,14 +116,25 @@ const DonationForm = ({ targetRef }) => {
         </div>
 
         <div className="flex flex-col">
-          <input
-            type="number"
-            id="number"
-            value={customAmount}
-            onChange={handleCustomAmount}
-            placeholder="$ Custom Amount"
-            className="border border-gray-400 rounded-sm w-3/4 p-2 mb-2 focus:outline-none"
-          />
+          <div className=" border border-gray-400  p-2 rounded-sm  flex items-center justify-between mb-3">
+            <div className="flex flex-col text-xs items-center">
+              <div>$</div>
+              <div>USD</div>
+            </div>
+            <div className="text-2xl">
+              <input
+                type="text"
+                id="code"
+                name="code"
+                pattern="[0-9]"
+                title="only numbers"
+                value={customAmount}
+                onChange={handleCustomAmount}
+                className="border-none rounded-sm focus:outline-none text-right"
+              />
+              <span className="">.00</span>
+            </div>
+          </div>
           <input
             required
             type="email"

@@ -83,7 +83,7 @@ export const CampaignDraft = () => {
   };
 
   const handleSave = (event) => {
-    if (!title || !description || !goal || !imageUrl) {
+    if (!title || !description || !goal || goal <= 0.01 || !imageUrl) {
       const errors = [];
       if (!title) {
         errors.push("Title is required.");
@@ -92,7 +92,7 @@ export const CampaignDraft = () => {
         errors.push("Description is required.");
       }
       if (goal <= 0) {
-        errors.push("Goal must be greater than 0.");
+        errors.push("Goal must be greater than 0.01.");
       }
       if (!imageUrl) {
         errors.push("Image is required.");

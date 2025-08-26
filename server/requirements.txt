@@ -60,9 +60,11 @@ django-treebeard==4.7.1
 djangorestframework==3.15.2
 djangorestframework-camel-case==1.4.2
 djangorestframework-stubs==3.15.2
+dnspython==2.7.0
 docker==7.0.0
 draftjs_exporter==5.1.0
 drf-spectacular==0.28.0
+email_validator==2.2.0
 et_xmlfile==2.0.0
 executing==2.0.1
 factory_boy==3.3.1
@@ -71,9 +73,10 @@ fastapi==0.115.12
 fastjsonschema==2.19.1
 filelock==3.13.4
 filetype==1.2.0
-Flask==3.0.2
+Flask==3.0.3
+Flask-APScheduler==1.13.1
 flask-audit-logger==1.0.6
-flask-cors==6.0.0
+flask-cors==6.0.1
 Flask-JWT-Extended==4.7.1
 flask-marshmallow==1.3.0
 Flask-Migrate==4.1.0
@@ -87,6 +90,7 @@ greenlet==3.0.3
 gunicorn==23.0.0
 h11==0.14.0
 httpcore==1.0.4
+httpx==0.27.2
 identify==2.6.5
 idna==3.6
 imagekitio==4.1.0
@@ -182,6 +186,7 @@ python-dateutil==2.9.0.post0
 python-dotenv==0.20.0
 python-engineio==4.12.1
 python-json-logger==2.0.7
+python-magic==0.4.27
 python-multipart==0.0.20
 python-slugify==8.0.4
 python-socketio==5.13.0
@@ -192,8 +197,11 @@ qtconsole==5.5.1
 QtPy==2.4.1
 redis==6.2.0
 referencing==0.34.0
+reflex==0.7.13
+reflex-hosting-cli==0.1.49
 requests==2.32.4
 requests-toolbelt==0.10.1
+retrying==1.4.0
 rfc3339-validator==0.1.4
 rfc3986-validator==0.1.1
 rich==14.0.0
@@ -227,6 +235,8 @@ tox==4.14.2
 traitlets==5.14.2
 types-python-dateutil==2.9.0.20240316
 types-PyYAML==6.0.12.20241230
+types-requests==2.31.0.6
+types-urllib3==1.26.25.14
 typing-inspection==0.4.1
 typing_extensions==4.13.2
 tzdata==2025.2
