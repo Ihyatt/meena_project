@@ -42,7 +42,7 @@ class Campaign(db.Model, SoftDeleteMixin):
         default="",
         nullable=True,
     )
-    goal = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
+    goal = mapped_column(db.Integer, default=0, nullable=False)
     raised = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
     total_donations = mapped_column(db.Integer, default=0, nullable=False)
     is_active = mapped_column(db.Boolean, default=False, nullable=False)

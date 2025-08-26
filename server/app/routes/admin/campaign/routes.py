@@ -16,7 +16,6 @@ from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
 
-
 from app.database import db
 from app.models.campaign import Campaign
 from app.models.user import User
@@ -27,6 +26,59 @@ from app.schemas.image import ImageSchema
 from app.utils.constants import EmailType
 from app.utils.decorators import admin_required
 from app.utils.image_validator import allowed_mime_type
+
+
+@campaign_bp.route("/", methods=["GET"])
+@jwt_required()
+@admin_required()
+def fetch_campaigns():
+    current_app.logger.info("Fetching camapigns data...")
+    try:
+        campaigns = (
+            Campaign.query.filter(Campaign.is_draft == False)
+            .order_by(Campaign.updated_at.desc())
+            .all()
+        )
+
+        campaign_schema = CampaignSchema(
+            many=True,
+            only=[
+                "id",
+                "image_url",
+                "title",
+                "description",
+                "goal",
+                "raised",
+                "is_active",
+                "launched",
+                "closed",
+                "total_donations",
+            ],
+        )
+
+        current_app.logger.info("Campaigns data fetched.")
+        return (
+            jsonify(
+                {
+                    "campaigns": campaign_schema.dump(campaigns),
+                }
+            ),
+            200,
+        )
+
+    except Exception as e:
+        current_app.logger.error(
+            f"Error fetching campaigns data: {str(e)}", exc_info=True
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error fetching campaigns data: {str(e)}",
+                }
+            ),
+            500,
+        )
 
 
 @campaign_bp.route("/<int:campaign_id>", methods=["GET"])

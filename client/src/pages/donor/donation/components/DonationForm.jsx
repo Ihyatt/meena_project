@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useDonorStore from "src/pages/donor/store";
+import useDonateStore from "src/pages/donor/store";
 import { RiInstagramLine } from "react-icons/ri";
 import ErrorAlert from "src/components/ErrorAlert";
 import { ErrorSharp } from "@mui/icons-material";
@@ -25,7 +25,7 @@ const DonationForm = ({ targetRef }) => {
     activeButton,
     setActiveButton,
     amount,
-  } = useDonorStore();
+  } = useDonateStore();
 
   const handleClick = (buttonId, amount) => {
     setActiveButton(buttonId);
@@ -36,8 +36,8 @@ const DonationForm = ({ targetRef }) => {
   const handleCustomAmount = (e) => {
     const value = e.target.value;
     const cleanedValue = value.replace(/[^0-9]/g, "");
-
-    setAmount(cleanedValue);
+    const amountValue = parseFloat(cleanedValue);
+    setAmount(amountValue);
 
     setCustomAmount(cleanedValue);
     setActiveButton("");
@@ -76,7 +76,7 @@ const DonationForm = ({ targetRef }) => {
     console.log("Error alert closed");
     setErrors([]);
   };
-  console.log(errors);
+  console.log(fullName, emailAddress, amount);
 
   return (
     <div className="p-15 bg-white rounded-sm shadow-lg mt-6 w-7/8">
@@ -123,9 +123,7 @@ const DonationForm = ({ targetRef }) => {
             </div>
             <div className="text-2xl">
               <input
-                type="text"
-                id="code"
-                name="code"
+                type="number"
                 pattern="[0-9]"
                 title="only numbers"
                 value={customAmount}

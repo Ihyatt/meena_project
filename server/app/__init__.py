@@ -42,6 +42,7 @@ from app.routes.admin import admin_bp
 from app.routes.admin.campaign import campaign_bp
 from app.routes.admin.email import email_bp
 from app.routes.donation import donation_bp
+from app.routes.admin.donor import donor_bp
 from app.routes.sse import sse_bp
 
 from app.models.email_template import EmailTemplate
@@ -101,6 +102,7 @@ def create_app():
 
     admin_bp.register_blueprint(email_bp)
     admin_bp.register_blueprint(campaign_bp)
+    admin_bp.register_blueprint(donor_bp)
 
     app.register_blueprint(donation_bp)
     app.register_blueprint(auth_bp)

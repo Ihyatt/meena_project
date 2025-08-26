@@ -9,7 +9,7 @@ import ErrorAlert from "src/components/ErrorAlert";
 import useCampaignStore from "src/pages/admin/campaigns/store";
 import Loading from "src/components/Loading";
 
-export const CampaignDetails = () => {
+export const ManageCampaign = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isModal = location.state?.isModal;
@@ -24,8 +24,6 @@ export const CampaignDetails = () => {
   const [errors, setErrors] = useState([]);
 
   const { fetchCampaign, saveCampaign, isLoading, upload } = useCampaignStore();
-
-  console.log("why is it not working", campaignId);
 
   useEffect(() => {
     fetchCampaign(campaignId).then((data) => {
@@ -99,7 +97,12 @@ export const CampaignDetails = () => {
       );
     }
   };
-
+  const handlAmount = (e) => {
+    const value = e.target.value;
+    const cleanedValue = value.replace(/[^0-9]/g, "");
+    const amountValue = parseFloat(cleanedValue);
+    setAmount(amountValue);
+  };
   const uploadFile = (file) => {
     upload(campaignId, file).then((data) => {
       setImageUrl(data.url);
@@ -141,15 +144,23 @@ export const CampaignDetails = () => {
             ></textarea>
           </div>
           <div className="p-2">
-            <label class="block mb-2 text-sm text-slate-600">Goal</label>
-            <input
-              type="number"
-              id="goal"
-              value={goal}
-              onChange={(e) => setGoal(e.target.value)}
-              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-              required
-            />
+            <div className=" border border-gray-400  p-2 rounded-sm  flex items-center justify-between mb-3">
+              <div className="flex flex-col text-xs items-center">
+                <div>$</div>
+                <div>USD</div>
+              </div>
+              <div className="text-2xl">
+                <input
+                  type="number"
+                  pattern="[0-9]"
+                  title="only numbers"
+                  value={goal}
+                  onChange={handlAmount}
+                  className="border-none rounded-sm focus:outline-none text-right"
+                />
+                <span className="">.00</span>
+              </div>
+            </div>
           </div>
           <ImageUpload
             campaignId={campaignId}

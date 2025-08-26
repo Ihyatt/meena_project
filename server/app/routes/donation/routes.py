@@ -6,6 +6,7 @@ from werkzeug.exceptions import NotFound
 from app.database import db
 from app.routes.donation import donation_bp
 from app.models.campaign import Campaign
+from app.models.donation import Donation
 from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
@@ -22,7 +23,9 @@ from app.utils.donation import create_donation
 from marshmallow import EXCLUDE
 import asyncio
 from datetime import datetime, timedelta, timezone
-from app.utils.constants import CHARGE_PROCESS_QUEUE
+from app.utils.constants import CHARGE_PROCESS_QUEUE, DonationStatus
+from sqlalchemy import func
+
 
 from app.services.charge_handler import (
     successful_charge,
@@ -35,6 +38,11 @@ from app.services.charge_handler import (
 def fetch_campaign():
     try:
         campaign = Campaign.query.filter_by(is_active=True).first()
+        raised = (
+            db.session.query(func.sum(Donation.amount))
+            .filter_by(status=DonationStatus.SUCCEEDED)
+            .scalar()
+        )
         campaign_schema = CampaignSchema(
             only=[
                 "id",
@@ -55,7 +63,7 @@ def fetch_campaign():
                         "image_url": "",
                         "title": "",
                         "description": "",
-                        "raised": 0,
+                        "raised": raised if raised else 0,
                         "goal": 0,
                         "totalDonations": 0,
                     }

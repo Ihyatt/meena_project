@@ -4,18 +4,18 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Loading from "src/components/Loading";
-import useDonorStore from "src/pages/donor/store";
+import useDonateStore from "src/pages/donor/store";
 
 const stripePublishableKey = import.meta.env.VITE_STRIPE_PK;
 
 const Checkout = () => {
-  const { fetchClientSecret, isLoading } = useDonorStore();
+  const { fetchClientSecret, isLoading } = useDonateStore();
   const stripePromise = loadStripe(stripePublishableKey);
 
   return (
     <div
       className="
-      max-w-md
+      max-w-lg
       mx-auto
       p-4
       border
@@ -23,7 +23,6 @@ const Checkout = () => {
       rounded-lg
       shadow-md
       bg-white
-      mt-16
       h-screen 
       w-full
     "

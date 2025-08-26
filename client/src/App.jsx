@@ -1,8 +1,13 @@
-import "./index.css"
+import "./index.css";
 import * as React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 
-// admin 
+// admin
 import Login from "src/pages/auth/Login";
 
 import ProtectedRoute from "src/components/ProtectedRoute";
@@ -13,8 +18,8 @@ import Campaigns from "src/pages/admin/campaigns/Campaigns";
 import Donors from "src/pages/admin/donors/Donors";
 import { EmailTemplate } from "src/pages/admin/emailTemplate/Template";
 import { CampaignDraft } from "src/pages/admin/draft/Draft";
-import { CampaignDetails } from "src/pages/admin/campaigns/Edit";
-import { DonorDetails } from "src/pages/admin/donors/Edit";
+import { ManageCampaign } from "src/pages/admin/campaigns/ManageCampaign";
+import { ManageDonor } from "src/pages/admin/donors/ManageDonor";
 
 // donor
 import DonorLayout from "src/pages/donor/DonationLayout";
@@ -22,16 +27,13 @@ import Donation from "src/pages/donor/donation/Donation";
 import Checkout from "src/pages/donor/donation/Checkout";
 import CheckoutComplete from "src/pages/donor/donation/CheckoutComplete";
 
-
 import NotFound from "src/pages/NotFound";
-
-
 
 function App() {
   const location = useLocation();
   const background = location.state && location.state.background;
   return (
-    <div >
+    <div>
       <Routes location={background || location}>
         <Route path="/login" element={<Login />} />
         <Route element={<DonorLayout />}>
@@ -46,7 +48,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="/admins"  >
+          <Route path="/admins">
             <Route index element={<Dashboard />} />
             <Route path="campaigns" element={<Campaigns />} />
             <Route path="donors" element={<Donors />} />
@@ -54,19 +56,29 @@ function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {
-        background && (
-          <Routes>
-            <Route path="/admins/donors/:donorId" element={<DonorDetails />} />
-            <Route path="/admins/campaigns/:campaignId" element={<CampaignDetails />} />
-            <Route path="/admins/campaigns/drafts" element={<CampaignDraft />} />
-            <Route path="/admins/emails/email-template/receipt" element={<EmailTemplate />} />
-            <Route path="/admins/emails/email-template/impact" element={<EmailTemplate />} />
-            <Route path="/admins/emails/email-template/closeout" element={<EmailTemplate />} />
-          </Routes>
-        )
-      }
-    </div >
+      {background && (
+        <Routes>
+          <Route path="/admins/donors/:donorId" element={<ManageDonor />} />
+          <Route
+            path="/admins/campaigns/:campaignId"
+            element={<ManageCampaign />}
+          />
+          <Route path="/admins/campaigns/drafts" element={<CampaignDraft />} />
+          <Route
+            path="/admins/emails/email-template/receipt"
+            element={<EmailTemplate />}
+          />
+          <Route
+            path="/admins/emails/email-template/impact"
+            element={<EmailTemplate />}
+          />
+          <Route
+            path="/admins/emails/email-template/closeout"
+            element={<EmailTemplate />}
+          />
+        </Routes>
+      )}
+    </div>
   );
 }
 

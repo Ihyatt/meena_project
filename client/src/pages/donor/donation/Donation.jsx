@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 
-import useDonorStore from "src/pages/donor/store";
+import useDonateStore from "src/pages/donor/store";
 import Loading from "src/components/Loading";
 import { NumericFormat } from "react-number-format";
 import DonationEvents from "src/pages/donor/donation/components/Events";
@@ -23,7 +23,7 @@ const Donation = () => {
   const [activeCampaign, setActiveCampaign] = useState(true);
   const targetRef = useRef(null);
 
-  const { setLat, setLng, fetchCampaign, isLoading } = useDonorStore();
+  const { setLat, setLng, fetchCampaign, isLoading } = useDonateStore();
 
   useEffect(() => {
     getUserLocation();
@@ -41,7 +41,6 @@ const Donation = () => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText("http://localhost:5173/");
-      console.log("URL copied to clipboard");
       setCopyText("COPIED!");
       setTimeout(() => {
         setCopyText("SHARE LINK");
@@ -73,7 +72,7 @@ const Donation = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   };
-
+  console.log(activeCampaign);
   return (
     <div>
       {isLoading && <Loading />}

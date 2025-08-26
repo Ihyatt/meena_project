@@ -1,15 +1,14 @@
-import { setActive } from '@material-tailwind/react/components/Tabs/TabsContext';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-
+import { setActive } from "@material-tailwind/react/components/Tabs/TabsContext";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 
-const useDonorStore = create(
+const useDonateStore = create(
   persist(
     (set, get) => ({
-      fullName: '',
-      emailAddress: '',
+      fullName: "",
+      emailAddress: "",
       isEmailSubscription: false,
       isAnonymous: false,
       amount: 0.0,
@@ -24,8 +23,10 @@ const useDonorStore = create(
       setAmount: (amount) => set({ amount }),
       setLat: (lat) => set({ lat }),
       setLng: (lng) => set({ lng }),
-      setIsEmailSubscription: () => set((state) => ({ isEmailSubscription: !state.isEmailSubscription })),
-      setIsAnonymous: () => set((state) => ({ isAnonymous: !state.isAnonymous })),
+      setIsEmailSubscription: () =>
+        set((state) => ({ isEmailSubscription: !state.isEmailSubscription })),
+      setIsAnonymous: () =>
+        set((state) => ({ isAnonymous: !state.isAnonymous })),
       setActiveButton: (buttonId) => set({ activeButton: buttonId }),
 
       fetchCampaign: async () => {
@@ -46,23 +47,34 @@ const useDonorStore = create(
         set({ isLoading: true, error: null });
         try {
           const state = get();
-          const { emailAddress, fullName, isEmailSubscription, amount, isAnonymous, lat, lng } = state;
+          const {
+            emailAddress,
+            fullName,
+            isEmailSubscription,
+            amount,
+            isAnonymous,
+            lat,
+            lng,
+          } = state;
 
-          const response = await fetch(`${backendUrl}/donations/create-checkout-session`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              emailAddress,
-              fullName,
-              isEmailSubscription,
-              amount,
-              isAnonymous,
-              lat,
-              lng
-            }),
-          });
+          const response = await fetch(
+            `${backendUrl}/donations/create-checkout-session`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                emailAddress,
+                fullName,
+                isEmailSubscription,
+                amount,
+                isAnonymous,
+                lat,
+                lng,
+              }),
+            }
+          );
           const data = await response.json();
           if (!response.ok) {
             set({ error: data.message });
@@ -76,14 +88,16 @@ const useDonorStore = create(
       fetchCheckout: async (sessionId) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await fetch(`${backendUrl}/donations/check-session-status?session_id=${sessionId}`)
+          const response = await fetch(
+            `${backendUrl}/donations/check-session-status?session_id=${sessionId}`
+          );
           const data = await response.json();
           if (!response.ok) {
             set({ error: data.message });
           }
           set({
-            fullName: '',
-            emailAddress: '',
+            fullName: "",
+            emailAddress: "",
             isEmailSubscription: false,
             isAnonymous: false,
             amount: 0.0,
@@ -91,13 +105,12 @@ const useDonorStore = create(
             lng: null,
             activeButton: null,
             isLoading: false,
-            status: data.status
+            status: data.status,
           });
-
         } catch (error) {
           set({
-            fullName: '',
-            emailAddress: '',
+            fullName: "",
+            emailAddress: "",
             isEmailSubscription: false,
             isAnonymous: false,
             amount: 0.0,
@@ -111,9 +124,9 @@ const useDonorStore = create(
       },
     }),
     {
-      name: 'donate-storage'
+      name: "donate-storage",
     }
   )
 );
 
-export default useDonorStore;
+export default useDonateStore;
