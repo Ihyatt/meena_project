@@ -1,4 +1,6 @@
 from flask import jsonify, current_app
+from flask import request, jsonify, current_app
+
 from flask_jwt_extended import jwt_required
 from marshmallow.exceptions import ValidationError
 from werkzeug.exceptions import NotFound
@@ -13,8 +15,9 @@ from app.models.payment_transaction import PaymentTransaction
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
 from app.schemas.campaign import CampaignSchema
-from app.utils.constants import DonationStatus
+from app.utils.constants import DonationStatus, SubscriptionStatus
 from datetime import datetime, timezone
+from marshmallow import EXCLUDE
 
 
 @donor_bp.route("/", methods=["GET"])
@@ -69,7 +72,6 @@ def fetch_donor(donor_id):
         donor = User.query.get_or_404(donor_id)
 
         donor_schema = DonorSchema(
-            many=True,
             only=[
                 "id",
                 "email_address",
@@ -89,6 +91,68 @@ def fetch_donor(donor_id):
                 {
                     "status": "failed",
                     "message": f"Campaign with ID '{donor_id}' not found.",
+                }
+            ),
+            404,
+        )
+
+    except Exception as e:
+        current_app.logger.error(
+            f"Error fetching donor'{donor_id}': {str(e)}", exc_info=True
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error fetching donor '{donor_id}': {str(e)}",
+                }
+            ),
+            500,
+        )
+
+
+@donor_bp.route("/<int:donor_id>/manage", methods=["PATCH"])
+@jwt_required()
+@admin_required()
+def manage_donor(donor_id):
+    current_app.logger.info("Fetching donor data...")
+    try:
+        data = request.get_json()
+        donor = User.query.get_or_404(donor_id)
+
+        donor_schema = DonorSchema(
+            unknown=EXCLUDE,
+            many=True,
+            only=[
+                "id",
+                "email_address",
+                "full_name",
+                "donations",
+                "email_subscription",
+            ],
+        )
+
+        validated_data = donor_schema.load(data)
+        donor.email_subscription.status = (
+            SubscriptionStatus.ACTIVE
+            if data["isEmailSubscription"]
+            else SubscriptionStatus.INACTIVE
+        )
+
+        donor.full_name = validated_data["full_name"]
+        donor.email_address = validated_data["email_address"]
+        db.session.commit()
+
+        current_app.logger.info("Donor data updated.")
+        return donor_schema.dump(donor), 200
+
+    except NotFound:
+        current_app.logger.warning(f"Donor '{donor_id}' not found.")
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Donor with ID '{donor_id}' not found.",
                 }
             ),
             404,

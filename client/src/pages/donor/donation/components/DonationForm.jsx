@@ -38,7 +38,6 @@ const DonationForm = ({ targetRef }) => {
     const cleanedValue = value.replace(/[^0-9]/g, "");
     const amountValue = parseFloat(cleanedValue);
     setAmount(amountValue);
-
     setCustomAmount(cleanedValue);
     setActiveButton("");
   };
@@ -77,7 +76,8 @@ const DonationForm = ({ targetRef }) => {
     setErrors([]);
   };
   console.log(fullName, emailAddress, amount);
-
+  const blockInvalidChar = (e) =>
+    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
   return (
     <div className="p-15 bg-white rounded-sm shadow-lg mt-6 w-7/8">
       <div className="text-2xl font-bold">Select Gift Amount</div>
@@ -128,6 +128,7 @@ const DonationForm = ({ targetRef }) => {
                 title="only numbers"
                 value={customAmount}
                 onChange={handleCustomAmount}
+                onKeyDown={blockInvalidChar}
                 className="border-none rounded-sm focus:outline-none text-right"
               />
               <span className="">.00</span>

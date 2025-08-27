@@ -25,7 +25,6 @@ const useDonorStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          console.log("donor data", data);
           set({
             donors: data || [],
             isLoading: false,
@@ -34,7 +33,8 @@ const useDonorStore = create(
           set({ error: error, isLoading: false });
         }
       },
-      fetchDonor: async ({ donorId }) => {
+      fetchDonor: async (donorId) => {
+        console.log("fetchDonor called with donorId:", donorId);
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -48,6 +48,38 @@ const useDonorStore = create(
               },
             }
           );
+          const data = await response.json();
+          if (!response.ok) {
+            set({ error: data.message });
+          }
+          set({
+            isLoading: false,
+          });
+          return data;
+        } catch (error) {
+          set({ error: error, isLoading: false });
+        }
+      },
+      manageDonorData: async ({ donorId, fullName, IsEmailSubscription }) => {
+        set({ isLoading: true, error: null });
+        try {
+          const { jwtToken } = useAuthStore.getState();
+          const response = await fetch(
+            `${backednUrl}/admins/donors/${donorId}/manage`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${jwtToken}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                emailAddress,
+                fullName,
+                IsEmailSubscription,
+              }),
+            }
+          );
+
           const data = await response.json();
           if (!response.ok) {
             set({ error: data.message });

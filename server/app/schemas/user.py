@@ -79,7 +79,7 @@ class DonorSchema(SQLAlchemyAutoSchema):
         return data
 
     donations = fields.List(
-        fields.Nested("DonationSchema", only=("id", "amount", "status"))
+        fields.Nested("DonationSchema", only=("id", "amount", "status", "created_at"))
     )
 
     email_subscription = fields.Nested(

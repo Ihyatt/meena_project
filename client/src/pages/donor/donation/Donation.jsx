@@ -118,7 +118,7 @@ const Donation = () => {
             />
           ) : (
             <div className="flex w-58 flex-col mt-10 mb-2">
-              <div className="text-lg">
+              <div className="text-lg font-light">
                 <NumericFormat
                   value={raised || 0}
                   thousandSeparator={true}
