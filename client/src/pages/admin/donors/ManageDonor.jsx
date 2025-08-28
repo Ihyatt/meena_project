@@ -104,7 +104,6 @@ export const ManageDonor = () => {
   };
 
   const handleErrorClose = () => {
-    console.log("Error alert closed");
     setErrors([]);
   };
 

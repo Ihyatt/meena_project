@@ -72,10 +72,8 @@ const DonationForm = ({ targetRef }) => {
   };
 
   const handleErrorClose = () => {
-    console.log("Error alert closed");
     setErrors([]);
   };
-  console.log(fullName, emailAddress, amount);
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
   return (

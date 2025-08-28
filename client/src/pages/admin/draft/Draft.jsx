@@ -142,11 +142,8 @@ export const CampaignDraft = () => {
   };
 
   const handleErrorClose = () => {
-    console.log("Error alert closed");
     setErrors([]);
   };
-
-  console.log(goal);
 
   return (
     <div ref={modalRef} className="modal-wrapper">

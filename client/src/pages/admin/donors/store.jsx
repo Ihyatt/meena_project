@@ -42,7 +42,6 @@ const useDonorStore = create(
         }
       },
       fetchDonor: async (donorId) => {
-        console.log("fetchDonor called with donorId:", donorId);
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();

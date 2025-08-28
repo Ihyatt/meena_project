@@ -11,7 +11,6 @@ const EmailSubscriptionCard = ({ data }) => {
   const handleSubscriptionChange = (status) => {
     setEmailSubscriptionStatus(status);
   };
-  console.log(data);
   return (
     <tr key={data.id}>
       <td className="p-4 border-b border-blue-gray-50">

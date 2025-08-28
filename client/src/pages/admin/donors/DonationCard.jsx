@@ -7,8 +7,6 @@ import { Chip } from "@material-tailwind/react";
 import { RiPencilLine } from "react-icons/ri";
 
 const DonationCard = ({ data }) => {
-  console.log(data);
-
   return (
     <tr key={data.id}>
       <td className="p-4 border-b border-blue-gray-50">

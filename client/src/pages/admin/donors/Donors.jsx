@@ -49,8 +49,6 @@ const Donors = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
-  console.log(donors);
-
   return (
     <div className=" m-4 bg-white shadow-md rounded-lg">
       <Card className="h-full w-full shadow-none">

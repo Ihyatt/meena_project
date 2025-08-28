@@ -111,7 +111,6 @@ export const ManageCampaign = () => {
   };
 
   const handleErrorClose = () => {
-    console.log("Error alert closed");
     setErrors([]);
   };
 

@@ -9,7 +9,6 @@ const Donor = ({ data }) => {
     0
   );
   const location = useLocation();
-  console.log(data);
   return (
     <tr key={data.id}>
       <td className="p-4 border-b border-blue-gray-50">

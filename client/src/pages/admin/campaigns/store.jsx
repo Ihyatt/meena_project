@@ -28,7 +28,6 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          console.log(data.donors);
           set({
             campaigns: data["campaigns"] || [],
             isLoading: false,

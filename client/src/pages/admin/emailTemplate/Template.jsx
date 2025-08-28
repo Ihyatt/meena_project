@@ -90,7 +90,6 @@ export const EmailTemplate = () => {
     }
   };
   const handleErrorClose = () => {
-    console.log("Error alert closed");
     setErrors([]);
   };
 
