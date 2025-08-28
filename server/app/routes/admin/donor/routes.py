@@ -2,24 +2,16 @@ from flask import jsonify, current_app
 from flask import request, jsonify, current_app
 
 from flask_jwt_extended import jwt_required
-from marshmallow.exceptions import ValidationError
 from werkzeug.exceptions import NotFound
 from app.database import db
-from app.utils.constants import PaymentStatus
 from app.routes.admin.donor import donor_bp
 from app.utils.decorators import admin_required
 from app.models.user import User
-from app.models.donation import Donation
-from app.models.campaign import Campaign
-from app.models.payment_transaction import PaymentTransaction
-from app.schemas.donation import DonationSchema
+
 from app.schemas.user import DonorSchema
 from app.schemas.email_subscription import EmailSubscriptionSchema
 
 
-from app.schemas.campaign import CampaignSchema
-from app.utils.constants import DonationStatus, SubscriptionStatus
-from datetime import datetime, timezone
 from marshmallow import EXCLUDE
 
 

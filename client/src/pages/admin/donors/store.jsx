@@ -19,6 +19,7 @@ const useDonorStore = create(
         set({ emailSubscriptionStatus }),
 
       fetchDonors: async () => {
+        console.log("Fetching donors...");
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -30,6 +31,7 @@ const useDonorStore = create(
             },
           });
           const data = await response.json();
+          console.log(data);
           if (!response.ok) {
             set({ error: data.message });
           }
@@ -37,6 +39,7 @@ const useDonorStore = create(
             donors: data || [],
             isLoading: false,
           });
+          return data;
         } catch (error) {
           set({ error: error, isLoading: false });
         }

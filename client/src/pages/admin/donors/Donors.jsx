@@ -9,7 +9,6 @@ import {
   CardFooter,
 } from "@material-tailwind/react";
 
-import useAdminStore from "src/pages/admin/store";
 import Donor from "src/pages/admin/donors/Card";
 
 const TABLE_HEAD = [

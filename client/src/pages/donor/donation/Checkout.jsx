@@ -37,8 +37,6 @@ const Checkout = () => {
       amount,
       isEmailSubscription,
       isAnonymous,
-    }).then((data) => {
-      setPaymentIntentId(data.paymentIntentId);
     });
   }, [createPaymentIntent]);
 

@@ -12,7 +12,7 @@ const useDonateStore = create(
       error: null,
       paymentIntentId: "",
       setPaymentIntentId: (paymentIntentId) => set({ paymentIntentId }),
-      setlat: (lat) => set({ lat }),
+      setLat: (lat) => set({ lat }),
       setlng: (lng) => set({ lng }),
 
       fetchCampaign: async () => {
@@ -63,7 +63,7 @@ const useDonateStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          set({ isLoading: false });
+          set({ isLoading: false, paymentIntentId: data.paymentIntentId });
         } catch (error) {
           set({ error: error, isLoading: false });
         }

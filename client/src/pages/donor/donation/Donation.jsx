@@ -31,7 +31,7 @@ const Donation = () => {
       setImageUrl(data.image_url || defaultImg);
       setTitle(data.title || "");
       setDescription(data.description || "");
-      setRaised(data.raised || 0);
+      setRaised(data.raised);
       setGoal(data.goal || 0);
       setTotalDonations(data.total_donations || 0);
       setActiveCampaign(data.activeCampaign);
@@ -72,6 +72,14 @@ const Donation = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   };
+  const handleNewDonation = (newAmount) => {
+    setRaised((prevRaised) => {
+      const amountAsNumber = Number(newAmount);
+      const prevRaisedAsNumber = Number(prevRaised);
+      return prevRaisedAsNumber + amountAsNumber;
+    });
+  };
+
   return (
     <div>
       {isLoading && <Loading />}
@@ -176,7 +184,7 @@ const Donation = () => {
             </button>
             <div className="mt-10">
               <div className="text-gray-400 ">RECENT DONATIONS</div>
-              <DonationEvents />
+              <DonationEvents handleDonationUpdate={handleNewDonation} />
             </div>
           </div>
         </div>

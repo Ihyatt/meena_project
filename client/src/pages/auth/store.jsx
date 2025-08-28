@@ -1,10 +1,7 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
-
-
 
 const useAuthStore = create(
   persist(
@@ -17,15 +14,15 @@ const useAuthStore = create(
         set({ isLoading: false, error: null });
         try {
           const response = await fetch(`${backednUrl}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ emailAddress, password }),
           });
           const data = await response.json();
           if (!response.ok) {
             set({ error: data.message, isLoading: false });
           }
-          if (data.status !== 'success') {
+          if (data.status !== "success") {
             set({ error: data.message, isLoading: false });
             return false;
           }
@@ -39,7 +36,6 @@ const useAuthStore = create(
           set({ error: error, isLoading: false });
           return false;
         }
-
       },
       logout: () => {
         set({
@@ -50,7 +46,7 @@ const useAuthStore = create(
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
     }
   )
 );

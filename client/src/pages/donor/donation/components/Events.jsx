@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { RiGift2Fill } from "react-icons/ri";
 import TimeAgo from "src/pages/admin/utils/TimeAgo";
 
-const DonationEvents = () => {
+const DonationEvents = ({ handleDonationUpdate }) => {
   const [notifications, setNotifications] = useState([]);
 
   // This useEffect for initial fetch is fine
@@ -40,6 +40,7 @@ const DonationEvents = () => {
             );
             return prevNotifications; // Return current state if duplicate
           }
+          handleDonationUpdate(data.amount);
           return [data, ...prevNotifications]; // Add new data to the beginning
         });
 

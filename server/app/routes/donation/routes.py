@@ -2,7 +2,6 @@ import uuid
 import stripe
 from flask import jsonify, request, current_app
 from marshmallow.exceptions import ValidationError
-from werkzeug.exceptions import NotFound
 from app.database import db
 from app.routes.donation import donation_bp
 from app.models.campaign import Campaign
@@ -12,27 +11,15 @@ from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
 from app.services.checkout_session import checkout_session
-from app.services.charge_handler import (
-    successful_charge,
-    failed_charge,
-    refunded_charge,
-)
+
 import json
 from app.utils.payment_transaction import create_payment_transaction
 from app.utils.user import get_or_create_donor
 from app.utils.donation import create_donation
 from marshmallow import EXCLUDE
-import asyncio
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from app.utils.constants import CHARGE_PROCESS_QUEUE, DonationStatus
 from sqlalchemy import func
-
-
-from app.services.charge_handler import (
-    successful_charge,
-    failed_charge,
-    refunded_charge,
-)
 
 
 @donation_bp.route("/", methods=["GET"])
@@ -122,7 +109,7 @@ def create_payment_intent():
             full_name=validated_donor_data["full_name"],
         )
 
-        current_app.logger.info("created donor data")
+        current_app.logger.info(f"created donor data{donor}")
 
         validated_donation_data = donation_schema.load(data)
 
@@ -133,7 +120,7 @@ def create_payment_intent():
             lng=validated_donation_data["lng"],
             is_anonymous=validated_donation_data["is_anonymous"],
         )
-        current_app.logger.info("created donation data")
+        current_app.logger.info(f"created donation data{donation}")
 
         if active_campaign:
             donation.campaign_id = active_campaign.id
@@ -147,6 +134,13 @@ def create_payment_intent():
             idempotency_key=idempotency_key,
             payment_intent_id=data["paymentIntentId"],
         )
+        current_app.logger.info(
+            f"created payment transaction data{payment_transaction}"
+        )
+        current_app.logger.info(
+            f"Payment Intent created with ID: {payment_transaction.payment_intent_id}"
+        )
+        return jsonify({"paymentIntentId": payment_transaction.payment_intent_id}), 200
 
     except ValidationError as ve:
         db.session.rollback()
