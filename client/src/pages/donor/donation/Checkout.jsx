@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 
 import {
   EmbeddedCheckoutProvider,
@@ -20,7 +20,6 @@ const Checkout = () => {
     setPaymentIntentId,
   } = useDonateStore();
 
-  setIdempotencyKey(uuidv4());
   const stripePromise = loadStripe(stripePublishableKey);
 
   const location = useLocation();
@@ -29,6 +28,9 @@ const Checkout = () => {
     location.state || {};
 
   useEffect(() => {
+    const idempotencyKey = uuidv4(); // Generate key once
+    setPaymentIntentId(idempotencyKey); // Update state
+
     createPaymentIntent({
       fullName,
       emailAddress,

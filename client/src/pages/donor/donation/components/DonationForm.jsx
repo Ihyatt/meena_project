@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useDonateStore from "src/pages/donor/store";
 import { RiInstagramLine } from "react-icons/ri";
 import ErrorAlert from "src/components/ErrorAlert";
-import { ErrorSharp } from "@mui/icons-material";
-import { set } from "date-fns";
 
 const DonationForm = ({ targetRef }) => {
   const [customAmount, setCustomAmount] = useState("");
