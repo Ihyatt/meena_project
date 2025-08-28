@@ -61,11 +61,11 @@ const DonationForm = ({ targetRef }) => {
       setErrors([]); // Clear any existing errors
       navigate("/checkout", {
         state: {
-          amount,
           fullName,
-          email,
+          emailAddress,
+          amount,
+          isEmailSubscription,
           isAnonymous,
-          isSubscription,
         },
       });
     }
