@@ -5,12 +5,8 @@ import useDonorStore from "src/pages/admin/donors/store";
 import { RiPencilLine } from "react-icons/ri";
 
 const EmailSubscriptionCard = ({ data }) => {
-  const { setEmailSubscriptionStatus, emailSubscriptionStatus } =
-    useDonorStore();
-
-  const handleSubscriptionChange = (status) => {
-    setEmailSubscriptionStatus(status);
-  };
+  console.log(data);
+  const manageSubscription = useContext(donorContext).manageSubscription;
   return (
     <tr key={data.id}>
       <td className="p-4 border-b border-blue-gray-50">
@@ -42,12 +38,12 @@ const EmailSubscriptionCard = ({ data }) => {
 
       <td className="p-4 border-b border-blue-gray-50">
         <div
-          className={`py-1 px-2 rounded-md w-max text-xs cursor-pointer  ${emailSubscriptionStatus == "ACTIVE" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
+          className={`py-1 px-2 rounded-md w-max text-xs cursor-pointer  ${data.status == "ACTIVE" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
         >
-          {emailSubscriptionStatus == "ACTIVE" ? (
+          {data.status == "ACTIVE" ? (
             <div
               className="flex items-center gap-1"
-              onClick={() => handleSubscriptionChange("INACTIVE")}
+              onClick={() => manageSubscription("INACTIVE")}
             >
               subscribed <RiPencilLine />
             </div>

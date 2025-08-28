@@ -268,7 +268,7 @@ const DonationForm = ({ targetRef }) => {
             vertical-align-middle 
             hover:text-gray-500"
           >
-            Follow Meena on Instagram <RiInstagramLine />
+            Follow Meena Project on Instagram <RiInstagramLine />
           </a>
         </div>
         {errors.length > 0 && (

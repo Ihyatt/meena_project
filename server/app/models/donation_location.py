@@ -8,7 +8,7 @@ from app.utils.constants import DonationStatus
 
 
 # this needs to be extracted so lat and long need to be on its own table
-class Donation(db.Model, SoftDeleteMixin):
+class DonationLocation(db.Model, SoftDeleteMixin):
     __tablename__ = "donations"
     __versioned__ = {}
 
@@ -16,12 +16,9 @@ class Donation(db.Model, SoftDeleteMixin):
     version_uuid = mapped_column(db.String(32), nullable=False)
 
     amount = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
-    status = mapped_column(
-        db.Enum(DonationStatus), default=DonationStatus.PENDING, nullable=False
-    )
+
     lat = mapped_column(db.Numeric(10, 8), nullable=True)
     lng = mapped_column(db.Numeric(11, 8), nullable=True)
-    is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
 
     created_at = mapped_column(
         db.DateTime(timezone=True),
@@ -39,17 +36,6 @@ class Donation(db.Model, SoftDeleteMixin):
         db.Integer, db.ForeignKey("campaigns.id"), nullable=True
     )
     campaign = relationship("Campaign", back_populates="donations")
-
-    donor_id = mapped_column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    donor = relationship("User", back_populates="donations")
-    donation_notifications = relationship(
-        "DonationNotification", back_populates="donation"
-    )
-    payment_transaction = relationship(
-        "PaymentTransaction",
-        back_populates="donation",
-        uselist=False,
-    )
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

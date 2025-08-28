@@ -85,7 +85,7 @@ const DonationEvents = ({ handleDonationUpdate }) => {
           {notifications.map((note) => (
             <li
               key={note.notification_id}
-              className="flex items-center rounded-xl p-2 "
+              className="flex items-center rounded-xl pt-2 "
             >
               <div className="rounded-full bg-gray-200 p-2">
                 <RiGift2Fill color="black" size={22} />

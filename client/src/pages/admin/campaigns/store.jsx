@@ -29,7 +29,7 @@ const useCampaignStore = create(
             set({ error: data.message });
           }
           set({
-            campaigns: data["campaigns"] || [],
+            campaigns: data || [],
             isLoading: false,
           });
         } catch (error) {
@@ -82,10 +82,9 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          const { campaigns } = useAdminStore.getState();
 
-          useAdminStore.setState({
-            campaigns: campaigns.map((item) =>
+          set({
+            campaigns: state.campaigns.map((item) =>
               data.id === item.id
                 ? {
                     ...item,
@@ -125,13 +124,11 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-
-          const { campaigns } = useAdminStore.getState();
+          const { campaigns } = get();
           const newCampaigns = campaigns
             .filter((item) => item.id !== data.id)
             .map((item) => ({ ...item, isActive: false }));
-          useAdminStore.setState({ campaigns: [{ ...data }, ...newCampaigns] });
-          set({ isLoading: false });
+          set({ campaigns: [{ ...data }, ...newCampaigns], isLoading: false });
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -154,8 +151,8 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          const { campaigns } = useAdminStore.getState();
-          useAdminStore.setState({
+          const { campaigns } = get();
+          set({
             campaigns: campaigns.map((item) =>
               data.id === item.id
                 ? {
@@ -164,8 +161,6 @@ const useCampaignStore = create(
                   }
                 : item
             ),
-          });
-          set({
             isLoading: false,
           });
         } catch (error) {
@@ -192,8 +187,8 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          const { campaigns } = useAdminStore.getState();
-          useAdminStore.setState({
+          const { campaigns } = get();
+          set({
             campaigns: campaigns.map((item) =>
               campaignId == item.id
                 ? {
@@ -202,9 +197,9 @@ const useCampaignStore = create(
                   }
                 : item
             ),
+            isLoading: false,
           });
 
-          set({ isLoading: false });
           return data;
         } catch (error) {
           set({ error: error, isLoading: false });

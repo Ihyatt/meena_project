@@ -42,6 +42,7 @@ const Dashboard = () => {
       const prevRaisedAsNumber = Number(prevRaised);
       return prevRaisedAsNumber + amountAsNumber;
     });
+    setDonationsCount((prevCount) => prevCount + 1);
   };
   return (
     <div>

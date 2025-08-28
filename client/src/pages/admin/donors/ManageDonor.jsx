@@ -10,6 +10,7 @@ import EmailSubscription from "src/pages/admin/donors/EmailSubscription";
 import useCampaignStore from "src/pages/admin/campaigns/store";
 import Loading from "src/components/Loading";
 import Donations from "src/pages/admin/donors/Donations.jsx";
+import DonorContext from "src/pages/admin/donors/DonorContext";
 
 import useDonorStore from "src/pages/admin/donors/store";
 
@@ -110,6 +111,9 @@ export const ManageDonor = () => {
   const handleTableDisplay = (table) => () => {
     setToggle(table);
   };
+  const handleSubscriptionChange = (status) => {
+    setEmailSubscriptionStatus(status);
+  };
 
   return (
     <div ref={modalRef} className="modal-wrapper">
@@ -161,7 +165,11 @@ export const ManageDonor = () => {
           {toggle == "donations" ? (
             <Donations donations={donations} />
           ) : (
-            <EmailSubscription emailSubscription={emailSubscription} />
+            <DonorContext.Provider
+              manageSubscription={handleSubscriptionChange}
+            >
+              <EmailSubscription emailSubscription={emailSubscription} />
+            </DonorContext.Provider>
           )}
 
           <div className="flex  justify-end mt-4">

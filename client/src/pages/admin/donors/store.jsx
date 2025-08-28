@@ -8,16 +8,8 @@ const useDonorStore = create(
   persist(
     (set, get) => ({
       donors: [],
-      fullName: "",
-      emailAddress: "",
-      emailSubscriptionStatus: "",
       isLoading: false,
       error: null,
-      setFullName: (fullName) => set({ fullName }),
-      setEmailAddress: (emailAddress) => set({ emailAddress }),
-      setEmailSubscriptionStatus: (emailSubscriptionStatus) =>
-        set({ emailSubscriptionStatus }),
-
       fetchDonors: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -95,6 +87,9 @@ const useDonorStore = create(
             set({ error: data.message });
           }
           set({
+            donors: state.donors.map((donor) =>
+              donor.id === donorId ? data : donor
+            ),
             isLoading: false,
           });
           return data;
