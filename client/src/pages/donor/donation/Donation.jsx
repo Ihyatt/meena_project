@@ -44,7 +44,7 @@ const Donation = () => {
       setCopyText("COPIED!");
       setTimeout(() => {
         setCopyText("SHARE LINK");
-      }, 5000); // 3000 milliseconds = 3 seconds
+      }, 5000); // 5000 milliseconds = 5 seconds
     } catch (err) {
       console.error("Failed to copy url: ", err);
     }

@@ -1,3 +1,7 @@
+import { useLocation } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import { useEffect, useRef, useState } from "react";
+
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
@@ -9,8 +13,32 @@ import useDonateStore from "src/pages/donor/store";
 const stripePublishableKey = import.meta.env.VITE_STRIPE_PK;
 
 const Checkout = () => {
-  const { fetchClientSecret, isLoading } = useDonateStore();
+  const {
+    fetchClientSecret,
+    isLoading,
+    createPaymentIntent,
+    setPaymentIntentId,
+  } = useDonateStore();
+
+  setIdempotencyKey(uuidv4());
   const stripePromise = loadStripe(stripePublishableKey);
+
+  const location = useLocation();
+
+  const { amount, fullName, emailAddress, isAnonymous, isEmailSubscription } =
+    location.state || {};
+
+  useEffect(() => {
+    createPaymentIntent({
+      fullName,
+      emailAddress,
+      amount,
+      isEmailSubscription,
+      isAnonymous,
+    }).then((data) => {
+      setPaymentIntentId(data.paymentIntentId);
+    });
+  }, [createPaymentIntent]);
 
   return (
     <div

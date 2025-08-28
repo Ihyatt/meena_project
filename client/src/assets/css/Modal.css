@@ -49,6 +49,16 @@
   box-shadow: 2px 4px 20px 0px rgba(0, 0, 0, 0.75);
 }
 
+.manage-donor-modal {
+  width: 100%;
+  height: fit-content;
+  max-width: 850px;
+  background-color: #ffffff;
+  position: relative;
+  border: 5px;
+  box-shadow: 2px 4px 20px 0px rgba(0, 0, 0, 0.75);
+}
+
 
 
 

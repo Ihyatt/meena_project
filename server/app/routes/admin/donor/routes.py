@@ -14,6 +14,9 @@ from app.models.campaign import Campaign
 from app.models.payment_transaction import PaymentTransaction
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
+from app.schemas.email_subscription import EmailSubscriptionSchema
+
+
 from app.schemas.campaign import CampaignSchema
 from app.utils.constants import DonationStatus, SubscriptionStatus
 from datetime import datetime, timezone
@@ -120,9 +123,12 @@ def manage_donor(donor_id):
         data = request.get_json()
         donor = User.query.get_or_404(donor_id)
 
+        email_subscription_schema = EmailSubscriptionSchema(
+            unknown=EXCLUDE,
+        )
+
         donor_schema = DonorSchema(
             unknown=EXCLUDE,
-            many=True,
             only=[
                 "id",
                 "email_address",
@@ -132,15 +138,15 @@ def manage_donor(donor_id):
             ],
         )
 
-        validated_data = donor_schema.load(data)
-        donor.email_subscription.status = (
-            SubscriptionStatus.ACTIVE
-            if data["isEmailSubscription"]
-            else SubscriptionStatus.INACTIVE
-        )
+        validated_donor_data = donor_schema.load(data)
+        validated_email_subscription_schema = email_subscription_schema.load(data)
 
-        donor.full_name = validated_data["full_name"]
-        donor.email_address = validated_data["email_address"]
+        donor.email_subscription.status = validated_email_subscription_schema[
+            "emailSubscriptionStatus"
+        ]
+
+        donor.full_name = validated_donor_data["full_name"]
+        donor.email_address = validated_donor_data["email_address"]
         db.session.commit()
 
         current_app.logger.info("Donor data updated.")
@@ -162,6 +168,7 @@ def manage_donor(donor_id):
         current_app.logger.error(
             f"Error fetching donor'{donor_id}': {str(e)}", exc_info=True
         )
+        db.session.rollback()
         return (
             jsonify(
                 {

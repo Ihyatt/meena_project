@@ -4,8 +4,8 @@ import time
 
 from datetime import datetime, timezone, timedelta
 
-from app.workers.redis_client import redis_access
-from app.workers.utils import backoff
+from workers.redis_client import redis_access
+from workers.utils import backoff
 
 
 from app.services.email_handler import (

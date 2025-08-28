@@ -7,27 +7,11 @@ const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 const useDonateStore = create(
   persist(
     (set, get) => ({
-      fullName: "",
-      emailAddress: "",
-      isEmailSubscription: false,
-      isAnonymous: false,
-      amount: 0.0,
       lat: null,
       lng: null,
-      isLoading: false,
-      activeButton: null,
       error: null,
-
-      setFullName: (fullName) => set({ fullName }),
-      setEmailAddress: (emailAddress) => set({ emailAddress }),
-      setAmount: (amount) => set({ amount }),
-      setLat: (lat) => set({ lat }),
-      setLng: (lng) => set({ lng }),
-      setIsEmailSubscription: () =>
-        set((state) => ({ isEmailSubscription: !state.isEmailSubscription })),
-      setIsAnonymous: () =>
-        set((state) => ({ isAnonymous: !state.isAnonymous })),
-      setActiveButton: (buttonId) => set({ activeButton: buttonId }),
+      paymentIntentId: "",
+      setPaymentIntentId: (paymentIntentId) => set({ paymentIntentId }),
 
       fetchCampaign: async () => {
         set({ isLoading: true, error: null });
@@ -42,29 +26,27 @@ const useDonateStore = create(
           set({ error: error, isLoading: false });
         }
       },
-
-      fetchClientSecret: async () => {
+      createPaymentIntent: async ({
+        fullName,
+        emailAddress,
+        amount,
+        isEmailSubscription,
+        isAnonymous,
+      }) => {
         set({ isLoading: true, error: null });
         try {
           const state = get();
-          const {
-            emailAddress,
-            fullName,
-            isEmailSubscription,
-            amount,
-            isAnonymous,
-            lat,
-            lng,
-          } = state;
+          const { paymentIntentId, lat, lng } = state;
 
           const response = await fetch(
-            `${backendUrl}/donations/create-checkout-session`,
+            `${backendUrl}/donations/create-payment-intent`,
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
+                paymentIntentId,
                 emailAddress,
                 fullName,
                 isEmailSubscription,
@@ -80,11 +62,39 @@ const useDonateStore = create(
             set({ error: data.message });
           }
           set({ isLoading: false });
+        } catch (error) {
+          set({ error: error, isLoading: false });
+        }
+      },
+      fetchClientSecret: async () => {
+        set({ isLoading: true, error: null });
+        try {
+          const state = get();
+          const { paymentIntentId } = state;
+
+          const response = await fetch(
+            `${backendUrl}/donations/create-checkout-session`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                paymentIntentId,
+              }),
+            }
+          );
+          const data = await response.json();
+          if (!response.ok) {
+            set({ error: data.message });
+          }
+          set({ isLoading: false, paymentIntentId: "" });
           return data.clientSecret;
         } catch (error) {
           set({ error: error, isLoading: false });
         }
       },
+
       fetchCheckout: async (sessionId) => {
         set({ isLoading: true, error: null });
         try {
@@ -96,28 +106,11 @@ const useDonateStore = create(
             set({ error: data.message });
           }
           set({
-            fullName: "",
-            emailAddress: "",
-            isEmailSubscription: false,
-            isAnonymous: false,
-            amount: 0.0,
-            lat: null,
-            lng: null,
-            activeButton: null,
             isLoading: false,
-            status: data.status,
           });
         } catch (error) {
           set({
-            fullName: "",
-            emailAddress: "",
-            isEmailSubscription: false,
-            isAnonymous: false,
-            amount: 0.0,
-            lat: null,
-            lng: null,
             isLoading: false,
-            activeButton: null,
             error: error,
           });
         }

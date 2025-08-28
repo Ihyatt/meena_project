@@ -12,20 +12,12 @@ const DonationForm = ({ targetRef }) => {
 
   const navigate = useNavigate();
 
-  const {
-    fullName,
-    setFullName,
-    setAmount,
-    emailAddress,
-    setEmailAddress,
-    setIsAnonymous,
-    isAnonymous,
-    setIsEmailSubscription,
-    isEmailSubscription,
-    activeButton,
-    setActiveButton,
-    amount,
-  } = useDonateStore();
+  const [fullName, setFullName] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [amount, setAmount] = useState("");
+  const [activeButton, setActiveButton] = useState("");
+  const [isAnonymous, setIsAnonymous] = useState(false);
+  const [isEmailSubscription, setIsEmailSubscription] = useState(false);
 
   const handleClick = (buttonId, amount) => {
     setActiveButton(buttonId);
@@ -67,7 +59,15 @@ const DonationForm = ({ targetRef }) => {
     } else {
       // If there are no errors, proceed with navigation
       setErrors([]); // Clear any existing errors
-      navigate(`/checkout`);
+      navigate("/checkout", {
+        state: {
+          amount,
+          fullName,
+          email,
+          isAnonymous,
+          isSubscription,
+        },
+      });
     }
   };
 
@@ -160,7 +160,7 @@ const DonationForm = ({ targetRef }) => {
               <label className="flex items-center cursor-pointer relative mr-1">
                 <input
                   checked={isEmailSubscription}
-                  onChange={setIsEmailSubscription}
+                  onChange={() => setIsEmailSubscription(!isEmailSubscription)}
                   type="checkbox"
                   className="peer h-3.5 w-3.5 cursor-pointer transition-all appearance-none rounded hover:shadow-sm border border-slate-300 checked:bg-slate-800 checked:border-slate-800"
                   id="check-custom-icon"
@@ -190,7 +190,7 @@ const DonationForm = ({ targetRef }) => {
                 <input
                   type="checkbox"
                   checked={isAnonymous}
-                  onChange={setIsAnonymous}
+                  onChange={() => setIsAnonymous(!isAnonymous)}
                   className="
                     peer 
                     h-3.5 

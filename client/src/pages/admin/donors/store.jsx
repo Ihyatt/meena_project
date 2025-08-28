@@ -8,8 +8,16 @@ const useDonorStore = create(
   persist(
     (set, get) => ({
       donors: [],
+      fullName: "",
+      emailAddress: "",
+      emailSubscriptionStatus: "",
       isLoading: false,
       error: null,
+      setFullName: (fullName) => set({ fullName }),
+      setEmailAddress: (emailAddress) => set({ emailAddress }),
+      setEmailSubscriptionStatus: (emailSubscriptionStatus) =>
+        set({ emailSubscriptionStatus }),
+
       fetchDonors: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -60,7 +68,9 @@ const useDonorStore = create(
           set({ error: error, isLoading: false });
         }
       },
-      manageDonorData: async ({ donorId, fullName, IsEmailSubscription }) => {
+      manageDonorData: async (donorId) => {
+        const state = get();
+        const { emailAddress, fullName, emailSubscriptionStatus } = state;
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -75,7 +85,7 @@ const useDonorStore = create(
               body: JSON.stringify({
                 emailAddress,
                 fullName,
-                IsEmailSubscription,
+                emailSubscriptionStatus,
               }),
             }
           );

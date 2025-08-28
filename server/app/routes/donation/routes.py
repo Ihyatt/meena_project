@@ -6,6 +6,7 @@ from werkzeug.exceptions import NotFound
 from app.database import db
 from app.routes.donation import donation_bp
 from app.models.campaign import Campaign
+from app.models.payment_transaction import PaymentTransaction
 from app.models.donation import Donation
 from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
@@ -90,13 +91,12 @@ def fetch_campaign():
         )
 
 
-@donation_bp.route("/create-checkout-session", methods=["POST"])
-def create_checkout_session():
+@donation_bp.route("/create-payment-intent", methods=["POST"])
+def create_payment_intent():
     try:
         data = request.get_json()
         current_app.logger.info(f"Received data: {data}")
         active_campaign = Campaign.query.filter_by(is_active=True).first()
-        domain_url = current_app.config["WEB_URL"]
         donor_schema = DonorSchema(
             unknown=EXCLUDE,
             only=[
@@ -145,11 +145,42 @@ def create_checkout_session():
             donor_id=donor.id,
             amount=donation.amount,
             idempotency_key=idempotency_key,
+            payment_intent_id=data["paymentIntentId"],
         )
 
-        current_app.logger.info("created payment transaction")
+    except ValidationError as ve:
+        db.session.rollback()
+        current_app.logger.error(f"Validation error: {str(ve)}", exc_info=True)
+        return jsonify({"status": "failed", "message": str(ve)}), 400
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error creating checkout session: {str(e)}", exc_info=True
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error creating checkout session: {str(e)}",
+                }
+            ),
+            500,
+        )
 
-        current_app.logger.info("created checkout session")
+
+@donation_bp.route("/create-checkout-session", methods=["POST"])
+def create_checkout_session():
+    try:
+        data = request.get_json()
+        domain_url = current_app.config["WEB_URL"]
+        active_campaign = Campaign.query.filter_by(is_active=True).first()
+        payment_intent_id = data.get("paymentIntentId")
+        data = request.get_json()
+        payment_transaction = PaymentTransaction.query.filter_by(
+            payment_intent_id=payment_intent_id
+        ).first()
+        donation = payment_transaction.donation
+        donor = donation.donor
 
         session = checkout_session(
             amount=donation.amount,
@@ -173,6 +204,7 @@ def create_checkout_session():
             200,
         )
     except ValidationError as ve:
+        db.session.rollback()
         current_app.logger.error(f"Validation error: {str(ve)}", exc_info=True)
         return jsonify({"status": "failed", "message": str(ve)}), 400
     except Exception as e:

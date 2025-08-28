@@ -29,6 +29,9 @@ class PaymentTransaction(db.Model, SoftDeleteMixin):
     idempotency_key = mapped_column(
         db.String(255), unique=True, index=True, nullable=False
     )
+    payment_intent_id = mapped_column(
+        db.String(255), unique=True, index=True, nullable=False
+    )
     created_at = mapped_column(
         db.DateTime(timezone=True),
         server_default=db.func.now(),

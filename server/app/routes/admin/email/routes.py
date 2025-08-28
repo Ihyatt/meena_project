@@ -115,6 +115,7 @@ def save_email_template():
         return email_template_schema.dump(email_template), 200
 
     except ValidationError as ve:
+        db.session.rollback()
         current_app.logger.error(
             f"Validation error while saving email template: {str(ve)}", exc_info=True
         )
@@ -128,6 +129,7 @@ def save_email_template():
             400,
         )
     except Exception as e:
+        db.session.rollback()
         current_app.logger.error(
             f"Error saving email template: {str(e)}", exc_info=True
         )
@@ -144,89 +146,205 @@ def save_email_template():
 
 @email_bp.route("/webhook/sent", methods=["POST"])
 def webhoook_sent():
-    data = request.json
-    CustomID = data.get("CustomID")
-    email = Email.query.filter_by(id=int(CustomID)).first()
-    email.status = EmailStatus.SENT
-    email.email_subscription.sent += 1
-    db.session.commit()
-    current_app.logger.info(f"Email with ID {CustomID} has been sent.")
-    return jsonify({"status": "success", "message": "Webhook sent received"}), 200
+    try:
+        data = request.json
+        CustomID = data.get("CustomID")
+        email = Email.query.filter_by(id=int(CustomID)).first()
+        email.status = EmailStatus.SENT
+        email.email_subscription.sent += 1
+        db.session.commit()
+        current_app.logger.info(f"Email with ID {CustomID} has been sent.")
+        return jsonify({"status": "success", "message": "Webhook sent received"}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error processing webhook sent for Email ID {CustomID}: {str(e)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error processing webhook sent: {str(e)}",
+                }
+            ),
+            500,
+        )
 
 
 @email_bp.route("/webhook/open", methods=["POST"])
 def webhoook_open():
-    data = request.json
-    CustomID = data.get("CustomID")
-    email = Email.query.filter_by(id=int(CustomID)).first()
-    email.status = EmailStatus.OPENED
-    email.email_subscription.opened += 1
-    db.session.commit()
-    current_app.logger.info(f"Email with ID {CustomID} has been opened.")
-    return jsonify({"status": "success", "message": "Webhook open received"}), 200
+    try:
+        data = request.json
+        CustomID = data.get("CustomID")
+        email = Email.query.filter_by(id=int(CustomID)).first()
+        email.status = EmailStatus.OPENED
+        email.email_subscription.opened += 1
+        db.session.commit()
+        current_app.logger.info(f"Email with ID {CustomID} has been opened.")
+        return jsonify({"status": "success", "message": "Webhook open received"}), 200
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error processing webhook open for Email ID {CustomID}: {str(e)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error processing webhook open: {str(e)}",
+                }
+            ),
+            500,
+        )
 
 
 @email_bp.route("/webhook/click", methods=["POST"])
 def webhook_click():
-    data = request.json
-    CustomID = data.get("CustomID")
-    email = Email.query.filter_by(id=int(CustomID)).first()
-    email.status = EmailStatus.CLICKED
-    email.email_subscription.clicked += 1
-    db.session.commit()
-    current_app.logger.info(f"Email with ID {CustomID} has been clicked.")
-    return jsonify({"status": "success", "message": "Webhook click received"}), 200
+    try:
+        data = request.json
+        CustomID = data.get("CustomID")
+        email = Email.query.filter_by(id=int(CustomID)).first()
+        email.status = EmailStatus.CLICKED
+        email.email_subscription.clicked += 1
+        db.session.commit()
+        current_app.logger.info(f"Email with ID {CustomID} has been clicked.")
+        return jsonify({"status": "success", "message": "Webhook click received"}), 200
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error processing webhook click for Email ID {CustomID}: {str(e)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error processing webhook click: {str(e)}",
+                }
+            ),
+            500,
+        )
 
 
 @email_bp.route("/webhook/bounce", methods=["POST"])
 def webhook_bounce():
-    data = request.json
-    CustomID = data.get("CustomID")
-    email = Email.query.filter_by(id=int(CustomID)).first()
-    email.status = EmailStatus.BOUNCED
-    email.email_subscription.bounced += 1
-    db.session.commit()
-    current_app.logger.info(f"Email with ID {CustomID} has bounced.")
-    return jsonify({"status": "success", "message": "Webhook bounce received"}), 200
+    try:
+        data = request.json
+        CustomID = data.get("CustomID")
+        email = Email.query.filter_by(id=int(CustomID)).first()
+        email.status = EmailStatus.BOUNCED
+        email.email_subscription.bounced += 1
+        db.session.commit()
+        current_app.logger.info(f"Email with ID {CustomID} has bounced.")
+        return jsonify({"status": "success", "message": "Webhook bounce received"}), 200
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error processing webhook bounce for Email ID {CustomID}: {str(e)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error processing webhook bounce: {str(e)}",
+                }
+            ),
+            500,
+        )
 
 
 @email_bp.route("/webhook/spam", methods=["POST"])
 def webhook_spam():
-    data = request.json
-    CustomID = data.get("CustomID")
-    email = Email.query.filter_by(id=int(CustomID)).first()
-    email.status = EmailStatus.SPAM
-    email.email_subscription.spam = True
-    email.email_subscription.status = SubscriptionStatus.INACTIVE
-    db.session.commit()
-    current_app.logger.info(f"Email with ID {CustomID} has been marked as spam.")
-    return jsonify({"status": "success", "message": "Webhook spam received"}), 200
+    try:
+        data = request.json
+        CustomID = data.get("CustomID")
+        email = Email.query.filter_by(id=int(CustomID)).first()
+        email.status = EmailStatus.SPAM
+        email.email_subscription.spam = True
+        email.email_subscription.status = SubscriptionStatus.INACTIVE
+        db.session.commit()
+        current_app.logger.info(f"Email with ID {CustomID} has been marked as spam.")
+        return jsonify({"status": "success", "message": "Webhook spam received"}), 200
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error processing webhook spam for Email ID {CustomID}: {str(e)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error processing webhook spam: {str(e)}",
+                }
+            ),
+            500,
+        )
 
 
 @email_bp.route("/webhook/blocked", methods=["POST"])
 def webhook_blocked():
-    data = request.json
-    CustomID = data.get("CustomID")
-    email = Email.query.filter_by(id=int(CustomID)).first()
-    email.status = EmailStatus.BLOCKED
-    email.email_subscription.blocked = True
-    email.email_subscription.status = SubscriptionStatus.INACTIVE
-    db.session.commit()
-    current_app.logger.info(f"Email with ID {CustomID} has been blocked.")
-    return jsonify({"status": "success", "message": "Webhook blocked received"}), 200
+    try:
+        data = request.json
+        CustomID = data.get("CustomID")
+        email = Email.query.filter_by(id=int(CustomID)).first()
+        email.status = EmailStatus.BLOCKED
+        email.email_subscription.blocked = True
+        email.email_subscription.status = SubscriptionStatus.INACTIVE
+        db.session.commit()
+        current_app.logger.info(f"Email with ID {CustomID} has been blocked.")
+        return (
+            jsonify({"status": "success", "message": "Webhook blocked received"}),
+            200,
+        )
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error processing webhook blocked for Email ID {CustomID}: {str(e)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error processing webhook blocked: {str(e)}",
+                }
+            ),
+            500,
+        )
 
 
 @email_bp.route("/webhook/unsub", methods=["POST"])
 def unsubscribe():
-    data = request.json
-    CustomID = data.get("CustomID")
-    email = Email.query.filter_by(id=int(CustomID)).first()
-    email.status = EmailStatus.UNSUB
-    email.email_subscription.status = SubscriptionStatus.INACTIVE
-    db.session.commit()
-    current_app.logger.info(f"Email with ID {CustomID} has been unsubscribed.")
+    try:
+        data = request.json
+        CustomID = data.get("CustomID")
+        email = Email.query.filter_by(id=int(CustomID)).first()
+        email.status = EmailStatus.UNSUB
+        email.email_subscription.status = SubscriptionStatus.INACTIVE
+        db.session.commit()
+        current_app.logger.info(f"Email with ID {CustomID} has been unsubscribed.")
 
-    return (
-        jsonify({"status": "success", "message": "Unsubscribe request received"}),
-        200,
-    )
+        return (
+            jsonify({"status": "success", "message": "Unsubscribe request received"}),
+            200,
+        )
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error processing unsubscribe for Email ID {CustomID}: {str(e)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error processing unsubscribe: {str(e)}",
+                }
+            ),
+            500,
+        )

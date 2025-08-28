@@ -27,25 +27,6 @@ const TABLE_HEAD = [
 ];
 
 const emailSubscription = ({ emailSubscription }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
-
-  const totalPages = Math.ceil(emailSubscription.length / rowsPerPage);
-
-  const currentemailSubscription = useMemo(() => {
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    return emailSubscription.slice(startIndex, endIndex);
-  }, [emailSubscription, currentPage, rowsPerPage]);
-
-  const goToNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
-
-  const goToPreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
   return (
     <div className=" m-4 bg-white shadow-md rounded-lg">
       <Card className="h-full w-full shadow-none">
@@ -77,11 +58,10 @@ const emailSubscription = ({ emailSubscription }) => {
               </tr>
             </thead>
             <tbody>
-              {emailSubscription.length > 0 ? (
+              {emailSubscription != {} ? (
                 <EmailSubscriptionCard
                   key={emailSubscription.id}
                   data={emailSubscription}
-                  decoration={{ classes }}
                 />
               ) : (
                 <tr>
@@ -99,33 +79,7 @@ const emailSubscription = ({ emailSubscription }) => {
             </tbody>
           </table>
         </CardBody>
-        <CardFooter className=" border-blue-gray-50 p-4">
-          <Typography
-            variant="small"
-            color="blue-gray"
-            className="font-normal opacity-70"
-          >
-            Page {currentPage} of {totalPages}
-          </Typography>
-          <div className="flex items-center justify-between mt-2">
-            <div className="inline-flex">
-              <button
-                className="font-normal  hover:opacity-70 text-gray-800   mr-1 text-sm "
-                onClick={goToPreviousPage}
-                disabled={currentPage === 1}
-              >
-                Prev
-              </button>
-              <button
-                className=" font-normal  hover:opacity-70 text-gray-800  ml-1 text-sm"
-                onClick={goToNextPage}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        </CardFooter>
+        <CardFooter className=" border-blue-gray-50 p-4"></CardFooter>
       </Card>
     </div>
   );

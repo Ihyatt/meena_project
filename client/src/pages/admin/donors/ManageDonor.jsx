@@ -19,30 +19,32 @@ export const ManageDonor = () => {
   const isModal = location.state?.isModal;
   const modalRef = useRef();
   const { donorId } = useParams();
-  console.log("managedonor", donorId);
 
   const [errors, setErrors] = useState([]);
 
-  const [fullName, setFullName] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
   const [donations, setDonations] = useState([]);
-  const [isEmailSubscription, setIsEmailSubscription] = useState(false);
   const [emailSubscription, setEmailSubscription] = useState({});
   const [toggle, setToggle] = useState("donations");
 
-  const { fetchDonor, isLoading } = useDonorStore();
+  const {
+    fetchDonor,
+    manageDonorData,
+    isLoading,
+    fullName,
+    setFullName,
+    emailAddress,
+    setEmailAddress,
+    setEmailSubscriptionStatus,
+    emailSubscriptionStatus,
+  } = useDonorStore();
 
   useEffect(() => {
-    console.log("fetching donor 1", donorId);
     fetchDonor(donorId).then((data) => {
+      setDonations(data.donations);
       setFullName(data.fullName);
       setEmailAddress(data.emailAddress);
-      setDonations(data.donations);
       setEmailSubscription(data.emailSubscription);
-      const dataIsEmailSubscription =
-        data.emailSubscription.status === "ACTIVE";
-      setIsEmailSubscription(dataIsEmailSubscription);
-      console.log("hi", data);
+      setEmailSubscriptionStatus(data.emailSubscription.status);
     });
   }, [fetchDonor]);
 
@@ -63,20 +65,48 @@ export const ManageDonor = () => {
   };
 
   const handleSave = (event) => {
-    return;
+    if (
+      !fullName ||
+      !emailAddress ||
+      !emailSubscriptionStatus ||
+      (!emailSubscriptionStatus != "ACTIVE" &&
+        emailSubscriptionStatus != "INACTIVE")
+    ) {
+      const errors = [];
+      if (!fullName) {
+        errors.push("Full name is required.");
+      }
+      if (!emailAddress) {
+        errors.push("Email address is required.");
+      }
+      if (!emailSubscriptionStatus) {
+        errors.push("Email subscription status is required.");
+      }
+      if (
+        !emailSubscriptionStatus != "ACTIVE" &&
+        emailSubscriptionStatus != "INACTIVE"
+      ) {
+        errors.push(
+          "Email subscription status should be either 'ACTIVE' or 'INACTIVE'."
+        );
+      }
+      setErrors(errors);
+      return;
+    }
+    manageDonorData(donorId).then((data) => {
+      setDonations(data.donations);
+      setFullName(data.fullName);
+      setEmailAddress(data.emailAddress);
+      setEmailSubscription(data.emailSubscription);
+      setEmailSubscriptionStatus(data.emailSubscription.status);
+    });
     event.preventDefault();
-  };
-
-  const handleSubscriptionChange = () => {
-    const IsEmailSubscription = !IsEmailSubscription;
-    setIsEmailSubscription(IsEmailSubscription);
   };
 
   const handleErrorClose = () => {
     console.log("Error alert closed");
     setErrors([]);
   };
-  console.log(toggle);
 
   const handleTableDisplay = (table) => () => {
     setToggle(table);
@@ -85,98 +115,45 @@ export const ManageDonor = () => {
   return (
     <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}
-      <div className="modal rounded-lg">
-        <form className="max-w-xl mx-auto p-5">
-          <div className="p-2">
-            <label class="block mb-2 text-sm text-slate-600">Full Name</label>
-            <input
-              type="text"
-              id="fullName"
-              placeholder="Full name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
-              required
-            />
-          </div>
-          <div className="p-2">
-            <label class="block mb-2 text-sm text-slate-600">
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="emailAddress"
-              placeholder="Email Address"
-              value={emailAddress}
-              onChange={(e) => setEmailAddress(e.target.value)}
-              className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
-            ></input>
-          </div>
-          <div className="p-2">
-            <label className="flex items-center cursor-pointer relative mr-1">
+      <div className="manage-donor-modal rounded-lg">
+        <form className=" mx-auto p-5">
+          <div className="flex ">
+            <div className="p-2">
+              <label class="block mb-2 text-sm text-slate-600">Full Name</label>
               <input
-                type="checkbox"
-                checked={isEmailSubscription}
-                onChange={handleSubscriptionChange}
-                className="
-                    peer 
-                    h-3.5 
-                    w-3.5 
-                    cursor-pointer 
-                    transition-all 
-                    appearance-none 
-                    rounded 
-                    hover:shadow-sm 
-                    border 
-                    border-slate-300 
-                    checked:bg-slate-800 
-                    checked:border-slate-800
-                  "
-                id="check-custom-icon"
+                type="text"
+                id="fullName"
+                placeholder="Full name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-[300px] bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
+                required
               />
-              <span
-                className="
-                    absolute
-                    text-white
-                    opacity-0
-                    peer-checked:opacity-100
-                    top-1/2
-                    left-1/2
-                    transform
-                    -translate-x-1/2
-                    -translate-y-1/2
-                  "
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={3}
-                  stroke="currentColor"
-                  className="w-3 h-3"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </span>
-            </label>
-          </div>
-          <div>
-            <div></div>
+            </div>
+            <div className="p-2">
+              <label class="block mb-2 text-sm text-slate-600">
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="emailAddress"
+                placeholder="Email Address"
+                value={emailAddress}
+                onChange={(e) => setEmailAddress(e.target.value)}
+                className="w-[300px] bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
+              ></input>
+            </div>
           </div>
 
-          <div class="inline-flex">
+          <div class="inline-flex pt-6 pl-3">
             <div
-              class="bg-gray-300 hover:bg-gray-400 text-gray-800  py-2 px-4 rounded-l text-sm"
+              className={`bg-gray-100 hover:bg-gray-200 text-gray-800  py-2 px-4 rounded-l text-sm ${toggle == "donations" ? "bg-gray-200 text-gray-800" : ""} `}
               onClick={handleTableDisplay("donations")}
             >
               Donations
             </div>
             <div
-              class="bg-gray-300 hover:bg-gray-400 text-gray-800  py-2 px-4 rounded-r text-sm"
+              className={`bg-gray-100 hover:bg-gray-200 text-gray-800  py-2 px-4 rounded-r text-sm ${toggle == "emailSubscription" ? "bg-gray-200 text-gray-800" : ""} `}
               onClick={handleTableDisplay("emailSubscription")}
             >
               Email Subscription
@@ -188,6 +165,43 @@ export const ManageDonor = () => {
             <EmailSubscription emailSubscription={emailSubscription} />
           )}
 
+          <div className="flex  justify-end mt-4">
+            <button
+              type="button"
+              className="
+                h-6
+                w-[110px]
+                cursor-pointer
+                bg-[rgb(234,237,241)]
+                border-none
+                text-[rgb(100,111,124)]
+                rounded-full
+                m-1.5
+              "
+              onClick={handleClose}
+              disabled={isLoading}
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              className="
+                    m-1.5
+                  h-6
+                  w-[110px]
+                  bg-[#40bf51]
+                  text-white
+                  border-none
+                  cursor-pointer
+                  rounded-full
+                  font-medium
+                "
+              onClick={handleSave}
+              disabled={isLoading}
+            >
+              Save
+            </button>
+          </div>
           {errors.length > 0 && (
             <ErrorAlert errors={errors} onClose={handleErrorClose} />
           )}
