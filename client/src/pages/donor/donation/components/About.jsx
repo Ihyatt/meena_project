@@ -26,7 +26,7 @@ const About = ({ description }) => {
             }
         `}
         >
-          ABOUT MEENA
+          WHO WE ARE
         </div>
         <div
           onClick={() => handleClick("campaign")}
@@ -43,7 +43,7 @@ const About = ({ description }) => {
                 }
             `}
         >
-          CAMPAIGN
+          OUR GOAL
         </div>
       </div>
       <div className="font-light">

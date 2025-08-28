@@ -72,12 +72,11 @@ const Donation = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   };
-  console.log(activeCampaign);
   return (
     <div>
       {isLoading && <Loading />}
-      <div className="grid grid-cols-3 gap-4 px-30  mt-5 mb-10 ">
-        <div className="col-span-2  grid place-items-center">
+      <div className="flex justify-center">
+        <div className="min-w-210 max-w-210  flex flex-col items-center p-5">
           <img className="w-40" src={logo} alt="meena project logo" />
           <div className="flex flex-col justify-center pl-20 pr-3 pt-8">
             <div className="text-4xl font-bold mb-4">
@@ -99,7 +98,7 @@ const Donation = () => {
           </div>
         </div>
 
-        <div className="px-2 py-40 ">
+        <div className="px-2 py-40 min-w-100">
           <img
             className="w-40 h-40 rounded-full object-cover"
             src={din}

@@ -22,7 +22,7 @@ import { ManageCampaign } from "src/pages/admin/campaigns/ManageCampaign";
 import { ManageDonor } from "src/pages/admin/donors/ManageDonor";
 
 // donor
-import DonorLayout from "src/pages/donor/DonationLayout";
+import DonationLayout from "src/pages/donor/DonationLayout";
 import Donation from "src/pages/donor/donation/Donation";
 import Checkout from "src/pages/donor/donation/Checkout";
 import CheckoutComplete from "src/pages/donor/donation/CheckoutComplete";
@@ -36,7 +36,7 @@ function App() {
     <div>
       <Routes location={background || location}>
         <Route path="/login" element={<Login />} />
-        <Route element={<DonorLayout />}>
+        <Route element={<DonationLayout />}>
           <Route path="/" element={<Donation />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="checkout-complete" element={<CheckoutComplete />} />

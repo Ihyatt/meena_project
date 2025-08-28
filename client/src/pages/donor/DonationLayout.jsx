@@ -1,11 +1,12 @@
-import { Outlet } from 'react-router-dom';
-import logo from 'src/assets/images/logo.png';
+import { Outlet } from "react-router-dom";
+import { Footer } from "src/pages/donor/donation/components/Footer";
 
-const DonorLayout = () => {
-    return (
-        <div>
-            <Outlet />  
-        </div >
-    )
+const DonationLayout = () => {
+  return (
+    <div>
+      <Outlet />
+      <Footer />
+    </div>
+  );
 };
-export default DonorLayout
+export default DonationLayout;
