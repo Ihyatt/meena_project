@@ -41,6 +41,10 @@ const DonationEvents = ({ handleDonationUpdate }) => {
             return prevNotifications; // Return current state if duplicate
           }
           handleDonationUpdate(data.amount);
+          if (prevNotifications.length >= 5) {
+            // Limit to last 5 notifications
+            return [data, ...prevNotifications.slice(0, 4)];
+          }
           return [data, ...prevNotifications]; // Add new data to the beginning
         });
 

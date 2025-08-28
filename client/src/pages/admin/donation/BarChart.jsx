@@ -1,13 +1,10 @@
 import * as React from "react";
 
 import { BarChart } from "@mui/x-charts/BarChart";
-import useAdminStore from "src/pages/admin/store";
 import BarChartParser from "src/pages/admin/utils/BarChartParser";
-import { format } from "date-fns"; // Or any date formatting library
 
 const DonationsBarChart = ({ window }) => {
   const dataset = BarChartParser(window);
-  dataset.reverse(); // Reverse the dataset to show the most recent month first
 
   function valueFormatter(value) {
     return `$${value}`;

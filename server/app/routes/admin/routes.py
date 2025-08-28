@@ -36,7 +36,10 @@ def dashboard():
         )
 
         lat_lng_donations = [
-            {"lat": donation.lat, "lng": donation.lng}
+            {
+                "lat": donation.lat,
+                "lng": donation.lng,
+            }
             for donation in donations
             if donation.lat is not None and donation.lng is not None
         ]
@@ -61,33 +64,8 @@ def dashboard():
             .all()
         )
 
-        campaign_schema = CampaignSchema(
-            many=True,
-            only=[
-                "id",
-                "image_url",
-                "title",
-                "description",
-                "goal",
-                "raised",
-                "is_active",
-                "launched",
-                "closed",
-                "total_donations",
-            ],
-        )
-
-        donor_schema = DonorSchema(
-            many=True,
-            only=[
-                "id",
-                "email_address",
-                "full_name",
-                "donations",
-                "email_subscription",
-            ],
-        )
-
+        current_app.logger.debug(f"donations: {donations}")
+        current_app.logger.debug("*******************")
         current_app.logger.info("Dashboard data fetched.")
         return (
             jsonify(
@@ -98,6 +76,7 @@ def dashboard():
                     "raised": sum(donation.amount for donation in donations),
                     "donorsCount": len(donors),
                     "donationsWindow": donations_window,
+                    "donations": donations_window,
                 }
             ),
             200,

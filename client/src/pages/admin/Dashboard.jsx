@@ -28,9 +28,9 @@ const Dashboard = () => {
   useEffect(() => {
     fetchDashboardData().then((data) => {
       setLaunchedCampaigns(data.launchedCampaigns);
-      setDonationsCount(data.totalHistoricalDonations);
-      setRaised(data.totalHistoricalRaised);
-      setDonorsCount(data.totalHistoricalDonors);
+      setDonationsCount(data.donationsCount);
+      setRaised(data.raised);
+      setDonorsCount(data.donorsCount);
       setDonationsLocation(data.donationsLocation);
       setDonationsWindow(data.donationsWindow);
     });
@@ -43,7 +43,6 @@ const Dashboard = () => {
       return prevRaisedAsNumber + amountAsNumber;
     });
   };
-
   return (
     <div>
       {isLoading && <Loading />}

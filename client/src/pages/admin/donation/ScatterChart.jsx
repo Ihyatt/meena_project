@@ -1,9 +1,18 @@
-import useAdminStore from "src/pages/admin/store";
-import MonthsWindow from "src/pages/admin/utils/MonthsWindow";
 import { ScatterChart } from "@mui/x-charts/ScatterChart";
-import { format } from "date-fns"; // Or any date formatting library
+import { format } from "date-fns";
+import React from "react";
+import { startOfMonth, subMonths, addMonths } from "date-fns";
+
+const getSixMonthWindow = () => {
+  const today = new Date();
+  const end = startOfMonth(addMonths(today, 1));
+  const start = subMonths(end, 6);
+  return { start, end };
+};
 
 const DonationsScatterChart = ({ window }) => {
+  const { start, end } = getSixMonthWindow();
+
   const series = [
     {
       label: "one-time",
@@ -19,25 +28,24 @@ const DonationsScatterChart = ({ window }) => {
 
   const xAxisConfig = [
     {
-      scaleType: "time", // Important for Date objects
-      data: MonthsWindow({ numMonths: 7 }), // Generates the last 7 months
-      valueFormatter: (date, context) => {
-        // This formatter applies to both axis ticks and tooltip header (if 'axis' type tooltip)
+      scaleType: "time",
+      min: start,
+      max: end,
+      tickMinStep: 1000 * 60 * 60 * 24 * 30, // 30 days in milliseconds for a monthly tick
+      valueFormatter: (date) => {
         if (date instanceof Date) {
-          return format(date, "MMM yyyy"); // e.g., "Jan 2023"
+          return format(date, "MMM yyyy");
         }
-        return String(date); // Fallback for non-Date values
+        return String(date);
       },
     },
   ];
 
-  // Axis configuration for Y (Amount)
   const yAxisConfig = [
     {
-      valueFormatter: (amount, context) => {
-        // This formatter applies to both axis ticks and tooltip series values
+      valueFormatter: (amount) => {
         if (typeof amount === "number") {
-          return `$${amount.toLocaleString()}`; // e.g., "$100"
+          return `$${amount.toLocaleString()}`;
         }
         return String(amount);
       },
@@ -62,7 +70,7 @@ const DonationsScatterChart = ({ window }) => {
           xAxis={xAxisConfig}
           yAxis={yAxisConfig}
           slotProps={{
-            legend: { hidden: true }, // 👈 Hides the legend
+            legend: { hidden: true },
           }}
         />
       )}
