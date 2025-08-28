@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import useDonateStore from "src/pages/donor/store";
 import Loading from "src/components/Loading";
 import { NumericFormat } from "react-number-format";
-import DonationEvents from "src/pages/donor/donation/components/Events";
+import DonationEvents from "src/components/Events";
 import About from "src/pages/donor/donation/components/About";
 import defaultImg from "src/assets/images/defaultImg.jpg";
 import logo from "src/assets/images/logo.png";

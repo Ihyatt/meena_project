@@ -73,7 +73,7 @@ const DonationEvents = ({ handleDonationUpdate }) => {
   }, []); // Empty dependency array is correct here for setting up the EventSource once
 
   return (
-    <div className="pt-2 h-105">
+    <div className="pt-2 h-90">
       {notifications.length === 0 ? (
         <p className="">No recent donations.</p>
       ) : (

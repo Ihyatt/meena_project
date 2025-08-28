@@ -7,17 +7,9 @@ const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 const useAdminStore = create(
   persist(
     (set, get) => ({
-      campaigns: [],
-      donationsLatLng: [],
-      donors: [],
-      totalHistoricalRaised: 0,
-      totalHistoricalDonations: 0,
-      totalHistoricalDonors: 0,
-      launchedCampaigns: 0,
-      donationsWindow: [],
       isLoading: false,
       error: null,
-      fetchCampaigns: async () => {
+      fetchDashboardData: async () => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -33,16 +25,9 @@ const useAdminStore = create(
             set({ error: data.message });
           }
           set({
-            campaigns: data["campaigns"] || [],
-            donationsLatLng: data["donationsLatLng"] || [],
-            donors: data["donors"] || [],
-            launchedCampaigns: data["launchedCampaigns"] || 0,
-            totalHistoricalDonors: data["totalHistoricalDonors"] || 0,
-            totalHistoricalDonations: data["totalHistoricalDonations"] || 0,
-            totalHistoricalRaised: data["totalHistoricalRaised"] || null,
-            donationsWindow: data["donationsWindow"] || [],
             isLoading: false,
           });
+          return data;
         } catch (error) {
           set({ error: error, isLoading: false });
         }

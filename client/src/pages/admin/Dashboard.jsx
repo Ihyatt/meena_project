@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import useAdminStore from 'src/pages/admin/store';
-import DonationsHeatMap from 'src/pages/admin/donation/HeatMap'
-import DonationsScatterChart from 'src/pages/admin/donation/ScatterChart'
-import DonationsBarChart from 'src/pages/admin/donation/BarChart';
-import { NumericFormat } from 'react-number-format';
-
+import React, { useEffect, useState } from "react";
+import useAdminStore from "src/pages/admin/store";
+import DonationsHeatMap from "src/pages/admin/donation/HeatMap";
+import DonationsScatterChart from "src/pages/admin/donation/ScatterChart";
+import DonationsBarChart from "src/pages/admin/donation/BarChart";
+import DonationEvents from "src/components/Events";
+import { NumericFormat } from "react-number-format";
 
 import Loading from "src/components/Loading";
-
 
 import {
   RiHandHeartFill,
@@ -17,13 +16,33 @@ import {
 } from "react-icons/ri";
 
 const Dashboard = () => {
+  const [donationsLocation, setDonationsLocation] = useState([]);
+  const [launchedCampaigns, setLaunchedCampaigns] = useState(0);
+  const [donationsCount, setDonationsCount] = useState(0);
+  const [raised, setRaised] = useState(0);
+  const [donorsCount, setDonorsCount] = useState(0);
+  const [donationsWindow, setDonationsWindow] = useState([]);
 
-  const { fetchCampaigns, launchedCampaigns, totalHistoricalDonors, isLoading, totalHistoricalDonations, totalHistoricalRaised } = useAdminStore();
+  const { fetchDashboardData, isLoading } = useAdminStore();
 
   useEffect(() => {
-    fetchCampaigns();
+    fetchDashboardData().then((data) => {
+      setLaunchedCampaigns(data.launchedCampaigns);
+      setDonationsCount(data.totalHistoricalDonations);
+      setRaised(data.totalHistoricalRaised);
+      setDonorsCount(data.totalHistoricalDonors);
+      setDonationsLocation(data.donationsLocation);
+      setDonationsWindow(data.donationsWindow);
+    });
+  }, [fetchDashboardData]);
 
-  }, [fetchCampaigns]);
+  const handleNewDonation = (newAmount) => {
+    setRaised((prevRaised) => {
+      const amountAsNumber = Number(newAmount);
+      const prevRaisedAsNumber = Number(prevRaised);
+      return prevRaisedAsNumber + amountAsNumber;
+    });
+  };
 
   return (
     <div>
@@ -34,32 +53,42 @@ const Dashboard = () => {
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiMegaphoneFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{launchedCampaigns}</span>
+            <RiMegaphoneFill
+              size={25}
+              color={"white"}
+              className="inline bg-[#40bf51] rounded-xl p-1"
+            />{" "}
+            <span className="text-xl">{launchedCampaigns}</span>
           </div>
-          <div className="text-black">
-            CAMPAIGNS
-          </div>
+          <div className="text-black">CAMPAIGNS</div>
         </div>
         <div
           className="grid grid-cols-1 content-center justify-items-center rounded-lg shadow-sm h-20 "
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiHandHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{totalHistoricalDonations || 0}</span>
+            <RiHandHeartFill
+              size={25}
+              color={"white"}
+              className="inline bg-[#40bf51] rounded-xl p-1"
+            />{" "}
+            <span className="text-xl">{donationsCount || 0}</span>
           </div>
-          <div className="text-black">
-            DONATIONS
-          </div>
+          <div className="text-black">DONATIONS</div>
         </div>
         <div
           className=" grid grid-cols-1 content-center justify-items-center text-black rounded-lg shadow-sm h-20 "
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiMoneyDollarCircleFill size={30} color={'#40bf51'} className="inline bg-white" />
-            <span className='text-xl'>
+            <RiMoneyDollarCircleFill
+              size={30}
+              color={"#40bf51"}
+              className="inline bg-white"
+            />
+            <span className="text-xl">
               <NumericFormat
-                value={totalHistoricalRaised || 0}
+                value={raised || 0}
                 thousandSeparator={true}
                 prefix="$"
                 decimalScale={2}
@@ -67,39 +96,43 @@ const Dashboard = () => {
               />
             </span>
           </div>
-          <div className="text-black">
-            RAISED
-          </div>
+          <div className="text-black">RAISED</div>
         </div>
         <div
           className=" grid grid-cols-1 content-center justify-items-center text-black rounded-lg  shadow-sm min-h-20 "
           style={{ backgroundColor: "white", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
-            <RiUserHeartFill size={25} color={'white'} className="inline bg-[#40bf51] rounded-xl p-1" /> <span className='text-xl'>{totalHistoricalDonors}</span>
+            <RiUserHeartFill
+              size={25}
+              color={"white"}
+              className="inline bg-[#40bf51] rounded-xl p-1"
+            />{" "}
+            <span className="text-xl">{donorsCount}</span>
           </div>
-          <div className="text-black">
-            DONORS
-          </div>
+          <div className="text-black">DONORS</div>
         </div>
       </div>
-      <div className="m-4 ">
-        <div className=" h-83">
-          <DonationsHeatMap />
-        </div >
+      <div className="flex m-4 ">
+        <div className="h-105 flex-grow">
+          <DonationsHeatMap donations={donationsLocation} />
+        </div>
+        <div className="w-80 ml-4 rounded-lg shadow-md bg-white p-4">
+          <div className="text-gray-400 ">RECENT DONATIONS</div>
+          <DonationEvents handleDonationUpdate={handleNewDonation} />
+        </div>
       </div>
 
       <div className="flex m-4">
         <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white">
-          <DonationsBarChart />
+          <DonationsBarChart window={donationsWindow} />
         </div>
         <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
-          <DonationsScatterChart />
+          <DonationsScatterChart window={donationsWindow} />
         </div>
       </div>
-    </div >
+    </div>
   );
-
 };
 
 export default Dashboard;

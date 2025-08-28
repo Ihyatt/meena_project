@@ -92,15 +92,11 @@ def dashboard():
         return (
             jsonify(
                 {
-                    "campaigns": campaign_schema.dump(campaigns),
-                    "donationsLatLng": lat_lng_donations,
+                    "donationsLocation": lat_lng_donations,
                     "launchedCampaigns": len(campaigns),
-                    "totalHistoricalDonations": len(donations),
-                    "totalHistoricalRaised": sum(
-                        donation.amount for donation in donations
-                    ),
-                    "totalHistoricalDonors": len(donors),
-                    "donors": donor_schema.dump(donors),
+                    "donationsCount": len(donations),
+                    "raised": sum(donation.amount for donation in donations),
+                    "donorsCount": len(donors),
                     "donationsWindow": donations_window,
                 }
             ),
