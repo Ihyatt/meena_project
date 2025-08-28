@@ -78,23 +78,16 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 
 ## 🏗️ Development Notes
 
-
-
-
-
-
-
 - First-time use of several technologies (Redis, Stripe, SSE)
 - Current focus: Improving production readiness
 
 > **Note**: This project demonstrates rapid learning and implementation of complex systems. Several production-grade features are already implemented, with more enhancements planned.
 
-
 DONOR FLOW
 
-<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/87eab711-e1df-4d3b-899f-d3bb3ef8e93c" />
+<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/37499ac2-4c53-4827-a234-9864a8229044" />
 
-<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/3a792611-d0a5-45ec-ab2a-ddb49de4a85e" />
+<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/0ce5143a-4b92-4f90-a7dc-5e181b5661fa"  />
 
 <img width="100" alt="Image" src="https://github.com/user-attachments/assets/20c4340e-c13f-4212-854e-59054a5c105a" />
 
@@ -102,7 +95,7 @@ ADMIN FLOW
 
 <img width="100"  alt="Image" src="https://github.com/user-attachments/assets/97b85d6f-b07f-43c8-9440-f05b0e0c9673" />
 
-<img width="100" alt="Image" src="https://github.com/user-attachments/assets/39e51ddc-6c46-4a70-af11-b465bb600c7f" />
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/957e7d2b-16cf-44dc-9ab2-1d0ef00aad50"  />
 
 <img width="100" alt="Image" src="https://github.com/user-attachments/assets/f50c0aa2-3aa7-489b-a539-878e20277561" />
 
