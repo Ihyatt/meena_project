@@ -1,6 +1,7 @@
 import { setActive } from "@material-tailwind/react/components/Tabs/TabsContext";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { v4 as uuidv4 } from "uuid";
 
 const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -38,9 +39,7 @@ const useDonateStore = create(
       }) => {
         set({ isLoading: true, error: null });
         try {
-          const state = get();
-          const { paymentIntentId } = state;
-          console.log("Creating payment intent with ID:", paymentIntentId);
+          const paymentIntentId = uuidv4(); // Generate key once
           const response = await fetch(
             `${backendUrl}/donations/create-payment-intent`,
             {

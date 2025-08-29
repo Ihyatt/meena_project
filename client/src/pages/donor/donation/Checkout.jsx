@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
 
 import {
@@ -28,9 +27,6 @@ const Checkout = () => {
     location.state || {};
 
   useEffect(() => {
-    const idempotencyKey = uuidv4(); // Generate key once
-    setPaymentIntentId(idempotencyKey); // Update state
-
     createPaymentIntent({
       fullName,
       emailAddress,

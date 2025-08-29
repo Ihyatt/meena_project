@@ -11,6 +11,8 @@ import din from "src/assets/images/din.png";
 import { DefaultTitle } from "src/utils/constants";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
+import DonationContext from "src/components/DonationContext";
+
 const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
 const Donation = () => {
@@ -22,6 +24,7 @@ const Donation = () => {
   const [totalDonations, setTotalDonations] = useState(0);
   const [copyText, setCopyText] = useState("SHARE LINK");
   const [activeCampaign, setActiveCampaign] = useState(true);
+  const [donorsCount, setDonorsCount] = useState(0);
   const targetRef = useRef(null);
 
   const { setLat, setLng, fetchCampaign, isLoading } = useDonateStore();
@@ -79,6 +82,11 @@ const Donation = () => {
       const prevRaisedAsNumber = Number(prevRaised);
       return prevRaisedAsNumber + amountAsNumber;
     });
+  };
+
+  const donationContextValue = {
+    handleDonationUpdate: handleNewDonation,
+    handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
 
   return (
@@ -185,7 +193,9 @@ const Donation = () => {
             </button>
             <div className="mt-10">
               <div className="text-gray-400 ">RECENT DONATIONS</div>
-              <DonationEvents handleDonationUpdate={handleNewDonation} />
+              <DonationContext.Provider value={donationContextValue}>
+                <DonationEvents />
+              </DonationContext.Provider>
             </div>
           </div>
         </div>

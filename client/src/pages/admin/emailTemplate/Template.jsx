@@ -133,14 +133,7 @@ export const EmailTemplate = () => {
               <button
                 type="button"
                 className="
-                  h-6
-                  w-[110px]
-                  cursor-pointer
-                  bg-[rgb(234,237,241)]
-                  border-none
-                  text-[rgb(100,111,124)]
-                  rounded-full
-                  m-1.5
+                  text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] 
                 "
                 onClick={handleClose}
                 disabled={isLoading}
@@ -150,15 +143,7 @@ export const EmailTemplate = () => {
               <button
                 type="button"
                 className="
-                  m-1.5
-                  h-6
-                  w-[110px]
-                  bg-[#40bf51]
-                  text-white
-                  border-none
-                  cursor-pointer
-                  rounded-full
-                  font-medium
+                text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] 
                 "
                 onClick={handleSave}
                 disabled={isLoading}

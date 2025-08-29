@@ -37,6 +37,7 @@ def successful_charge(
     charge_id,
     lat,
     lng,
+    net_amount,
 ):
     try:
         payment_transaction = PaymentTransaction.query.filter_by(
@@ -60,7 +61,7 @@ def successful_charge(
                 f"Campaign ID provided: {campaign_id}. Updating campaign raised amount."
             )
             campaign = Campaign.query.get_or_404(campaign_id)
-            campaign.raised += payment_transaction.amount
+            campaign.raised += net_amount
             campaign.total_donations += 1
             new_donation_location.campaign_id = campaign_id
 

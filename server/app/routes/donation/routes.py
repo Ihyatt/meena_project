@@ -232,6 +232,17 @@ def stripe_webhook():
         current_app.logger.info(f"Received event: {session}")
 
         metadata = session.get("metadata", {})
+        charge_id = session.get("payment_intent", "")
+        charge = stripe.Charge.retrieve(
+            charge_id, expand=["balance_transaction"]  # This is the crucial part
+        )
+
+        # Now you can access the fee and net amount
+        fee_details = charge.balance_transaction
+        stripe_fee = fee_details.fee  # Total fee in cents (e.g., 54 for $0.54)
+        net_amount = (
+            fee_details.net
+        )  # Net amount you receive in cents (e.g., 2946 for $29.46)
 
         data = {
             "campaign_id": metadata.get("campaign_id", ""),
@@ -240,8 +251,9 @@ def stripe_webhook():
             "donation_id": metadata.get("donation_id", ""),
             "payment_transaction_id": metadata.get("payment_transaction_id", ""),
             "idempotency_key": metadata.get("idempotency_key", ""),
-            "amount": metadata.get("amount", ""),
-            "charge_id": session.get("payment_intent", ""),
+            "amount": metadata.get("amount", ""),  # Convert cents to dollars
+            "net_amount": net_amount / 100,
+            "charge_id": charge_id,
             "lat": metadata.get("lat", ""),
             "lng": metadata.get("lng", ""),
         }

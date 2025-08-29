@@ -17,19 +17,20 @@ class CampaignSchema(SQLAlchemyAutoSchema):
     id = fields.Integer(dump_only=True)
     title = fields.String(
         required=True,
-        validate=validate.Length(min=3, max=50),
+        validate=validate.Length(min=3, max=100),
     )
     description = fields.String(
         required=True,
-        validate=validate.Length(min=3, max=200),
+        validate=validate.Length(min=3, max=2000),
     )
     image_url = fields.String(
         allow_none=True, validate=validate.Length(max=500), data_key="imageUrl"
     )
-    goal = fields.Decimal(
-        places=2,
-        as_string=True,
-        validate=validate.Range(min=0.01, max=1_000_000),
+    goal = fields.Integer(
+        strict=True,  # Ensures only integers are accepted
+        validate=validate.Range(
+            min=1, max=1_000_000
+        ),  # min=1 since it can't be 0 or decimal
         required=True,
     )
     raised = fields.Decimal(

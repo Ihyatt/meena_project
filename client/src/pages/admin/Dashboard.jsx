@@ -5,6 +5,7 @@ import DonationsScatterChart from "src/pages/admin/donation/ScatterChart";
 import DonationsBarChart from "src/pages/admin/donation/BarChart";
 import DonationEvents from "src/components/Events";
 import { NumericFormat } from "react-number-format";
+import DonationContext from "src/components/DonationContext";
 
 import Loading from "src/components/Loading";
 
@@ -43,6 +44,11 @@ const Dashboard = () => {
       return prevRaisedAsNumber + amountAsNumber;
     });
     setDonationsCount((prevCount) => prevCount + 1);
+  };
+
+  const donationContextValue = {
+    handleDonationUpdate: handleNewDonation,
+    handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
   return (
     <div>
@@ -119,7 +125,9 @@ const Dashboard = () => {
         </div>
         <div className="w-80 ml-4 rounded-lg shadow-md bg-white p-4">
           <div className="text-gray-400 ">RECENT DONATIONS</div>
-          <DonationEvents handleDonationUpdate={handleNewDonation} />
+          <DonationContext.Provider value={donationContextValue}>
+            <DonationEvents />
+          </DonationContext.Provider>
         </div>
       </div>
 

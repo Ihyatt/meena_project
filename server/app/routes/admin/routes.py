@@ -8,11 +8,13 @@ from app.routes.admin import admin_bp
 from app.utils.decorators import admin_required
 from app.models.user import User
 from app.models.donation import Donation
+from app.models.donation_location import DonationLocation
 from app.models.campaign import Campaign
 from app.models.payment_transaction import PaymentTransaction
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
 from app.schemas.campaign import CampaignSchema
+from app.schemas.donation_location import DonationLocationSchema
 from app.utils.constants import DonationStatus
 from datetime import datetime, timezone
 from collections import defaultdict
@@ -37,6 +39,7 @@ def dashboard():
         )
 
         donation_location = DonationLocation.query.all()
+        donation_location_schema = DonationLocationSchema(many=True)
 
         onetime_donations = []
         now = datetime.now(timezone.utc)
@@ -75,7 +78,9 @@ def dashboard():
         return (
             jsonify(
                 {
-                    "donationsLocation": lat_lng_donations,
+                    "donationsLocation": donation_location_schema.dump(
+                        donation_location
+                    ),
                     "launchedCampaigns": len(campaigns),
                     "donationsCount": len(donations),
                     "raised": sum(donation.amount for donation in donations),

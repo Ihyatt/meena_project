@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { RiGift2Fill } from "react-icons/ri";
 import TimeAgo from "src/pages/admin/utils/TimeAgo";
+import { useContext } from "react";
+
+import DonationContext from "src/components/DonationContext";
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
-const DonationEvents = ({ handleDonationUpdate }) => {
+const DonationEvents = () => {
   const [notifications, setNotifications] = useState([]);
+
+  const { handleDonationUpdate } = useContext(DonationContext);
 
   // This useEffect for initial fetch is fine
   useEffect(() => {

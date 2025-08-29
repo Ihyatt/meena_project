@@ -26,7 +26,7 @@ const useDonorStore = create(
             set({ error: data.message });
           }
           set({
-            donors: data || [],
+            donors: data,
             isLoading: false,
           });
           return data;

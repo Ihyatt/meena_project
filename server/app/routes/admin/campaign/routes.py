@@ -57,14 +57,7 @@ def fetch_campaigns():
         )
 
         current_app.logger.info("Campaigns data fetched.")
-        return (
-            jsonify(
-                {
-                    "campaigns": campaign_schema.dump(campaigns),
-                }
-            ),
-            200,
-        )
+        return campaign_schema.dump(campaigns), 200
 
     except Exception as e:
         current_app.logger.error(
@@ -98,6 +91,7 @@ def fetch_campaign(campaign_id):
                 "image_url",
                 "is_active",
                 "is_draft",
+                "total_donations",
                 "launched",
                 "closed",
                 "created_at",
@@ -151,6 +145,7 @@ def save_campaign(campaign_id):
                 "image_url",
                 "is_active",
                 "is_draft",
+                "total_donations",
                 "launched",
                 "closed",
                 "created_at",
@@ -224,6 +219,7 @@ def launch_campaign(campaign_id):
                 "image_url",
                 "is_active",
                 "is_draft",
+                "total_donations",
                 "launched",
                 "closed",
                 "created_at",
@@ -287,6 +283,7 @@ def close_campaign(campaign_id):
                 "image_url",
                 "is_active",
                 "is_draft",
+                "total_donations",
                 "launched",
                 "closed",
                 "created_at",
@@ -383,9 +380,11 @@ def fetch_or_create_draft():
 @admin_required()
 def share_draft(campaign_id):
     try:
-        draft_campaign = Campaign.query.get_or_404(campaign_id)
-        draft_campaign.is_draft = False
-        db.session.commit()
+        data = request.get_json()
+        current_app.logger.info(f"Sharing draft campaign '{data}'...")
+
+        campaign = Campaign.query.get_or_404(campaign_id)
+        campaign.is_draft = False
 
         campaign_schema = CampaignSchema(
             only=[
@@ -399,11 +398,20 @@ def share_draft(campaign_id):
                 "is_draft",
                 "launched",
                 "closed",
+                "total_donations",
                 "created_at",
             ]
         )
+        validated_data = campaign_schema.load(data)
+
+        campaign.title = validated_data["title"]
+        campaign.description = validated_data["description"]
+        campaign.goal = validated_data["goal"]
+
+        db.session.commit()
+
         current_app.logger.info(f"Draft campaign '{campaign_id}' shared successfully.")
-        return campaign_schema.dump(draft_campaign), 200
+        return campaign_schema.dump(campaign), 200
 
     except NotFound:
         current_app.logger.warning(f"Draft campaign '{campaign_id}' not found.")
@@ -439,9 +447,7 @@ def image_upload(campaign_id):
     # delete previously uploaded image if exists
     try:
         file = request.files["file"]
-        current_app.logger.info(
-            f"Received data for campaign '{campaign_id}': {file.filename}"
-        )
+
         try:
             is_validated = allowed_mime_type(file)
             current_app.logger.info(f"File validation result: {is_validated}")

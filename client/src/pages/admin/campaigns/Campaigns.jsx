@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import { Campaign } from "src/pages/admin/campaigns/Card";
 
-import useAdminStore from "src/pages/admin/store";
+import useCampaignStore from "src/pages/admin/campaigns/store.jsx";
 
 import {
   Card,
@@ -25,8 +25,11 @@ const TABLE_HEAD = [
 ];
 
 const Campaigns = () => {
-  const { campaigns } = useAdminStore();
+  const { fetchCampaigns, campaigns, isLoading } = useCampaignStore();
 
+  useEffect(() => {
+    fetchCampaigns();
+  }, [fetchCampaigns]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 20;
 
