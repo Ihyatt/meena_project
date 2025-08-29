@@ -3,7 +3,7 @@ import DonationBar from "src/pages/donor/donation/components/DonationBar";
 
 const DonationData = ({ goal, raised, totalDonations }) => {
   return (
-    <div className="flex w-58 flex-col mt-10 mb-5 font-light">
+    <div className="flex w-66 flex-col font-light">
       <div>
         <div className="text-lg">
           <NumericFormat

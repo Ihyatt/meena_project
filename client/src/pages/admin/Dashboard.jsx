@@ -57,41 +57,41 @@ const Dashboard = () => {
       <div className="m-4  grid gap-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-4">
         <div
           className="grid grid-cols-1 content-center justify-items-center rounded-lg shadow-sm h-20 "
-          style={{ backgroundColor: "white", color: "#40bf51" }}
+          style={{ backgroundColor: "#edafb0", color: "#40bf51" }}
         >
           <div className="flex items-center space-x-2">
             <RiMegaphoneFill
               size={25}
-              color={"white"}
-              className="inline bg-[#40bf51] rounded-xl p-1"
+              color={"#edafb0"}
+              className="inline bg-white rounded-xl p-1"
             />{" "}
-            <span className="text-xl">{launchedCampaigns}</span>
+            <span className="text-xl text-white">{launchedCampaigns}</span>
           </div>
-          <div className="text-black">CAMPAIGNS</div>
+          <div className="text-white">CAMPAIGNS</div>
         </div>
         <div
           className="grid grid-cols-1 content-center justify-items-center rounded-lg shadow-sm h-20 "
-          style={{ backgroundColor: "white", color: "#40bf51" }}
+          style={{ backgroundColor: "#edafb0", color: "white" }}
         >
           <div className="flex items-center space-x-2">
             <RiHandHeartFill
               size={25}
-              color={"white"}
-              className="inline bg-[#40bf51] rounded-xl p-1"
+              color={"#edafb0"}
+              className="inline bg-white rounded-xl p-1"
             />{" "}
             <span className="text-xl">{donationsCount || 0}</span>
           </div>
-          <div className="text-black">DONATIONS</div>
+          <div className="text-white">DONATIONS</div>
         </div>
         <div
           className=" grid grid-cols-1 content-center justify-items-center text-black rounded-lg shadow-sm h-20 "
-          style={{ backgroundColor: "white", color: "#40bf51" }}
+          style={{ backgroundColor: "#edafb0", color: "white" }}
         >
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1">
             <RiMoneyDollarCircleFill
               size={30}
-              color={"#40bf51"}
-              className="inline bg-white"
+              color={"white"}
+              className="inline #edafb0 rounded-xl"
             />
             <span className="text-xl">
               <NumericFormat
@@ -103,21 +103,21 @@ const Dashboard = () => {
               />
             </span>
           </div>
-          <div className="text-black">RAISED</div>
+          <div className="text-white">RAISED</div>
         </div>
         <div
           className=" grid grid-cols-1 content-center justify-items-center text-black rounded-lg  shadow-sm min-h-20 "
-          style={{ backgroundColor: "white", color: "#40bf51" }}
+          style={{ backgroundColor: "#edafb0", color: "white" }}
         >
           <div className="flex items-center space-x-2">
             <RiUserHeartFill
               size={25}
-              color={"white"}
-              className="inline bg-[#40bf51] rounded-xl p-1"
+              color={"#edafb0"}
+              className="inline bg-white rounded-xl p-1"
             />{" "}
             <span className="text-xl">{donorsCount}</span>
           </div>
-          <div className="text-black">DONORS</div>
+          <div className="text-white">DONORS</div>
         </div>
       </div>
       <div className="flex m-4 ">

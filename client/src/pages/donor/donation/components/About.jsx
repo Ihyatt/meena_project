@@ -46,7 +46,7 @@ const About = ({ description }) => {
           OUR GOAL
         </div>
       </div>
-      <div className="font-light">
+      <div className="font-light whitespace-pre-wrap">
         {toggleText == "about" ? AboutMeena : description || DefaultDescription}
       </div>
     </div>

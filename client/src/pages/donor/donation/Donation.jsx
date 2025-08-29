@@ -12,7 +12,7 @@ import { DefaultTitle } from "src/utils/constants";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
 import DonationContext from "src/components/DonationContext";
-
+import { FaArrowTrendUp } from "react-icons/fa6";
 const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
 const Donation = () => {
@@ -92,6 +92,7 @@ const Donation = () => {
   return (
     <div>
       {isLoading && <Loading />}
+
       <div className="flex justify-center">
         <div className="min-w-210 max-w-210  flex flex-col items-center p-5">
           <img className="w-40" src={logo} alt="meena project logo" />
@@ -115,7 +116,7 @@ const Donation = () => {
           </div>
         </div>
 
-        <div className="px-2 py-40 min-w-100">
+        <div className="px-2 py-40 min-w-71">
           <img
             className="w-40 h-40 rounded-full object-cover"
             src={din}
@@ -126,6 +127,17 @@ const Donation = () => {
             <div className="text-2xl">SUMAYYAH DIN</div>
           </div>
 
+          <div
+            className="flex justify-end mt-10 mb-2"
+            title={`${donorsCount} total donors`}
+          >
+            <FaArrowTrendUp
+              size={35}
+              color="#DB5758"
+              className="inline bg-[#edafb0] rounded-full p-1"
+            />
+          </div>
+
           {activeCampaign == true ? (
             <DonationData
               goal={goal}
@@ -133,7 +145,7 @@ const Donation = () => {
               totalDonations={totalDonations}
             />
           ) : (
-            <div className="flex w-58 flex-col mt-10 mb-2">
+            <div className="flex w-58 flex-col mb-2">
               <div className="text-lg font-light">
                 <NumericFormat
                   value={raised || 0}
