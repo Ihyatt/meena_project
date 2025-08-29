@@ -470,6 +470,7 @@ def image_upload(campaign_id):
                 "key",
                 "size",
                 "content_type",
+                "campaign_id",
             ]
         )
 

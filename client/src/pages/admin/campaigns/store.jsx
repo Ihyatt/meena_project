@@ -139,10 +139,14 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
+          if (data.draft == true) {
+            set({ isLoading: false });
+            return data;
+          }
 
           set((state) => ({
             campaigns: state.campaigns.map((campaign) =>
-              data.id == campaign.id && data.draft == false
+              data.id == campaign.id
                 ? {
                     ...data,
                   }
@@ -174,11 +178,17 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          const { campaigns } = get();
-          const newCampaigns = campaigns
-            .filter((item) => item.id !== data.id)
-            .map((item) => ({ ...item, isActive: false }));
-          set({ campaigns: [{ ...data }, ...newCampaigns], isLoading: false });
+          set((state) => ({
+            campaigns: state.campaigns.map((campaign) =>
+              campaign.id == data.id
+                ? {
+                    ...campaign,
+                    isActive: data.isActive,
+                  }
+                : campaign
+            ),
+            isLoading: false,
+          }));
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -204,10 +214,10 @@ const useCampaignStore = create(
 
           set((state) => ({
             campaigns: state.campaigns.map((campaign) =>
-              campaign.id == campaignId
+              campaign.id == data.id
                 ? {
-                    ...campaign,
-                    isActive: campaign.isActive,
+                    ...data,
+                    isActive: data.isActive,
                   }
                 : campaign
             ),
@@ -240,10 +250,10 @@ const useCampaignStore = create(
 
           set((state) => ({
             campaigns: state.campaigns.map((campaign) =>
-              campaign.id == campaignId
+              campaign.id == data.campaignId
                 ? {
                     ...campaign,
-                    imageUrl: campaign.url,
+                    imageUrl: data.url,
                   }
                 : campaign
             ),

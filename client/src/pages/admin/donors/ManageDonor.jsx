@@ -113,6 +113,7 @@ export const ManageDonor = () => {
     handleSubscriptionChange: handleSubscriptionChange,
     emailSubscriptionStatus: emailSubscriptionStatus,
   };
+  console.log(emailSubscriptionStatus);
   return (
     <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}

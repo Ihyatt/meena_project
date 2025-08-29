@@ -112,6 +112,7 @@ export const ManageCampaign = () => {
 
   const uploadFile = (file) => {
     upload(campaignId, file).then((data) => {
+      console.log("in upload file", data);
       setImageUrl(data.url);
       setFile(null);
     });

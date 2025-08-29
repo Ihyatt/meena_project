@@ -9,6 +9,7 @@ class ImageSchema(SQLAlchemyAutoSchema):
         include_fk = True
 
     id = fields.Integer(dump_only=True)
+    campaign_id = fields.Integer(dump_only=True, data_key="campaignId")
     file_id = fields.String(dump_only=True, data_key="fileId")
     url = fields.String(dump_only=True)
     bucket = fields.String(dump_only=True)
