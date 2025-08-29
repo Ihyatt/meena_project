@@ -16,6 +16,8 @@ class EmailSubscriptionSchema(SQLAlchemyAutoSchema):
         include_fk = True
 
     id = fields.Integer(dump_only=True)
+    version_uuid = fields.String(allow_none=True, dump_only=True)
+
     email_address = fields.String(
         dump_only=True,
         data_key="emailAddress",

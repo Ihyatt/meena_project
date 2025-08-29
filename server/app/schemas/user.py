@@ -62,6 +62,8 @@ class DonorSchema(SQLAlchemyAutoSchema):
         include_fk = True
 
     id = fields.Integer(dump_only=True)
+    version_uuid = fields.String(allow_none=True, dump_only=True)
+
     full_name = fields.String(
         required=True, validate=validate.Length(max=100), data_key="fullName"
     )

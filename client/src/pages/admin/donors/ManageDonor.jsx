@@ -37,7 +37,7 @@ export const ManageDonor = () => {
       setFullName(data.fullName);
       setEmailAddress(data.emailAddress);
       setEmailSubscription(data.emailSubscription);
-      setEmailSubscriptionStatus(data.emailSubscription.status);
+      setEmailSubscriptionStatus(data.emailSubscription.status.toLowerCase());
     });
   }, [fetchDonor]);
 
@@ -62,36 +62,39 @@ export const ManageDonor = () => {
       !fullName ||
       !emailAddress ||
       !emailSubscriptionStatus ||
-      (!emailSubscriptionStatus != "ACTIVE" &&
-        emailSubscriptionStatus != "INACTIVE")
+      (emailSubscriptionStatus != "active" &&
+        emailSubscriptionStatus != "inactive")
     ) {
       const errors = [];
       if (!fullName) {
         errors.push("Full name is required.");
       }
-      if (!emailAddress) {
-        errors.push("Email address is required.");
-      }
       if (!emailSubscriptionStatus) {
         errors.push("Email subscription status is required.");
       }
       if (
-        !emailSubscriptionStatus != "ACTIVE" &&
-        emailSubscriptionStatus != "INACTIVE"
+        emailSubscriptionStatus != "active" &&
+        emailSubscriptionStatus != "inactive"
       ) {
         errors.push(
-          "Email subscription status should be either 'ACTIVE' or 'INACTIVE'."
+          "Email subscription status should be either 'active' or 'inactive'."
         );
       }
+
       setErrors(errors);
       return;
     }
-    manageDonorData(donorId).then((data) => {
+    manageDonorData(
+      donorId,
+      emailAddress,
+      fullName,
+      emailSubscriptionStatus
+    ).then((data) => {
       setDonations(data.donations);
       setFullName(data.fullName);
       setEmailAddress(data.emailAddress);
       setEmailSubscription(data.emailSubscription);
-      setEmailSubscriptionStatus(data.emailSubscription.status);
+      setEmailSubscriptionStatus(data.emailSubscription.status.toLowerCase());
     });
     event.preventDefault();
   };
@@ -138,7 +141,7 @@ export const ManageDonor = () => {
                 placeholder="Email Address"
                 disabled
                 value={emailAddress}
-                className="w-[300px] bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
+                className="w-[300px] bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow cursor-not-allowed "
               ></input>
             </div>
           </div>

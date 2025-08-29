@@ -42,9 +42,9 @@ const Donor = ({ data }) => {
       </td>
       <td className="p-4 border-b border-blue-gray-50">
         <div
-          className={`py-1 px-2 rounded-md w-max text-xs  ${data.emailSubscription.status == "ACTIVE" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
+          className={`py-1 px-2 rounded-md w-max text-xs  ${data.emailSubscription.status.toLowerCase() == "active" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
         >
-          {data.emailSubscription.status == "ACTIVE"
+          {data.emailSubscription.status == "active"
             ? "subscribed"
             : "unsubscribed"}
         </div>

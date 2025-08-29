@@ -10,6 +10,7 @@ from app.models.user import User
 
 from app.schemas.user import DonorSchema
 from app.schemas.email_subscription import EmailSubscriptionSchema
+from app.utils.constants import SubscriptionStatus
 
 
 from marshmallow import EXCLUDE
@@ -110,14 +111,10 @@ def fetch_donor(donor_id):
 @jwt_required()
 @admin_required()
 def manage_donor(donor_id):
-    current_app.logger.info("Fetching donor data...")
     try:
         data = request.get_json()
         donor = User.query.get_or_404(donor_id)
-
-        email_subscription_schema = EmailSubscriptionSchema(
-            unknown=EXCLUDE,
-        )
+        data["user_id"] = donor.id
 
         donor_schema = DonorSchema(
             unknown=EXCLUDE,
@@ -130,18 +127,37 @@ def manage_donor(donor_id):
             ],
         )
 
+        current_app.logger.debug(f"Request data: {data}")
+        current_app.logger.debug(SubscriptionStatus.ACTIVE.value)
         validated_donor_data = donor_schema.load(data)
-        validated_email_subscription_schema = email_subscription_schema.load(data)
 
-        donor.email_subscription.status = validated_email_subscription_schema[
-            "emailSubscriptionStatus"
-        ]
+        donor.email_subscription.status = (
+            SubscriptionStatus.ACTIVE
+            if data["emailSubscriptionStatus"] == SubscriptionStatus.ACTIVE.value
+            else SubscriptionStatus.INACTIVE
+        )
+
+        current_app.logger.info(
+            f"Donor data updated2. Donor ID: {SubscriptionStatus.ACTIVE.value} { SubscriptionStatus.ACTIVE.value==data["emailSubscriptionStatus"] } {donor.email_subscription.status}"
+        )
+
+        current_app.logger.info(f"*************************")
+
+        current_app.logger.info(
+            f"Donor data updated2. Donor ID stats: {SubscriptionStatus.ACTIVE.value} { donor.email_subscription.status}"
+        )
 
         donor.full_name = validated_donor_data["full_name"]
         donor.email_address = validated_donor_data["email_address"]
+        current_app.logger.info("Donor data updated1.", {"donor_id": donor.id})
+
         db.session.commit()
 
-        current_app.logger.info("Donor data updated.")
+        current_app.logger.info("Donor data updated.2", {"donor_id": donor.id})
+        current_app.logger.info(f"Donor data updated1. Donor ID: {donor.id}")
+        current_app.logger.info(
+            f"Donor data updated2. Donor ID: {SubscriptionStatus.ACTIVE.value} { SubscriptionStatus.ACTIVE.value==data["emailSubscriptionStatus"] }"
+        )
         return donor_schema.dump(donor), 200
 
     except NotFound:

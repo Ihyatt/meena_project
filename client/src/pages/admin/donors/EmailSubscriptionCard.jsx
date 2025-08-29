@@ -40,19 +40,19 @@ const EmailSubscriptionCard = ({ data }) => {
 
       <td className="p-4 border-b border-blue-gray-50">
         <div
-          className={`py-1 px-2 rounded-md w-max text-xs cursor-pointer  ${emailSubscriptionStatus == "ACTIVE" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
+          className={`py-1 px-2 rounded-md w-max text-xs cursor-pointer  ${emailSubscriptionStatus == "active" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
         >
-          {emailSubscriptionStatus == "ACTIVE" ? (
+          {emailSubscriptionStatus == "active" ? (
             <div
               className="flex items-center gap-1"
-              onClick={() => handleSubscriptionChange("INACTIVE")}
+              onClick={() => handleSubscriptionChange("inactive")}
             >
               subscribed <RiPencilLine />
             </div>
           ) : (
             <div
               className="flex items-center gap-1"
-              onClick={() => handleSubscriptionChange("ACTIVE")}
+              onClick={() => handleSubscriptionChange("active")}
             >
               unsubscribed <RiPencilLine />
             </div>

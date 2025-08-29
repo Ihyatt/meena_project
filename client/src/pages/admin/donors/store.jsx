@@ -89,12 +89,14 @@ const useDonorStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          set({
+
+          set((state) => ({
             donors: state.donors.map((donor) =>
-              donor.id === donorId ? data : donor
+              donor.id == donorId ? data : donor
             ),
             isLoading: false,
-          });
+          }));
+
           return data;
         } catch (error) {
           set({ error: error, isLoading: false });
