@@ -51,7 +51,7 @@ export const ManageCampaign = () => {
   };
 
   const handleSave = (event) => {
-    if (!title || !description || !goal || !imageUrl) {
+    if (!title || !description || !goal || goal <= 0.01 || !imageUrl) {
       const errors = [];
       if (!title) {
         errors.push("Title is required.");
@@ -60,7 +60,7 @@ export const ManageCampaign = () => {
         errors.push("Description is required.");
       }
       if (goal <= 0) {
-        errors.push("Goal must be greater than 0.");
+        errors.push("Goal must be greater than 0.01.");
       }
       if (!imageUrl) {
         errors.push("Image is required.");
@@ -68,15 +68,18 @@ export const ManageCampaign = () => {
       setErrors(errors);
       return;
     }
+
     saveCampaign(campaignId, title, description, goal).then((data) => {
+      console.log("in save capaign", data);
       setTitle(data.title);
       setDescription(data.description);
       setGoal(data.goal);
     });
     event.preventDefault();
   };
-  const descriptioncharactersLimit = 200;
-  const titlecharactersLimit = 50;
+
+  const descriptioncharactersLimit = 2000;
+  const titlecharactersLimit = 100;
 
   const handleTitleChange = (e) => {
     const value = e.target.value;
@@ -97,12 +100,16 @@ export const ManageCampaign = () => {
       );
     }
   };
-  const handlAmount = (e) => {
+  const blockInvalidChar = (e) =>
+    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+
+  const handleGoalAmount = (e) => {
     const value = e.target.value;
     const cleanedValue = value.replace(/[^0-9]/g, "");
     const amountValue = parseFloat(cleanedValue);
-    setAmount(amountValue);
+    setGoal(amountValue);
   };
+
   const uploadFile = (file) => {
     upload(campaignId, file).then((data) => {
       setImageUrl(data.url);
@@ -120,7 +127,7 @@ export const ManageCampaign = () => {
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
           <div className="p-2">
-            <label class="block mb-2 text-sm text-slate-600">Title</label>
+            <label class="block mb-2 text-2xl text-slate-600">Title</label>
             <input
               type="text"
               id="title"
@@ -132,7 +139,9 @@ export const ManageCampaign = () => {
             />
           </div>
           <div className="p-2">
-            <label class="block mb-2 text-sm text-slate-600">Description</label>
+            <label class="block mb-2 text-2xl text-slate-600">
+              Description
+            </label>
             <textarea
               id="description"
               placeholder="Description..."
@@ -143,7 +152,7 @@ export const ManageCampaign = () => {
             ></textarea>
           </div>
           <div className="p-2">
-            <div className=" border border-gray-400  p-2 rounded-sm  flex items-center justify-between mb-3">
+            <div className=" w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow   flex items-center justify-between mb-3">
               <div className="flex flex-col text-xs items-center">
                 <div>$</div>
                 <div>USD</div>
@@ -154,7 +163,8 @@ export const ManageCampaign = () => {
                   pattern="[0-9]"
                   title="only numbers"
                   value={goal}
-                  onChange={handlAmount}
+                  onChange={handleGoalAmount}
+                  onKeyDown={blockInvalidChar}
                   className="border-none rounded-sm focus:outline-none text-right"
                 />
                 <span className="">.00</span>
@@ -169,16 +179,7 @@ export const ManageCampaign = () => {
           <div className="flex  justify-end mt-4">
             <button
               type="button"
-              className="
-                h-6
-                w-[110px]
-                cursor-pointer
-                bg-[rgb(234,237,241)]
-                border-none
-                text-[rgb(100,111,124)]
-                rounded-full
-                m-1.5
-              "
+              className="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
               onClick={handleClose}
               disabled={isLoading}
             >
@@ -186,17 +187,7 @@ export const ManageCampaign = () => {
             </button>
             <button
               type="button"
-              className="
-                    m-1.5
-                  h-6
-                  w-[110px]
-                  bg-[#40bf51]
-                  text-white
-                  border-none
-                  cursor-pointer
-                  rounded-full
-                  font-medium
-                "
+              className="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
               onClick={handleSave}
               disabled={isLoading}
             >

@@ -108,7 +108,7 @@ export const CampaignDraft = () => {
     event.preventDefault();
   };
 
-  const handleCustomAmount = (e) => {
+  const handleGoalAmount = (e) => {
     const value = e.target.value;
     const cleanedValue = value.replace(/[^0-9]/g, "");
     const amountValue = parseFloat(cleanedValue);
@@ -189,7 +189,7 @@ export const CampaignDraft = () => {
                   pattern="[0-9]"
                   title="only numbers"
                   value={goal}
-                  onChange={handleCustomAmount}
+                  onChange={handleGoalAmount}
                   onKeyDown={blockInvalidChar}
                   className="border-none rounded-sm focus:outline-none text-right"
                 />
