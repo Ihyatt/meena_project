@@ -28,9 +28,8 @@ export const ManageDonor = () => {
   const [toggle, setToggle] = useState("donations");
   const [fullName, setFullName] = useState("");
   const [emailSubscriptionStatus, setEmailSubscriptionStatus] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
-
   const { fetchDonor, manageDonorData, isLoading } = useDonorStore();
+  const [emailAddress, setEmailAddress] = useState("");
 
   useEffect(() => {
     fetchDonor(donorId).then((data) => {
@@ -106,7 +105,6 @@ export const ManageDonor = () => {
   };
   const handleSubscriptionChange = (status) => {
     setEmailSubscriptionStatus(status);
-    console.log(status);
   };
   const donorContextValue = {
     handleSubscriptionChange: handleSubscriptionChange,
@@ -138,8 +136,8 @@ export const ManageDonor = () => {
                 type="email"
                 id="emailAddress"
                 placeholder="Email Address"
+                disabled
                 value={emailAddress}
-                onChange={(e) => setEmailAddress(e.target.value)}
                 className="w-[300px] bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
               ></input>
             </div>

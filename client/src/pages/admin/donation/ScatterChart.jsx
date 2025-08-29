@@ -52,7 +52,6 @@ const DonationsScatterChart = ({ window }) => {
       min: 1, // Set the minimum value of the y-axis to 1
     },
   ];
-  console.log(window.onetime);
   return (
     <div>
       {window.onetime && window.onetime.length === 0 ? (

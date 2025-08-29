@@ -7,7 +7,6 @@ import DonorContext from "src/pages/admin/donors/DonorContext";
 import { RiPencilLine } from "react-icons/ri";
 
 const EmailSubscriptionCard = ({ data }) => {
-  console.log(data);
   const { handleSubscriptionChange, emailSubscriptionStatus } =
     useContext(DonorContext);
   return (
