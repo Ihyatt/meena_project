@@ -1,5 +1,4 @@
 from app.models.payment_transaction import PaymentTransaction
-from flask import current_app
 
 from app.database import db
 
@@ -19,5 +18,4 @@ def create_payment_transaction(
         db.session.commit()
         return payment_transaction
     except Exception as e:
-        current_app.logger.error(f"Error creating payment transaction: {str(e)}")
-        raise ValueError("Failed to create payment transaction.")
+        raise ValueError(f"Error creating payment transaction: {str(e)}")

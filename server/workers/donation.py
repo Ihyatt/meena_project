@@ -40,6 +40,8 @@ def process_message(db, message_json: str):
                 idempotency_key=data["idempotency_key"],
                 amount=data["amount"],
                 charge_id=data["charge_id"],
+                lat=data["lat"],
+                lng=data["lng"],
             )
         elif message["value"] == "charge.failed":
             failed_charge(

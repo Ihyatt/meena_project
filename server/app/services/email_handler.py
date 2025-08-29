@@ -7,7 +7,6 @@ from app.models.email_template import EmailTemplate
 from flask import current_app
 
 
-
 import asyncio
 from app.utils.constants import EmailType
 
@@ -18,10 +17,6 @@ def send_receipt_email(donor_id, email_address, amount, email_id):
         email_template = EmailTemplate.query.filter_by(
             email_type=EmailType.RECEIPT
         ).first()
-
-        current_app.logger.info(
-            f"Preparing to send receipt email for donor '{donor_id}'."
-        )
 
         email = Email.query.get_or_404(email_id)
         donor = User.query.get_or_404(donor_id)
@@ -46,9 +41,7 @@ def send_receipt_email(donor_id, email_address, amount, email_id):
                 }
             ]
         }
-        current_app.logger.info(
-            f"Sending receipt email to {donor.full_name} with amount {amount}."
-        )
+
         try:
             result = mailjet_client.send.create(data=data)
             current_app.logger.info(result.json())
@@ -62,19 +55,14 @@ def send_receipt_email(donor_id, email_address, amount, email_id):
             else:
                 email.email_subscription.queued += 1
             db.session.commit()
-            current_app.logger.info(
-                f"Email '{email.id}' sent with message_uuid'{message_uuid} and message_id'{message_id}"
-            )
 
         except Exception as e:
-            current_app.logger.error(f"Failed to send email '{email.id}': {str(e)}")
             email.status = EmailStatus.FAILED
             db.session.commit()
             raise ValueError(f"Failed to send email: {str(e)}")
     except Exception as e:
         db.session.rollback()
-        current_app.logger.error(str(e))
-        raise ValueError(str(e))
+        raise ValueError(f"Failed to send email: {str(e)}")
 
 
 def send_impact_email(donor_id, email_address, campaign_id, email_id):

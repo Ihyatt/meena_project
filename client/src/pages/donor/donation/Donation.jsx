@@ -11,6 +11,7 @@ import din from "src/assets/images/din.png";
 import { DefaultTitle } from "src/utils/constants";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
+const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
 const Donation = () => {
   const [imageUrl, setImageUrl] = useState(defaultImg);
@@ -29,18 +30,18 @@ const Donation = () => {
     getUserLocation();
     fetchCampaign().then((data) => {
       setImageUrl(data.image_url || defaultImg);
-      setTitle(data.title || "");
-      setDescription(data.description || "");
+      setTitle(data.title);
+      setDescription(data.description);
       setRaised(data.raised);
-      setGoal(data.goal || 0);
-      setTotalDonations(data.total_donations || 0);
+      setGoal(data.goal);
+      setTotalDonations(data.total_donations);
       setActiveCampaign(data.activeCampaign);
     });
   }, [fetchCampaign]);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText("http://localhost:5173/");
+      await navigator.clipboard.writeText(frotendUrl);
       setCopyText("COPIED!");
       setTimeout(() => {
         setCopyText("SHARE LINK");

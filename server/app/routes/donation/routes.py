@@ -5,6 +5,7 @@ from marshmallow.exceptions import ValidationError
 from app.database import db
 from app.routes.donation import donation_bp
 from app.models.campaign import Campaign
+from app.models.user import User
 from app.models.payment_transaction import PaymentTransaction
 from app.models.donation import Donation
 from app.schemas.campaign import CampaignSchema
@@ -82,7 +83,6 @@ def fetch_campaign():
 def create_payment_intent():
     try:
         data = request.get_json()
-        current_app.logger.info(f"Received data: {data}")
         active_campaign = Campaign.query.filter_by(is_active=True).first()
         donor_schema = DonorSchema(
             unknown=EXCLUDE,
@@ -96,8 +96,6 @@ def create_payment_intent():
             unknown=EXCLUDE,
             only=[
                 "amount",
-                "lat",
-                "lng",
                 "is_anonymous",
             ],
         )
@@ -109,18 +107,13 @@ def create_payment_intent():
             full_name=validated_donor_data["full_name"],
         )
 
-        current_app.logger.info(f"created donor data{donor}")
-
         validated_donation_data = donation_schema.load(data)
 
         donation = create_donation(
             donor_id=donor.id,
             amount=validated_donation_data["amount"],
-            lat=validated_donation_data["lat"],
-            lng=validated_donation_data["lng"],
             is_anonymous=validated_donation_data["is_anonymous"],
         )
-        current_app.logger.info(f"created donation data{donation}")
 
         if active_campaign:
             donation.campaign_id = active_campaign.id
@@ -134,12 +127,8 @@ def create_payment_intent():
             idempotency_key=idempotency_key,
             payment_intent_id=data["paymentIntentId"],
         )
-        current_app.logger.info(
-            f"created payment transaction data{payment_transaction}"
-        )
-        current_app.logger.info(
-            f"Payment Intent created with ID: {payment_transaction.payment_intent_id}"
-        )
+
+        current_app.logger.info("Payment intent created successfully.")
         return jsonify({"paymentIntentId": payment_transaction.payment_intent_id}), 200
 
     except ValidationError as ve:
@@ -166,10 +155,10 @@ def create_payment_intent():
 def create_checkout_session():
     try:
         data = request.get_json()
+
         domain_url = current_app.config["WEB_URL"]
         active_campaign = Campaign.query.filter_by(is_active=True).first()
         payment_intent_id = data.get("paymentIntentId")
-        data = request.get_json()
         payment_transaction = PaymentTransaction.query.filter_by(
             payment_intent_id=payment_intent_id
         ).first()
@@ -185,6 +174,8 @@ def create_checkout_session():
             donor_id=donor.id,
             donation_id=donation.id,
             email_address=donor.email_address,
+            lat=data.get("lat", ""),
+            lng=data.get("lng", ""),
         )
 
         current_app.logger.info(f"Checkout session created.")
@@ -197,10 +188,7 @@ def create_checkout_session():
             ),
             200,
         )
-    except ValidationError as ve:
-        db.session.rollback()
-        current_app.logger.error(f"Validation error: {str(ve)}", exc_info=True)
-        return jsonify({"status": "failed", "message": str(ve)}), 400
+
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(
@@ -254,6 +242,8 @@ def stripe_webhook():
             "idempotency_key": metadata.get("idempotency_key", ""),
             "amount": metadata.get("amount", ""),
             "charge_id": session.get("payment_intent", ""),
+            "lat": metadata.get("lat", ""),
+            "lng": metadata.get("lng", ""),
         }
 
         message = {

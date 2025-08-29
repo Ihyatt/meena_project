@@ -29,5 +29,4 @@ def get_or_create_donor(email_address, is_email_subscription, full_name):
 
         return donor
     except Exception as e:
-        current_app.logger.error(f"Error getting or creating donor: {str(e)}")
         raise ValueError(f"Error getting or creating donor: {str(e)}")

@@ -68,6 +68,7 @@ class Campaign(db.Model, SoftDeleteMixin):
     )
     images = relationship("Image", back_populates="campaign")
     donations = relationship("Donation", back_populates="campaign")
+    donation_locations = relationship("DonationLocation", back_populates="campaign")
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

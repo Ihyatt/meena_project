@@ -30,7 +30,7 @@ const Donors = () => {
   }, [fetchDonors]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const rowsPerPage = 20;
 
   const totalPages = Math.ceil(donors.length / rowsPerPage);
 

@@ -7,3 +7,4 @@ from app.models.payment_transaction import PaymentTransaction
 from app.models.email_template import EmailTemplate
 from app.models.image import Image
 from app.models.email_subscription import EmailSubscription
+from app.models.donation_location import DonationLocation

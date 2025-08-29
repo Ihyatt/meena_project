@@ -53,6 +53,7 @@ from app.models.email import Email
 from app.models.image import Image
 from app.models.email_subscription import EmailSubscription
 from app.models.payment_transaction import PaymentTransaction
+from app.models.donation_location import DonationLocation
 
 
 app = Flask(__name__)

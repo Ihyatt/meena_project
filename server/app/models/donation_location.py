@@ -9,7 +9,7 @@ from app.utils.constants import DonationStatus
 
 # this needs to be extracted so lat and long need to be on its own table
 class DonationLocation(db.Model, SoftDeleteMixin):
-    __tablename__ = "donations"
+    __tablename__ = "donation_locations"
     __versioned__ = {}
 
     id = mapped_column(db.Integer, primary_key=True)
@@ -35,7 +35,7 @@ class DonationLocation(db.Model, SoftDeleteMixin):
     campaign_id = mapped_column(
         db.Integer, db.ForeignKey("campaigns.id"), nullable=True
     )
-    campaign = relationship("Campaign", back_populates="donations")
+    campaign = relationship("Campaign", back_populates="donation_locations")
 
     __mapper_args__ = {
         "version_id_col": version_uuid,

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { RiGift2Fill } from "react-icons/ri";
 import TimeAgo from "src/pages/admin/utils/TimeAgo";
 
+const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+
 const DonationEvents = ({ handleDonationUpdate }) => {
   const [notifications, setNotifications] = useState([]);
 
   // This useEffect for initial fetch is fine
   useEffect(() => {
     // Assuming backednUrl is defined elsewhere or passed as a prop
-    const backednUrl = "http://localhost:8000"; // Replace with your actual backend URL
-
     fetch(`${backednUrl}/events/init`)
       .then((res) => res.json())
       .then((data) => {
@@ -19,8 +19,6 @@ const DonationEvents = ({ handleDonationUpdate }) => {
   }, []);
 
   useEffect(() => {
-    const backednUrl = "http://localhost:8000"; // Replace with your actual backend URL
-
     const source = new EventSource(`${backednUrl}/events/stream`);
 
     source.addEventListener("donation_notification", (e) => {

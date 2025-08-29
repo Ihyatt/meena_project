@@ -11,6 +11,8 @@ def checkout_session(
     donor_id,
     donation_id,
     email_address,
+    lat,
+    lng,
 ):
     try:
         session = stripe.checkout.Session.create(
@@ -39,6 +41,8 @@ def checkout_session(
                 "idempotency_key": str(idempotency_key),
                 "email_address": str(email_address),
                 "amount": str(amount),
+                "lat": str(lat) if lat else "",
+                "lng": str(lng) if lng else "",
             },
             payment_intent_data={
                 "metadata": {
@@ -49,6 +53,8 @@ def checkout_session(
                     "idempotency_key": str(idempotency_key),
                     "email_address": str(email_address),
                     "amount": str(amount),
+                    "lat": str(lat) if lat else "",
+                    "lng": str(lng) if lng else "",
                 },
             },
             idempotency_key=idempotency_key,

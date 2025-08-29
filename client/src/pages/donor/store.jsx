@@ -26,6 +26,7 @@ const useDonateStore = create(
           return data;
         } catch (error) {
           set({ error: error, isLoading: false });
+          console.error("Error fetching campaign data:", error);
         }
       },
       createPaymentIntent: async ({
@@ -38,8 +39,8 @@ const useDonateStore = create(
         set({ isLoading: true, error: null });
         try {
           const state = get();
-          const { paymentIntentId, lat, lng } = state;
-
+          const { paymentIntentId } = state;
+          console.log("Creating payment intent with ID:", paymentIntentId);
           const response = await fetch(
             `${backendUrl}/donations/create-payment-intent`,
             {
@@ -54,8 +55,6 @@ const useDonateStore = create(
                 isEmailSubscription,
                 amount,
                 isAnonymous,
-                lat,
-                lng,
               }),
             }
           );
@@ -66,13 +65,14 @@ const useDonateStore = create(
           set({ isLoading: false, paymentIntentId: data.paymentIntentId });
         } catch (error) {
           set({ error: error, isLoading: false });
+          console.error("Error creating payment intent:", error);
         }
       },
       fetchClientSecret: async () => {
         set({ isLoading: true, error: null });
         try {
           const state = get();
-          const { paymentIntentId } = state;
+          const { paymentIntentId, lat, lng } = state;
 
           const response = await fetch(
             `${backendUrl}/donations/create-checkout-session`,
@@ -83,6 +83,8 @@ const useDonateStore = create(
               },
               body: JSON.stringify({
                 paymentIntentId,
+                lat,
+                lng,
               }),
             }
           );
@@ -94,6 +96,7 @@ const useDonateStore = create(
           return data.clientSecret;
         } catch (error) {
           set({ error: error, isLoading: false });
+          console.error("Error fetching client secret:", error);
         }
       },
 
@@ -115,6 +118,7 @@ const useDonateStore = create(
             isLoading: false,
             error: error,
           });
+          console.error("Error fetching checkout session:", error);
         }
       },
     }),

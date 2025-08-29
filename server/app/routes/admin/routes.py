@@ -15,6 +15,7 @@ from app.schemas.user import DonorSchema
 from app.schemas.campaign import CampaignSchema
 from app.utils.constants import DonationStatus
 from datetime import datetime, timezone
+from collections import defaultdict
 
 
 @admin_bp.route("/", methods=["GET"])
@@ -35,14 +36,7 @@ def dashboard():
             .all()
         )
 
-        lat_lng_donations = [
-            {
-                "lat": donation.lat,
-                "lng": donation.lng,
-            }
-            for donation in donations
-            if donation.lat is not None and donation.lng is not None
-        ]
+        donation_location = DonationLocation.query.all()
 
         onetime_donations = []
         now = datetime.now(timezone.utc)
@@ -58,15 +52,26 @@ def dashboard():
             "onetime": onetime_donations,
         }
 
+        monthly_data = defaultdict(lambda: {"new": 0, "repeat": 0})
+        seen_donors = set()
+
+        for donation in donations:
+            month_year = donation.created_at.strftime("%Y-%m")
+            monthly_data[month_year]
+            if donation.donor.id not in seen_donors:
+                monthly_data[month_year]["new"] += 1
+            else:
+                monthly_data[month_year]["repeat"] += 1
+
         donors = (
             User.query.filter(User.is_admin == False)
             .order_by(User.email_address.asc())
             .all()
         )
 
-        current_app.logger.debug(f"donations: {donations}")
-        current_app.logger.debug("*******************")
         current_app.logger.info("Dashboard data fetched.")
+        campaign_schema = CampaignSchema(only=("id", "raised", "goal"))
+        camapign = Campaign.query.filter_by(is_active=True).first()
         return (
             jsonify(
                 {
@@ -76,7 +81,8 @@ def dashboard():
                     "raised": sum(donation.amount for donation in donations),
                     "donorsCount": len(donors),
                     "donationsWindow": donations_window,
-                    "donations": donations_window,
+                    "monthly_data": monthly_data,
+                    "campaign": campaign_schema.load(camapign) if camapign else None,
                 }
             ),
             200,

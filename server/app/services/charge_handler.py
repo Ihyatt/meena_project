@@ -1,6 +1,8 @@
 from sqlalchemy.orm.exc import StaleDataError
 from flask import current_app, json
 from app.database import db
+import os, uuid
+
 from app.models.campaign import Campaign
 from app.models.donation_notification import DonationNotification
 from app.models.payment_transaction import PaymentTransaction
@@ -15,6 +17,7 @@ from app.utils.constants import (
     DONATION_NOTIFICATIONS_CHANNEL,
 )
 from werkzeug.exceptions import NotFound
+from app.models.donation_location import DonationLocation
 from decimal import Decimal  # For db.Numeric types
 import asyncio
 from datetime import datetime, timezone
@@ -32,6 +35,8 @@ def successful_charge(
     idempotency_key,
     amount,
     charge_id,
+    lat,
+    lng,
 ):
     try:
         payment_transaction = PaymentTransaction.query.filter_by(
@@ -48,6 +53,8 @@ def successful_charge(
             raise ValueError(
                 f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
             )
+
+        new_donation_location = DonationLocation(lat=lat, lng=lng, amount=amount)
         if campaign_id:
             current_app.logger.info(
                 f"Campaign ID provided: {campaign_id}. Updating campaign raised amount."
@@ -55,14 +62,15 @@ def successful_charge(
             campaign = Campaign.query.get_or_404(campaign_id)
             campaign.raised += payment_transaction.amount
             campaign.total_donations += 1
+            new_donation_location.campaign_id = campaign_id
+
         donation.status = DonationStatus.SUCCEEDED
         payment_transaction.status = PaymentStatus.SUCCEEDED
 
+        db.session.add(new_donation_location)
+
         now = datetime.now(timezone.utc)
 
-        current_app.logger.info(
-            f"Payment transaction '{payment_transaction.id}' has been marked as succeeded."
-        )
         new_donation_notification = DonationNotification(
             donation_id=donation.id,
             sent_at=now,
@@ -78,11 +86,9 @@ def successful_charge(
             "amount": payment_transaction.amount,
             "notification_id": new_donation_notification.id,
             "donation_id": donation.id,
+            "first_time_donor": len(donor.donations) == 1,
             "donation_created_at": donation.created_at.isoformat(),
         }
-        current_app.logger.info(
-            f"Donation notification metadata: {notification_metadata}"
-        )
 
         current_app.redis.zadd(
             DONATION_NOTIFICATIONS,
@@ -111,7 +117,6 @@ def successful_charge(
             recipient_email_address=email_address,
             email_type=EmailType.RECEIPT,
         )
-        current_app.logger.info(f"email: {email}")
 
         data = {
             "donor_id": donor_id,
@@ -123,7 +128,7 @@ def successful_charge(
         message = {
             "id": str(uuid.uuid4()),
             "timestamp": datetime.now().isoformat(),
-            "value": event_type,
+            "value": EmailType.RECEIPT,
             "data": data,
         }
         EMAIL_PROCESS_QUEUE = "email_process_queue"

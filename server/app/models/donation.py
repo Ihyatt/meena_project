@@ -19,8 +19,7 @@ class Donation(db.Model, SoftDeleteMixin):
     status = mapped_column(
         db.Enum(DonationStatus), default=DonationStatus.PENDING, nullable=False
     )
-    lat = mapped_column(db.Numeric(10, 8), nullable=True)
-    lng = mapped_column(db.Numeric(11, 8), nullable=True)
+
     is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)
 
     created_at = mapped_column(
