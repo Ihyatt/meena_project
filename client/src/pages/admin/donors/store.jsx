@@ -60,9 +60,12 @@ const useDonorStore = create(
           set({ error: error, isLoading: false });
         }
       },
-      manageDonorData: async (donorId) => {
-        const state = get();
-        const { emailAddress, fullName, emailSubscriptionStatus } = state;
+      manageDonorData: async (
+        donorId,
+        emailAddress,
+        fullName,
+        emailSubscriptionStatus
+      ) => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();

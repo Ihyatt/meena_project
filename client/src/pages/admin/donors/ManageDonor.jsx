@@ -26,18 +26,11 @@ export const ManageDonor = () => {
   const [donations, setDonations] = useState([]);
   const [emailSubscription, setEmailSubscription] = useState({});
   const [toggle, setToggle] = useState("donations");
+  const [fullName, setFullName] = useState("");
+  const [emailSubscriptionStatus, setEmailSubscriptionStatus] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
 
-  const {
-    fetchDonor,
-    manageDonorData,
-    isLoading,
-    fullName,
-    setFullName,
-    emailAddress,
-    setEmailAddress,
-    setEmailSubscriptionStatus,
-    emailSubscriptionStatus,
-  } = useDonorStore();
+  const { fetchDonor, manageDonorData, isLoading } = useDonorStore();
 
   useEffect(() => {
     fetchDonor(donorId).then((data) => {
@@ -113,8 +106,12 @@ export const ManageDonor = () => {
   };
   const handleSubscriptionChange = (status) => {
     setEmailSubscriptionStatus(status);
+    console.log(status);
   };
-
+  const donorContextValue = {
+    handleSubscriptionChange: handleSubscriptionChange,
+    emailSubscriptionStatus: emailSubscriptionStatus,
+  };
   return (
     <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}
@@ -165,9 +162,7 @@ export const ManageDonor = () => {
           {toggle == "donations" ? (
             <Donations donations={donations} />
           ) : (
-            <DonorContext.Provider
-              manageSubscription={handleSubscriptionChange}
-            >
+            <DonorContext.Provider value={donorContextValue}>
               <EmailSubscription emailSubscription={emailSubscription} />
             </DonorContext.Provider>
           )}

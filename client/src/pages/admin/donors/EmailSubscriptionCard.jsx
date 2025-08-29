@@ -1,12 +1,15 @@
 import { NumericFormat } from "react-number-format";
 import { Link, useLocation } from "react-router-dom";
 import useDonorStore from "src/pages/admin/donors/store";
+import { useContext } from "react";
+import DonorContext from "src/pages/admin/donors/DonorContext";
 
 import { RiPencilLine } from "react-icons/ri";
 
 const EmailSubscriptionCard = ({ data }) => {
   console.log(data);
-  const manageSubscription = useContext(donorContext).manageSubscription;
+  const { handleSubscriptionChange, emailSubscriptionStatus } =
+    useContext(DonorContext);
   return (
     <tr key={data.id}>
       <td className="p-4 border-b border-blue-gray-50">
@@ -38,12 +41,12 @@ const EmailSubscriptionCard = ({ data }) => {
 
       <td className="p-4 border-b border-blue-gray-50">
         <div
-          className={`py-1 px-2 rounded-md w-max text-xs cursor-pointer  ${data.status == "ACTIVE" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
+          className={`py-1 px-2 rounded-md w-max text-xs cursor-pointer  ${emailSubscriptionStatus == "ACTIVE" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
         >
-          {data.status == "ACTIVE" ? (
+          {emailSubscriptionStatus == "ACTIVE" ? (
             <div
               className="flex items-center gap-1"
-              onClick={() => manageSubscription("INACTIVE")}
+              onClick={() => handleSubscriptionChange("INACTIVE")}
             >
               subscribed <RiPencilLine />
             </div>
