@@ -73,8 +73,22 @@ def dashboard():
         )
 
         current_app.logger.info("Dashboard data fetched.")
-        campaign_schema = CampaignSchema(only=("id", "raised", "goal"))
-        camapign = Campaign.query.filter_by(is_active=True).first()
+        campaign_schema = CampaignSchema(
+            only=[
+                "id",
+                "image_url",
+                "title",
+                "description",
+                "goal",
+                "raised",
+                "is_active",
+                "launched",
+                "closed",
+                "total_donations",
+            ],
+        )
+        campaign = Campaign.query.filter_by(is_active=True).first()
+        current_app.logger.info(f"Active campaign: {campaign}")
         return (
             jsonify(
                 {
@@ -87,7 +101,7 @@ def dashboard():
                     "donorsCount": len(donors),
                     "donationsWindow": donations_window,
                     "monthly_data": monthly_data,
-                    "campaign": campaign_schema.load(camapign) if camapign else None,
+                    "campaign": campaign_schema.dump(campaign),
                 }
             ),
             200,

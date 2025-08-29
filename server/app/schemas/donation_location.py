@@ -12,7 +12,6 @@ class DonationLocationSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
 
-    donor_location_id = fields.Integer(allow_none=True, data_key="donorId")
     campaign_id = fields.Integer(allow_none=True, data_key="campaignId")
 
     amount = fields.Decimal(

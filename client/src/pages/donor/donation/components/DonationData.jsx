@@ -25,7 +25,7 @@ const DonationData = ({ goal, raised, totalDonations }) => {
           />{" "}
           goal ·{" "}
           <NumericFormat
-            value={totalDonations || 5}
+            value={totalDonations}
             thousandSeparator={true}
             displayType="text"
           />{" "}

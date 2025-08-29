@@ -28,12 +28,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDashboardData().then((data) => {
+      console.log(data);
       setLaunchedCampaigns(data.launchedCampaigns);
       setDonationsCount(data.donationsCount);
       setRaised(data.raised);
       setDonorsCount(data.donorsCount);
-      setDonationsLocation(data.donationsLocation);
-      setDonationsWindow(data.donationsWindow);
+      setDonationsLocation([]);
+      setDonationsWindow([]);
     });
   }, [fetchDashboardData]);
 

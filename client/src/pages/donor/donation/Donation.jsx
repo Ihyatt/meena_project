@@ -37,7 +37,7 @@ const Donation = () => {
       setDescription(data.description);
       setRaised(data.raised);
       setGoal(data.goal);
-      setTotalDonations(data.total_donations);
+      setTotalDonations(data.totalDonations);
       setActiveCampaign(data.activeCampaign);
     });
   }, [fetchCampaign]);
