@@ -96,7 +96,7 @@ const Donation = () => {
       {isLoading && <Loading />}
 
       <div className="flex justify-center">
-        <div className=" min-w-210 max-w-210  flex flex-col justify-center pl-20 pr-10 pt-8">
+        <div className=" min-w-210 max-w-210  flex flex-col justify-center pl-20 pt-8">
           <div className="text-4xl font-bold mb-4">{title || DefaultTitle}</div>
           <img
             src={imageUrl || defaultImg}
@@ -113,7 +113,7 @@ const Donation = () => {
           </div>
         </div>
 
-        <div className="px-2 pt-35 min-w-73">
+        <div className=" ml-5 mt-22 min-w-90 shadow-lg rounded-sm p-8 h-250">
           <img
             className="w-40 h-40 rounded-full object-cover"
             src={din}
@@ -121,6 +121,7 @@ const Donation = () => {
           />
           <div className="mt-5 mb-15">
             <div className="text-sm">CEO & FOUNDER</div>
+
             <div className="text-2xl">SUMAYYAH DIN</div>
           </div>
 
@@ -156,7 +157,7 @@ const Donation = () => {
             </div>
           )}
 
-          <div>
+          <div className="w-73">
             <button
               type="button"
               className="
