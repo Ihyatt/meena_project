@@ -46,8 +46,8 @@ export const ManageCampaign = () => {
   }, []);
 
   const handleClose = (event) => {
-    navigate(-1);
     event.preventDefault();
+    navigate(-1);
   };
 
   const handleSave = (event) => {
@@ -126,7 +126,7 @@ export const ManageCampaign = () => {
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
           <div className="p-2">
-            <label class="block mb-2 text-2xl text-slate-600">Title</label>
+            <label className="block mb-2 text-2xl text-slate-600">Title</label>
             <input
               type="text"
               id="title"
@@ -138,7 +138,7 @@ export const ManageCampaign = () => {
             />
           </div>
           <div className="p-2">
-            <label class="block mb-2 text-2xl text-slate-600">
+            <label className="block mb-2 text-2xl text-slate-600">
               Description
             </label>
             <textarea

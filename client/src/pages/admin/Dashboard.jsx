@@ -182,7 +182,7 @@ const Dashboard = () => {
               }
             />
           </div>
-          <div className="w-1/2  ml-2 rounded-lg shadow-md bg-white flex items-center justify-center p-10">
+          <div className="w-1/2  ml-2 rounded-lg shadow-md bg-white flex items-center justify-center pt-8 px-10 pb-14">
             <LineChart
               trackActiveCammpaignDonations={trackActiveCammpaignDonations}
             />

@@ -114,27 +114,27 @@ def successful_charge(
             f"Donation notification for donation '{donation.id}' has been published to channel '{DONATION_NOTIFICATIONS_CHANNEL}'."
         )
 
-        # email = create_email(
-        #     email_subscription_id=donor.email_subscription.id,
-        #     recipient_email_address=email_address,
-        #     email_type=EmailType.RECEIPT,
-        # )
+        email = create_email(
+            email_subscription_id=donor.email_subscription.id,
+            recipient_email_address=email_address,
+            email_type=EmailType.RECEIPT,
+        )
 
-        # data = {
-        #     "donor_id": donor_id,
-        #     "email_address": email_address,
-        #     "amount": amount,
-        #     "email_id": email.id,
-        # }
+        data = {
+            "donor_id": donor_id,
+            "email_address": email_address,
+            "amount": amount,
+            "email_id": email.id,
+        }
 
-        # message = {
-        #     "id": str(uuid.uuid4()),
-        #     "timestamp": datetime.now().isoformat(),
-        #     "value": EmailType.RECEIPT,
-        #     "data": data,
-        # }
-        # EMAIL_PROCESS_QUEUE = "email_process_queue"
-        # current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
+        message = {
+            "id": str(uuid.uuid4()),
+            "timestamp": datetime.now().isoformat(),
+            "value": EmailType.RECEIPT,
+            "data": data,
+        }
+        EMAIL_PROCESS_QUEUE = "email_process_queue"
+        current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
 
     except StaleDataError as e:
         current_app.logger.error(str(e))
