@@ -1,8 +1,15 @@
+import React, { useState, useMemo } from "react";
+
 import { NumericFormat } from "react-number-format";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+
 const DonationData = ({ goal, raised, totalDonations }) => {
-  const percentage = 66;
+  // useMemo will only recalculate the percentage if 'raised' or 'goal' changes
+  const percentage = useMemo(() => {
+    if (goal === 0) return 0; // Avoid division by zero
+    return Math.floor((raised / goal) * 100);
+  }, [raised, goal]); // Dependency array: the "anchor points"
 
   return (
     <div className="flex w-full items-center justify-between font-light mb-5">

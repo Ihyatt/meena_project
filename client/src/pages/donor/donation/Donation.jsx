@@ -11,7 +11,7 @@ import din from "src/assets/images/din.png";
 import { DefaultTitle } from "src/utils/constants";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
-import DonationContext from "src/components/DonationContext";
+import DonationContext from "src/pages/donor/donation/components/DonationContext";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
@@ -96,24 +96,19 @@ const Donation = () => {
       {isLoading && <Loading />}
 
       <div className="flex justify-center">
-        <div className="min-w-210 max-w-210  flex flex-col items-center p-5">
-          <img className="w-40" src={logo} alt="meena project logo" />
-          <div className="flex flex-col justify-center pl-20 pr-3 pt-8">
-            <div className="text-4xl font-bold mb-4">
-              {title || DefaultTitle}
+        <div className=" min-w-210 max-w-210  flex flex-col justify-center pl-20 pr-10 pt-8">
+          <div className="text-4xl font-bold mb-4">{title || DefaultTitle}</div>
+          <img
+            src={imageUrl || defaultImg}
+            alt="ui/ux review check"
+            className="rounded-sm shadow-md h-100 w-full object-cover"
+          />
+          <div className="text-left px-6">
+            <div className="w-6/8 py-6">
+              <About description={description} />
             </div>
-            <img
-              src={imageUrl || defaultImg}
-              alt="ui/ux review check"
-              className="rounded-sm shadow-md h-100 w-full object-cover"
-            />
-            <div className="text-left px-6">
-              <div className="w-6/8 py-6">
-                <About description={description} />
-              </div>
-              <div>
-                <DonationForm targetRef={targetRef} />
-              </div>
+            <div>
+              <DonationForm targetRef={targetRef} />
             </div>
           </div>
         </div>

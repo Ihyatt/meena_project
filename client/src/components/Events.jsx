@@ -3,7 +3,7 @@ import { RiGift2Fill } from "react-icons/ri";
 import TimeAgo from "src/pages/admin/utils/TimeAgo";
 import { useContext } from "react";
 
-import DonationContext from "src/components/DonationContext";
+import DonationContext from "src/pages/donor/donation/components/DonationContext";
 
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 

@@ -5,7 +5,7 @@ import DonationsScatterChart from "src/pages/admin/donation/ScatterChart";
 import DonationsBarChart from "src/pages/admin/donation/BarChart";
 import DonationEvents from "src/components/Events";
 import { NumericFormat } from "react-number-format";
-import DonationContext from "src/components/DonationContext";
+import DonationContext from "src/pages/donor/donation/components/DonationContext";
 
 import Loading from "src/components/Loading";
 
