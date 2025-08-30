@@ -100,7 +100,7 @@ export const EmailTemplate = () => {
           {isLoading && <Loading />}
 
           <div className="p-2">
-            <label class="block mb-2 text-sm text-slate-600">Subject</label>
+            <label class="block mb-2 text-xl text-slate-600">Subject</label>
 
             <input
               type="text"
@@ -114,7 +114,7 @@ export const EmailTemplate = () => {
           </div>
 
           <div className="p-2">
-            <label class="block mb-2 text-sm text-slate-600">Template ID</label>
+            <label class="block mb-2 text-xl text-slate-600">Template ID</label>
 
             <input
               type="text"
@@ -132,9 +132,7 @@ export const EmailTemplate = () => {
             <div>
               <button
                 type="button"
-                className="
-                  text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] 
-                "
+                className="text-white bg-gray-400 focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-gray-300 "
                 onClick={handleClose}
                 disabled={isLoading}
               >

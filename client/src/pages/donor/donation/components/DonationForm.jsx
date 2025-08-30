@@ -150,8 +150,8 @@ const DonationForm = ({ targetRef }) => {
         </div>
 
         <div className="mt-4 mb-5">
-          <div className="m-2 text-sm text-gray-400 font-light">
-            <div className="inline-flex items-center mr-1">
+          <div className="m-2 text-gray-400 font-light">
+            <div className="inline-flex items-center text-sm mr-1">
               <label className="flex items-center cursor-pointer relative mr-1">
                 <input
                   checked={isEmailSubscription}
@@ -177,10 +177,13 @@ const DonationForm = ({ targetRef }) => {
                   </svg>
                 </span>
               </label>
-              <label>I would like to receive email updates</label>
+              <label>
+                <span className="font-bold">yes,</span> I would like to receive
+                email updates
+              </label>
             </div>
 
-            <div className="inline-flex items-center mr-1">
+            <div className="inline-flex items-center mr-1 text-sm">
               <label className="flex items-center cursor-pointer relative mr-1">
                 <input
                   type="checkbox"
@@ -231,7 +234,10 @@ const DonationForm = ({ targetRef }) => {
                   </svg>
                 </span>
               </label>
-              <label>I would like my donation to be anonymous</label>
+              <label>
+                <span className="font-bold">yes,</span> I would like my donation
+                to be anonymous
+              </label>
             </div>
           </div>
         </div>
@@ -239,8 +245,7 @@ const DonationForm = ({ targetRef }) => {
         <div className="my-6" ref={targetRef}>
           <input
             className="
-            font-medium 
-            text-base 
+            text-xl
             w-full 
             p-[15px] 
             bg-[#0fa347] 
@@ -251,7 +256,8 @@ const DonationForm = ({ targetRef }) => {
             duration-300 
             block
             mx-auto 
-            hover:bg-[#2bbd62] 
+            hover:bg-[#2bbd62]
+            
             "
             type="submit"
             value="Donate"

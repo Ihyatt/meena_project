@@ -1,0 +1,65 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    position: relative;
+    min-height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
+        sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    background: #eceff1;
+}
+
+h1 {
+    margin: auto;
+    text-transform: uppercase;
+    text-align: center;
+    padding-top: 30px;
+}
+
+.flex {
+    display: flex;
+}
+
+.container {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+    margin: auto;
+}
+
+.progress-wrapper {
+    max-width: 350px;
+    justify-content: space-between;
+    margin: auto;
+    padding: 20px;
+    text-transform: uppercase;
+}
+
+[type="range"] {
+    width: 200px;
+}
+
+section {
+    position: relative;
+    background-color: #fff;
+    border-radius: 7px;
+    padding: 5px 30px 30px;
+    margin: 20px;
+    width: 260px;
+    height: 306px;
+}
+
+/* Additional styles like .heart, .pie-unit-11, animations, etc. from your original CSS */

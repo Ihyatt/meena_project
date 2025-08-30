@@ -21,11 +21,20 @@ from marshmallow import EXCLUDE
 from datetime import datetime
 from app.utils.constants import CHARGE_PROCESS_QUEUE, DonationStatus
 from sqlalchemy import func
+from collections import defaultdict
 
 
 @donation_bp.route("/", methods=["GET"])
 def fetch_campaign():
     try:
+
+        donations = (
+            Donation.query.filter(Donation.status == DonationStatus.SUCCEEDED)
+            .order_by(Donation.created_at.desc())
+            .all()
+        )
+        unique_donors = set(donation.donor_id for donation in donations)
+
         campaign = Campaign.query.filter_by(is_active=True).first()
         raised = (
             db.session.query(func.sum(Donation.amount))
@@ -61,6 +70,7 @@ def fetch_campaign():
             )
         campaign_data = campaign_schema.dump(campaign)
         campaign_data["activeCampaign"] = True
+        campaign_data["donorsCount"] = len(unique_donors)
         current_app.logger.info(f"Active Campaign {campaign.id} successfully fetched.")
         return campaign_data, 200
 

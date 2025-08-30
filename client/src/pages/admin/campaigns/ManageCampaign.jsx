@@ -180,7 +180,7 @@ export const ManageCampaign = () => {
           <div className="flex  justify-end mt-4">
             <button
               type="button"
-              className="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
+              className="text-white bg-gray-400 focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-gray-300 "
               onClick={handleClose}
               disabled={isLoading}
             >

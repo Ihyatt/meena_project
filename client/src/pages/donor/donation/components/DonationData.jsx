@@ -1,9 +1,11 @@
 import { NumericFormat } from "react-number-format";
-import DonationBar from "src/pages/donor/donation/components/DonationBar";
-
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 const DonationData = ({ goal, raised, totalDonations }) => {
+  const percentage = 66;
+
   return (
-    <div className="flex w-66 flex-col font-light">
+    <div className="flex w-full items-center justify-between font-light mb-5">
       <div>
         <div className="text-lg">
           <NumericFormat
@@ -15,9 +17,9 @@ const DonationData = ({ goal, raised, totalDonations }) => {
           />{" "}
           raised
         </div>
-        <div className="text-md text-gray-400 font-light">
+        <div className="text-md text-gray-400 font-light text-sm">
           <NumericFormat
-            value={goal || 100}
+            value={goal}
             thousandSeparator={true}
             prefix="$"
             decimalScale={2}
@@ -32,8 +34,25 @@ const DonationData = ({ goal, raised, totalDonations }) => {
           donations
         </div>
       </div>
-      <div className="mt-2 mb-1">
-        <DonationBar raised={raised || 0} goal={goal || 0} />
+      <div style={{ width: 70, height: 70, marginLeft: 7 }}>
+        <CircularProgressbar
+          value={percentage}
+          text={`${percentage}%`}
+          styles={{
+            path: {
+              stroke: `rgba(13, 133, 58, ${percentage / 100})`,
+              strokeLinecap: "round",
+              transformOrigin: "center center",
+            },
+
+            text: {
+              // Text color
+              fill: "#949996",
+              // Text size
+              fontSize: "16px",
+            },
+          }}
+        />
       </div>
     </div>
   );

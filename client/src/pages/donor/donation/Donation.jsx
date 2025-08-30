@@ -13,6 +13,8 @@ import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
 import DonationContext from "src/components/DonationContext";
 import { FaArrowTrendUp } from "react-icons/fa6";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+
 const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
 const Donation = () => {
@@ -38,10 +40,10 @@ const Donation = () => {
       setRaised(data.raised);
       setGoal(data.goal);
       setTotalDonations(data.totalDonations);
+      setDonorsCount(data.donorsCount);
       setActiveCampaign(data.activeCampaign);
     });
   }, [fetchCampaign]);
-
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(frotendUrl);
@@ -116,26 +118,26 @@ const Donation = () => {
           </div>
         </div>
 
-        <div className="px-2 py-40 min-w-71">
+        <div className="px-2 pt-35 min-w-73">
           <img
             className="w-40 h-40 rounded-full object-cover"
             src={din}
             alt="sumayyah"
           />
-          <div className="mt-5">
+          <div className="mt-5 mb-15">
             <div className="text-sm">CEO & FOUNDER</div>
             <div className="text-2xl">SUMAYYAH DIN</div>
           </div>
 
-          <div
-            className="flex justify-end mt-10 mb-2"
-            title={`${donorsCount} total donors`}
-          >
+          <div className="flex justify-start items-center mt-5 mb-3">
             <FaArrowTrendUp
               size={35}
               color="#DB5758"
               className="inline bg-[#edafb0] rounded-full p-1"
-            />
+            />{" "}
+            <div className="text-lg  ml-3 text-[#DB5758]">
+              {donorsCount} people just donated
+            </div>
           </div>
 
           {activeCampaign == true ? (
@@ -145,7 +147,7 @@ const Donation = () => {
               totalDonations={totalDonations}
             />
           ) : (
-            <div className="flex w-58 flex-col mb-2">
+            <div className="flex w-58 flex-col mb-5">
               <div className="text-lg font-light">
                 <NumericFormat
                   value={raised || 0}
@@ -176,7 +178,7 @@ const Donation = () => {
             rounded-sm  
             cursor-pointer 
             mr-1 
-            text-sm
+            text-md
             "
               onClick={scrollToTarget}
             >
@@ -197,7 +199,7 @@ const Donation = () => {
                rounded-sm  
                cursor-pointer
                 ml-1 
-                text-sm
+                text-md
               "
               onClick={handleCopy}
             >

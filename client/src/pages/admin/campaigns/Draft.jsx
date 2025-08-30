@@ -205,7 +205,7 @@ export const CampaignDraft = () => {
           <div className="flex items-center mt-8 justify-between">
             <button
               type="button"
-              className="text-white bg-[#DB5758] focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#d6696a] "
+              className="text-white bg-gray-400 focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-gray-300 "
               onClick={handleClose}
               disabled={isLoading}
             >
