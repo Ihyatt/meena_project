@@ -29,6 +29,12 @@ from app.services.charge_handler import (
     refunded_charge,
 )
 
+from app.services.charge_handler import (
+    successful_charge,
+    failed_charge,
+    refunded_charge,
+)
+
 
 @donation_bp.route("/", methods=["GET"])
 def fetch_campaign():
@@ -281,8 +287,19 @@ def stripe_webhook():
                 "data": data,
             }
 
-            current_app.redis.lpush(CHARGE_PROCESS_QUEUE, json.dumps(message))
-
+            # current_app.redis.lpush(CHARGE_PROCESS_QUEUE, json.dumps(message))
+            successful_charge(
+                donor_id=data["donor_id"],
+                email_address=data["email_address"],
+                campaign_id=data["campaign_id"],
+                payment_transaction_id=data["payment_transaction_id"],
+                donation_id=data["donation_id"],
+                idempotency_key=data["idempotency_key"],
+                amount=data["amount"],
+                charge_id=data["charge_id"],
+                lat=data["lat"],
+                lng=data["lng"],
+            )
         return jsonify({"status": "success"}), 200
     except Exception as e:
         current_app.logger.error(f"Webhook error: {str(e)}", exc_info=True)

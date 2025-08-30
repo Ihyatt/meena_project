@@ -7,7 +7,7 @@ import DonationEvents from "src/components/Events";
 import About from "src/pages/donor/donation/components/About";
 import defaultImg from "src/assets/images/defaultImg.jpg";
 import logo from "src/assets/images/logo.png";
-import din from "src/assets/images/din.png";
+import temp from "src/assets/images/temp.png";
 import { DefaultTitle } from "src/utils/constants";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
@@ -34,7 +34,7 @@ const Donation = () => {
     getUserLocation();
     fetchCampaign().then((data) => {
       console.log("campaign data", data);
-      setImageUrl(data.image_url || defaultImg);
+      setImageUrl(data.imageUrl || defaultImg);
       setTitle(data.title);
       setDescription(data.description);
       setRaised(data.raised);
@@ -91,7 +91,8 @@ const Donation = () => {
     handleDonationUpdate: handleNewDonation,
     handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
-  console.log("num donors", donorsCount);
+
+  console.log("RENDERING DONATION COMPONENT");
   return (
     <div>
       {isLoading && <Loading />}
@@ -117,7 +118,7 @@ const Donation = () => {
         <div className=" ml-5 mt-12 min-w-90 shadow-lg rounded-sm p-8 h-235">
           <img
             className="w-40 h-40 rounded-full object-cover"
-            src={din}
+            src={temp}
             alt="sumayyah"
           />
           <div className="mt-5 mb-15">

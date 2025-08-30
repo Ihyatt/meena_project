@@ -24,6 +24,11 @@ from datetime import datetime, timezone
 from app.utils.email import create_email
 from app.services.email_handler import send_receipt_email
 from decimal import Decimal
+from app.services.email_handler import (
+    send_receipt_email,
+    send_impact_email,
+    send_closeout_email,
+)
 
 
 def successful_charge(
@@ -48,18 +53,13 @@ def successful_charge(
         payment_transaction.charge_id = charge_id
 
         if payment_transaction.status == PaymentStatus.SUCCEEDED:
-            current_app.logger.warning(
-                f"Successful payment transaction '{payment_transaction.charge_id}' has already been recorded."
-            )
+
             raise ValueError(
                 f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
             )
 
         new_donation_location = DonationLocation(lat=lat, lng=lng, amount=amount)
         if campaign_id:
-            current_app.logger.info(
-                f"Campaign ID provided: {campaign_id}. Updating campaign raised amount."
-            )
             campaign = Campaign.query.get(campaign_id)
             if campaign is not None:
                 campaign.raised += Decimal(amount)
@@ -110,9 +110,6 @@ def successful_charge(
         current_app.redis.publish(
             DONATION_NOTIFICATIONS_CHANNEL, json.dumps(notification_metadata)
         )
-        current_app.logger.info(
-            f"Donation notification for donation '{donation.id}' has been published to channel '{DONATION_NOTIFICATIONS_CHANNEL}'."
-        )
 
         email = create_email(
             email_subscription_id=donor.email_subscription.id,
@@ -134,16 +131,20 @@ def successful_charge(
             "data": data,
         }
         EMAIL_PROCESS_QUEUE = "email_process_queue"
-        current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
+        current_app.redis.lpush("email_process_queue", json.dumps(message))
+        # send_receipt_email(
+        #     data["donor_id"],
+        #     data["email_address"],
+        #     data["amount"],
+        #     data["email_id"],
+        # )
 
     except StaleDataError as e:
-        current_app.logger.error(str(e))
         db.session.rollback()
         raise ValueError(str(e))
 
     except Exception as e:
         db.session.rollback()
-        current_app.logger.error(str(e), exc_info=True)
         raise ValueError(str(e))
 
 
@@ -158,22 +159,16 @@ def failed_charge(payment_transaction_id, idempotency_key, charge_id):
                 f"Payment transaction with id '{payment_transaction_id}' not found."
             )
         if payment_transaction.status == PaymentStatus.SUCCEEDED:
-            current_app.logger.warning(
-                f"Failed payment transaction '{payment_transaction.charge_id}' has already been recorded."
-            )
+
             raise ValueError(
                 f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
             )
         payment_transaction.charge_id = charge_id
         payment_transaction.status = PaymentStatus.FAILED
         db.session.commit()
-        current_app.logger.info(
-            f"Payment transaction '{payment_transaction.id}' has been marked as failed."
-        )
 
     except Exception as e:
         db.session.rollback()
-        current_app.logger.error(str(e), exc_info=True)
         raise ValueError(str(e))
 
 
@@ -193,25 +188,16 @@ def refunded_charge(payment_transaction_id, idempotency_key, charge_id, campaign
                 campaign.raised -= payment_transaction.amount
             payment_transaction.status = PaymentStatus.REFUNDED
             db.session.commit()
-            current_app.logger.info(
-                f"Payment transaction '{payment_transaction.id}' has been marked as refunded."
-            )
+
         except NotFound as e:
-            current_app.logger.error(str(e))
             raise ValueError(str(e))
         except StaleDataError as e:
-            current_app.logger.error(str(e))
             db.session.rollback()
-            current_app.logger.error(
-                f"Failed to update Campaign raised amount for campaign '{campaign_id}': {str(e)}"
-            )
+
             raise ValueError(str(e))
 
     except Exception as e:
         db.session.rollback()
-        current_app.logger.error(
-            f"Failed to update payment transaction '{payment_transaction.id}': {str(e)}"
-        )
         raise ValueError(
             f"Failed to update payment transaction '{payment_transaction.id}': {str(e)}"
         )

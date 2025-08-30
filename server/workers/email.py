@@ -29,9 +29,11 @@ app = create_app()
 
 
 def process_message(db, message_json: str):
+
     try:
         message = json.loads(message_json)
         data = message["data"]
+        print(message)
 
         if message["value"] == EmailType.RECEIPT:
             send_receipt_email(
@@ -98,16 +100,18 @@ def push_to_queue(db):
 def main():
 
     with app.app_context():
-        print("Starting charge worker...")
+        print("Starting email worker...")
 
         app.redis = redis_access.redis_db()
         time.sleep(random.uniform(0.5, 1.5))  # Simulate some startup delay
 
         while True:
-            print("Waiting for messages in the charge process queue...")
+            print("Waiting for messages in the email process queue...")
             push_to_queue(app.redis)
 
-            message_json = redis_access.redis_queue_pop(app.redis, EMAIL_PROCESS_QUEUE)
+            message_json = redis_access.redis_queue_pop(
+                app.redis, "email_process_queue"
+            )
             print(f"Processing message: {message_json}")
             process_message(app.redis, message_json)
 

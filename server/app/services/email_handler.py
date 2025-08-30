@@ -44,7 +44,7 @@ def send_receipt_email(donor_id, email_address, amount, email_id):
 
         try:
             result = mailjet_client.send.create(data=data)
-            current_app.logger.info(result.json())
+            current_app.logger.info("*****************************", result.json())
             message_uuid = result.json()["Messages"][0]["To"][0]["MessageUUID"]
             message_id = result.json()["Messages"][0]["To"][0]["MessageID"]
 
