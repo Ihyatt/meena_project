@@ -92,7 +92,9 @@ def fetch_campaign():
 def create_payment_intent():
     try:
         data = request.get_json()
+        current_app.logger.info(f"Creating payment intent with data: {data}")
         active_campaign = Campaign.query.filter_by(is_active=True).first()
+
         donor_schema = DonorSchema(
             unknown=EXCLUDE,
             only=[
@@ -168,9 +170,13 @@ def create_checkout_session():
         domain_url = current_app.config["WEB_URL"]
         active_campaign = Campaign.query.filter_by(is_active=True).first()
         payment_intent_id = data.get("paymentIntentId")
+
         payment_transaction = PaymentTransaction.query.filter_by(
             payment_intent_id=payment_intent_id
         ).first()
+        current_app.logger.info(f"payment intent {payment_intent_id}")
+
+        current_app.logger.info(f"payment transaction {payment_transaction}")
         donation = payment_transaction.donation
         donor = donation.donor
 
@@ -238,43 +244,51 @@ def stripe_webhook():
         event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
         event_type = event["type"]
         session = event["data"]["object"]
-        current_app.logger.info(f"Received event: {session}")
 
-        metadata = session.get("metadata", {})
-        charge_id = session.get("payment_intent", "")
-        charge = stripe.Charge.retrieve(
-            charge_id, expand=["balance_transaction"]  # This is the crucial part
-        )
+        if event_type == "charge.succeeded":
+            current_app.logger.info(f"Received event: {session}")
 
-        # Now you can access the fee and net amount
-        fee_details = charge.balance_transaction
-        stripe_fee = fee_details.fee  # Total fee in cents (e.g., 54 for $0.54)
-        net_amount = (
-            fee_details.net
-        )  # Net amount you receive in cents (e.g., 2946 for $29.46)
+            metadata = session.get("metadata", {})
+            charge_id = session.get("payment_intent", "")
 
-        data = {
-            "campaign_id": metadata.get("campaign_id", ""),
-            "email_address": metadata.get("email_address", ""),
-            "donor_id": metadata.get("donor_id", ""),
-            "donation_id": metadata.get("donation_id", ""),
-            "payment_transaction_id": metadata.get("payment_transaction_id", ""),
-            "idempotency_key": metadata.get("idempotency_key", ""),
-            "amount": metadata.get("amount", ""),  # Convert cents to dollars
-            "net_amount": net_amount / 100,
-            "charge_id": charge_id,
-            "lat": metadata.get("lat", ""),
-            "lng": metadata.get("lng", ""),
-        }
+            # First get the payment intent
+            # Expand the balance_transaction to get fee details
+            charge_with_balance = stripe.Charge.retrieve(
+                session["id"], expand=["balance_transaction"]
+            )
 
-        message = {
-            "id": str(uuid.uuid4()),
-            "timestamp": datetime.now().isoformat(),
-            "value": event_type,
-            "data": data,
-        }
+            balance_transaction = charge_with_balance.balance_transaction
 
-        current_app.redis.lpush(CHARGE_PROCESS_QUEUE, json.dumps(message))
+            # Extract fee information
+            stripe_fee = balance_transaction.fee  # Total fee in cents
+            fee_details = (
+                balance_transaction.fee_details
+            )  # Breakdown of the fee components
+            net_amount = balance_transaction.net  # Net amount after fees
+
+            data = {
+                "campaign_id": metadata.get("campaign_id", ""),
+                "email_address": metadata.get("email_address", ""),
+                "donor_id": metadata.get("donor_id", ""),
+                "donation_id": metadata.get("donation_id", ""),
+                "payment_transaction_id": metadata.get("payment_transaction_id", ""),
+                "idempotency_key": metadata.get("idempotency_key", ""),
+                "amount": metadata.get("amount", ""),  # Convert cents to dollars
+                "net_amount": net_amount / 100,
+                "fee_amount": stripe_fee / 100,
+                "charge_id": charge_id,
+                "lat": metadata.get("lat", ""),
+                "lng": metadata.get("lng", ""),
+            }
+
+            message = {
+                "id": str(uuid.uuid4()),
+                "timestamp": datetime.now().isoformat(),
+                "value": event_type,
+                "data": data,
+            }
+
+            current_app.redis.lpush(CHARGE_PROCESS_QUEUE, json.dumps(message))
 
         return jsonify({"status": "success"}), 200
     except Exception as e:

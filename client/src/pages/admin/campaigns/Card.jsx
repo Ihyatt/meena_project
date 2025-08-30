@@ -21,9 +21,10 @@ export const Campaign = ({ data }) => {
       <td className="p-4 border-b border-blue-gray-50">
         <div className="text-xs ">{data.totalDonations}</div>
       </td>
-      <td className="p-4 border-b border-blue-gray-50 text-xs">
+
+      <td className="p-4 border-b border-blue-gray-50 text-xs ">
         <NumericFormat
-          value={data.goal}
+          value={data.raised}
           thousandSeparator={true}
           prefix="$"
           decimalScale={2}
@@ -31,9 +32,9 @@ export const Campaign = ({ data }) => {
           className="text-xs"
         />
       </td>
-      <td className="p-4 border-b border-blue-gray-50 text-xs ">
+      <td className="p-4 border-b border-blue-gray-50 text-xs">
         <NumericFormat
-          value={data.raised}
+          value={data.goal}
           thousandSeparator={true}
           prefix="$"
           decimalScale={2}

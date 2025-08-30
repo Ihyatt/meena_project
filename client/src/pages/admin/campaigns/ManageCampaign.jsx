@@ -70,7 +70,6 @@ export const ManageCampaign = () => {
     }
 
     saveCampaign(campaignId, title, description, goal).then((data) => {
-      console.log("in save capaign", data);
       setTitle(data.title);
       setDescription(data.description);
       setGoal(data.goal);
@@ -112,7 +111,6 @@ export const ManageCampaign = () => {
 
   const uploadFile = (file) => {
     upload(campaignId, file).then((data) => {
-      console.log("in upload file", data);
       setImageUrl(data.url);
       setFile(null);
     });

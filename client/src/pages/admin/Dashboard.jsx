@@ -28,7 +28,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDashboardData().then((data) => {
-      console.log(data);
       setLaunchedCampaigns(data.launchedCampaigns);
       setDonationsCount(data.donationsCount);
       setRaised(data.raised);

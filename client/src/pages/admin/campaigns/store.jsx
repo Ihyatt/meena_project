@@ -26,7 +26,6 @@ const useCampaignStore = create(
             }
           );
           const data = await response.json();
-          console.log("here", data);
           if (!response.ok) {
             set({ error: data.message });
           }
@@ -68,7 +67,6 @@ const useCampaignStore = create(
         }
       },
       fetchCampaigns: async () => {
-        console.log("Fetching campaigns...");
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -83,7 +81,6 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          console.log(data);
           set({
             campaigns: data,
             isLoading: false,
@@ -135,7 +132,6 @@ const useCampaignStore = create(
             }
           );
           const data = await response.json();
-          console.log(data);
           if (!response.ok) {
             set({ error: data.message });
           }

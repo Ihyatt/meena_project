@@ -12,29 +12,9 @@ import useDonateStore from "src/pages/donor/store";
 const stripePublishableKey = import.meta.env.VITE_STRIPE_PK;
 
 const Checkout = () => {
-  const {
-    fetchClientSecret,
-    isLoading,
-    createPaymentIntent,
-    setPaymentIntentId,
-  } = useDonateStore();
+  const { fetchClientSecret, isLoading } = useDonateStore();
 
   const stripePromise = loadStripe(stripePublishableKey);
-
-  const location = useLocation();
-
-  const { amount, fullName, emailAddress, isAnonymous, isEmailSubscription } =
-    location.state || {};
-
-  useEffect(() => {
-    createPaymentIntent({
-      fullName,
-      emailAddress,
-      amount,
-      isEmailSubscription,
-      isAnonymous,
-    });
-  }, [createPaymentIntent]);
 
   return (
     <div

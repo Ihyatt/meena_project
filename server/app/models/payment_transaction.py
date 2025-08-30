@@ -29,6 +29,10 @@ class PaymentTransaction(db.Model, SoftDeleteMixin):
     idempotency_key = mapped_column(
         db.String(255), unique=True, index=True, nullable=False
     )
+    stripe_fee = mapped_column(db.Numeric(10, 2), default=0.0, nullable=True)
+
+    net_amount = mapped_column(db.Numeric(10, 2), default=0.0, nullable=True)
+
     payment_intent_id = mapped_column(
         db.String(255), unique=True, index=True, nullable=False
     )

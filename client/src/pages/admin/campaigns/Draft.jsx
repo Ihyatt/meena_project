@@ -100,7 +100,6 @@ export const CampaignDraft = () => {
     }
 
     saveCampaign(campaignId, title, description, goal).then((data) => {
-      console.log("in save capaign", data);
       setTitle(data.title);
       setDescription(data.description);
       setGoal(data.goal);

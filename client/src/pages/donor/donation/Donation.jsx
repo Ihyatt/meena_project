@@ -96,7 +96,7 @@ const Donation = () => {
       {isLoading && <Loading />}
 
       <div className="flex justify-center">
-        <div className=" min-w-210 max-w-210  flex flex-col justify-center pl-20 pt-8">
+        <div className=" min-w-210 max-w-210  flex flex-col justify-center pl-20 ">
           <div className="text-4xl font-bold mb-4">{title || DefaultTitle}</div>
           <img
             src={imageUrl || defaultImg}
@@ -196,8 +196,9 @@ const Donation = () => {
                 color="#DB5758"
                 className="inline bg-[#edafb0] rounded-full p-1"
               />{" "}
-              <div className="text-lg  ml-3 text-[#DB5758]">
-                {donorsCount} people just donated
+              <div className="text-md font-bold  ml-3 text-[#DB5758]">
+                {donorsCount} {donorsCount == 1 ? "person " : "people "}
+                just donated
               </div>
             </div>
             <div className="mt-10">

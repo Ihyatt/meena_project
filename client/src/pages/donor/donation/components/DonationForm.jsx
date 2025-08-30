@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { RiInstagramLine } from "react-icons/ri";
 import ErrorAlert from "src/components/ErrorAlert";
 import { Link, useLocation } from "react-router-dom";
+import useDonateStore from "src/pages/donor/store";
 
 const DonationForm = ({ targetRef }) => {
   const [customAmount, setCustomAmount] = useState("");
@@ -16,6 +17,12 @@ const DonationForm = ({ targetRef }) => {
   const [activeButton, setActiveButton] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isEmailSubscription, setIsEmailSubscription] = useState(false);
+  const {
+    fetchClientSecret,
+    isLoading,
+    createPaymentIntent,
+    setPaymentIntentId,
+  } = useDonateStore();
 
   const handleClick = (buttonId, amount) => {
     setActiveButton(buttonId);
@@ -57,14 +64,25 @@ const DonationForm = ({ targetRef }) => {
     } else {
       // If there are no errors, proceed with navigation
       setErrors([]); // Clear any existing errors
-      navigate("/checkout", {
-        state: {
-          fullName,
-          emailAddress,
-          amount,
-          isEmailSubscription,
-          isAnonymous,
-        },
+      console.log("Creating payment intent...");
+      console.log({
+        fullName,
+        emailAddress,
+        amount,
+        isEmailSubscription,
+        isAnonymous,
+      });
+      createPaymentIntent({
+        fullName,
+        emailAddress,
+        amount,
+        isEmailSubscription,
+        isAnonymous,
+      }).then((data) => {
+        console.log("Payment intent created:", data);
+        setPaymentIntentId(data.paymentIntentId);
+        console.log("Navigating to checkout...");
+        navigate("/checkout");
       });
     }
   };
