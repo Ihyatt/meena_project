@@ -28,12 +28,11 @@ from collections import defaultdict
 def fetch_campaign():
     try:
 
-        donations = (
-            Donation.query.filter(Donation.status == DonationStatus.SUCCEEDED)
-            .order_by(Donation.created_at.desc())
+        donors = (
+            User.query.filter(User.is_admin == False)
+            .order_by(User.email_address.asc())
             .all()
         )
-        unique_donors = set(donation.donor_id for donation in donations)
 
         campaign = Campaign.query.filter_by(is_active=True).first()
         raised = (
@@ -70,7 +69,7 @@ def fetch_campaign():
             )
         campaign_data = campaign_schema.dump(campaign)
         campaign_data["activeCampaign"] = True
-        campaign_data["donorsCount"] = len(unique_donors)
+        campaign_data["donorsCount"] = len(donors)
         current_app.logger.info(f"Active Campaign {campaign.id} successfully fetched.")
         return campaign_data, 200
 

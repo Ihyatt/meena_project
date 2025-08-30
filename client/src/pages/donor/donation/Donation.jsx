@@ -125,17 +125,6 @@ const Donation = () => {
             <div className="text-2xl">SUMAYYAH DIN</div>
           </div>
 
-          <div className="flex justify-start items-center mt-5 mb-3">
-            <FaArrowTrendUp
-              size={35}
-              color="#DB5758"
-              className="inline bg-[#edafb0] rounded-full p-1"
-            />{" "}
-            <div className="text-lg  ml-3 text-[#DB5758]">
-              {donorsCount} people just donated
-            </div>
-          </div>
-
           {activeCampaign == true ? (
             <DonationData
               goal={goal}
@@ -201,6 +190,16 @@ const Donation = () => {
             >
               {copyText}
             </button>
+            <div className="flex justify-start items-center mt-5 mb-3">
+              <FaArrowTrendUp
+                size={35}
+                color="#DB5758"
+                className="inline bg-[#edafb0] rounded-full p-1"
+              />{" "}
+              <div className="text-lg  ml-3 text-[#DB5758]">
+                {donorsCount} people just donated
+              </div>
+            </div>
             <div className="mt-10">
               <div className="text-gray-400 ">RECENT DONATIONS</div>
               <DonationContext.Provider value={donationContextValue}>
