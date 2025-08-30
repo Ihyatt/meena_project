@@ -19,16 +19,15 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = ({ window }) => {
+const BarChart = ({ currYearByMonthDonationRetentionData }) => {
+  if (!currYearByMonthDonationRetentionData) {
+    return <div>Loading chart data...</div>;
+  }
   const options = {
     responsive: true,
     plugins: {
       legend: {
         position: "top",
-      },
-      title: {
-        display: true,
-        text: "Chart.js Bar Chart",
       },
     },
   };
@@ -41,24 +40,57 @@ const BarChart = ({ window }) => {
     "May",
     "June",
     "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
+
+  const months = {
+    January: 1,
+    February: 2,
+    March: 3,
+
+    April: 4,
+    May: 5,
+    June: 6,
+    July: 7,
+    August: 8,
+    September: 9,
+    October: 10,
+    November: 11,
+    December: 12,
+  };
 
   const data = {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        label: "New Donations",
+        data: labels.map((label) => {
+          const monthNum = months[label];
+          if (monthNum in currYearByMonthDonationRetentionData) {
+            return currYearByMonthDonationRetentionData[monthNum].new;
+          }
+          return 0;
+        }),
+        backgroundColor: "#edafb0",
       },
       {
-        label: "Dataset 2",
-        data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        label: "Retentioned Donations",
+        data: labels.map((label) => {
+          const monthNum = months[label];
+          if (monthNum in currYearByMonthDonationRetentionData) {
+            return currYearByMonthDonationRetentionData[monthNum].repeat;
+          }
+          return 0;
+        }),
+        backgroundColor: "#2bbd62",
       },
     ],
   };
+
   return <Bar options={options} data={data} />;
 };
-
 export default BarChart;

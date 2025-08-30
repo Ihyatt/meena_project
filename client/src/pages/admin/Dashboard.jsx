@@ -3,10 +3,11 @@ import useAdminStore from "src/pages/admin/store";
 import DonationsHeatMap from "src/pages/admin/charts/HeatMap";
 import ScatterChart from "src/pages/admin/charts/ScatterChart";
 import BarChart from "src/pages/admin/charts/BarChart";
+import LineChart from "src/pages/admin/charts/LineChart";
 import DonationEvents from "src/components/Events";
 import { NumericFormat } from "react-number-format";
 import DonationContext from "src/pages/donor/donation/components/DonationContext";
-import DonutChart from "src/pages/admin/charts/DonutChart";
+import PieChart from "src/pages/admin/charts/PieChart";
 import { FaArrowTrendUp } from "react-icons/fa6";
 
 import Loading from "src/components/Loading";
@@ -28,7 +29,15 @@ const Dashboard = () => {
     currYearIndividualDonationRetentionData,
     setCurrYearIndividualDonationRetentionData,
   ] = useState([]);
-  const [donorRetentionData, setDonorRetentionData] = useState([]);
+
+  const [trackActiveCammpaignDonations, setTrackActiveCammpaignDonations] =
+    useState([]);
+  const [allTimeDonationRetentionData, SetAllTimeDonationRetentionData] =
+    useState([]);
+  const [
+    currYearByMonthDonationRetentionData,
+    setCurrYearByMonthDonationRetentionData,
+  ] = useState([]);
 
   const { fetchDashboardData, isLoading } = useAdminStore();
 
@@ -42,6 +51,13 @@ const Dashboard = () => {
       setDonationsLocation(data.donationsLocation || []);
       setCurrYearIndividualDonationRetentionData(
         data.currYearIndividualDonationRetentionData || []
+      );
+      SetAllTimeDonationRetentionData(data.allTimeDonationRetentionData || []);
+      setCurrYearByMonthDonationRetentionData(
+        data.currYearByMonthDonationRetentionData || []
+      );
+      setTrackActiveCammpaignDonations(
+        data.trackActiveCammpaignDonations || []
       );
     });
   }, [fetchDashboardData]);
@@ -59,6 +75,11 @@ const Dashboard = () => {
     handleDonationUpdate: handleNewDonation,
     handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
+
+  console.log(
+    "currYearByMonthDonationRetentionData",
+    currYearByMonthDonationRetentionData
+  );
   return (
     <div className="m-2">
       {isLoading && <Loading />}
@@ -99,7 +120,7 @@ const Dashboard = () => {
             <RiMoneyDollarCircleFill
               size={30}
               color={"white"}
-              className="inline #edafb0 rounded-xl"
+              className="inline  rounded-xl"
             />
             <span className="text-xl">
               <NumericFormat
@@ -152,20 +173,27 @@ const Dashboard = () => {
           </DonationContext.Provider>
         </div>
       </div>
-      <div>
-        <div className="flex m-4 h-1/2">
-          {/* <div className="w-1/2   mr-2 rounded-lg shadow-md bg-white">
-            <BarChart window={donationsWindow} />
-          </div> */}
-          {/* <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
-            <DonationsScatterChart window={donationsWindow} />
-          </div> */}
+      <div className="  h-full">
+        <div className="flex m-4 h-100">
+          <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-10">
+            <BarChart
+              currYearByMonthDonationRetentionData={
+                currYearByMonthDonationRetentionData
+              }
+            />
+          </div>
+          <div className="w-1/2  ml-2 rounded-lg shadow-md bg-white flex items-center justify-center p-10">
+            <LineChart
+              trackActiveCammpaignDonations={trackActiveCammpaignDonations}
+            />
+          </div>
         </div>
-
-        <div className="flex m-4">
-          {/* <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white">
-            <DonutChart retentionData={donorRetentionData} />
-          </div> */}
+        <div className="flex m-4 h-100">
+          <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-10">
+            <PieChart
+              allTimeDonationRetentionData={allTimeDonationRetentionData}
+            />
+          </div>
           <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
             <ScatterChart
               currYearIndividualDonationRetentionData={

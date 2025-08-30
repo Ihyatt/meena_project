@@ -10,7 +10,7 @@ from app.models.user import User
 from app.models.email_template import EmailTemplate
 from app.schemas.email_template import EmailTemplateSchema
 from app.utils.decorators import admin_required
-from app.utils.constants import EmailStatus
+from app.utils.constants import EmailStatus, SubscriptionStatus
 from sqlalchemy.exc import IntegrityError
 
 

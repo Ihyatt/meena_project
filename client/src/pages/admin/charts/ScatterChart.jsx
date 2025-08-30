@@ -32,7 +32,7 @@ const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
         type: "time",
         time: {
           unit: "day",
-          tooltipFormat: "MMM d, h:mm a", // This format is used for the header
+          tooltipFormat: "MMM d, h:mm a",
         },
         title: {
           display: true,
@@ -43,26 +43,25 @@ const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
         beginAtZero: true,
         title: {
           display: true,
-          text: "Donation Amount ($)",
+          text: "Time of Day",
+        },
+        ticks: {
+          display: false, // ✅ Hides the numbers
+        },
+        grid: {
+          drawTicks: false, // ✅ Prevents tick marks on the grid
         },
       },
     },
+
     plugins: {
       tooltip: {
         callbacks: {
-          // This callback is responsible for the label content
           label: function (context) {
-            // Access the numerical y-value (amount)
-            const amount = context.parsed.y;
-
-            // Get the date object from the parsed x-value
+            const amount = context.raw.r; // ✅ FIXED
             const date = new Date(context.parsed.x);
-
-            // Format the date using date-fns
             const formattedDate = format(date, "MMM d, h:mm a");
-
-            // Return an array of strings to display on separate lines
-            return [`Date: ${formattedDate}`, `Amount: $${amount.toFixed(2)}`];
+            return [`Date: ${formattedDate}`, `$${amount * 10}`];
           },
         },
       },
@@ -72,29 +71,36 @@ const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
     },
   };
 
+  // Function to get milliseconds since midnight
+  const getMillisecondsOfDay = (date) => {
+    const d = new Date(date);
+    return (
+      d.getHours() * 3600000 + d.getMinutes() * 60000 + d.getSeconds() * 1000
+    );
+  };
+
   const data = {
     datasets: [
       {
-        label: "First Time donation",
+        label: "New Donations",
         data: currYearIndividualDonationRetentionData?.new.map((item) => ({
           x: new Date(item.date),
-          y: parseFloat(item.amount),
-          r: 10,
+          y: getMillisecondsOfDay(item.date), // ✅ Time of day for y-axis
+          r: parseFloat(item.amount) / 10, // ✅ Amount for bubble radius
         })),
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: "rgb(237, 175, 176, 0.5)",
       },
       {
-        label: "Repeat donation",
+        label: "Rentioned Donations",
         data: currYearIndividualDonationRetentionData?.repeat.map((item) => ({
           x: new Date(item.date),
-          y: parseFloat(item.amount),
-          r: 10,
+          y: getMillisecondsOfDay(item.date), // ✅ Time of day for y-axis
+          r: parseFloat(item.amount) / 10, // ✅ Amount for bubble radius
         })),
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        backgroundColor: "rgba(43, 189, 98, 0.5)",
       },
     ],
   };
-
   return <Bubble options={options} data={data} />;
 };
 

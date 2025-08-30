@@ -41,9 +41,15 @@ def dashboard():
         if campaign:
             for donation in campaign.donations:
                 curr_year = now.year
-                if donation.created_at.year == curr_year:
-                    date = donation.created_at.strftime("%d-%m-%Y")
-                    track_active_cammpaign_donations[date]["raised"] += donation.amount
+                if (
+                    donation.created_at.year == curr_year
+                    and donation.status == DonationStatus.SUCCEEDED
+                ):
+                    week_number_of_year = donation.created_at.strftime("%V")
+
+                    track_active_cammpaign_donations[week_number_of_year][
+                        "raised"
+                    ] += donation.amount
 
         donations = (
             Donation.query.filter(Donation.status == DonationStatus.SUCCEEDED)
