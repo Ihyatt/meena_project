@@ -40,6 +40,7 @@ def dashboard():
 
         donation_location = DonationLocation.query.all()
         donation_location_schema = DonationLocationSchema(many=True)
+        current_app.logger.info(f"Fetched {donation_location} donations.")
 
         onetime_donations = []
         now = datetime.now(timezone.utc)

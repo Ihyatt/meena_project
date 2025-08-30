@@ -6,6 +6,7 @@ import DonationsBarChart from "src/pages/admin/donation/BarChart";
 import DonationEvents from "src/components/Events";
 import { NumericFormat } from "react-number-format";
 import DonationContext from "src/pages/donor/donation/components/DonationContext";
+import { FaArrowTrendUp } from "react-icons/fa6";
 
 import Loading from "src/components/Loading";
 
@@ -32,8 +33,8 @@ const Dashboard = () => {
       setDonationsCount(data.donationsCount);
       setRaised(data.raised);
       setDonorsCount(data.donorsCount);
-      setDonationsLocation([]);
-      setDonationsWindow([]);
+      setDonationsLocation(data.donationsLocation || []);
+      setDonationsWindow(data.donationsWindow || []);
     });
   }, [fetchDashboardData]);
 
@@ -120,10 +121,23 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="flex m-4 ">
-        <div className="h-105 flex-grow">
+        <div className="h-125 flex-grow">
           <DonationsHeatMap donations={donationsLocation} />
         </div>
-        <div className="w-80 ml-4 rounded-lg shadow-md bg-white p-4">
+        <div className="w-80 ml-4 rounded-lg shadow-md bg-white  p-8">
+          {donorsCount > 0 && (
+            <div className="flex justify-start  items-center mt-2 mb-2">
+              <FaArrowTrendUp
+                size={35}
+                color="#DB5758"
+                className="inline bg-[#edafb0] rounded-full p-1"
+              />{" "}
+              <div className="text-sm font-bold  ml-3 text-[#DB5758]">
+                {donorsCount} {donorsCount == 1 ? "person " : "people "}
+                just donated
+              </div>
+            </div>
+          )}
           <div className="text-gray-400 ">RECENT DONATIONS</div>
           <DonationContext.Provider value={donationContextValue}>
             <DonationEvents />

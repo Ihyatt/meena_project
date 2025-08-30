@@ -13,7 +13,6 @@ import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
 import DonationContext from "src/pages/donor/donation/components/DonationContext";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
@@ -45,6 +44,7 @@ const Donation = () => {
       setActiveCampaign(data.activeCampaign);
     });
   }, [fetchCampaign]);
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(frotendUrl);
@@ -198,7 +198,7 @@ const Donation = () => {
                   color="#DB5758"
                   className="inline bg-[#edafb0] rounded-full p-1"
                 />{" "}
-                <div className="text-md font-bold  ml-3 text-[#DB5758]">
+                <div className="text-sm font-bold  ml-3 text-[#DB5758]">
                   {donorsCount} {donorsCount == 1 ? "person " : "people "}
                   just donated
                 </div>
