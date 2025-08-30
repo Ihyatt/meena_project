@@ -21,20 +21,7 @@ class PaymentTransactionSchema(SQLAlchemyAutoSchema):
         places=2,
         validate=validate.Range(min=0.01),
     )
-    stripe_fee = fields.Decimal(
-        allow_none=True,
-        as_string=True,
-        places=2,
-        validate=validate.Range(min=0.0),
-        data_key="stripeFee",
-    )
-    net_amount = fields.Decimal(
-        allow_none=True,
-        as_string=True,
-        places=2,
-        validate=validate.Range(min=0.0),
-        data_key="netAmount",
-    )
+
     status = fields.Enum(PaymentStatus)
     idempotency_key = fields.String(
         required=True, validate=validate.Length(max=255), data_key="idempotencyKey"

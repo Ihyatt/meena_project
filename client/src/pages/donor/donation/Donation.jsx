@@ -34,13 +34,14 @@ const Donation = () => {
   useEffect(() => {
     getUserLocation();
     fetchCampaign().then((data) => {
+      console.log("campaign data", data);
       setImageUrl(data.image_url || defaultImg);
       setTitle(data.title);
       setDescription(data.description);
       setRaised(data.raised);
       setGoal(data.goal);
       setTotalDonations(data.totalDonations);
-      setDonorsCount(data.donorsCount);
+      setDonorsCount(data.donorsCount || 0);
       setActiveCampaign(data.activeCampaign);
     });
   }, [fetchCampaign]);
@@ -90,7 +91,7 @@ const Donation = () => {
     handleDonationUpdate: handleNewDonation,
     handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
-
+  console.log("num donors", donorsCount);
   return (
     <div>
       {isLoading && <Loading />}
@@ -190,17 +191,19 @@ const Donation = () => {
             >
               {copyText}
             </button>
-            <div className="flex justify-start items-center mt-5 mb-3">
-              <FaArrowTrendUp
-                size={35}
-                color="#DB5758"
-                className="inline bg-[#edafb0] rounded-full p-1"
-              />{" "}
-              <div className="text-md font-bold  ml-3 text-[#DB5758]">
-                {donorsCount} {donorsCount == 1 ? "person " : "people "}
-                just donated
+            {donorsCount > 0 && (
+              <div className="flex justify-start items-center mt-5 mb-3">
+                <FaArrowTrendUp
+                  size={35}
+                  color="#DB5758"
+                  className="inline bg-[#edafb0] rounded-full p-1"
+                />{" "}
+                <div className="text-md font-bold  ml-3 text-[#DB5758]">
+                  {donorsCount} {donorsCount == 1 ? "person " : "people "}
+                  just donated
+                </div>
               </div>
-            </div>
+            )}
             <div className="mt-10">
               <div className="text-gray-400 ">RECENT DONATIONS</div>
               <DonationContext.Provider value={donationContextValue}>

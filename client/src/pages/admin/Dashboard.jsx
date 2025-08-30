@@ -51,7 +51,7 @@ const Dashboard = () => {
     handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
   return (
-    <div>
+    <div className="m-2">
       {isLoading && <Loading />}
       <div className="m-4  grid gap-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-4">
         <div

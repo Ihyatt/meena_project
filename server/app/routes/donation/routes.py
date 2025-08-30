@@ -23,15 +23,21 @@ from app.utils.constants import CHARGE_PROCESS_QUEUE, DonationStatus
 from sqlalchemy import func
 from collections import defaultdict
 
+from app.services.charge_handler import (
+    successful_charge,
+    failed_charge,
+    refunded_charge,
+)
+
 
 @donation_bp.route("/", methods=["GET"])
 def fetch_campaign():
     try:
 
         donors = (
-            User.query.filter(User.is_admin == False)
-            .order_by(User.email_address.asc())
-            .all()
+            db.session.query(func.count(Donation.donor_id.distinct()))
+            .filter_by(status=DonationStatus.SUCCEEDED)
+            .scalar()
         )
 
         campaign = Campaign.query.filter_by(is_active=True).first()
@@ -63,13 +69,14 @@ def fetch_campaign():
                         "raised": raised if raised else 0,
                         "goal": 0,
                         "totalDonations": 0,
+                        "donorsCount": donors,
                     }
                 ),
                 200,
             )
         campaign_data = campaign_schema.dump(campaign)
         campaign_data["activeCampaign"] = True
-        campaign_data["donorsCount"] = len(donors)
+        campaign_data["donorsCount"] = donors
         current_app.logger.info(f"Active Campaign {campaign.id} successfully fetched.")
         return campaign_data, 200
 
@@ -245,26 +252,14 @@ def stripe_webhook():
         event_type = event["type"]
         session = event["data"]["object"]
 
-        if event_type == "charge.succeeded":
-            current_app.logger.info(f"Received event: {session}")
+        if (
+            event_type == "charge.succeeded"
+            or event_type == "charge.failed"
+            or event_type == "charge.refunded"
+        ):
 
             metadata = session.get("metadata", {})
             charge_id = session.get("payment_intent", "")
-
-            # First get the payment intent
-            # Expand the balance_transaction to get fee details
-            charge_with_balance = stripe.Charge.retrieve(
-                session["id"], expand=["balance_transaction"]
-            )
-
-            balance_transaction = charge_with_balance.balance_transaction
-
-            # Extract fee information
-            stripe_fee = balance_transaction.fee  # Total fee in cents
-            fee_details = (
-                balance_transaction.fee_details
-            )  # Breakdown of the fee components
-            net_amount = balance_transaction.net  # Net amount after fees
 
             data = {
                 "campaign_id": metadata.get("campaign_id", ""),
@@ -274,8 +269,6 @@ def stripe_webhook():
                 "payment_transaction_id": metadata.get("payment_transaction_id", ""),
                 "idempotency_key": metadata.get("idempotency_key", ""),
                 "amount": metadata.get("amount", ""),  # Convert cents to dollars
-                "net_amount": net_amount / 100,
-                "fee_amount": stripe_fee / 100,
                 "charge_id": charge_id,
                 "lat": metadata.get("lat", ""),
                 "lng": metadata.get("lng", ""),

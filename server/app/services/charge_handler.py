@@ -37,8 +37,6 @@ def successful_charge(
     charge_id,
     lat,
     lng,
-    net_amount,
-    fee_amount,
 ):
     try:
         payment_transaction = PaymentTransaction.query.filter_by(
@@ -48,8 +46,7 @@ def successful_charge(
         donation = Donation.query.get_or_404(donation_id)
 
         payment_transaction.charge_id = charge_id
-        payment_transaction.fee_amount = Decimal(fee_amount)
-        payment_transaction.net_amount = Decimal(net_amount)
+
         if payment_transaction.status == PaymentStatus.SUCCEEDED:
             current_app.logger.warning(
                 f"Successful payment transaction '{payment_transaction.charge_id}' has already been recorded."
@@ -64,7 +61,7 @@ def successful_charge(
                 f"Campaign ID provided: {campaign_id}. Updating campaign raised amount."
             )
             campaign = Campaign.query.get_or_404(campaign_id)
-            campaign.raised += net_amount
+            campaign.raised += amount
             campaign.total_donations += 1
             new_donation_location.campaign_id = campaign_id
 

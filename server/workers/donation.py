@@ -42,8 +42,6 @@ def process_message(db, message_json: str):
                 charge_id=data["charge_id"],
                 lat=data["lat"],
                 lng=data["lng"],
-                net_amount=data["net_amount"],
-                fee_amount=data["fee_amount"],
             )
         elif message["value"] == "charge.failed":
             failed_charge(

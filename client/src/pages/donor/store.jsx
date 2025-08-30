@@ -14,7 +14,7 @@ const useDonateStore = create(
       paymentIntentId: "",
       setPaymentIntentId: (paymentIntentId) => set({ paymentIntentId }),
       setLat: (lat) => set({ lat }),
-      setlng: (lng) => set({ lng }),
+      setLng: (lng) => set({ lng }),
 
       fetchCampaign: async () => {
         set({ isLoading: true, error: null });

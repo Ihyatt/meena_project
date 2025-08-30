@@ -45,6 +45,7 @@ def init():
             "notification_id": json.loads(notification[0])["notification_id"],
             "donation_id": json.loads(notification[0])["donation_id"],
             "donation_created_at": json.loads(notification[0])["donation_created_at"],
+            "first_time_donor": json.loads(notification[0])["first_time_donor"],
         }
         for notification in notifications
     ]

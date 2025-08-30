@@ -78,7 +78,7 @@ const DonationEvents = () => {
       source.close();
     };
   }, []); // Empty dependency array is correct here for setting up the EventSource once
-
+  console.log("notifications", notifications);
   return (
     <div className="pt-2 h-90">
       {notifications.length === 0 ? (

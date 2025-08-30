@@ -50,7 +50,7 @@ const Campaigns = () => {
   };
 
   return (
-    <div className=" m-4 bg-white shadow-md rounded-lg">
+    <div className=" my-15 mx-10 bg-white shadow-md rounded-lg">
       <Card className="h-full w-full shadow-none">
         <CardHeader floated={false} shadow={false} className="rounded-none ">
           <div className="ml-4 flex items-center justify-between gap-8">
