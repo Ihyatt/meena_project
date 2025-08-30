@@ -26,6 +26,7 @@ import DonationLayout from "src/pages/donor/DonationLayout";
 import Donation from "src/pages/donor/donation/Donation";
 import Checkout from "src/pages/donor/donation/Checkout";
 import CheckoutComplete from "src/pages/donor/donation/CheckoutComplete";
+import TermsOfService from "src/pages/donor/donation/TermsOfService";
 
 import NotFound from "src/pages/NotFound";
 
@@ -38,6 +39,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<DonationLayout />}>
           <Route path="/" element={<Donation />} />
+          <Route path="terms" element={<TermsOfService />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="checkout-complete" element={<CheckoutComplete />} />
         </Route>

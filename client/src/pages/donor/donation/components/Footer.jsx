@@ -1,23 +1,6 @@
 import { Typography } from "@material-tailwind/react";
 
-const SITEMAP = [
-  {
-    title: "Company",
-    links: ["About Us", "Careers", "Our Team", "Projects"],
-  },
-  {
-    title: "Help Center",
-    links: ["Discord", "Twitter", "GitHub", "Contact Us"],
-  },
-  {
-    title: "Resources",
-    links: ["Blog", "Newsletter", "Free Products", "Affiliate Program"],
-  },
-  {
-    title: "Products",
-    links: ["Templates", "UI Kits", "Icons", "Mockups"],
-  },
-];
+import { RiPhoneLine, RiMailLine } from "react-icons/ri";
 
 const currentYear = new Date().getFullYear();
 
@@ -31,6 +14,21 @@ export const Footer = () => {
             className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0"
           >
             &copy; {currentYear} Meena Project. All Rights Reserved.
+          </Typography>
+
+          <Typography
+            variant="small"
+            className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0 "
+          >
+            <div className="inline-flex items-center">
+              <RiPhoneLine className="inline mr-1" />{" "}
+              <div>+1 (123) 456-7890</div>
+              &nbsp; | &nbsp;
+            </div>
+            <div className="inline-flex items-center justify-center">
+              <RiMailLine className=" mr-1" />
+              <div>dummy@meenaproject.org</div>
+            </div>
           </Typography>
           <div className="flex gap-4 text-blue-gray-900 sm:justify-center">
             <Typography

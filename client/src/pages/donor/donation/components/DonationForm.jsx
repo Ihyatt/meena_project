@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RiInstagramLine } from "react-icons/ri";
 import ErrorAlert from "src/components/ErrorAlert";
+import { Link, useLocation } from "react-router-dom";
 
 const DonationForm = ({ targetRef }) => {
   const [customAmount, setCustomAmount] = useState("");
@@ -152,7 +153,7 @@ const DonationForm = ({ targetRef }) => {
         <div className="mt-4 mb-5">
           <div className="m-2 text-gray-400 font-light">
             <div className="inline-flex items-center text-sm mr-1">
-              <label className="flex items-center cursor-pointer relative mr-1">
+              <label className="flex items-center cursor-pointer relative mr-2">
                 <input
                   checked={isEmailSubscription}
                   onChange={() => setIsEmailSubscription(!isEmailSubscription)}
@@ -184,7 +185,7 @@ const DonationForm = ({ targetRef }) => {
             </div>
 
             <div className="inline-flex items-center mr-1 text-sm">
-              <label className="flex items-center cursor-pointer relative mr-1">
+              <label className="flex items-center cursor-pointer relative mr-2">
                 <input
                   type="checkbox"
                   checked={isAnonymous}
@@ -264,18 +265,21 @@ const DonationForm = ({ targetRef }) => {
           />
         </div>
         <div className="mb-4">
-          <a
-            href="https://www.instagram.com/themeenaproject/"
-            className="
-            font-light 
+          <div
+            className="text-sm font-light 
             text-gray-400 
             inline-flex 
             items-center 
             vertical-align-middle 
-            hover:text-gray-500"
+            cursor-pointer
+            "
           >
-            Follow Meena Project on Instagram <RiInstagramLine />
-          </a>
+            <span> By clicking ‘Donate‘, you agree to Meena Projects’s</span>
+            <Link to={"terms"} className="ml-1 underline hover:no-underline">
+              Terms of Service
+            </Link>
+            .
+          </div>
         </div>
         {errors.length > 0 && (
           <ErrorAlert errors={errors} onClose={handleErrorClose} />
