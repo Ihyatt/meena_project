@@ -114,7 +114,7 @@ const Donation = () => {
           </div>
         </div>
 
-        <div className=" ml-5 mt-22 min-w-90 shadow-lg rounded-sm p-8 h-250">
+        <div className=" ml-5 mt-12 min-w-90 shadow-lg rounded-sm p-8 h-235">
           <img
             className="w-40 h-40 rounded-full object-cover"
             src={din}
@@ -204,7 +204,7 @@ const Donation = () => {
                 </div>
               </div>
             )}
-            <div className="mt-10">
+            <div className="mt-5">
               <div className="text-gray-400 ">RECENT DONATIONS</div>
               <DonationContext.Provider value={donationContextValue}>
                 <DonationEvents />

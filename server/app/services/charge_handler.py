@@ -18,12 +18,12 @@ from app.utils.constants import (
 )
 from werkzeug.exceptions import NotFound
 from app.models.donation_location import DonationLocation
-from decimal import Decimal  # For db.Numeric types
 import asyncio
 from datetime import datetime, timezone
 
 from app.utils.email import create_email
 from app.services.email_handler import send_receipt_email
+from decimal import Decimal
 
 
 def successful_charge(
@@ -60,10 +60,11 @@ def successful_charge(
             current_app.logger.info(
                 f"Campaign ID provided: {campaign_id}. Updating campaign raised amount."
             )
-            campaign = Campaign.query.get_or_404(campaign_id)
-            campaign.raised += amount
-            campaign.total_donations += 1
-            new_donation_location.campaign_id = campaign_id
+            campaign = Campaign.query.get(campaign_id)
+            if campaign is not None:
+                campaign.raised += Decimal(amount)
+                campaign.total_donations += 1
+                new_donation_location.campaign_id = campaign_id
 
         donation.status = DonationStatus.SUCCEEDED
         payment_transaction.status = PaymentStatus.SUCCEEDED
@@ -113,27 +114,27 @@ def successful_charge(
             f"Donation notification for donation '{donation.id}' has been published to channel '{DONATION_NOTIFICATIONS_CHANNEL}'."
         )
 
-        email = create_email(
-            email_subscription_id=donor.email_subscription.id,
-            recipient_email_address=email_address,
-            email_type=EmailType.RECEIPT,
-        )
+        # email = create_email(
+        #     email_subscription_id=donor.email_subscription.id,
+        #     recipient_email_address=email_address,
+        #     email_type=EmailType.RECEIPT,
+        # )
 
-        data = {
-            "donor_id": donor_id,
-            "email_address": email_address,
-            "amount": amount,
-            "email_id": email.id,
-        }
+        # data = {
+        #     "donor_id": donor_id,
+        #     "email_address": email_address,
+        #     "amount": amount,
+        #     "email_id": email.id,
+        # }
 
-        message = {
-            "id": str(uuid.uuid4()),
-            "timestamp": datetime.now().isoformat(),
-            "value": EmailType.RECEIPT,
-            "data": data,
-        }
-        EMAIL_PROCESS_QUEUE = "email_process_queue"
-        current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
+        # message = {
+        #     "id": str(uuid.uuid4()),
+        #     "timestamp": datetime.now().isoformat(),
+        #     "value": EmailType.RECEIPT,
+        #     "data": data,
+        # }
+        # EMAIL_PROCESS_QUEUE = "email_process_queue"
+        # current_app.redis.lpush(EMAIL_PROCESS_QUEUE, json.dumps(message))
 
     except StaleDataError as e:
         current_app.logger.error(str(e))

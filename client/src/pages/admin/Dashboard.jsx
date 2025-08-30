@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import useAdminStore from "src/pages/admin/store";
-import DonationsHeatMap from "src/pages/admin/donation/HeatMap";
-import DonationsScatterChart from "src/pages/admin/donation/ScatterChart";
-import DonationsBarChart from "src/pages/admin/donation/BarChart";
+import DonationsHeatMap from "src/pages/admin/charts/HeatMap";
+import ScatterChart from "src/pages/admin/charts/ScatterChart";
+import BarChart from "src/pages/admin/charts/BarChart";
 import DonationEvents from "src/components/Events";
 import { NumericFormat } from "react-number-format";
 import DonationContext from "src/pages/donor/donation/components/DonationContext";
+import DonutChart from "src/pages/admin/charts/DonutChart";
 import { FaArrowTrendUp } from "react-icons/fa6";
 
 import Loading from "src/components/Loading";
@@ -23,18 +24,25 @@ const Dashboard = () => {
   const [donationsCount, setDonationsCount] = useState(0);
   const [raised, setRaised] = useState(0);
   const [donorsCount, setDonorsCount] = useState(0);
-  const [donationsWindow, setDonationsWindow] = useState([]);
+  const [
+    currYearIndividualDonationRetentionData,
+    setCurrYearIndividualDonationRetentionData,
+  ] = useState([]);
+  const [donorRetentionData, setDonorRetentionData] = useState([]);
 
   const { fetchDashboardData, isLoading } = useAdminStore();
 
   useEffect(() => {
     fetchDashboardData().then((data) => {
+      console.log("Dashboard data:", data);
       setLaunchedCampaigns(data.launchedCampaigns);
       setDonationsCount(data.donationsCount);
       setRaised(data.raised);
       setDonorsCount(data.donorsCount);
       setDonationsLocation(data.donationsLocation || []);
-      setDonationsWindow(data.donationsWindow || []);
+      setCurrYearIndividualDonationRetentionData(
+        data.currYearIndividualDonationRetentionData || []
+      );
     });
   }, [fetchDashboardData]);
 
@@ -121,12 +129,12 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="flex m-4 ">
-        <div className="h-125 flex-grow">
+        <div className="h-115 flex-grow">
           <DonationsHeatMap donations={donationsLocation} />
         </div>
-        <div className="w-80 ml-4 rounded-lg shadow-md bg-white  p-8">
+        <div className="w-80 ml-4 rounded-lg shadow-md bg-white  p-8 h-115">
           {donorsCount > 0 && (
-            <div className="flex justify-start  items-center mt-2 mb-2">
+            <div className="flex justify-start  items-center mt-2 mb-4">
               <FaArrowTrendUp
                 size={35}
                 color="#DB5758"
@@ -144,13 +152,27 @@ const Dashboard = () => {
           </DonationContext.Provider>
         </div>
       </div>
-
-      <div className="flex m-4">
-        <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white">
-          <DonationsBarChart window={donationsWindow} />
+      <div>
+        <div className="flex m-4 h-1/2">
+          {/* <div className="w-1/2   mr-2 rounded-lg shadow-md bg-white">
+            <BarChart window={donationsWindow} />
+          </div> */}
+          {/* <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
+            <DonationsScatterChart window={donationsWindow} />
+          </div> */}
         </div>
-        <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
-          <DonationsScatterChart window={donationsWindow} />
+
+        <div className="flex m-4">
+          {/* <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white">
+            <DonutChart retentionData={donorRetentionData} />
+          </div> */}
+          <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
+            <ScatterChart
+              currYearIndividualDonationRetentionData={
+                currYearIndividualDonationRetentionData
+              }
+            />
+          </div>
         </div>
       </div>
     </div>

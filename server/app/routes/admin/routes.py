@@ -18,6 +18,7 @@ from app.schemas.donation_location import DonationLocationSchema
 from app.utils.constants import DonationStatus
 from datetime import datetime, timezone
 from collections import defaultdict
+from sqlalchemy import func
 
 
 @admin_bp.route("/", methods=["GET"])
@@ -26,11 +27,23 @@ from collections import defaultdict
 def dashboard():
     current_app.logger.info("Fetching dashboard data...")
     try:
+        now = datetime.now(timezone.utc)
+
         campaigns = (
             Campaign.query.filter(Campaign.is_draft == False)
             .order_by(Campaign.updated_at.desc())
             .all()
         )
+        campaign = Campaign.query.filter_by(is_active=True).first()
+
+        track_active_cammpaign_donations = defaultdict(lambda: {"raised": 0})
+
+        if campaign:
+            for donation in campaign.donations:
+                curr_year = now.year
+                if donation.created_at.year == curr_year:
+                    date = donation.created_at.strftime("%d-%m-%Y")
+                    track_active_cammpaign_donations[date]["raised"] += donation.amount
 
         donations = (
             Donation.query.filter(Donation.status == DonationStatus.SUCCEEDED)
@@ -40,37 +53,53 @@ def dashboard():
 
         donation_location = DonationLocation.query.all()
         donation_location_schema = DonationLocationSchema(many=True)
-        current_app.logger.info(f"Fetched {donation_location} donations.")
 
-        onetime_donations = []
-        now = datetime.now(timezone.utc)
+        all_time_donation_retention_data = {
+            "new": {"amount": 0},
+            "repeat": {"amount": 0},
+        }  # all historic donations for pie chart data
 
-        for donation in donations:
-            time_diff = now - donation.created_at
-            if time_diff.days < 182:  # 6 months
-                onetime_donations.append(
-                    {"created_at": donation.created_at, "amount": donation.amount}
-                )
+        curr_year_individual_donation_retention_data = {
+            "new": [],
+            "repeat": [],
+        }  # bubble chart data
 
-        donations_window = {
-            "onetime": onetime_donations,
-        }
+        curr_year_by_month_donation_retention_data = defaultdict(
+            lambda: {"new": 0, "repeat": 0}
+        )
 
-        monthly_data = defaultdict(lambda: {"new": 0, "repeat": 0})
         seen_donors = set()
-
         for donation in donations:
-            month_year = donation.created_at.strftime("%Y-%m")
-            monthly_data[month_year]
-            if donation.donor.id not in seen_donors:
-                monthly_data[month_year]["new"] += 1
+            if donation.donor.id in seen_donors:
+                all_time_donation_retention_data["repeat"]["amount"] += donation.amount
             else:
-                monthly_data[month_year]["repeat"] += 1
+                all_time_donation_retention_data["new"]["amount"] += donation.amount
+
+            curr_year = now.year
+            if donation.created_at.year == curr_year:
+                curr_month = donation.created_at.month
+                if donation.donor.id in seen_donors:
+                    curr_year_individual_donation_retention_data["repeat"].append(
+                        {"amount": donation.amount, "date": donation.created_at}
+                    )
+                    curr_year_by_month_donation_retention_data[curr_month][
+                        "repeat"
+                    ] += donation.amount
+
+                else:
+                    curr_year_individual_donation_retention_data["new"].append(
+                        {"amount": donation.amount, "date": donation.created_at}
+                    )
+                    curr_year_by_month_donation_retention_data[curr_month][
+                        "new"
+                    ] += donation.amount
+
+            seen_donors.add(donation.donor.id)
 
         donors = (
-            User.query.filter(User.is_admin == False)
-            .order_by(User.email_address.asc())
-            .all()
+            db.session.query(func.count(Donation.donor_id.distinct()))
+            .filter_by(status=DonationStatus.SUCCEEDED)
+            .scalar()
         )
 
         current_app.logger.info("Dashboard data fetched.")
@@ -88,7 +117,6 @@ def dashboard():
                 "total_donations",
             ],
         )
-        campaign = Campaign.query.filter_by(is_active=True).first()
         current_app.logger.info(f"Active campaign: {campaign}")
         return (
             jsonify(
@@ -99,9 +127,11 @@ def dashboard():
                     "launchedCampaigns": len(campaigns),
                     "donationsCount": len(donations),
                     "raised": sum(donation.amount for donation in donations),
-                    "donorsCount": len(donors),
-                    "donationsWindow": donations_window,
-                    "monthly_data": monthly_data,
+                    "donorsCount": donors,
+                    "currYearIndividualDonationRetentionData": curr_year_individual_donation_retention_data,  # bubble chart
+                    "allTimeDonationRetentionData": all_time_donation_retention_data,  # pie chart
+                    "trackActiveCammpaignDonations": track_active_cammpaign_donations,  # line chart
+                    "currYearByMonthDonationRetentionData": curr_year_by_month_donation_retention_data,  # bar chart
                     "campaign": campaign_schema.dump(campaign),
                 }
             ),

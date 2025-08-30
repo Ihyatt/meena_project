@@ -108,20 +108,20 @@ const Donations = ({ donations }) => {
           </Typography>
           <div className="flex items-center justify-between mt-2">
             <div className="inline-flex">
-              <button
-                className="font-normal  hover:opacity-70 text-gray-800   mr-1 text-sm "
+              <div
+                className=" cursor-pointer font-normal  hover:opacity-70 text-gray-800   mr-1 text-sm "
                 onClick={goToPreviousPage}
                 disabled={currentPage === 1}
               >
                 Prev
-              </button>
-              <button
-                className=" font-normal  hover:opacity-70 text-gray-800  ml-1 text-sm"
+              </div>
+              <div
+                className=" cursor-pointer font-normal  hover:opacity-70 text-gray-800  ml-1 text-sm"
                 onClick={goToNextPage}
                 disabled={currentPage === totalPages}
               >
                 Next
-              </button>
+              </div>
             </div>
           </div>
         </CardFooter>

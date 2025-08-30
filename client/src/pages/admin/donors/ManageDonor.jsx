@@ -32,6 +32,7 @@ export const ManageDonor = () => {
   const [emailAddress, setEmailAddress] = useState("");
 
   useEffect(() => {
+    console.log("Fetching donor data for ID:", donorId);
     fetchDonor(donorId).then((data) => {
       setDonations(data.donations);
       setFullName(data.fullName);
@@ -40,6 +41,7 @@ export const ManageDonor = () => {
       setEmailSubscriptionStatus(data.emailSubscription.status.toLowerCase());
     });
   }, [fetchDonor]);
+  console.log("donations", donations);
 
   useEffect(() => {
     const observerRefValue = modalRef.current;
@@ -171,16 +173,7 @@ export const ManageDonor = () => {
           <div className="flex  justify-end mt-4">
             <button
               type="button"
-              className="
-                h-6
-                w-[110px]
-                cursor-pointer
-                bg-[rgb(234,237,241)]
-                border-none
-                text-[rgb(100,111,124)]
-                rounded-full
-                m-1.5
-              "
+              className="text-white bg-gray-400 focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-gray-300 "
               onClick={handleClose}
               disabled={isLoading}
             >
@@ -188,17 +181,7 @@ export const ManageDonor = () => {
             </button>
             <button
               type="button"
-              className="
-                    m-1.5
-                  h-6
-                  w-[110px]
-                  bg-[#40bf51]
-                  text-white
-                  border-none
-                  cursor-pointer
-                  rounded-full
-                  font-medium
-                "
+              className="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
               onClick={handleSave}
               disabled={isLoading}
             >

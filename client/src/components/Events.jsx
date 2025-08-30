@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RiGift2Fill } from "react-icons/ri";
+import { RiGift2Line } from "react-icons/ri";
 import TimeAgo from "src/pages/admin/utils/TimeAgo";
 import { useContext } from "react";
 
@@ -80,7 +80,7 @@ const DonationEvents = () => {
   }, []); // Empty dependency array is correct here for setting up the EventSource once
   console.log("notifications", notifications);
   return (
-    <div className="pt-2 h-90">
+    <div className="pt-2 h-80">
       {notifications.length === 0 ? (
         <p className="">No recent donations.</p>
       ) : (
@@ -91,7 +91,7 @@ const DonationEvents = () => {
               className="flex items-center rounded-xl pt-2 "
             >
               <div className="rounded-full bg-gray-200 p-2">
-                <RiGift2Fill color="black" size={22} />
+                <RiGift2Line color="black" size={22} />
               </div>
               <div className="ml-4">
                 <div className="text-sm">{note.full_name}</div>
