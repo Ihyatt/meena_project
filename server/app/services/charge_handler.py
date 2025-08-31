@@ -22,7 +22,6 @@ import asyncio
 from datetime import datetime, timezone
 
 from app.utils.email import create_email
-from app.services.email_handler import send_receipt_email
 from decimal import Decimal
 from app.services.email_handler import (
     send_receipt_email,
@@ -127,7 +126,7 @@ def successful_charge(
         message = {
             "id": str(uuid.uuid4()),
             "timestamp": datetime.now().isoformat(),
-            "value": EmailType.RECEIPT,
+            "value": EmailType.RECEIPT.value,
             "data": data,
         }
         EMAIL_PROCESS_QUEUE = "email_process_queue"

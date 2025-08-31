@@ -35,7 +35,7 @@ def process_message(db, message_json: str):
         data = message["data"]
         print(message)
 
-        if message["value"] == EmailType.RECEIPT:
+        if message["value"] == EmailType.RECEIPT.value:
             send_receipt_email(
                 data["donor_id"],
                 data["email_address"],
@@ -43,7 +43,7 @@ def process_message(db, message_json: str):
                 data["email_id"],
             )
 
-        elif message["value"] == EmailType.IMPACT:
+        elif message["value"] == EmailType.IMPACT.value:
             send_impact_email(
                 data["donor_id"],
                 data["email_address"],
@@ -51,7 +51,7 @@ def process_message(db, message_json: str):
                 data["email_id"],
             )
 
-        elif message["value"] == EmailType.CLOSEOUT:
+        elif message["value"] == EmailType.CLOSEOUT.value:
             send_closeout_email(
                 data["donor_id"],
                 data["email_address"],

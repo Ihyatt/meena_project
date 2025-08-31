@@ -149,6 +149,17 @@ def webhoook_sent():
     try:
         data = request.json
         CustomID = data.get("CustomID")
+        if CustomID is None:
+            current_app.logger.error("CustomID is missing in the webhook data.")
+            return (
+                jsonify(
+                    {
+                        "status": "failed",
+                        "message": "CustomID is missing in the webhook data.",
+                    }
+                ),
+                400,
+            )
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.SENT
         email.email_subscription.sent += 1
@@ -177,7 +188,19 @@ def webhoook_sent():
 def webhoook_open():
     try:
         data = request.json
+
         CustomID = data.get("CustomID")
+        if CustomID is None:
+            current_app.logger.error("CustomID is missing in the webhook data.")
+            return (
+                jsonify(
+                    {
+                        "status": "failed",
+                        "message": "CustomID is missing in the webhook data.",
+                    }
+                ),
+                400,
+            )
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.OPENED
         email.email_subscription.opened += 1
@@ -206,6 +229,17 @@ def webhook_click():
     try:
         data = request.json
         CustomID = data.get("CustomID")
+        if CustomID is None:
+            current_app.logger.error("CustomID is missing in the webhook data.")
+            return (
+                jsonify(
+                    {
+                        "status": "failed",
+                        "message": "CustomID is missing in the webhook data.",
+                    }
+                ),
+                400,
+            )
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.CLICKED
         email.email_subscription.clicked += 1
@@ -234,6 +268,17 @@ def webhook_bounce():
     try:
         data = request.json
         CustomID = data.get("CustomID")
+        if CustomID is None:
+            current_app.logger.error("CustomID is missing in the webhook data.")
+            return (
+                jsonify(
+                    {
+                        "status": "failed",
+                        "message": "CustomID is missing in the webhook data.",
+                    }
+                ),
+                400,
+            )
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.BOUNCED
         email.email_subscription.bounced += 1
@@ -262,6 +307,17 @@ def webhook_spam():
     try:
         data = request.json
         CustomID = data.get("CustomID")
+        if CustomID is None:
+            current_app.logger.error("CustomID is missing in the webhook data.")
+            return (
+                jsonify(
+                    {
+                        "status": "failed",
+                        "message": "CustomID is missing in the webhook data.",
+                    }
+                ),
+                400,
+            )
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.SPAM
         email.email_subscription.spam = True
@@ -291,6 +347,17 @@ def webhook_blocked():
     try:
         data = request.json
         CustomID = data.get("CustomID")
+        if CustomID is None:
+            current_app.logger.error("CustomID is missing in the webhook data.")
+            return (
+                jsonify(
+                    {
+                        "status": "failed",
+                        "message": "CustomID is missing in the webhook data.",
+                    }
+                ),
+                400,
+            )
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.BLOCKED
         email.email_subscription.blocked = True
@@ -323,6 +390,17 @@ def unsubscribe():
     try:
         data = request.json
         CustomID = data.get("CustomID")
+        if CustomID is None:
+            current_app.logger.error("CustomID is missing in the webhook data.")
+            return (
+                jsonify(
+                    {
+                        "status": "failed",
+                        "message": "CustomID is missing in the webhook data.",
+                    }
+                ),
+                400,
+            )
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.UNSUB
         email.email_subscription.status = SubscriptionStatus.INACTIVE
