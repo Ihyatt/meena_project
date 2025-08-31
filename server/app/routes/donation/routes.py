@@ -39,6 +39,7 @@ from app.services.charge_handler import (
 @donation_bp.route("/", methods=["GET"])
 def fetch_campaign():
     try:
+        current_app.logger.info("Fetching active campaign...")
 
         donors = (
             db.session.query(func.count(Donation.donor_id.distinct()))

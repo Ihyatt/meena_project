@@ -32,7 +32,6 @@ export const ManageDonor = () => {
   const [emailAddress, setEmailAddress] = useState("");
 
   useEffect(() => {
-    console.log("Fetching donor data for ID:", donorId);
     fetchDonor(donorId).then((data) => {
       setDonations(data.donations);
       setFullName(data.fullName);
@@ -41,7 +40,6 @@ export const ManageDonor = () => {
       setEmailSubscriptionStatus(data.emailSubscription.status.toLowerCase());
     });
   }, [fetchDonor]);
-  console.log("donations", donations);
 
   useEffect(() => {
     const observerRefValue = modalRef.current;

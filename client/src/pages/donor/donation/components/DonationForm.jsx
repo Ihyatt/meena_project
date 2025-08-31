@@ -52,7 +52,8 @@ const DonationForm = ({ targetRef }) => {
     if (!emailAddress) {
       newErrors.push("Email address is required");
     }
-    if (!amount || amount <= 0.01 || amount >= 1000.01) {
+    if (!amount || amount <= 0.01 || amount >= 100000.01) {
+      console.log(amount);
       newErrors.push(
         "Amount must be greater than $0.01 and less than $1,000.01"
       );
@@ -64,14 +65,7 @@ const DonationForm = ({ targetRef }) => {
     } else {
       // If there are no errors, proceed with navigation
       setErrors([]); // Clear any existing errors
-      console.log("Creating payment intent...");
-      console.log({
-        fullName,
-        emailAddress,
-        amount,
-        isEmailSubscription,
-        isAnonymous,
-      });
+
       createPaymentIntent({
         fullName,
         emailAddress,
@@ -79,9 +73,7 @@ const DonationForm = ({ targetRef }) => {
         isEmailSubscription,
         isAnonymous,
       }).then((data) => {
-        console.log("Payment intent created:", data);
         setPaymentIntentId(data.paymentIntentId);
-        console.log("Navigating to checkout...");
         navigate("/checkout");
       });
     }

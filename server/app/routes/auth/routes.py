@@ -54,6 +54,11 @@ def login():
 
         current_app.logger.info("Login successful.")
         return jsonify({"jwtToken": jwt_token, "status": "success"}), 200
+
+    except ValidationError as ve:
+        current_app.logger.warning(f"Validation error: {ve.messages}")
+        return jsonify({"status": "failed", "message": ve.messages}), 400
+
     except Exception as e:
         current_app.logger.error(f"Login failed: {str(e)}", exc_info=True)
         return jsonify({"status": "failed", "message": f"Login failed: {str(e)}"}), 500

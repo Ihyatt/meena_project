@@ -108,7 +108,6 @@ def dashboard():
             .scalar()
         )
 
-        current_app.logger.info("Dashboard data fetched.")
         campaign_schema = CampaignSchema(
             only=[
                 "id",
@@ -123,7 +122,7 @@ def dashboard():
                 "total_donations",
             ],
         )
-        current_app.logger.info(f"Active campaign: {campaign}")
+        current_app.logger.info("Returning dashboard data response.")
         return (
             jsonify(
                 {

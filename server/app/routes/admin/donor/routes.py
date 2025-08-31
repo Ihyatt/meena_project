@@ -11,6 +11,7 @@ from app.models.user import User
 from app.schemas.user import DonorSchema
 from app.schemas.email_subscription import EmailSubscriptionSchema
 from app.utils.constants import SubscriptionStatus
+from sqlalchemy.orm.exc import StaleDataError
 
 
 from marshmallow import EXCLUDE
@@ -28,7 +29,6 @@ def fetch_donors():
             .order_by(User.email_address.asc())
             .all()
         )
-        current_app.logger.debug(f"Fetched donors: {donors}")
         donor_schema = DonorSchema(
             many=True,
             only=[
@@ -40,7 +40,7 @@ def fetch_donors():
             ],
         )
 
-        current_app.logger.info("Dashboard data fetched.")
+        current_app.logger.info("Donor data fetched.")
         return donor_schema.dump(donors), 200
 
     except Exception as e:
@@ -51,7 +51,7 @@ def fetch_donors():
             jsonify(
                 {
                     "status": "failed",
-                    "message": f"Error fetching dashboard data: {str(e)}",
+                    "message": f"Error fetching donor data: {str(e)}",
                 }
             ),
             500,
@@ -62,7 +62,7 @@ def fetch_donors():
 @jwt_required()
 @admin_required()
 def fetch_donor(donor_id):
-    current_app.logger.info("Fetching donors data...")
+    current_app.logger.info(f"Fetching donor data for '{donor_id}'...")
     try:
 
         donor = User.query.get_or_404(donor_id)
@@ -77,16 +77,16 @@ def fetch_donor(donor_id):
             ],
         )
 
-        current_app.logger.info("Donor data fetched.")
+        current_app.logger.info(f"Donor data for '{donor_id}' fetched.")
         return donor_schema.dump(donor), 200
 
     except NotFound:
-        current_app.logger.warning(f"Campaign '{donor_id}' not found.")
+        current_app.logger.warning(f"Donor '{donor_id}' not found.")
         return (
             jsonify(
                 {
                     "status": "failed",
-                    "message": f"Campaign with ID '{donor_id}' not found.",
+                    "message": f"Donor with ID '{donor_id}' not found.",
                 }
             ),
             404,
@@ -111,6 +111,7 @@ def fetch_donor(donor_id):
 @jwt_required()
 @admin_required()
 def manage_donor(donor_id):
+    current_app.logger.info(f"Managing donor data for '{donor_id}'...")
     try:
         data = request.get_json()
         donor = User.query.get_or_404(donor_id)
@@ -127,8 +128,6 @@ def manage_donor(donor_id):
             ],
         )
 
-        current_app.logger.debug(f"Request data: {data}")
-        current_app.logger.debug(SubscriptionStatus.ACTIVE.value)
         validated_donor_data = donor_schema.load(data)
 
         donor.email_subscription.status = (
@@ -137,27 +136,12 @@ def manage_donor(donor_id):
             else SubscriptionStatus.INACTIVE
         )
 
-        current_app.logger.info(
-            f"Donor data updated2. Donor ID: {SubscriptionStatus.ACTIVE.value} { SubscriptionStatus.ACTIVE.value==data["emailSubscriptionStatus"] } {donor.email_subscription.status}"
-        )
-
-        current_app.logger.info(f"*************************")
-
-        current_app.logger.info(
-            f"Donor data updated2. Donor ID stats: {SubscriptionStatus.ACTIVE.value} { donor.email_subscription.status}"
-        )
-
         donor.full_name = validated_donor_data["full_name"]
         donor.email_address = validated_donor_data["email_address"]
-        current_app.logger.info("Donor data updated1.", {"donor_id": donor.id})
 
         db.session.commit()
 
-        current_app.logger.info("Donor data updated.2", {"donor_id": donor.id})
-        current_app.logger.info(f"Donor data updated1. Donor ID: {donor.id}")
-        current_app.logger.info(
-            f"Donor data updated2. Donor ID: {SubscriptionStatus.ACTIVE.value} { SubscriptionStatus.ACTIVE.value==data["emailSubscriptionStatus"] }"
-        )
+        current_app.logger.info(f"Donor data for '{donor_id}' managed.")
         return donor_schema.dump(donor), 200
 
     except NotFound:
@@ -171,17 +155,43 @@ def manage_donor(donor_id):
             ),
             404,
         )
-
-    except Exception as e:
-        current_app.logger.error(
-            f"Error fetching donor'{donor_id}': {str(e)}", exc_info=True
+    except ValueError as e:
+        current_app.logger.warning(
+            f"Validation error when managing donor '{donor_id}': {str(e)}"
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Validation error when managing donor '{donor_id}': {str(e)}",
+                }
+            ),
+            400,
+        )
+    except StaleDataError as e:
+        current_app.logger.warning(
+            f"StaleDataError when managing donor '{donor_id}': {str(e)}"
         )
         db.session.rollback()
         return (
             jsonify(
                 {
                     "status": "failed",
-                    "message": f"Error fetching donor '{donor_id}': {str(e)}",
+                    "message": f"StaleDataError when managing donor '{donor_id}': {str(e)}",
+                }
+            ),
+            409,
+        )
+
+    except Exception as e:
+        current_app.logger.error(
+            f"Error managing donor '{donor_id}': {str(e)}", exc_info=True
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error managing donor '{donor_id}': {str(e)}",
                 }
             ),
             500,

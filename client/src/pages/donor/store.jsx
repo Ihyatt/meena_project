@@ -40,15 +40,7 @@ const useDonateStore = create(
         set({ isLoading: true, error: null });
         try {
           const paymentIntentId = uuidv4(); // Generate key once
-          console.log(1);
-          console.log(
-            "Creating payment intent with:",
-            fullName,
-            emailAddress,
-            amount,
-            isEmailSubscription,
-            isAnonymous
-          );
+
           const response = await fetch(
             `${backendUrl}/donations/create-payment-intent`,
             {
@@ -66,9 +58,7 @@ const useDonateStore = create(
               }),
             }
           );
-          console.log(2);
           const data = await response.json();
-          console.log(3);
           if (!response.ok) {
             set({ error: data.message });
           }
@@ -84,7 +74,6 @@ const useDonateStore = create(
         try {
           const state = get();
           const { paymentIntentId, lat, lng } = state;
-          console.log(4);
 
           const response = await fetch(
             `${backendUrl}/donations/create-checkout-session`,
@@ -100,9 +89,7 @@ const useDonateStore = create(
               }),
             }
           );
-          console.log(5);
           const data = await response.json();
-          console.log(6);
           if (!response.ok) {
             set({ error: data.message });
           }
@@ -117,13 +104,10 @@ const useDonateStore = create(
       fetchCheckout: async (sessionId) => {
         set({ isLoading: true, error: null });
         try {
-          console.log(7);
           const response = await fetch(
             `${backendUrl}/donations/check-session-status?session_id=${sessionId}`
           );
-          console.log(8);
           const data = await response.json();
-          console.log(9);
           if (!response.ok) {
             set({ error: data.message });
           }

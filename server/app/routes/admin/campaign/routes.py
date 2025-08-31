@@ -16,6 +16,8 @@ from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
 
+from sqlalchemy.orm.exc import StaleDataError
+
 from app.database import db
 from app.models.campaign import Campaign
 from app.models.user import User
@@ -78,6 +80,7 @@ def fetch_campaigns():
 @jwt_required()
 @admin_required()
 def fetch_campaign(campaign_id):
+    current_app.logger.info(f"Fetching campaign '{campaign_id}'...")
     try:
         campaign = Campaign.query.get_or_404(campaign_id)
 
@@ -131,6 +134,7 @@ def fetch_campaign(campaign_id):
 @jwt_required()
 @admin_required()
 def save_campaign(campaign_id):
+    current_app.logger.info(f"Saving campaign '{campaign_id}'...")
     try:
         data = request.get_json()
         campaign = Campaign.query.get_or_404(campaign_id)
@@ -176,6 +180,21 @@ def save_campaign(campaign_id):
             400,
         )
 
+    except StaleDataError as sde:
+        current_app.logger.warning(
+            f"StaleDataError when saving campaign '{campaign_id}': {str(sde)}"
+        )
+        db.session.rollback()
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Stale data error, please retry: {str(sde)}",
+                }
+            ),
+            409,
+        )
+
     except NotFound:
         current_app.logger.warning(f"Campaign '{campaign_id}' not found.")
         return (
@@ -208,6 +227,7 @@ def save_campaign(campaign_id):
 @jwt_required()
 @admin_required()
 def launch_campaign(campaign_id):
+    current_app.logger.info(f"Launching campaign '{campaign_id}'...")
     try:
         campaign_schema = CampaignSchema(
             only=[
@@ -252,6 +272,20 @@ def launch_campaign(campaign_id):
             ),
             404,
         )
+    except StaleDataError as sde:
+        current_app.logger.warning(
+            f"StaleDataError when launching campaign '{campaign_id}': {str(sde)}"
+        )
+        db.session.rollback()
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Stale data error, please retry: {str(sde)}",
+                }
+            ),
+            409,
+        )
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(
@@ -272,6 +306,7 @@ def launch_campaign(campaign_id):
 @jwt_required()
 @admin_required()
 def close_campaign(campaign_id):
+    current_app.logger.info(f"Closing campaign '{campaign_id}'...")
     try:
         campaign_schema = CampaignSchema(
             only=[
@@ -312,6 +347,21 @@ def close_campaign(campaign_id):
             404,
         )
 
+    except StaleDataError as sde:
+        current_app.logger.warning(
+            f"StaleDataError when closing campaign '{campaign_id}': {str(sde)}"
+        )
+        db.session.rollback()
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Stale data error, please retry: {str(sde)}",
+                }
+            ),
+            409,
+        )
+
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(
@@ -332,6 +382,7 @@ def close_campaign(campaign_id):
 @jwt_required()
 @admin_required()
 def fetch_or_create_draft():
+    current_app.logger.info("Fetching or creating draft campaign...")
     try:
         admin_id = get_jwt_identity()
 
@@ -359,6 +410,20 @@ def fetch_or_create_draft():
         current_app.logger.info(f"Draft campaign fetched for '{draft_campaign.id}'.")
         return campaign_schema.dump(draft_campaign), 200
 
+    except StaleDataError as sde:
+        current_app.logger.warning(
+            f"StaleDataError when fetching or creating draft campaign: {str(sde)}"
+        )
+        db.session.rollback()
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Stale data error, please retry: {str(sde)}",
+                }
+            ),
+            409,
+        )
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(
@@ -379,6 +444,7 @@ def fetch_or_create_draft():
 @jwt_required()
 @admin_required()
 def share_draft(campaign_id):
+    current_app.logger.info(f"Sharing draft campaign '{campaign_id}'...")
     try:
         data = request.get_json()
         current_app.logger.info(f"Sharing draft campaign '{data}'...")
@@ -424,6 +490,34 @@ def share_draft(campaign_id):
             ),
             404,
         )
+    except ValidationError as ve:
+        current_app.logger.error(
+            f"Validation error while sharing draft campaign '{campaign_id}': {str(ve)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Validation error: {str(ve)}",
+                }
+            ),
+            400,
+        )
+    except StaleDataError as sde:
+        current_app.logger.warning(
+            f"StaleDataError when sharing draft campaign '{campaign_id}': {str(sde)}"
+        )
+        db.session.rollback()
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Stale data error, please retry: {str(sde)}",
+                }
+            ),
+            409,
+        )
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(
@@ -444,7 +538,7 @@ def share_draft(campaign_id):
 @jwt_required()
 @admin_required()
 def image_upload(campaign_id):
-    # delete previously uploaded image if exists
+    current_app.logger.info(f"Uploading image for campaign '{campaign_id}'...")
     try:
         file = request.files["file"]
 
@@ -460,6 +554,19 @@ def image_upload(campaign_id):
                 400,
             )
         campaign = Campaign.query.get_or_404(campaign_id)
+        prev_image_url = campaign.image_url
+        if prev_image_url:
+            try:
+                prev_image = Image.query.filter_by(url=prev_image_url).first()
+                db.session.delete(prev_image)
+                db.session.commit()
+                current_app.logger.info(
+                    f"Previous image record for campaign '{campaign_id}' deleted successfully."
+                )
+            except:
+                current_app.logger.error(
+                    f"Error deleting previous image record: {str(e)}", exc_info=True
+                )
 
         image_schema = ImageSchema(
             only=[
@@ -511,6 +618,20 @@ def image_upload(campaign_id):
                 }
             ),
             404,
+        )
+    except StaleDataError as sde:
+        current_app.logger.warning(
+            f"StaleDataError when uploading image for campaign '{campaign_id}': {str(sde)}"
+        )
+        db.session.rollback()
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Stale data error, please retry: {str(sde)}",
+                }
+            ),
+            409,
         )
 
     except Exception as e:

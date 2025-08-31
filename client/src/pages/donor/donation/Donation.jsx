@@ -33,7 +33,6 @@ const Donation = () => {
   useEffect(() => {
     getUserLocation();
     fetchCampaign().then((data) => {
-      console.log("campaign data", data);
       setImageUrl(data.imageUrl || defaultImg);
       setTitle(data.title);
       setDescription(data.description);
@@ -92,14 +91,15 @@ const Donation = () => {
     handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
 
-  console.log("RENDERING DONATION COMPONENT");
   return (
     <div>
       {isLoading && <Loading />}
 
       <div className="flex justify-center">
         <div className=" min-w-210 max-w-210  flex flex-col justify-center pl-20 ">
-          <div className="text-4xl font-bold mb-4">{title || DefaultTitle}</div>
+          <div className="text-4xl font-bold mb-6">
+            {title.toUpperCase() || DefaultTitle.toUpperCase()}
+          </div>
           <img
             src={imageUrl || defaultImg}
             alt="ui/ux review check"

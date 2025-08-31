@@ -12,12 +12,14 @@ from app.schemas.email_template import EmailTemplateSchema
 from app.utils.decorators import admin_required
 from app.utils.constants import EmailStatus, SubscriptionStatus
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
 
 
 @email_bp.route("/email-template", methods=["POST"])
 @jwt_required()
 @admin_required()
 def fetch_email_template():
+    current_app.logger.info("Fetching email template...")
     try:
         data = request.get_json()
 
@@ -30,7 +32,7 @@ def fetch_email_template():
         email_type = validated_data["email_type"]
         email_template = EmailTemplate.query.filter_by(email_type=email_type).first()
 
-        current_app.logger.info(f"Fetched email template for type '{email_type}'")
+        current_app.logger.info(f"Email template for type '{email_type}' fetched.")
         return email_template_schema.dump(email_template), 200
 
     except ValidationError as ve:
@@ -48,20 +50,6 @@ def fetch_email_template():
             400,
         )
 
-    except IntegrityError:
-        db.session.rollback()
-        current_app.logger.error(
-            f"Email template for type '{email_type}' already exists.", exc_info=True
-        )
-        return (
-            jsonify(
-                {
-                    "status": "failed",
-                    "message": f"Email template for type '{email_type}' already exists.",
-                }
-            ),
-            409,
-        )
     except Exception as e:
         current_app.logger.error(
             f"Error fetching or creating email template: {str(e)}", exc_info=True
@@ -128,6 +116,20 @@ def save_email_template():
             ),
             400,
         )
+    except StaleDataError as sde:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Stale data error while saving email template: {str(sde)}", exc_info=True
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Stale data error: {str(sde)}",
+                }
+            ),
+            409,
+        )
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(
@@ -147,9 +149,10 @@ def save_email_template():
 @email_bp.route("/webhook/sent", methods=["POST"])
 def webhoook_sent():
     try:
+        current_app.logger.info("Received webhook for sent email.")
         data = request.json
         CustomID = data.get("CustomID")
-        if CustomID is None:
+        if CustomID is None or CustomID == "":
             current_app.logger.error("CustomID is missing in the webhook data.")
             return (
                 jsonify(
@@ -160,6 +163,7 @@ def webhoook_sent():
                 ),
                 400,
             )
+
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.SENT
         email.email_subscription.sent += 1
@@ -186,11 +190,12 @@ def webhoook_sent():
 
 @email_bp.route("/webhook/open", methods=["POST"])
 def webhoook_open():
+    current_app.logger.info("Received webhook for opened email.")
     try:
         data = request.json
 
         CustomID = data.get("CustomID")
-        if CustomID is None:
+        if CustomID is None or CustomID == "":
             current_app.logger.error("CustomID is missing in the webhook data.")
             return (
                 jsonify(
@@ -227,9 +232,10 @@ def webhoook_open():
 @email_bp.route("/webhook/click", methods=["POST"])
 def webhook_click():
     try:
+        current_app.logger.info("Received webhook for clicked email.")
         data = request.json
         CustomID = data.get("CustomID")
-        if CustomID is None:
+        if CustomID is None or CustomID == "":
             current_app.logger.error("CustomID is missing in the webhook data.")
             return (
                 jsonify(
@@ -266,9 +272,10 @@ def webhook_click():
 @email_bp.route("/webhook/bounce", methods=["POST"])
 def webhook_bounce():
     try:
+        current_app.logger.info("Received webhook for bounced email.")
         data = request.json
         CustomID = data.get("CustomID")
-        if CustomID is None:
+        if CustomID is None or CustomID == "":
             current_app.logger.error("CustomID is missing in the webhook data.")
             return (
                 jsonify(
@@ -305,9 +312,10 @@ def webhook_bounce():
 @email_bp.route("/webhook/spam", methods=["POST"])
 def webhook_spam():
     try:
+        current_app.logger.info("Received webhook for spam email.")
         data = request.json
         CustomID = data.get("CustomID")
-        if CustomID is None:
+        if CustomID is None or CustomID == "":
             current_app.logger.error("CustomID is missing in the webhook data.")
             return (
                 jsonify(
@@ -345,9 +353,10 @@ def webhook_spam():
 @email_bp.route("/webhook/blocked", methods=["POST"])
 def webhook_blocked():
     try:
+        current_app.logger.info("Received webhook for blocked email.")
         data = request.json
         CustomID = data.get("CustomID")
-        if CustomID is None:
+        if CustomID is None or CustomID == "":
             current_app.logger.error("CustomID is missing in the webhook data.")
             return (
                 jsonify(
@@ -388,9 +397,10 @@ def webhook_blocked():
 @email_bp.route("/webhook/unsub", methods=["POST"])
 def unsubscribe():
     try:
+        current_app.logger.info("Received unsubscribe request.")
         data = request.json
         CustomID = data.get("CustomID")
-        if CustomID is None:
+        if CustomID is None or CustomID == "":
             current_app.logger.error("CustomID is missing in the webhook data.")
             return (
                 jsonify(

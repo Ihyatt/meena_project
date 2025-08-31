@@ -22,7 +22,7 @@ class DonationSchema(SQLAlchemyAutoSchema):
     amount = fields.Decimal(
         places=2,
         as_string=True,
-        validate=validate.Range(min=0.01, max=1_000_000),
+        validate=validate.Range(min=0.01, max=100_000),
         required=True,
     )
 

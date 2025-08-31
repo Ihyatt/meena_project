@@ -19,7 +19,7 @@ class PaymentTransactionSchema(SQLAlchemyAutoSchema):
         required=True,
         as_string=True,
         places=2,
-        validate=validate.Range(min=0.01),
+        validate=validate.Range(min=0.01,max=100_000)),
     )
 
     status = fields.Enum(PaymentStatus)

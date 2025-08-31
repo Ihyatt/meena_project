@@ -43,7 +43,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDashboardData().then((data) => {
-      console.log("Dashboard data:", data);
       setLaunchedCampaigns(data.launchedCampaigns);
       setDonationsCount(data.donationsCount);
       setRaised(data.raised);
@@ -76,10 +75,6 @@ const Dashboard = () => {
     handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
 
-  console.log(
-    "currYearByMonthDonationRetentionData",
-    currYearByMonthDonationRetentionData
-  );
   return (
     <div className="m-2">
       {isLoading && <Loading />}

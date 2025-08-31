@@ -15,7 +15,6 @@ import { Bubble } from "react-chartjs-2";
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend, TimeScale);
 
 const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
-  console.log("scattercart", currYearIndividualDonationRetentionData);
   if (
     !currYearIndividualDonationRetentionData ||
     !currYearIndividualDonationRetentionData.new ||
