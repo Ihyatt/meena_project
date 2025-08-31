@@ -115,7 +115,7 @@ const Donation = () => {
           </div>
         </div>
 
-        <div className=" ml-5 mt-12 min-w-90 shadow-lg rounded-sm p-8 h-235">
+        <div className=" ml-5 mt-12 min-w-90 shadow-lg rounded-xl p-8 h-225">
           <img
             className="w-40 h-40 rounded-full object-cover"
             src={temp}

@@ -52,10 +52,10 @@ def successful_charge(
         payment_transaction.charge_id = charge_id
 
         if payment_transaction.status == PaymentStatus.SUCCEEDED:
-
-            raise ValueError(
+            current_app.logger.warning(
                 f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
             )
+            return
 
         new_donation_location = DonationLocation(lat=lat, lng=lng, amount=amount)
         if campaign_id:
@@ -166,6 +166,10 @@ def failed_charge(payment_transaction_id, idempotency_key, charge_id):
         payment_transaction.status = PaymentStatus.FAILED
         db.session.commit()
 
+    except StaleDataError as e:
+        db.session.rollback()
+        raise ValueError(str(e))
+
     except Exception as e:
         db.session.rollback()
         raise ValueError(str(e))
@@ -192,8 +196,11 @@ def refunded_charge(payment_transaction_id, idempotency_key, charge_id, campaign
             raise ValueError(str(e))
         except StaleDataError as e:
             db.session.rollback()
-
             raise ValueError(str(e))
+
+    except StaleDataError as e:
+        db.session.rollback()
+        raise ValueError(str(e))
 
     except Exception as e:
         db.session.rollback()

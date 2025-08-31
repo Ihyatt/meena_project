@@ -175,21 +175,21 @@ const Dashboard = () => {
       </div>
       <div className="  h-full">
         <div className="flex m-4 h-100">
-          <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-10">
+          <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
             <BarChart
               currYearByMonthDonationRetentionData={
                 currYearByMonthDonationRetentionData
               }
             />
           </div>
-          <div className="w-1/2  ml-2 rounded-lg shadow-md bg-white flex items-center justify-center pt-8 px-10 pb-14">
+          <div className="w-1/2  ml-2 rounded-lg shadow-md bg-white flex items-center justify-center pt-8 px-8 pb-14">
             <LineChart
               trackActiveCammpaignDonations={trackActiveCammpaignDonations}
             />
           </div>
         </div>
         <div className="flex m-4 h-100">
-          <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-10">
+          <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
             <PieChart
               allTimeDonationRetentionData={allTimeDonationRetentionData}
             />

@@ -7,6 +7,7 @@ import uuid
 from app.database import db
 from redis import Redis
 
+from sqlalchemy.orm.exc import StaleDataError
 
 from app.utils.constants import (
     PaymentStatus,
@@ -58,15 +59,27 @@ def init():
 
 @sse_bp.route("/ack/<int:notification_id>", methods=["PATCH"])
 def ack(notification_id):
-    now = datetime.now(timezone.utc)
-    current_app.logger.info(
-        f"Acknowledging notification {notification_id} at {now.isoformat()}"
-    )
-    notification = DonationNotification.query.filter_by(id=notification_id).first()
-    notification.recieved_at = now
-    db.session.commit()
+    try:
+        now = datetime.now(timezone.utc)
 
-    return jsonify({"message": "success"})
+        notification = DonationNotification.query.filter_by(id=notification_id).first()
+        notification.recieved_at = now
+        db.session.commit()
+        current_app.logger.info(
+            f"Acknowledging notification {notification_id} at {now.isoformat()}"
+        )
+        return jsonify({"message": "success"}), 200
+
+    except StaleDataError as exc:
+        current_app.logger.warning(
+            f"StaleDataError when acknowledging notification {notification_id}"
+        )
+        db.session.rollback()
+        return jsonify({"message": "stale data error, please retry"}), 409
+
+    except Exception as exc:
+        current_app.logger.exception("Error acknowledging notification")
+        return jsonify({"message": "error"}), 500
 
 
 @sse_bp.route("/stream")
@@ -109,6 +122,9 @@ def stream():
                 try:
                     payload = json.loads(json_str)
                     notification_id = int(payload["notification_id"])
+                    current_app.logger.info(
+                        f"********************SSE stream: Received notification {notification_id}"
+                    )
                     notification = DonationNotification.query.get(notification_id)
 
                     if not notification:
@@ -128,6 +144,12 @@ def stream():
                     current_app.logger.info(
                         f"SSE stream: Delivered notification {notification_id}"
                     )
+                except StaleDataError as exc:
+                    current_app.logger.warning(
+                        f"SSE stream: StaleDataError for notification {notification_id}"
+                    )
+                    db.session.rollback()
+                    yield f"event: error\ndata: {json.dumps({'message': 'Stale data error, please retry'})}\n\n"
 
                 except Exception as exc:
                     current_app.logger.exception("SSE stream: unhandled exception")

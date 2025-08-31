@@ -8,11 +8,11 @@ const DonationData = ({ goal, raised, totalDonations }) => {
   // useMemo will only recalculate the percentage if 'raised' or 'goal' changes
   const percentage = useMemo(() => {
     if (goal === 0) return 0; // Avoid division by zero
-    return Math.floor((raised / goal) * 100);
+    return Math.min(Math.floor((raised / goal) * 100), 100); // Cap at 100%
   }, [raised, goal]); // Dependency array: the "anchor points"
 
   return (
-    <div className="flex w-full items-center justify-between font-light mb-5">
+    <div className="flex w-full items-center justify-between font-light mb-4">
       <div>
         <div className="text-lg">
           <NumericFormat

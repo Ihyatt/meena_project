@@ -199,7 +199,7 @@ def webhoook_open():
                         "message": "CustomID is missing in the webhook data.",
                     }
                 ),
-                400,
+                200,
             )
         email = Email.query.filter_by(id=int(CustomID)).first()
         email.status = EmailStatus.OPENED
