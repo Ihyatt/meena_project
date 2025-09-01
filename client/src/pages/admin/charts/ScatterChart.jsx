@@ -85,7 +85,7 @@ const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
         data: currYearIndividualDonationRetentionData?.new.map((item) => ({
           x: new Date(item.date),
           y: getMillisecondsOfDay(item.date), // ✅ Time of day for y-axis
-          r: parseFloat(item.amount) / 10, // ✅ Amount for bubble radius
+          r: parseFloat(item.amount) / 100000, // ✅ Amount for bubble radius
         })),
         backgroundColor: "rgb(237, 175, 176, 0.5)",
       },

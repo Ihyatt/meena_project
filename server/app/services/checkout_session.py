@@ -15,6 +15,13 @@ def checkout_session(
     lng,
 ):
     try:
+        current_app.logger.info(
+            f"Creating checkout session for amount: {amount}, donor_id: {donor_id}, donation_id: {donation_id}"
+        )
+        # Create a new Stripe Checkout Session
+        # Ensure amount is in the smallest currency unit (e.g., cents for USD)
+        # and convert to integer
+        # Set up metadata to track the transaction
         session = stripe.checkout.Session.create(
             ui_mode="embedded",
             line_items=[

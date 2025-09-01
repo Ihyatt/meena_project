@@ -105,8 +105,8 @@ def fetch_campaign():
 @donation_bp.route("/create-payment-intent", methods=["POST"])
 def create_payment_intent():
     try:
+        current_app.logger.info("Creating payment intent...")
         data = request.get_json()
-        current_app.logger.info(f"Creating payment intent with data: {data}")
         active_campaign = Campaign.query.filter_by(is_active=True).first()
 
         donor_schema = DonorSchema(
@@ -179,6 +179,7 @@ def create_payment_intent():
 @donation_bp.route("/create-checkout-session", methods=["POST"])
 def create_checkout_session():
     try:
+        current_app.logger.info("Creating checkout session...")
         data = request.get_json()
 
         domain_url = current_app.config["WEB_URL"]
@@ -188,9 +189,7 @@ def create_checkout_session():
         payment_transaction = PaymentTransaction.query.filter_by(
             payment_intent_id=payment_intent_id
         ).first()
-        current_app.logger.info(f"payment intent {payment_intent_id}")
 
-        current_app.logger.info(f"payment transaction {payment_transaction}")
         donation = payment_transaction.donation
         donor = donation.donor
 
@@ -237,11 +236,11 @@ def create_checkout_session():
 @donation_bp.route("/check-session-status", methods=["GET"])
 def check_session_status():
     try:
+        current_app.logger.info("Checking session status...")
         session_id = request.args.get("session_id")
         session = stripe.checkout.Session.retrieve(session_id)
-        current_app.logger.info(
-            f"Session {session_id} status: {session.payment_status}"
-        )
+
+        current_app.logger.info(f"Session status: {session.payment_status}")
         return jsonify({"status": session.payment_status}), 200
     except stripe.error.StripeError as e:
         current_app.logger.error(f"Stripe error: {str(e)}", exc_info=True)
@@ -251,6 +250,7 @@ def check_session_status():
 @donation_bp.route("/webhook", methods=["POST"])
 def stripe_webhook():
     try:
+        current_app.logger.info("Received Stripe webhook...")
         payload = request.data
         sig_header = request.headers.get("Stripe-Signature")
         webhook_secret = current_app.config["STRIPE_WEBHOOK_SECRET"]
@@ -289,18 +289,8 @@ def stripe_webhook():
             }
 
             current_app.redis.lpush(CHARGE_PROCESS_QUEUE, json.dumps(message))
-            # successful_charge(
-            #     donor_id=data["donor_id"],
-            #     email_address=data["email_address"],
-            #     campaign_id=data["campaign_id"],
-            #     payment_transaction_id=data["payment_transaction_id"],
-            #     donation_id=data["donation_id"],
-            #     idempotency_key=data["idempotency_key"],
-            #     amount=data["amount"],
-            #     charge_id=data["charge_id"],
-            #     lat=data["lat"],
-            #     lng=data["lng"],
-            # )
+
+        current_app.logger.info(f"Webhook processed: {event_type}")
         return jsonify({"status": "success"}), 200
     except Exception as e:
         current_app.logger.error(f"Webhook error: {str(e)}", exc_info=True)

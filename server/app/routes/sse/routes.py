@@ -34,7 +34,7 @@ from app.utils.payment_transaction import create_payment_transaction
 
 @sse_bp.route("/init", methods=["GET"])
 def init():
-
+    current_app.logger.info("Initializing SSE connection")
     notifications = current_app.redis.zrevrange(
         "donation_notifications", 0, -1, withscores=True
     )
@@ -52,7 +52,7 @@ def init():
     ]
 
     current_app.logger.info(
-        f"Initialized SSE with {deserialized_notifications} notifications."
+        f"Returning {len(deserialized_notifications)} past notifications"
     )
     return jsonify({"status": "success", "notifications": deserialized_notifications})
 
@@ -60,13 +60,14 @@ def init():
 @sse_bp.route("/ack/<int:notification_id>", methods=["PATCH"])
 def ack(notification_id):
     try:
+        current_app.logger.info(f"Acknowledging notification {notification_id}")
         now = datetime.now(timezone.utc)
 
         notification = DonationNotification.query.filter_by(id=notification_id).first()
         notification.recieved_at = now
         db.session.commit()
         current_app.logger.info(
-            f"Acknowledging notification {notification_id} at {now.isoformat()}"
+            f"Acknowled notification {notification_id} at {now.isoformat()}"
         )
         return jsonify({"message": "success"}), 200
 
@@ -84,13 +85,10 @@ def ack(notification_id):
 
 @sse_bp.route("/stream")
 def stream():
-    """
-    Server-Sent Events endpoint that pushes donation notifications
-    to connected browsers in real time.
-    """
+    current_app.logger.info("Starting SSE stream")
 
     def event_stream():
-
+        current_app.logger.info("SSE stream: Setting up Redis pubsub")
         redis = Redis(host="127.0.0.1", port=6379, decode_responses=True, db=0)
         pubsub = redis.pubsub()
         pubsub.subscribe(DONATION_NOTIFICATIONS_CHANNEL)
@@ -123,11 +121,14 @@ def stream():
                     payload = json.loads(json_str)
                     notification_id = int(payload["notification_id"])
                     current_app.logger.info(
-                        f"********************SSE stream: Received notification {notification_id}"
+                        f"SSE stream: Received notification {notification_id}"
                     )
                     notification = DonationNotification.query.get(notification_id)
 
                     if not notification:
+                        current_app.logger.error(
+                            f"SSE stream: No DonationNotification with id={notification_id}"
+                        )
                         raise ValueError(
                             f"No DonationNotification with id={notification_id}"
                         )

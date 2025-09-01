@@ -43,6 +43,7 @@ def successful_charge(
     lng,
 ):
     try:
+
         payment_transaction = PaymentTransaction.query.filter_by(
             id=payment_transaction_id, idempotency_key=idempotency_key
         ).first()
@@ -52,9 +53,6 @@ def successful_charge(
         payment_transaction.charge_id = charge_id
 
         if payment_transaction.status == PaymentStatus.SUCCEEDED:
-            current_app.logger.warning(
-                f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
-            )
             return
 
         new_donation_location = DonationLocation(lat=lat, lng=lng, amount=amount)
@@ -131,12 +129,6 @@ def successful_charge(
         }
         EMAIL_PROCESS_QUEUE = "email_process_queue"
         current_app.redis.lpush("email_process_queue", json.dumps(message))
-        # send_receipt_email(
-        #     data["donor_id"],
-        #     data["email_address"],
-        #     data["amount"],
-        #     data["email_id"],
-        # )
 
     except StaleDataError as e:
         db.session.rollback()
