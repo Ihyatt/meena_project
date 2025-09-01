@@ -10,26 +10,13 @@ from redis import Redis
 from sqlalchemy.orm.exc import StaleDataError
 
 from app.utils.constants import (
-    PaymentStatus,
-    EmailType,
-    DONATION_NOTIFICATIONS,
-    MAX_DONATION_NOTIFICATIONS,
     DONATION_NOTIFICATIONS_CHANNEL,
 )
 from datetime import datetime, timezone
 
-from app.models.campaign import Campaign
 from flask import jsonify, request, current_app, Response, json, stream_with_context
-from app.schemas.campaign import CampaignSchema
-from app.schemas.donation import DonationSchema
+
 from app.models.donation_notification import DonationNotification
-
-from app.schemas.user import DonorSchema
-
-
-from app.utils.user import get_or_create_donor
-from app.utils.donation import create_donation
-from app.utils.payment_transaction import create_payment_transaction
 
 
 @sse_bp.route("/init", methods=["GET"])

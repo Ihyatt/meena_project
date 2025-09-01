@@ -76,7 +76,7 @@ def successful_charge(
         )
 
         db.session.add(new_donation_notification)
-        db.session.commit()
+        db.session.flush()
 
         notification_metadata = {
             "full_name": (
@@ -113,6 +113,8 @@ def successful_charge(
             recipient_email_address=email_address,
             email_type=EmailType.RECEIPT,
         )
+        db.session.add(email)
+        db.session.commit()
 
         data = {
             "donor_id": donor_id,

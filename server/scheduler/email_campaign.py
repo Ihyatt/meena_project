@@ -1,4 +1,5 @@
 import uuid
+from app.database import db
 
 from flask import current_app
 from app import create_app
@@ -28,6 +29,8 @@ def impact_email():
             email = create_email(
                 subscription.id, subscription.email_address, EmailType.IMPACT
             )
+            db.session.add(email)
+            db.session.commit()
 
             data = {
                 "donor_id": donor.id,
@@ -66,6 +69,8 @@ def closeout_email():
                 email = create_email(
                     subscription.id, subscription.email_address, EmailType.CLOSEOUT
                 )
+                db.session.add(email)
+                db.session.commit()
 
                 data = {
                     "donor_id": donor.id,

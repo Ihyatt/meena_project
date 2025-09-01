@@ -12,10 +12,11 @@ from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
 from app.services.checkout_session import checkout_session
+from werkzeug.exceptions import NotFound
 
 import json
 from app.utils.payment_transaction import create_payment_transaction
-from app.utils.user import get_or_create_donor
+from app.utils.user import get_or_create_donor, update_email_subscription
 from app.utils.donation import create_donation
 from marshmallow import EXCLUDE
 from datetime import datetime
@@ -128,8 +129,14 @@ def create_payment_intent():
 
         donor = get_or_create_donor(
             email_address=validated_donor_data["email_address"],
-            is_email_subscription=data["isEmailSubscription"],
             full_name=validated_donor_data["full_name"],
+        )
+        db.session.add(donor)
+        db.session.flush()
+
+        update_email_subscription(
+            donor.id,
+            is_email_subscription=data["isEmailSubscription"],
         )
 
         validated_donation_data = donation_schema.load(data)
@@ -140,9 +147,11 @@ def create_payment_intent():
             is_anonymous=validated_donation_data["is_anonymous"],
         )
 
+        db.session.add(donation)
+        db.session.flush()
+
         if active_campaign:
             donation.campaign_id = active_campaign.id
-            db.session.commit()
 
         idempotency_key = f"payment_{donation.id}_{uuid.uuid4()}"
         payment_transaction = create_payment_transaction(
@@ -152,6 +161,10 @@ def create_payment_intent():
             idempotency_key=idempotency_key,
             payment_intent_id=data["paymentIntentId"],
         )
+
+        db.session.add(payment_transaction)
+
+        db.session.commit()
 
         current_app.logger.info("Payment intent created successfully.")
         return jsonify({"paymentIntentId": payment_transaction.payment_intent_id}), 200
