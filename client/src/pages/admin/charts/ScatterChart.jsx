@@ -42,7 +42,7 @@ const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
         beginAtZero: true,
         title: {
           display: true,
-          text: "Time of Day",
+          text: "Amount (in $)",
         },
         ticks: {
           display: false, // ✅ Hides the numbers
@@ -57,7 +57,7 @@ const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
       tooltip: {
         callbacks: {
           label: function (context) {
-            const amount = context.raw.r; // ✅ FIXED
+            const amount = context.raw.y; // ✅ FIXED
             const date = new Date(context.parsed.x);
             const formattedDate = format(date, "MMM d, h:mm a");
             return [`Date: ${formattedDate}`, `$${amount * 10}`];
@@ -70,36 +70,29 @@ const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
     },
   };
 
-  // Function to get milliseconds since midnight
-  const getMillisecondsOfDay = (date) => {
-    const d = new Date(date);
-    return (
-      d.getHours() * 3600000 + d.getMinutes() * 60000 + d.getSeconds() * 1000
-    );
-  };
-
   const data = {
     datasets: [
       {
         label: "New Donations",
         data: currYearIndividualDonationRetentionData?.new.map((item) => ({
           x: new Date(item.date),
-          y: getMillisecondsOfDay(item.date), // ✅ Time of day for y-axis
-          r: parseFloat(item.amount) / 100000, // ✅ Amount for bubble radius
+          y: parseInt(item.amount),
         })),
         backgroundColor: "rgb(237, 175, 176, 0.5)",
+        pointRadius: 5,
       },
       {
-        label: "Rentioned Donations",
+        label: "Retained Donations",
         data: currYearIndividualDonationRetentionData?.repeat.map((item) => ({
           x: new Date(item.date),
-          y: getMillisecondsOfDay(item.date), // ✅ Time of day for y-axis
-          r: parseFloat(item.amount) / 10, // ✅ Amount for bubble radius
+          y: parseInt(item.amount),
         })),
         backgroundColor: "rgba(43, 189, 98, 0.5)",
+        pointRadius: 5,
       },
     ],
   };
+
   return <Bubble options={options} data={data} />;
 };
 
