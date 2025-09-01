@@ -31,7 +31,7 @@ def impact_email():
 
             data = {
                 "donor_id": donor.id,
-                "email_address": subscription.email_addresss,
+                "email_address": subscription.email_address,
                 "campaign_id": active_campaigns.id,
                 "email_id": email.id,
             }
@@ -39,7 +39,7 @@ def impact_email():
             message = {
                 "id": str(uuid.uuid4()),
                 "timestamp": datetime.now().isoformat(),
-                "value": EmailType.IMPACT,
+                "value": EmailType.IMPACT.value,
                 "data": data,
             }
 
@@ -73,7 +73,7 @@ def closeout_email():
         message = {
             "id": str(uuid.uuid4()),
             "timestamp": datetime.now().isoformat(),
-            "value": EmailType.CLOSEOUT,
+            "value": EmailType.CLOSEOUT.value,
             "data": data,
         }
 
