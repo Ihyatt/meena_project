@@ -120,7 +120,9 @@ export const ManageDonor = () => {
         <form className=" mx-auto p-5">
           <div className="flex ">
             <div className="p-2">
-              <label class="block mb-2 text-sm text-slate-600">Full Name</label>
+              <label className="block mb-2 text-sm text-slate-600">
+                Full Name
+              </label>
               <input
                 type="text"
                 id="fullName"
@@ -132,7 +134,7 @@ export const ManageDonor = () => {
               />
             </div>
             <div className="p-2">
-              <label class="block mb-2 text-sm text-slate-600">
+              <label className="block mb-2 text-sm text-slate-600">
                 Email Address
               </label>
               <input
@@ -146,7 +148,7 @@ export const ManageDonor = () => {
             </div>
           </div>
 
-          <div class="inline-flex pt-6 pl-3">
+          <div className="inline-flex pt-6 pl-3">
             <div
               className={`bg-gray-100 hover:bg-gray-200 text-gray-800  py-2 px-4 rounded-l text-sm ${toggle == "donations" ? "bg-gray-200 text-gray-800" : ""} `}
               onClick={handleTableDisplay("donations")}

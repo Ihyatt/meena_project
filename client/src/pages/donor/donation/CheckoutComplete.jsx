@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 import Loading from "src/components/Loading";
 import useDonateStore from "src/pages/donor/store";
@@ -20,15 +20,57 @@ const CheckoutComplete = () => {
     isLoading && <Loading />;
   }
   if (status == "paid") {
-    return <div> Success! Thank you for your donation</div>;
+    return (
+      <div>
+        {" "}
+        Success! Thank you for your donation.{" "}
+        <Link
+          to={"/"}
+          style={{
+            color: "black",
+            fontSize: "15px",
+            textDecoration: "underline",
+          }}
+        >
+          {" "}
+          Return to home page.
+        </Link>
+      </div>
+    );
   } else if (status === "failed") {
     <div>
       {" "}
-      Your payment has failed. Please try again later or contact Stripe.com
+      Your payment has failed. Please try again later or contact Stripe.com{" "}
+      <Link
+        to={"/"}
+        style={{
+          color: "black",
+          fontSize: "15px",
+          textDecoration: "underline",
+        }}
+      >
+        {" "}
+        Return to home page.
+      </Link>
     </div>;
   }
 
-  return <div>Something went wrong.</div>;
+  return (
+    <div>
+      Something went wrong.{" "}
+      <Link
+        to={"/"}
+        style={{
+          color: "black",
+          fontSize: "15px",
+          textDecoration: "underline",
+        }}
+      >
+        {" "}
+        Return to home page.
+      </Link>
+    </div>
+  );
 };
 
 export default CheckoutComplete;

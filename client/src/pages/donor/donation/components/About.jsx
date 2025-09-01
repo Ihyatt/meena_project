@@ -10,7 +10,7 @@ const About = ({ description }) => {
   };
   return (
     <div>
-      <div className="flex justify-start pb-6">
+      <div className="flex justify-start pb-6 ">
         <div
           onClick={() => handleClick("about")}
           className={`

@@ -100,7 +100,7 @@ export const EmailTemplate = () => {
           {isLoading && <Loading />}
 
           <div className="p-2">
-            <label class="block mb-2 text-xl text-slate-600">Subject</label>
+            <label className="block mb-2 text-xl text-slate-600">Subject</label>
 
             <input
               type="text"
@@ -114,7 +114,9 @@ export const EmailTemplate = () => {
           </div>
 
           <div className="p-2">
-            <label class="block mb-2 text-xl text-slate-600">Template ID</label>
+            <label className="block mb-2 text-xl text-slate-600">
+              Template ID
+            </label>
 
             <input
               type="text"

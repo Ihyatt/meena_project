@@ -85,7 +85,7 @@ const DonationForm = ({ targetRef }) => {
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
   return (
-    <div className="p-20 bg-white rounded-xl shadow-lg mt-6 w-7/8">
+    <div className="p-10 bg-white rounded-xl shadow-lg mt-6 w-full lg:w-7/8 ">
       <div className="text-2xl font-bold">Select Gift Amount</div>
       <div className="mb-3 text-gray-400 text-xs">_ _ _</div>
       <form onSubmit={handleDonateClick}>

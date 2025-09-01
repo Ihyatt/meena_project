@@ -95,8 +95,8 @@ const Donation = () => {
     <div>
       {isLoading && <Loading />}
 
-      <div className="flex justify-center">
-        <div className=" min-w-210 max-w-210  flex flex-col justify-center pl-20 ">
+      <div className="flex justify-center px-20">
+        <div className=" w-210  flex flex-col justify-center ">
           <div className="text-4xl font-bold mb-6">
             {title.toUpperCase() || DefaultTitle.toUpperCase()}
           </div>
@@ -105,8 +105,8 @@ const Donation = () => {
             alt="ui/ux review check"
             className="rounded-sm shadow-md h-100 w-full object-cover"
           />
-          <div className="text-left px-6">
-            <div className="w-6/8 py-6">
+          <div className="text-left md:px-6 lg:px-6 md:w-full">
+            <div className=" sm:w-full md:w-full  lg:py-6  lg:w-6/8">
               <About description={description} />
             </div>
             <div>
@@ -115,7 +115,7 @@ const Donation = () => {
           </div>
         </div>
 
-        <div className=" ml-5 mt-12 min-w-90 shadow-lg rounded-xl p-8 h-225">
+        <div className="hidden lg:block ml-5 mt-12 min-w-90 shadow-lg rounded-xl p-8 h-225">
           <img
             className="w-40 h-40 rounded-full object-cover"
             src={temp}

@@ -152,7 +152,7 @@ export const CampaignDraft = () => {
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
           <div className="p-2">
-            <label class="block mb-2 text-2xl text-slate-600">Title</label>
+            <label className="block mb-2 text-2xl text-slate-600">Title</label>
             <input
               type="text"
               id="title"
@@ -164,7 +164,7 @@ export const CampaignDraft = () => {
             />
           </div>
           <div className="p-2">
-            <label class="block mb-2  text-2xl text-slate-600">
+            <label className="block mb-2  text-2xl text-slate-600">
               Description
             </label>
             <textarea
@@ -222,7 +222,7 @@ export const CampaignDraft = () => {
 
               <button
                 type="button"
-                class="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
+                className="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
                 onClick={handleShare}
                 disabled={isLoading}
               >
