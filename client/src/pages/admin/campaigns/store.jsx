@@ -39,7 +39,13 @@ const useCampaignStore = create(
         }
       },
 
-      shareCampaignDraft: async (campaignId, title, description, goal) => {
+      shareCampaignDraft: async (
+        campaignId,
+        title,
+        description,
+        goal,
+        closeoutDate
+      ) => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -51,7 +57,7 @@ const useCampaignStore = create(
                 Authorization: `Bearer ${jwtToken}`,
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ title, description, goal }),
+              body: JSON.stringify({ title, description, goal, closeoutDate }),
             }
           );
           const data = await response.json();
@@ -115,7 +121,13 @@ const useCampaignStore = create(
           set({ error: error, isLoading: false });
         }
       },
-      saveCampaign: async (campaignId, title, description, goal) => {
+      saveCampaign: async (
+        campaignId,
+        title,
+        description,
+        goal,
+        closeoutDate
+      ) => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -128,7 +140,7 @@ const useCampaignStore = create(
                 Authorization: `Bearer ${jwtToken}`,
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ title, description, goal }),
+              body: JSON.stringify({ title, description, goal, closeoutDate }),
             }
           );
           const data = await response.json();

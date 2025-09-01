@@ -83,11 +83,13 @@ export const ManageCampaign = () => {
       return;
     }
 
-    saveCampaign(campaignId, title, description, goal).then((data) => {
-      setTitle(data.title);
-      setDescription(data.description);
-      setGoal(data.goal);
-    });
+    saveCampaign(campaignId, title, description, goal, closeoutDate).then(
+      (data) => {
+        setTitle(data.title);
+        setDescription(data.description);
+        setGoal(data.goal);
+      }
+    );
     event.preventDefault();
   };
 

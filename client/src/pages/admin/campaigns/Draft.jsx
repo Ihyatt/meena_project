@@ -80,7 +80,7 @@ export const CampaignDraft = () => {
       setErrors(errors);
       return;
     }
-    shareCampaignDraft(campaignId, title, description, goal);
+    shareCampaignDraft(campaignId, title, description, goal, closeoutDate);
     navigate(-1);
     event.preventDefault();
   };
@@ -114,11 +114,13 @@ export const CampaignDraft = () => {
       return;
     }
 
-    saveCampaign(campaignId, title, description, goal).then((data) => {
-      setTitle(data.title);
-      setDescription(data.description);
-      setGoal(data.goal);
-    });
+    saveCampaign(campaignId, title, description, goa, closeoutDatel).then(
+      (data) => {
+        setTitle(data.title);
+        setDescription(data.description);
+        setGoal(data.goal);
+      }
+    );
     event.preventDefault();
   };
 

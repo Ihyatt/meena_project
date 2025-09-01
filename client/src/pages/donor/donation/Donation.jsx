@@ -6,8 +6,9 @@ import { NumericFormat } from "react-number-format";
 import DonationEvents from "src/components/Events";
 import About from "src/pages/donor/donation/components/About";
 import defaultImg from "src/assets/images/defaultImg.jpg";
-import logo from "src/assets/images/logo.png";
 import temp from "src/assets/images/temp.png";
+import din from "src/assets/images/din.png";
+
 import { DefaultTitle } from "src/utils/constants";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
@@ -95,7 +96,7 @@ const Donation = () => {
     <div>
       {isLoading && <Loading />}
 
-      <div className=" px-20">
+      <div className=" md:px-20 lg:px-20">
         <div className="text-5xl font-bold mb-6">
           {title.toUpperCase() || DefaultTitle.toUpperCase()}
         </div>
@@ -142,7 +143,7 @@ const Donation = () => {
           <div className="hidden lg:block ml-5  min-w-90 shadow-lg rounded-xl p-8 h-225">
             <img
               className="w-40 h-40 rounded-full object-cover"
-              src={temp}
+              src={din}
               alt="sumayyah"
             />
             <div className="mt-5 mb-15">

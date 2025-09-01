@@ -14,7 +14,7 @@ const DonationData = ({ goal, raised, totalDonations }) => {
   return (
     <div className="flex w-full items-center justify-between font-light mb-4">
       <div>
-        <div className="text-lg">
+        <div className="sm:text-xl md:text-xl lg:text-lg lg:text-lg">
           <NumericFormat
             value={raised || 0}
             thousandSeparator={true}
@@ -24,7 +24,7 @@ const DonationData = ({ goal, raised, totalDonations }) => {
           />{" "}
           raised
         </div>
-        <div className="text-md text-gray-400 font-light text-sm">
+        <div className="sm:text-lg md:text-lg lg:text-sm text-gray-400 font-light ">
           <NumericFormat
             value={goal}
             thousandSeparator={true}
@@ -41,25 +41,51 @@ const DonationData = ({ goal, raised, totalDonations }) => {
           donations
         </div>
       </div>
-      <div style={{ width: 70, height: 70, marginLeft: 7 }}>
-        <CircularProgressbar
-          value={percentage}
-          text={`${percentage}%`}
-          styles={{
-            path: {
-              stroke: `rgba(13, 133, 58, ${percentage / 100})`,
-              strokeLinecap: "round",
-              transformOrigin: "center center",
-            },
 
-            text: {
-              // Text color
-              fill: "#949996",
-              // Text size
-              fontSize: "16px",
-            },
-          }}
-        />
+      <div className="hidden sm:hidden md:hidden lg:block">
+        <div style={{ width: 70, height: 70, marginLeft: 7 }}>
+          <CircularProgressbar
+            value={percentage}
+            text={`${percentage}%`}
+            styles={{
+              path: {
+                stroke: `rgba(13, 133, 58, ${percentage / 100})`,
+                strokeLinecap: "round",
+                transformOrigin: "center center",
+              },
+
+              text: {
+                // Text color
+                fill: "#949996",
+                // Text size
+                fontSize: "16px",
+              },
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="block md:block lg:hidden">
+        <div style={{ width: 80, height: 80, marginLeft: 7 }}>
+          <CircularProgressbar
+            value={percentage}
+            text={`${percentage}%`}
+            styles={{
+              path: {
+                stroke: `rgba(13, 133, 58, ${percentage / 100})`,
+                strokeLinecap: "round",
+                transformOrigin: "center center",
+              },
+
+              text: {
+                // Text color
+                fill: "#949996",
+                // Text size
+                fontSize: "16px",
+              },
+            }}
+          />
+        </div>
       </div>
     </div>
   );
