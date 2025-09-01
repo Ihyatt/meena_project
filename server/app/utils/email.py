@@ -10,6 +10,5 @@ def create_email(email_subscription_id, recipient_email_address, email_type):
         recipient_email_address=recipient_email_address,
         email_type=email_type,
     )
-    db.session.add(new_email)
-    db.session.commit()
+
     return new_email

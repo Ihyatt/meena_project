@@ -11,8 +11,7 @@ def create_donation(donor_id, amount, is_anonymous):
             amount=amount,
             is_anonymous=is_anonymous,
         )
-        db.session.add(donation)
-        db.session.commit()
+
         return donation
     except Exception as e:
         raise ValueError(f"Error creating donation: {str(e)}")

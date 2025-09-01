@@ -14,8 +14,6 @@ def create_payment_transaction(
             idempotency_key=idempotency_key,
             payment_intent_id=payment_intent_id,
         )
-        db.session.add(payment_transaction)
-        db.session.commit()
         return payment_transaction
     except Exception as e:
         raise ValueError(f"Error creating payment transaction: {str(e)}")

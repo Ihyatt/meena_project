@@ -44,11 +44,11 @@ def run_reconcile_refunds():
 
 def main():
     print("Starting scheduler...")
-    # schedule.every(5).seconds.do(run_impact_email)
-    # schedule.every(5).seconds.do(run_closeout_email)
-    schedule.every(5).seconds.do(run_reconcile_active_campaign)
-    # schedule.every(5).seconds.do(run_reconcile_payments)
-    # schedule.every(5).seconds.do(run_reconcile_refunds)
+    schedule.every(1).month.do(run_impact_email)
+    schedule.every(1).week.do(run_closeout_email)
+    schedule.every(1).day.do(run_reconcile_active_campaign)
+    schedule.every(12).hours.do(run_reconcile_payments)
+    schedule.every(12).hours.do(run_reconcile_refunds)
 
     while True:
         schedule.run_pending()

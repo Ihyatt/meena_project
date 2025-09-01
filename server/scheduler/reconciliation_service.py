@@ -26,6 +26,8 @@ from flask import jsonify, request, current_app, Response, json, stream_with_con
 from sqlalchemy import func
 from app.utils.constants import DonationStatus
 from datetime import datetime, timezone, timedelta
+from sqlalchemy.orm.exc import StaleDataError
+
 
 import random
 from tenacity import retry, wait_fixed, wait_random, stop_after_attempt
@@ -57,35 +59,39 @@ def reconcile_payments():
                 status = payment.status
                 metadata = payment.metadata
                 idempotency_key = metadata.get("idempotency_key")
+                try:
+                    payment_transaction = PaymentTransaction.query.filter_by(
+                        charge_id=charge_id, idempotency_key=idempotency_key
+                    ).first()
 
-                payment_transaction = PaymentTransaction.query.filter_by(
-                    charge_id=charge_id, idempotency_key=idempotency_key
-                ).first()
+                    if not payment_transaction:
+                        current_app.logger.warning(
+                            f"No payment transaction found for charge_id: {charge_id} with idempotency_key: {idempotency_key}"
+                        )
+                        return False
 
-                if not payment_transaction:
-                    current_app.logger.warning(
-                        f"No payment transaction found for charge_id: {charge_id} with idempotency_key: {idempotency_key}"
+                    if status == "succeeded":
+                        payment_transaction.status = PaymentStatus.SUCCEEDED
+                        payment_transaction.donation.status = DonationStatus.SUCCEEDED
+
+                    else:
+                        payment_transaction.status = PaymentStatus.FAILED
+
+                    payment_transaction.reconciled_at = datetime.now(timezone.utc)
+                    payment_transaction.donation.reconciled_at = datetime.now(
+                        timezone.utc
+                    )
+                    db.session.commit()
+                    current_app.logger.info(
+                        f"Reconciled payment: {payment.id} successfully."
+                    )
+                    return True
+                except StaleDataError as e:
+                    db.session.rollback()
+                    current_app.logger.error(
+                        f"StaleDataError while reconciling payment {payment.id}: {str(e)}"
                     )
                     return False
-
-                if status == "succeeded":
-                    payment_transaction.status = PaymentStatus.SUCCEEDED
-                    payment_transaction.donation.status = DonationStatus.SUCCEEDED
-                    payment_transaction.amount = amount
-                    payment_transaction.donation.amount = amount
-
-                else:
-                    payment_transaction.status = PaymentStatus.FAILED
-                    payment_transaction.amount.amount = amount
-                    payment_transaction.donation.amount = amount
-
-                payment_transaction.reconciled_at = datetime.now(timezone.utc)
-                payment_transaction.donation.reconciled_at = datetime.now(timezone.utc)
-                db.session.commit()
-                current_app.logger.info(
-                    f"Reconciled payment: {payment.id} successfully."
-                )
-                return True
             except Exception as e:
                 db.session.rollback()
                 current_app.logger.error(f"Error reconciling payment: {str(e)}")
@@ -96,15 +102,26 @@ def reconcile_payments():
             new_task = Task()
             new_task.task_name = TaskName.PAYMENT.value
             new_task.charge_id = payment.id
-            status = reconcile(payment)
-            if status:
-                new_task.status = JobStatus.SUCCEEDED
-            else:
+            try:
+                status = reconcile(payment)
+                if status:
+                    new_task.status = JobStatus.SUCCEEDED
+                else:
+                    new_task.status = JobStatus.FAILED
+                new_task.ended_at = datetime.now(timezone.utc)
+
+            except Exception as e:
+                current_app.logger.error(f"Error in payment reconciliation: {str(e)}")
                 new_task.status = JobStatus.FAILED
-            new_task.ended_at = datetime.now(timezone.utc)
+                new_task.ended_at = datetime.now(timezone.utc)
+
             db.session.add(new_task)
-            db.session.commit()
+
+        db.session.commit()
+
+        current_app.logger.info("Payment Reconciliation complete.")
     except Exception as e:
+        db.session.rollback()
         current_app.logger.error(f"Error in payment reconciliation service: {str(e)}")
 
 
@@ -133,25 +150,37 @@ def reconcile_refunds():
                 amount = refund.amount / 100
                 charge_id = refund.payment_intent
                 status = refund.status
+                try:
+                    payment_transaction = PaymentTransaction.query.filter_by(
+                        charge_id=charge_id
+                    ).first()
 
-                payment_transaction = PaymentTransaction.query.filter_by(
-                    charge_id=charge_id
-                ).first()
+                    if payment_transaction.status == PaymentStatus.REFUNDED:
+                        current_app.logger.info(
+                            f"Refund: {refund.id} already reconciled."
+                        )
+                        return True
 
-                if payment_transaction.status == PaymentStatus.REFUNDED:
-                    current_app.logger.info(f"Refund: {refund.id} already reconciled.")
+                    if status == "succeeded":
+                        payment_transaction.status = PaymentStatus.REFUNDED
+
+                    payment_transaction.reconciled_at = datetime.now(timezone.utc)
+                    payment_transaction.donation.reconciled_at = datetime.now(
+                        timezone.utc
+                    )
+                    db.session.commit()
+                    current_app.logger.info(
+                        f"Reconciled refund: {refund.id} successfully."
+                    )
                     return True
 
-                if status == "succeeded":
-                    payment_transaction.status = PaymentStatus.REFUNDED
-                    payment_transaction.amount = amount
-                    payment_transaction.donation.amount = amount
+                except StaleDataError as e:
+                    db.session.rollback()
+                    current_app.logger.error(
+                        f"StaleDataError while reconciling refund {refund.id}: {str(e)}"
+                    )
+                    return False
 
-                payment_transaction.reconciled_at = datetime.now(timezone.utc)
-                payment_transaction.donation.reconciled_at = datetime.now(timezone.utc)
-                db.session.commit()
-                current_app.logger.info(f"Reconciled refund: {refund.id} successfully.")
-                return True
             except Exception as e:
                 db.session.rollback()
                 current_app.logger.error(f"Error reconciling refund: {str(e)}")
@@ -161,16 +190,26 @@ def reconcile_refunds():
         for refund in refunds:
             new_task = Task()
             new_task.task_name = TaskName.REFUND.value
-            status = reconcile(refund)
-            if status:
-                new_task.status = JobStatus.SUCCEEDED
-            else:
+            try:
+                status = reconcile(refund)
+
+                if status:
+                    new_task.status = JobStatus.SUCCEEDED
+                else:
+                    new_task.status = JobStatus.FAILED
+            except Exception as e:
+                db.session.rollback()
+                current_app.logger.error(f"Error in refund reconciliation: {str(e)}")
                 new_task.status = JobStatus.FAILED
+
             new_task.ended_at = datetime.now(timezone.utc)
 
             db.session.add(new_task)
-            db.session.commit()
+
+        db.session.commit()
+        current_app.logger.info("Refund Reconciliation complete.")
     except Exception as e:
+        db.session.rollback()
         current_app.logger.error(f"Error in refund reconciliation service: {str(e)}")
 
 
