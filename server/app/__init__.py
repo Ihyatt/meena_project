@@ -54,6 +54,7 @@ from app.models.image import Image
 from app.models.email_subscription import EmailSubscription
 from app.models.payment_transaction import PaymentTransaction
 from app.models.donation_location import DonationLocation
+from app.models.task import Task
 
 
 app = Flask(__name__)

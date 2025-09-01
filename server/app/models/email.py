@@ -14,11 +14,6 @@ class Email(db.Model, SoftDeleteMixin):
 
     id = mapped_column(db.Integer, primary_key=True)
     version_uuid = mapped_column(db.String(32), nullable=False)
-    reconciled_at = mapped_column(
-        db.DateTime(timezone=True),
-        server_default=db.func.now(),
-        nullable=False,
-    )
 
     recipient_email_address = mapped_column(db.String(255), nullable=False)
     status = mapped_column(

@@ -33,8 +33,6 @@ class Campaign(db.Model, SoftDeleteMixin):
         nullable=False,
     )
 
-    reconciled_at_version_uuid = mapped_column(db.String(32), nullable=True)
-
     title = mapped_column(db.String(100), default="", nullable=False)
     description = mapped_column(db.String(2000), default="", nullable=False)
     image_url = mapped_column(

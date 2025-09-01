@@ -8,6 +8,11 @@ class PaymentStatus(enum.Enum):
     REFUNDED = "refunded"
 
 
+class TaskName(enum.Enum):
+    REFUND = "refund"
+    PAYMENT = "payment"
+
+
 class DonationStatus(enum.Enum):
     PENDING = "pending"
     SUCCEEDED = "succeeded"

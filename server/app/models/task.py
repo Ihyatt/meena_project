@@ -11,21 +11,19 @@ class Task(db.Model, SoftDeleteMixin):
     __versioned__ = {}
 
     id = mapped_column(db.Integer, primary_key=True)
+    task_name = mapped_column(db.String(255), nullable=False)
     version_uuid = mapped_column(db.String(32), nullable=False)
-    job_id = mapped_column(db.String(32), nullable=False)
-    model = mapped_column(db.String(255), nullable=False)
     status = mapped_column(db.Enum(JobStatus), default=JobStatus.QUEUED, nullable=False)
     charge_id = mapped_column(db.String(255), nullable=True)
-    campaign_id = mapped_column(db.Integer, nullable=True)
-    message_uuid = mapped_column(db.String(255), nullable=True)
-    message_id = mapped_column(db.BigInteger, nullable=True)
+    refund_id = mapped_column(db.String(255), nullable=True)
 
-    ended_at = mapped_column(db.DateTime(timezone=True), nullable=True)
     started_at = mapped_column(
         db.DateTime(timezone=True),
         server_default=db.func.now(),
         nullable=False,
     )
+    ended_at = mapped_column(db.DateTime(timezone=True), nullable=True)
+
     updated_at = mapped_column(
         db.DateTime(timezone=True),
         server_default=db.func.now(),
