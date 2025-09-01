@@ -19,7 +19,7 @@ const TABLE_HEAD = [
   "Raised",
   "Goal",
   "Launched",
-  "Closed",
+  "Closeout Date",
   "Status",
   "",
 ];

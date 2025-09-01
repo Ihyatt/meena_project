@@ -146,10 +146,10 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="flex m-4 ">
-        <div className="h-115 flex-grow">
+        <div className="h-120 flex-grow">
           <DonationsHeatMap donations={donationsLocation} />
         </div>
-        <div className="w-80 ml-4 rounded-lg shadow-md bg-white  p-8 h-115">
+        <div className="w-80 ml-4 rounded-lg shadow-md bg-white  p-8 h-120">
           {donorsCount > 0 && (
             <div className="flex justify-start  items-center mt-2 mb-4">
               <FaArrowTrendUp
