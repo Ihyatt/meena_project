@@ -278,13 +278,11 @@ const DonationForm = ({ targetRef }) => {
           <div
             className="text-sm font-light 
             text-gray-400 
-            inline-flex 
             items-center 
             vertical-align-middle 
-            cursor-pointer
-            "
+            cursor-pointer"
           >
-            <span> By clicking ‘Donate‘, you agree to Meena Projects’s</span>
+            <span> By clicking ‘Donate‘, you agree to Meena Projects’s </span>
             <Link to={"terms"} className="ml-1 underline hover:no-underline">
               Terms of Service
             </Link>

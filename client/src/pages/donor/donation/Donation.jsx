@@ -95,63 +95,87 @@ const Donation = () => {
     <div>
       {isLoading && <Loading />}
 
-      <div className="flex justify-center px-20">
-        <div className=" w-210  flex flex-col justify-center ">
-          <div className="text-4xl font-bold mb-6">
-            {title.toUpperCase() || DefaultTitle.toUpperCase()}
-          </div>
-          <img
-            src={imageUrl || defaultImg}
-            alt="ui/ux review check"
-            className="rounded-sm shadow-md h-100 w-full object-cover"
-          />
-          <div className="text-left md:px-6 lg:px-6 md:w-full">
-            <div className=" sm:w-full md:w-full  lg:py-6  lg:w-6/8">
-              <About description={description} />
-            </div>
-            <div>
-              <DonationForm targetRef={targetRef} />
-            </div>
-          </div>
+      <div className=" px-20">
+        <div className="text-5xl font-bold mb-6">
+          {title.toUpperCase() || DefaultTitle.toUpperCase()}
         </div>
-
-        <div className="hidden lg:block ml-5 mt-12 min-w-90 shadow-lg rounded-xl p-8 h-225">
-          <img
-            className="w-40 h-40 rounded-full object-cover"
-            src={temp}
-            alt="sumayyah"
-          />
-          <div className="mt-5 mb-15">
-            <div className="text-sm">CEO & FOUNDER</div>
-
-            <div className="text-2xl">SUMAYYAH DIN</div>
-          </div>
-
-          {activeCampaign == true ? (
-            <DonationData
-              goal={goal}
-              raised={raised}
-              totalDonations={totalDonations}
+        <div className="flex justify-center">
+          <div className=" w-210  flex flex-col justify-center ">
+            <img
+              src={imageUrl || defaultImg}
+              alt="ui/ux review check"
+              className="rounded-sm shadow-md h-100 w-full object-cover"
             />
-          ) : (
-            <div className="flex w-58 flex-col mb-5">
-              <div className="text-lg font-light">
-                <NumericFormat
-                  value={raised || 0}
-                  thousandSeparator={true}
-                  prefix="$"
-                  decimalScale={2}
-                  displayType="text"
-                />{" "}
-                raised
+            <div className="block lg:hidden px-5 pt-5">
+              {activeCampaign == true ? (
+                <DonationData
+                  goal={goal}
+                  raised={raised}
+                  totalDonations={totalDonations}
+                />
+              ) : (
+                <div className="flex w-58 flex-col mb-5">
+                  <div className="text-lg font-light">
+                    <NumericFormat
+                      value={raised || 0}
+                      thousandSeparator={true}
+                      prefix="$"
+                      decimalScale={2}
+                      displayType="text"
+                    />{" "}
+                    raised
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="text-left md:px-6 lg:px-6 md:w-full">
+              <div className=" sm:w-full md:w-full  lg:py-6  lg:w-6/8">
+                <About description={description} />
+              </div>
+              <div>
+                <DonationForm targetRef={targetRef} />
               </div>
             </div>
-          )}
+          </div>
 
-          <div className="w-73">
-            <button
-              type="button"
-              className="
+          <div className="hidden lg:block ml-5  min-w-90 shadow-lg rounded-xl p-8 h-225">
+            <img
+              className="w-40 h-40 rounded-full object-cover"
+              src={temp}
+              alt="sumayyah"
+            />
+            <div className="mt-5 mb-15">
+              <div className="text-sm">CEO & FOUNDER</div>
+
+              <div className="text-2xl">SUMAYYAH DIN</div>
+            </div>
+
+            {activeCampaign == true ? (
+              <DonationData
+                goal={goal}
+                raised={raised}
+                totalDonations={totalDonations}
+              />
+            ) : (
+              <div className="flex w-58 flex-col mb-5">
+                <div className="text-lg font-light">
+                  <NumericFormat
+                    value={raised || 0}
+                    thousandSeparator={true}
+                    prefix="$"
+                    decimalScale={2}
+                    displayType="text"
+                  />{" "}
+                  raised
+                </div>
+              </div>
+            )}
+
+            <div className="w-73">
+              <button
+                type="button"
+                className="
             text-white
             bg-[#0fa347] 
             hover:bg-[#2bbd62] 
@@ -167,13 +191,13 @@ const Donation = () => {
             mr-1 
             text-md
             "
-              onClick={scrollToTarget}
-            >
-              DONATE NOW
-            </button>
-            <button
-              type="button"
-              className="
+                onClick={scrollToTarget}
+              >
+                DONATE NOW
+              </button>
+              <button
+                type="button"
+                className="
               text-[#0fa347]
               font-medium 
               text-base flex-1 
@@ -188,28 +212,29 @@ const Donation = () => {
                 ml-1 
                 text-md
               "
-              onClick={handleCopy}
-            >
-              {copyText}
-            </button>
-            {donorsCount > 0 && (
-              <div className="flex justify-start items-center mt-5 mb-3">
-                <FaArrowTrendUp
-                  size={35}
-                  color="#DB5758"
-                  className="inline bg-[#edafb0] rounded-full p-1"
-                />{" "}
-                <div className="text-sm font-bold  ml-3 text-[#DB5758]">
-                  {donorsCount} {donorsCount == 1 ? "person " : "people "}
-                  just donated
+                onClick={handleCopy}
+              >
+                {copyText}
+              </button>
+              {donorsCount > 0 && (
+                <div className="flex justify-start items-center mt-5 mb-3">
+                  <FaArrowTrendUp
+                    size={35}
+                    color="#DB5758"
+                    className="inline bg-[#edafb0] rounded-full p-1"
+                  />{" "}
+                  <div className="text-sm font-bold  ml-3 text-[#DB5758]">
+                    {donorsCount} {donorsCount == 1 ? "person " : "people "}
+                    just donated
+                  </div>
                 </div>
+              )}
+              <div className="mt-5">
+                <div className="text-gray-400 ">RECENT DONATIONS</div>
+                <DonationContext.Provider value={donationContextValue}>
+                  <DonationEvents />
+                </DonationContext.Provider>
               </div>
-            )}
-            <div className="mt-5">
-              <div className="text-gray-400 ">RECENT DONATIONS</div>
-              <DonationContext.Provider value={donationContextValue}>
-                <DonationEvents />
-              </DonationContext.Provider>
             </div>
           </div>
         </div>

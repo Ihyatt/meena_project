@@ -55,7 +55,14 @@ export const ManageCampaign = () => {
   };
 
   const handleSave = (event) => {
-    if (!title || !description || !goal || goal <= 0.01 || !imageUrl) {
+    if (
+      !title ||
+      !description ||
+      !goal ||
+      goal <= 0.01 ||
+      !imageUrl ||
+      !closeoutDate
+    ) {
       const errors = [];
       if (!title) {
         errors.push("Title is required.");
@@ -68,6 +75,9 @@ export const ManageCampaign = () => {
       }
       if (!imageUrl) {
         errors.push("Image is required.");
+      }
+      if (!closeoutDate) {
+        errors.push("Closeout Date is required.");
       }
       setErrors(errors);
       return;
