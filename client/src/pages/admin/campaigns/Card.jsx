@@ -50,7 +50,7 @@ export const Campaign = ({ data }) => {
 
       <td className="p-4 border-b border-blue-gray-50 text-xs ">
         <div className="text-xs">
-          {data.closed ? <FormatDate date={data.closed} /> : "N/A"}
+          {data.closeoutDate ? <FormatDate date={data.closeoutDate} /> : "N/A"}
         </div>
       </td>
 

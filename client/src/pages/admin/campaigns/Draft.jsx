@@ -8,6 +8,9 @@ import useCampaignStore from "src/pages/admin/campaigns/store.jsx";
 import ImageUpload from "src/pages/admin/components/ImageUpload";
 import useAuthStore from "src/pages/auth/store";
 import ErrorAlert from "src/components/ErrorAlert";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 
 export const CampaignDraft = () => {
   const [campaignId, setCampaignId] = useState(null);
@@ -17,6 +20,8 @@ export const CampaignDraft = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [closeoutDate, setCloseoutDate] = useState(null);
 
   const descriptioncharactersLimit = 2000;
   const titlecharactersLimit = 100;
@@ -120,6 +125,11 @@ export const CampaignDraft = () => {
       setFile(null);
     });
   };
+  const handleDateChange = (newDate) => {
+    setCloseoutDate(newDate);
+    // You can now use the newDate variable here
+    console.log(newDate); // This will log the selected date object
+  };
 
   const handleTitleChange = (e) => {
     const value = e.target.value;
@@ -146,6 +156,7 @@ export const CampaignDraft = () => {
   };
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+  console.log("here");
   return (
     <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}
@@ -175,6 +186,20 @@ export const CampaignDraft = () => {
               rows="4"
               className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
             ></textarea>
+          </div>
+          <div className="p-2">
+            <label className="block mb-2  text-2xl text-slate-600">
+              Closeout Date
+            </label>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <StaticDatePicker
+                orientation="landscape"
+                // Pass the handleDateChange function to the onChange prop
+                onChange={handleDateChange}
+                // Optionally, pass the closeoutDate to the value prop to control the component
+                value={closeoutDate}
+              />
+            </LocalizationProvider>
           </div>
           <div className="p-2">
             <div className=" w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow   flex items-center justify-between mb-3">

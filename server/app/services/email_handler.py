@@ -29,7 +29,7 @@ def send_receipt_email(donor_id, email_address, amount, email_id):
                     },
                     "To": [
                         {
-                            "Email": "inas.raheema@gmail.com",  # Ensure this is a valid email string
+                            "Email": email_address,  # Ensure this is a valid email string
                             "Name": donor.full_name,  # Ensure this is a string (not None)
                         }
                     ],
@@ -83,7 +83,7 @@ def send_impact_email(donor_id, email_address, campaign_id, email_id):
                     },
                     "To": [
                         {
-                            "Email": "inas.raheema@gmail.com",  # Ensure this is a valid email string
+                            "Email": email_address,  # Ensure this is a valid email string
                             "Name": donor.full_name,  # Ensure this is a string (not None)
                         }
                     ],
@@ -141,7 +141,7 @@ def send_closeout_email(donor_id, email_address, campaign_id, email_id):
                     },
                     "To": [
                         {
-                            "Email": "inas.raheema@gmail.com",  # Ensure this is a valid email string
+                            "Email": email_address,  # Ensure this is a valid email string
                             "Name": donor.full_name,  # Ensure this is a string (not None)
                         }
                     ],

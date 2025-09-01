@@ -48,7 +48,7 @@ class Campaign(db.Model, SoftDeleteMixin):
     is_active = mapped_column(db.Boolean, default=False, nullable=False)
     is_draft = mapped_column(db.Boolean, default=True, nullable=False)
     launched = mapped_column(db.DateTime(timezone=True), nullable=True)
-    closed = mapped_column(db.DateTime(timezone=True), nullable=True)
+    closeoutDate = mapped_column(db.DateTime(timezone=True), nullable=True)
 
     created_at = mapped_column(
         db.DateTime(timezone=True),

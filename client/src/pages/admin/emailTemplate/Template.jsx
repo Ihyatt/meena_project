@@ -13,7 +13,7 @@ export const EmailTemplate = () => {
   const [templateId, setTemplateId] = useState("");
   const [errors, setErrors] = useState([]);
 
-  const subjectCharactersLimit = 50;
+  const subjectCharactersLimit = 100;
   const templateIdCharactersLimit = 255;
 
   const modalRef = useRef();

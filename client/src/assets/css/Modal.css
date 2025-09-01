@@ -47,6 +47,7 @@
   position: relative;
   border: 5px;
   box-shadow: 2px 4px 20px 0px rgba(0, 0, 0, 0.75);
+  overflow-y: auto;
 }
 
 .manage-donor-modal {
@@ -61,5 +62,10 @@
 
 
 
-
+.modal-content-scroll {
+  /* max-height: 80vh; */
+  /* Set a maximum height relative to the viewport */
+  /* overflow-y: auto; */
+  /* Enable vertical scrolling */
+}
 

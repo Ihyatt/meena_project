@@ -42,7 +42,7 @@ class CampaignSchema(SQLAlchemyAutoSchema):
     is_active = fields.Boolean(data_key="isActive")
     is_draft = fields.Boolean(data_key="isDraft")
     launched = fields.DateTime()
-    closed = fields.DateTime()
+    closeoutDate = fields.DateTime()
 
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")
     updated_at = fields.DateTime(dump_only=True, data_key="updatedAt")

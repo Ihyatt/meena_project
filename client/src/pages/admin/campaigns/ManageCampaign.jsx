@@ -8,6 +8,9 @@ import ErrorAlert from "src/components/ErrorAlert";
 
 import useCampaignStore from "src/pages/admin/campaigns/store";
 import Loading from "src/components/Loading";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 
 export const ManageCampaign = () => {
   const location = useLocation();
@@ -22,6 +25,7 @@ export const ManageCampaign = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState([]);
+  const [closeoutDate, setCloseoutDate] = useState(null);
 
   const { fetchCampaign, saveCampaign, isLoading, upload } = useCampaignStore();
 
@@ -88,7 +92,11 @@ export const ManageCampaign = () => {
       window.alert(`Title cannot exceed ${titlecharactersLimit} characters.`);
     }
   };
-
+  const handleDateChange = (newDate) => {
+    setCloseoutDate(newDate);
+    // You can now use the newDate variable here
+    console.log(newDate); // This will log the selected date object
+  };
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
     if (value.length <= descriptioncharactersLimit) {
@@ -149,6 +157,20 @@ export const ManageCampaign = () => {
               rows="4"
               className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
             ></textarea>
+          </div>
+          <div className="p-2">
+            <label className="block mb-2  text-2xl text-slate-600">
+              Closeout Date
+            </label>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <StaticDatePicker
+                orientation="landscape"
+                // Pass the handleDateChange function to the onChange prop
+                onChange={handleDateChange}
+                // Optionally, pass the closeoutDate to the value prop to control the component
+                value={closeoutDate}
+              />
+            </LocalizationProvider>
           </div>
           <div className="p-2">
             <div className=" w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow   flex items-center justify-between mb-3">

@@ -85,7 +85,7 @@ const DonationForm = ({ targetRef }) => {
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
   return (
-    <div className="p-10 bg-white rounded-xl shadow-lg mt-6 w-full lg:w-7/8 ">
+    <div className="p-10 md:p-20 lg:p-20 bg-white rounded-xl shadow-lg mt-6 w-full lg:w-7/8 ">
       <div className="text-2xl font-bold">Select Gift Amount</div>
       <div className="mb-3 text-gray-400 text-xs">_ _ _</div>
       <form onSubmit={handleDonateClick}>
@@ -147,7 +147,7 @@ const DonationForm = ({ targetRef }) => {
             value={emailAddress}
             onChange={(e) => setEmailAddress(e.target.value)}
             placeholder="Email"
-            className="border-b border-gray-400 w-3/4 p-2 mb-2 focus:outline-none"
+            className="border-b border-gray-400  p-2 mb-2 focus:outline-none"
           />
           <input
             required
@@ -156,7 +156,7 @@ const DonationForm = ({ targetRef }) => {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="Name"
-            className="border-b border-gray-400 w-3/4 p-2 mb-2 focus:outline-none"
+            className="border-b border-gray-400  p-2 mb-2 focus:outline-none"
           />
         </div>
 

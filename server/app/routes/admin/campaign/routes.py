@@ -53,7 +53,7 @@ def fetch_campaigns():
                 "raised",
                 "is_active",
                 "launched",
-                "closed",
+                "closeoutDate",
                 "total_donations",
             ],
         )
@@ -96,7 +96,7 @@ def fetch_campaign(campaign_id):
                 "is_draft",
                 "total_donations",
                 "launched",
-                "closed",
+                "closeoutDate",
                 "created_at",
             ]
         )
@@ -151,7 +151,7 @@ def save_campaign(campaign_id):
                 "is_draft",
                 "total_donations",
                 "launched",
-                "closed",
+                "closeoutDate",
                 "created_at",
             ]
         )
@@ -241,7 +241,7 @@ def launch_campaign(campaign_id):
                 "is_draft",
                 "total_donations",
                 "launched",
-                "closed",
+                "closeoutDate",
                 "created_at",
             ]
         )
@@ -253,7 +253,7 @@ def launch_campaign(campaign_id):
         now = datetime.now(timezone.utc)
         if active_campaign is not None:
             active_campaign.is_active = False
-            active_campaign.closed = now
+            active_campaign.closeoutDate = now
             db.session.commit()
 
         campaign.is_active = True
@@ -320,7 +320,7 @@ def close_campaign(campaign_id):
                 "is_draft",
                 "total_donations",
                 "launched",
-                "closed",
+                "closeoutDate",
                 "created_at",
             ]
         )
@@ -328,7 +328,7 @@ def close_campaign(campaign_id):
         now = datetime.now(timezone.utc)
         campaign = Campaign.query.get_or_404(campaign_id)
         campaign.is_active = False
-        campaign.closed = now
+        campaign.closeoutDate = now
 
         db.session.commit()
 
@@ -463,7 +463,7 @@ def share_draft(campaign_id):
                 "is_active",
                 "is_draft",
                 "launched",
-                "closed",
+                "closeoutDate",
                 "total_donations",
                 "created_at",
             ]
