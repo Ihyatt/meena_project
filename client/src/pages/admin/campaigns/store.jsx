@@ -131,6 +131,14 @@ const useCampaignStore = create(
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
+          console.log("Saving campaign...", {
+            campaignId,
+
+            title,
+            description,
+            goal,
+            closeoutDate,
+          });
 
           const response = await fetch(
             `${backednUrl}/admins/campaigns/${campaignId}/save`,

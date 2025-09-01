@@ -118,7 +118,7 @@ def dashboard():
                 "raised",
                 "is_active",
                 "launched",
-                "closeoutDate",
+                "closeout_date",
                 "total_donations",
             ],
         )

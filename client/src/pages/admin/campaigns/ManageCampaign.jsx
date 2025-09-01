@@ -83,7 +83,7 @@ export const ManageCampaign = () => {
       return;
     }
 
-    saveCampaign(campaignId, title, description, goal, closeoutDate).then(
+    saveCampaign(campaignId, title, description, goal, closeoutDate.$d).then(
       (data) => {
         setTitle(data.title);
         setDescription(data.description);

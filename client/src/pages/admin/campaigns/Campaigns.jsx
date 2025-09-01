@@ -28,7 +28,9 @@ const Campaigns = () => {
   const { fetchCampaigns, campaigns, isLoading } = useCampaignStore();
 
   useEffect(() => {
+    console.log("Fetching campaigns...");
     fetchCampaigns();
+    console.log("Campaigns fetched:", campaigns);
   }, [fetchCampaigns]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 20;
@@ -48,6 +50,7 @@ const Campaigns = () => {
   const goToPreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
+  console.log("campaigns", campaigns);
 
   return (
     <div className=" my-15 mx-10 bg-white shadow-md rounded-lg">

@@ -14,7 +14,8 @@ from flask import Flask, request, jsonify
 import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
-
+from dateutil import parser
+from dateutil.tz import tzutc
 
 from sqlalchemy.orm.exc import StaleDataError
 
@@ -28,6 +29,7 @@ from app.schemas.image import ImageSchema
 from app.utils.constants import EmailType
 from app.utils.decorators import admin_required
 from app.utils.image_validator import allowed_mime_type
+from marshmallow import EXCLUDE
 
 
 @campaign_bp.route("/", methods=["GET"])
@@ -53,7 +55,7 @@ def fetch_campaigns():
                 "raised",
                 "is_active",
                 "launched",
-                "closeoutDate",
+                "closeout_date",
                 "total_donations",
             ],
         )
@@ -96,7 +98,7 @@ def fetch_campaign(campaign_id):
                 "is_draft",
                 "total_donations",
                 "launched",
-                "closeoutDate",
+                "closeout_date",
                 "created_at",
             ]
         )
@@ -140,6 +142,7 @@ def save_campaign(campaign_id):
         campaign = Campaign.query.get_or_404(campaign_id)
 
         campaign_schema = CampaignSchema(
+            unknown=EXCLUDE,
             only=[
                 "id",
                 "title",
@@ -149,17 +152,21 @@ def save_campaign(campaign_id):
                 "image_url",
                 "is_active",
                 "is_draft",
-                "total_donations",
                 "launched",
-                "closeoutDate",
+                "closeout_date",
+                "total_donations",
                 "created_at",
-            ]
+            ],
         )
         validated_data = campaign_schema.load(data)
+        date_string = data["closeoutDate"]
+        dt_pacific = parser.parse(date_string)
+        dt_utc = dt_pacific.astimezone(tzutc())
 
         campaign.title = validated_data["title"]
         campaign.description = validated_data["description"]
         campaign.goal = validated_data["goal"]
+        campaign.closeout_date = dt_utc
 
         db.session.commit()
         current_app.logger.info(f"Campaign '{campaign_id}' saved successfully.")
@@ -241,7 +248,7 @@ def launch_campaign(campaign_id):
                 "is_draft",
                 "total_donations",
                 "launched",
-                "closeoutDate",
+                "closeout_date",
                 "created_at",
             ]
         )
@@ -253,7 +260,7 @@ def launch_campaign(campaign_id):
         now = datetime.now(timezone.utc)
         if active_campaign is not None:
             active_campaign.is_active = False
-            active_campaign.closeoutDate = now
+            active_campaign.closeout_date = now
             db.session.commit()
 
         campaign.is_active = True
@@ -320,7 +327,7 @@ def close_campaign(campaign_id):
                 "is_draft",
                 "total_donations",
                 "launched",
-                "closeoutDate",
+                "closeout_date",
                 "created_at",
             ]
         )
@@ -328,7 +335,7 @@ def close_campaign(campaign_id):
         now = datetime.now(timezone.utc)
         campaign = Campaign.query.get_or_404(campaign_id)
         campaign.is_active = False
-        campaign.closeoutDate = now
+        campaign.closeout_date = now
 
         db.session.commit()
 
@@ -453,6 +460,7 @@ def share_draft(campaign_id):
         campaign.is_draft = False
 
         campaign_schema = CampaignSchema(
+            unknown=EXCLUDE,
             only=[
                 "id",
                 "title",
@@ -463,16 +471,20 @@ def share_draft(campaign_id):
                 "is_active",
                 "is_draft",
                 "launched",
-                "closeoutDate",
+                "closeout_date",
                 "total_donations",
                 "created_at",
-            ]
+            ],
         )
         validated_data = campaign_schema.load(data)
+        date_string = data["closeoutDate"]
+        dt_pacific = parser.parse(date_string)
+        dt_utc = dt_pacific.astimezone(tzutc())
 
         campaign.title = validated_data["title"]
         campaign.description = validated_data["description"]
         campaign.goal = validated_data["goal"]
+        campaign.closeout_date = dt_utc
 
         db.session.commit()
 

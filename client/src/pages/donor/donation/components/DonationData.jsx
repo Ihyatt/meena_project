@@ -14,7 +14,7 @@ const DonationData = ({ goal, raised, totalDonations }) => {
   return (
     <div className="flex w-full items-center justify-between font-light mb-4">
       <div>
-        <div className="sm:text-xl md:text-xl lg:text-lg lg:text-lg">
+        <div className="text-xl md:text-xl lg:text-lg lg:text-lg">
           <NumericFormat
             value={raised || 0}
             thousandSeparator={true}
@@ -24,7 +24,7 @@ const DonationData = ({ goal, raised, totalDonations }) => {
           />{" "}
           raised
         </div>
-        <div className="sm:text-lg md:text-lg lg:text-sm text-gray-400 font-light ">
+        <div className="text-lg md:text-lg lg:text-sm text-gray-400 font-light ">
           <NumericFormat
             value={goal}
             thousandSeparator={true}

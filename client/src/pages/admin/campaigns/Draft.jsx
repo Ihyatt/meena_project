@@ -20,7 +20,7 @@ export const CampaignDraft = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
+
   const [closeoutDate, setCloseoutDate] = useState(null);
 
   const descriptioncharactersLimit = 2000;
@@ -77,10 +77,13 @@ export const CampaignDraft = () => {
       if (!imageUrl) {
         errors.push("Image is required.");
       }
+      if (!closeoutDate) {
+        errors.push("Closeout Date is required.");
+      }
       setErrors(errors);
       return;
     }
-    shareCampaignDraft(campaignId, title, description, goal, closeoutDate);
+    shareCampaignDraft(campaignId, title, description, goal, closeoutDate.$d);
     navigate(-1);
     event.preventDefault();
   };
@@ -114,7 +117,7 @@ export const CampaignDraft = () => {
       return;
     }
 
-    saveCampaign(campaignId, title, description, goa, closeoutDatel).then(
+    saveCampaign(campaignId, title, description, goal, closeoutDate.$d).then(
       (data) => {
         setTitle(data.title);
         setDescription(data.description);
