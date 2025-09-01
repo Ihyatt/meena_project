@@ -53,7 +53,7 @@ def dashboard():
 
         donations = (
             Donation.query.filter(Donation.status == DonationStatus.SUCCEEDED)
-            .order_by(Donation.created_at.desc())
+            .order_by(Donation.created_at.asc())
             .all()
         )
 
