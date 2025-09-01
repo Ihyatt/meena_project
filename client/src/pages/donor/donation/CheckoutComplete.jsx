@@ -20,15 +20,15 @@ const CheckoutComplete = () => {
     isLoading && <Loading />;
   }
   if (status == "paid") {
-    return <div className="p-40"> Success! Thank you for your donation</div>;
+    return <div> Success! Thank you for your donation</div>;
   } else if (status === "failed") {
-    <div className="p-40">
+    <div>
       {" "}
       Your payment has failed. Please try again later or contact Stripe.com
     </div>;
   }
 
-  return <div className="p-40">Something went wrong.</div>;
+  return <div>Something went wrong.</div>;
 };
 
 export default CheckoutComplete;

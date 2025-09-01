@@ -4,7 +4,7 @@ import { Header } from "src/pages/donor/donation/components/Header";
 
 const DonationLayout = () => {
   return (
-    <div>
+    <div className="mx-auto w-full max-w-7xl px-8">
       <Header />
       <Outlet />
       <Footer />
