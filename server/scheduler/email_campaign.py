@@ -8,6 +8,7 @@ from app.models.email_subscription import EmailSubscription
 from app.models.campaign import Campaign
 from app.services.email_handler import send_impact_email, send_closeout_email
 from datetime import datetime
+from flask import jsonify, request, current_app, Response, json, stream_with_context
 
 
 def impact_email():
@@ -30,7 +31,7 @@ def impact_email():
 
             data = {
                 "donor_id": donor.id,
-                "email_address": donor.email_address,
+                "email_address": subscription.email_addresss,
                 "campaign_id": active_campaigns.id,
                 "email_id": email.id,
             }
@@ -64,7 +65,7 @@ def closeout_email():
 
         data = {
             "donor_id": donor.id,
-            "email_address": donor.email_address,
+            "email_address": subscription.email_address,
             "campaign_id": active_campaigns.id,
             "email_id": email.id,
         }

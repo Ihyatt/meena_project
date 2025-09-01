@@ -201,7 +201,7 @@ def create_checkout_session():
             idempotency_key=payment_transaction.idempotency_key,
             donor_id=donor.id,
             donation_id=donation.id,
-            email_address=donor.email_address,
+            email_address=donor.email_subscription.email_address,
             lat=data.get("lat", ""),
             lng=data.get("lng", ""),
         )
