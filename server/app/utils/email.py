@@ -1,5 +1,3 @@
-from app.database import db
-
 from app.models.email import Email
 
 

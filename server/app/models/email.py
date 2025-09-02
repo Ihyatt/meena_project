@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime, timezone
 from sqlalchemy.orm import mapped_column, relationship
 
 from app.database import db

@@ -1,7 +1,3 @@
-import { useEffect, useRef, useState, useMemo } from "react";
-import useDonorStore from "src/pages/admin/donors/store";
-import FormatDate from "src/components/FormatDate";
-import DonationCard from "src/pages/admin/donors/DonationCard";
 import EmailSubscriptionCard from "src/pages/admin/donors/EmailSubscriptionCard";
 
 import {
@@ -12,21 +8,18 @@ import {
   CardFooter,
 } from "@material-tailwind/react";
 
-import useAdminStore from "src/pages/admin/store";
-import Donor from "src/pages/admin/donors/Card";
-
-const TABLE_HEAD = [
-  "Email Address",
-  "Queued",
-  "Sent",
-  "Opened",
-  "Blocked",
-  "Bounced",
-  "Spam",
-  "status",
-];
-
 const emailSubscription = ({ emailSubscription }) => {
+  const TABLE_HEAD = [
+    "Email Address",
+    "Queued",
+    "Sent",
+    "Opened",
+    "Blocked",
+    "Bounced",
+    "Spam",
+    "status",
+  ];
+
   return (
     <div className=" m-4 bg-white shadow-md rounded-lg">
       <Card className="h-full w-full shadow-none">

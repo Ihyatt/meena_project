@@ -1,36 +1,26 @@
-import uuid
-from app.database import db
+# Standard library imports
+from datetime import datetime, timedelta, timezone
 
-from flask import current_app
-from app import create_app
-from app.utils.constants import (
-    SubscriptionStatus,
-    EmailType,
-    JobStatus,
-    TaskName,
-    PaymentStatus,
-)
-from app.utils.email import create_email
-from app.models.email_subscription import EmailSubscription
-from app.models.campaign import Campaign
-from app.models.task import Task
-from app.models.payment_transaction import PaymentTransaction
-from app.models.donation import Donation
+# Third-party imports
 import stripe
-
-from app.models.task import Task
-from app.models.email import Email
-from app.services.email_handler import send_impact_email, send_closeout_email
-from datetime import datetime
-from flask import jsonify, request, current_app, Response, json, stream_with_context
+from flask import current_app
 from sqlalchemy import func
-from app.utils.constants import DonationStatus
-from datetime import datetime, timezone, timedelta
 from sqlalchemy.orm.exc import StaleDataError
-
-
-import random
 from tenacity import retry, wait_fixed, wait_random, stop_after_attempt
+
+# Local application imports
+from app import create_app
+from app.database import db
+from app.models.campaign import Campaign
+from app.models.donation import Donation
+from app.models.payment_transaction import PaymentTransaction
+from app.models.task import Task
+from app.utils.constants import (
+    DonationStatus,
+    JobStatus,
+    PaymentStatus,
+    TaskName,
+)
 
 
 def reconcile_payments():

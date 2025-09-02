@@ -1,20 +1,26 @@
+// React and hooks
 import React, { useRef, useEffect, useState } from "react";
 
-import useDonateStore from "src/pages/donor/store";
-import Loading from "src/components/Loading";
+// External libraries
 import { NumericFormat } from "react-number-format";
+import { FaArrowTrendUp } from "react-icons/fa6";
+
+// Local components and assets
+import Loading from "src/components/Loading";
 import DonationEvents from "src/components/Events";
 import About from "src/pages/donor/donation/components/About";
 import defaultImg from "src/assets/images/defaultImg.jpg";
 import temp from "src/assets/images/temp.png";
 import din from "src/assets/images/din.png";
-
-import { DefaultTitle } from "src/utils/constants";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
-import DonationContext from "src/pages/donor/donation/components/DonationContext";
-import { FaArrowTrendUp } from "react-icons/fa6";
 
+// Context and state management
+import useDonateStore from "src/pages/donor/store";
+import DonationContext from "src/pages/donor/donation/components/DonationContext";
+
+// Constants and environment variables
+import { DefaultTitle } from "src/utils/constants";
 const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
 const Donation = () => {

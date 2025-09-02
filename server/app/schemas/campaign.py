@@ -1,8 +1,8 @@
-from marshmallow import (
-    fields,
-    validate,
-)
+# Third-party imports
+from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
+# Local application imports
 from app.models.campaign import Campaign
 
 

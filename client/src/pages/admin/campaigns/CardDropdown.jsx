@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
-
+// 1. React and Router
 import { Link, useLocation } from "react-router-dom";
 
+// 2. UI Component Libraries
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import useCampaignStore from "src/pages/admin/campaigns/store";
+// 3. Icons
 import { RiPencilLine } from "react-icons/ri";
+
+// 4. State Management
+import useCampaignStore from "src/pages/admin/campaigns/store";
 
 export function CampaignDropdown({ data }) {
   const { launchCampaign, closeCampaign } = useCampaignStore();

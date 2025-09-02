@@ -1,8 +1,8 @@
-from marshmallow import (
-    fields,
-    validate,
-)
+# Third-party imports
+from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
+# Local application imports
 from app.models.email_subscription import EmailSubscription
 from app.utils.constants import SubscriptionStatus
 

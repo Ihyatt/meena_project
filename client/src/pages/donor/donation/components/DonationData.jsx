@@ -1,5 +1,7 @@
+// 1. React
 import React, { useState, useMemo } from "react";
 
+// 2. External Libraries
 import { NumericFormat } from "react-number-format";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";

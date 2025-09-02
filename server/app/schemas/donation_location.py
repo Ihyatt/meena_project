@@ -1,8 +1,12 @@
+# Standard library imports
+from decimal import Decimal
+
+# Third-party imports
 from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from decimal import Decimal
+
+# Local application imports
 from app.models.donation_location import DonationLocation
-from app.utils.constants import DonationStatus
 
 
 class DonationLocationSchema(SQLAlchemyAutoSchema):

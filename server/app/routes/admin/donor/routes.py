@@ -1,20 +1,21 @@
-from flask import jsonify, current_app
-from flask import request, jsonify, current_app
+# Standard library imports
+# (None in this specific list)
 
+# Third-party imports
+from flask import current_app, jsonify, request
 from flask_jwt_extended import jwt_required
-from werkzeug.exceptions import NotFound
-from app.database import db
-from app.routes.admin.donor import donor_bp
-from app.utils.decorators import admin_required
-from app.models.user import User
-
-from app.schemas.user import DonorSchema
-from app.schemas.email_subscription import EmailSubscriptionSchema
-from app.utils.constants import SubscriptionStatus
-from sqlalchemy.orm.exc import StaleDataError
-
-
 from marshmallow import EXCLUDE
+from marshmallow.exceptions import ValidationError
+from sqlalchemy.orm.exc import StaleDataError
+from werkzeug.exceptions import NotFound
+
+# Local application imports
+from app.database import db
+from app.models.user import User
+from app.routes.admin.donor import donor_bp
+from app.schemas.user import DonorSchema
+from app.utils.constants import SubscriptionStatus
+from app.utils.decorators import admin_required
 
 
 @donor_bp.route("/", methods=["GET"])

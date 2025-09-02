@@ -1,23 +1,21 @@
-import random
+# Standard library imports
 import json
+import random
 import time
+from datetime import datetime, timedelta, timezone
 
-from datetime import datetime, timezone, timedelta
-
+# Local application imports
+from app import create_app
+from app.services.email_handler import (
+    send_closeout_email,
+    send_impact_email,
+    send_receipt_email,
+)
+from app.utils.constants import EmailType
 from workers.redis_client import redis_access
 from workers.utils import backoff
 
-
-from app.services.email_handler import (
-    send_receipt_email,
-    send_impact_email,
-    send_closeout_email,
-)
-
-from app import create_app
-
-from app.utils.constants import EmailType
-
+# Constants
 EMAIL_DEAD_LETTER_QUEUE = "email_dlq"
 EMAIL_RETRY_QUEUE = "email_retry_queue"
 EMAIL_PROCESS_QUEUE = "email_process_queue"

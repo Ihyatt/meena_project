@@ -1,7 +1,5 @@
 from app.models.payment_transaction import PaymentTransaction
 
-from app.database import db
-
 
 def create_payment_transaction(
     donation_id, donor_id, amount, idempotency_key, payment_intent_id

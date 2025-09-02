@@ -1,35 +1,27 @@
-import base64
-import io
+# Standard library imports
+import os
+import uuid
 from datetime import datetime, timezone
 
-import requests
+# Third-party imports
 from flask import current_app, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from marshmallow import EXCLUDE
 from marshmallow.exceptions import ValidationError
-from werkzeug.exceptions import NotFound
-from werkzeug.utils import secure_filename
-from types import SimpleNamespace
-import os, uuid
-from flask import Flask, request, jsonify
-import boto3
-from botocore.exceptions import ClientError
-from dotenv import load_dotenv
 from dateutil import parser
 from dateutil.tz import tzutc
-
 from sqlalchemy.orm.exc import StaleDataError
+from werkzeug.exceptions import NotFound
 
+# Local application imports
 from app.database import db
 from app.models.campaign import Campaign
-from app.models.user import User
 from app.models.image import Image
 from app.routes.admin.campaign import campaign_bp
 from app.schemas.campaign import CampaignSchema
 from app.schemas.image import ImageSchema
-from app.utils.constants import EmailType
 from app.utils.decorators import admin_required
 from app.utils.image_validator import allowed_mime_type
-from marshmallow import EXCLUDE
 
 
 @campaign_bp.route("/", methods=["GET"])

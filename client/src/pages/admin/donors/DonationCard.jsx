@@ -1,10 +1,4 @@
-import { CampaignDropdown } from "src/pages/admin/campaigns/CardDropdown";
-import { NumericFormat } from "react-number-format";
-import EllipsisText from "react-ellipsis-text";
 import FormatDate from "src/components/FormatDate";
-
-import { Chip } from "@material-tailwind/react";
-import { RiPencilLine } from "react-icons/ri";
 
 const DonationCard = ({ data }) => {
   return (

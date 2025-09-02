@@ -1,23 +1,30 @@
+// React and hooks
 import React, { useEffect, useState } from "react";
-import useAdminStore from "src/pages/admin/store";
-import DonationsHeatMap from "src/pages/admin/charts/HeatMap";
-import ScatterChart from "src/pages/admin/charts/ScatterChart";
-import BarChart from "src/pages/admin/charts/BarChart";
-import LineChart from "src/pages/admin/charts/LineChart";
-import DonationEvents from "src/components/Events";
-import { NumericFormat } from "react-number-format";
-import DonationContext from "src/pages/donor/donation/components/DonationContext";
-import PieChart from "src/pages/admin/charts/PieChart";
+
+// Icons
 import { FaArrowTrendUp } from "react-icons/fa6";
-
-import Loading from "src/components/Loading";
-
 import {
   RiHandHeartFill,
   RiMegaphoneFill,
   RiMoneyDollarCircleFill,
   RiUserHeartFill,
 } from "react-icons/ri";
+
+// External libraries
+import { NumericFormat } from "react-number-format";
+
+// Local components and charts
+import DonationsHeatMap from "src/pages/admin/charts/HeatMap";
+import ScatterChart from "src/pages/admin/charts/ScatterChart";
+import BarChart from "src/pages/admin/charts/BarChart";
+import LineChart from "src/pages/admin/charts/LineChart";
+import PieChart from "src/pages/admin/charts/PieChart";
+import DonationEvents from "src/components/Events";
+import Loading from "src/components/Loading";
+
+// Context and state management
+import useAdminStore from "src/pages/admin/store";
+import DonationContext from "src/pages/donor/donation/components/DonationContext";
 
 const Dashboard = () => {
   const [donationsLocation, setDonationsLocation] = useState([]);

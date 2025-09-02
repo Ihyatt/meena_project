@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { RiGift2Line } from "react-icons/ri";
-import TimeAgo from "src/pages/admin/utils/TimeAgo";
-import { useContext } from "react";
+// 1. React imports
+import React, { useState, useEffect, useContext } from "react";
 
+// 2. External library imports
+import { RiGift2Line } from "react-icons/ri";
+import TimeAgo from "src/components/TimeAgo"; // This is likely an external or shared component
+
+// 3. Context/Utility imports
 import DonationContext from "src/pages/donor/donation/components/DonationContext";
 
+// 4. Environment variables
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 const DonationEvents = () => {

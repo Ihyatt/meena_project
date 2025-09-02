@@ -1,7 +1,11 @@
+// Zustand and Middleware
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
+// State Management
 import useAuthStore from "src/pages/auth/store";
 
+// Environment Variables
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 const useCampaignStore = create(

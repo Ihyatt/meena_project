@@ -1,8 +1,10 @@
+# Standard library imports
 import uuid
 
+# Third-party imports
 from sqlalchemy.orm import mapped_column, relationship
-from datetime import timezone
 
+# Local application imports
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
 

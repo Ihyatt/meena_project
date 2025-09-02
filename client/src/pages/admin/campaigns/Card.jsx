@@ -1,10 +1,13 @@
-import { CampaignDropdown } from "src/pages/admin/campaigns/CardDropdown";
+// External Libraries
 import { NumericFormat } from "react-number-format";
 import EllipsisText from "react-ellipsis-text";
-import FormatDate from "src/components/FormatDate";
 
+// UI Libraries (Material Tailwind)
 import { Chip } from "@material-tailwind/react";
-import { RiPencilLine } from "react-icons/ri";
+
+// Local Components
+import { CampaignDropdown } from "src/pages/admin/campaigns/CardDropdown";
+import FormatDate from "src/components/FormatDate";
 
 export const Campaign = ({ data }) => {
   return (

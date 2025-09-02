@@ -1,7 +1,13 @@
+// 1. React
 import React, { useEffect, useState } from "react";
+
+// 2. React Router
 import { useLocation, Link } from "react-router-dom";
 
+// 3. Local Components
 import Loading from "src/components/Loading";
+
+// 4. State Management
 import useDonateStore from "src/pages/donor/store";
 
 const CheckoutComplete = () => {

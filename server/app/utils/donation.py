@@ -1,7 +1,9 @@
-from app.models.donation import Donation
-
+# Third-party imports
 from flask import current_app
+
+# Local application imports
 from app.database import db
+from app.models.donation import Donation
 
 
 def create_donation(donor_id, amount, is_anonymous):

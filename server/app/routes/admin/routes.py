@@ -1,24 +1,22 @@
-from flask import jsonify, current_app
+# Standard library imports
+from collections import defaultdict
+from datetime import datetime, timezone
+
+# Third-party imports
+from flask import current_app, jsonify
 from flask_jwt_extended import jwt_required
-from marshmallow.exceptions import ValidationError
-from werkzeug.exceptions import NotFound
+from sqlalchemy import func
+
+# Local application imports
 from app.database import db
-from app.utils.constants import PaymentStatus
-from app.routes.admin import admin_bp
-from app.utils.decorators import admin_required
-from app.models.user import User
+from app.models.campaign import Campaign
 from app.models.donation import Donation
 from app.models.donation_location import DonationLocation
-from app.models.campaign import Campaign
-from app.models.payment_transaction import PaymentTransaction
-from app.schemas.donation import DonationSchema
-from app.schemas.user import DonorSchema
+from app.routes.admin import admin_bp
 from app.schemas.campaign import CampaignSchema
 from app.schemas.donation_location import DonationLocationSchema
 from app.utils.constants import DonationStatus
-from datetime import datetime, timezone
-from collections import defaultdict
-from sqlalchemy import func
+from app.utils.decorators import admin_required
 
 
 @admin_bp.route("/", methods=["GET"])

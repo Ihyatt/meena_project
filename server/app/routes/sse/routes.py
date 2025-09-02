@@ -1,22 +1,18 @@
-from app.routes.sse import sse_bp
-import uuid
-import stripe
-from app.routes.donation import donation_bp
-from marshmallow import EXCLUDE
-import uuid
-from app.database import db
-from redis import Redis
-
-from sqlalchemy.orm.exc import StaleDataError
-
-from app.utils.constants import (
-    DONATION_NOTIFICATIONS_CHANNEL,
-)
+# Standard library imports
+import json
 from datetime import datetime, timezone
 
-from flask import jsonify, request, current_app, Response, json, stream_with_context
+# Third-party imports
+import stripe
+from flask import current_app, jsonify, request, Response, stream_with_context
+from redis import Redis
+from sqlalchemy.orm.exc import StaleDataError
 
+# Local application imports
+from app.database import db
 from app.models.donation_notification import DonationNotification
+from app.routes.sse import sse_bp
+from app.utils.constants import DONATION_NOTIFICATIONS_CHANNEL
 
 
 @sse_bp.route("/init", methods=["GET"])

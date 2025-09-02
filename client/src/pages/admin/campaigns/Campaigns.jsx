@@ -1,7 +1,11 @@
+// 1. React hooks and library imports
 import { useEffect, useState, useMemo } from "react";
 
+// 2. Local components
 import { Campaign } from "src/pages/admin/campaigns/Card";
+import Loading from "src/components/Loading";
 
+// 3. State management or other utilities
 import useCampaignStore from "src/pages/admin/campaigns/store.jsx";
 
 import {
@@ -54,6 +58,8 @@ const Campaigns = () => {
 
   return (
     <div className=" my-15 mx-10 bg-white shadow-md rounded-lg">
+      {isLoading && <Loading />}
+
       <Card className="h-full w-full shadow-none">
         <CardHeader floated={false} shadow={false} className="rounded-none ">
           <div className="ml-4 flex items-center justify-between gap-8">

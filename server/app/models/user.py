@@ -1,9 +1,11 @@
+# Standard library imports
 import uuid
 
+# Third-party imports
 from sqlalchemy.orm import mapped_column, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime, timezone
 
+# Local application imports
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
 

@@ -1,8 +1,9 @@
+# Third-party imports
+from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from marshmallow import fields, validate
-from app.models.payment_transaction import PaymentTransaction
-from app.utils.constants import PaymentStatus
 
+# Local application imports
+from app.models.image import Image
 
 class PaymentTransactionSchema(SQLAlchemyAutoSchema):
     class Meta:

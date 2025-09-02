@@ -1,6 +1,9 @@
+# Third-party imports
 from marshmallow import fields, validate
 from marshmallow_enum import EnumField
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
+# Local application imports
 from app.models.email import Email
 from app.utils.constants import EmailStatus, EmailType
 

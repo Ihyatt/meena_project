@@ -1,15 +1,17 @@
+# Standard library imports
+import json
 import uuid
-from app.database import db
-
-from flask import current_app
-from app import create_app
-from app.utils.constants import SubscriptionStatus, EmailType
-from app.utils.email import create_email
-from app.models.email_subscription import EmailSubscription
-from app.models.campaign import Campaign
-from app.services.email_handler import send_impact_email, send_closeout_email
 from datetime import datetime, timezone
-from flask import jsonify, request, current_app, Response, json, stream_with_context
+
+# Third-party imports
+from flask import current_app
+
+# Local application imports
+from app.database import db
+from app.models.campaign import Campaign
+from app.models.email_subscription import EmailSubscription
+from app.utils.constants import EmailType, SubscriptionStatus
+from app.utils.email import create_email
 
 
 def impact_email():

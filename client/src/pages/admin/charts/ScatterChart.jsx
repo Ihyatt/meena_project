@@ -7,11 +7,10 @@ import {
   Legend, // Import Legend
   TimeScale,
 } from "chart.js";
-import { format } from "date-fns"; // ✅ Add this import statement
+import { format } from "date-fns";
 import "chartjs-adapter-date-fns";
 import { Bubble } from "react-chartjs-2";
 
-// ✅ Correctly register all necessary components and scales
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend, TimeScale);
 
 const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {

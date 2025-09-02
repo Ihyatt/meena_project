@@ -1,14 +1,17 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-
+// Stripe imports
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+
+// Local components
 import Loading from "src/components/Loading";
+
+// State management
 import useDonateStore from "src/pages/donor/store";
 
+// Environment variables
 const stripePublishableKey = import.meta.env.VITE_STRIPE_PK;
 
 const Checkout = () => {

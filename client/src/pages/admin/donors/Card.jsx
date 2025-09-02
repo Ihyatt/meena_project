@@ -1,6 +1,8 @@
-import { NumericFormat } from "react-number-format";
+// React and Router
 import { Link, useLocation } from "react-router-dom";
 
+// External Libraries
+import { NumericFormat } from "react-number-format";
 import { RiPencilLine } from "react-icons/ri";
 
 const Donor = ({ data }) => {

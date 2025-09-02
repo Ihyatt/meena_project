@@ -1,9 +1,13 @@
+// React and hooks
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { RiInstagramLine } from "react-icons/ri";
+
+// Local components and state
 import ErrorAlert from "src/components/ErrorAlert";
-import { Link, useLocation } from "react-router-dom";
 import useDonateStore from "src/pages/donor/store";
+
+// Router
+import { Link } from "react-router-dom";
 
 const DonationForm = ({ targetRef }) => {
   const [customAmount, setCustomAmount] = useState("");
@@ -17,12 +21,7 @@ const DonationForm = ({ targetRef }) => {
   const [activeButton, setActiveButton] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isEmailSubscription, setIsEmailSubscription] = useState(false);
-  const {
-    fetchClientSecret,
-    isLoading,
-    createPaymentIntent,
-    setPaymentIntentId,
-  } = useDonateStore();
+  const { createPaymentIntent, setPaymentIntentId } = useDonateStore();
 
   const handleClick = (buttonId, amount) => {
     setActiveButton(buttonId);

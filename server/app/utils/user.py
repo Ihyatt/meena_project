@@ -1,5 +1,4 @@
 from app.models.user import User
-from app.models.email_subscription import EmailSubscription
 from app.utils.constants import SubscriptionStatus
 from app.database import db
 from werkzeug.exceptions import NotFound

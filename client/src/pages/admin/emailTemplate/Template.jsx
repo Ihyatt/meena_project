@@ -1,12 +1,19 @@
+// External Stylesheets
 import "src/assets/css/Modal.css";
+
+// React Hooks and Router
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
+// External Libraries
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
-import useEmailStore from "src/pages/admin/emailTemplate/store";
-
+// Local Components
 import Loading from "src/components/Loading";
 import ErrorAlert from "src/components/ErrorAlert";
+
+// State Management
+import useEmailStore from "src/pages/admin/emailTemplate/store";
 
 export const EmailTemplate = () => {
   const [subject, setSubject] = useState("");

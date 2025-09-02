@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAuthStore from "src/pages/auth/store";
 import logo from "src/assets/images/logo.png";
 

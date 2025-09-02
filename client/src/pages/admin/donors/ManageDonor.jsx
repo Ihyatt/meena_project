@@ -1,17 +1,23 @@
+// External Stylesheets
 import "src/assets/css/Modal.css";
 
+// React Hooks and Router
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+
+// External Libraries
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import ImageUpload from "src/pages/admin/components/ImageUpload";
+
+// Local Components
 import ErrorAlert from "src/components/ErrorAlert";
-import DonationCard from "src/pages/admin/donors/DonationCard";
 import EmailSubscription from "src/pages/admin/donors/EmailSubscription";
-import useCampaignStore from "src/pages/admin/campaigns/store";
 import Loading from "src/components/Loading";
 import Donations from "src/pages/admin/donors/Donations.jsx";
+
+// Context
 import DonorContext from "src/pages/admin/donors/DonorContext";
 
+// State Management
 import useDonorStore from "src/pages/admin/donors/store";
 
 export const ManageDonor = () => {

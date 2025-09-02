@@ -1,5 +1,8 @@
-from marshmallow import fields, validate, Schema, post_load
+# Third-party imports
+from marshmallow import fields, post_load, validate, Schema
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
+# Local application imports
 from app.models.user import User
 
 

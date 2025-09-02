@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from "react";
-import useDonorStore from "src/pages/admin/donors/store";
-import FormatDate from "src/components/FormatDate";
+import { useState, useMemo } from "react";
 import DonationCard from "src/pages/admin/donors/DonationCard";
 
 import {
@@ -10,9 +8,6 @@ import {
   CardBody,
   CardFooter,
 } from "@material-tailwind/react";
-
-import useAdminStore from "src/pages/admin/store";
-import Donor from "src/pages/admin/donors/Card";
 
 const TABLE_HEAD = ["Amount", "Status", "Date Processed"];
 

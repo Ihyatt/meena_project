@@ -1,33 +1,32 @@
-from sqlalchemy.orm.exc import StaleDataError
-from flask import current_app, json
-from app.database import db
-import os, uuid
+# Standard library imports
+import json
+import uuid
+from datetime import datetime, timezone
+from decimal import Decimal
 
+# Third-party imports
+from flask import current_app
+from sqlalchemy.orm.exc import StaleDataError
+from werkzeug.exceptions import NotFound
+
+# Local application imports
+from app.database import db
 from app.models.campaign import Campaign
+from app.models.donation import Donation
+from app.models.donation_location import DonationLocation
 from app.models.donation_notification import DonationNotification
 from app.models.payment_transaction import PaymentTransaction
-from app.models.donation import Donation
 from app.models.user import User
+
 from app.utils.constants import (
-    PaymentStatus,
+    DONATION_NOTIFICATIONS,
+    DONATION_NOTIFICATIONS_CHANNEL,
     DonationStatus,
     EmailType,
-    DONATION_NOTIFICATIONS,
     MAX_DONATION_NOTIFICATIONS,
-    DONATION_NOTIFICATIONS_CHANNEL,
+    PaymentStatus,
 )
-from werkzeug.exceptions import NotFound
-from app.models.donation_location import DonationLocation
-import asyncio
-from datetime import datetime, timezone
-
 from app.utils.email import create_email
-from decimal import Decimal
-from app.services.email_handler import (
-    send_receipt_email,
-    send_impact_email,
-    send_closeout_email,
-)
 
 
 def successful_charge(

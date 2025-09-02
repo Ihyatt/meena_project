@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState, useMemo } from "react";
-import useDonorStore from "src/pages/admin/donors/store";
+// React hooks
+import { useEffect, useState, useMemo } from "react";
 
+// UI components (Material Tailwind)
 import {
   Card,
   CardHeader,
@@ -9,18 +10,11 @@ import {
   CardFooter,
 } from "@material-tailwind/react";
 
-import Donor from "src/pages/admin/donors/Card";
+// State management
+import useDonorStore from "src/pages/admin/donors/store";
 
-const TABLE_HEAD = [
-  "Name",
-  "Email",
-  "Donated",
-  "Donations",
-  "Emails Sent",
-  "Emails Opened",
-  "Status",
-  "",
-];
+// Local components
+import Donor from "src/pages/admin/donors/Card";
 
 const Donors = () => {
   const { fetchDonors, donors, isLoading } = useDonorStore();
@@ -30,6 +24,18 @@ const Donors = () => {
   }, [fetchDonors]);
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  const TABLE_HEAD = [
+    "Name",
+    "Email",
+    "Donated",
+    "Donations",
+    "Emails Sent",
+    "Emails Opened",
+    "Status",
+    "",
+  ];
+
   const rowsPerPage = 20;
 
   const totalPages = Math.ceil(donors.length / rowsPerPage);
@@ -50,6 +56,8 @@ const Donors = () => {
 
   return (
     <div className=" my-15 mx-10  bg-white shadow-md rounded-lg">
+      {isLoading && <Loading />}
+
       <Card className="h-full w-full shadow-none">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="ml-4 flex items-center justify-between gap-8">

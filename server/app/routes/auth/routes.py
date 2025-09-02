@@ -1,8 +1,11 @@
-from flask import jsonify, request, current_app
-from flask_jwt_extended import jwt_required, create_access_token
+# Third-party imports
+from flask import current_app, jsonify, request
+from flask_jwt_extended import create_access_token
 from marshmallow.exceptions import ValidationError
-from app.routes.auth import auth_bp
+
+# Local application imports
 from app.models.user import User
+from app.routes.auth import auth_bp
 from app.schemas.user import LoginSchema
 
 

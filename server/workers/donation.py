@@ -1,26 +1,28 @@
-import random
+# Standard library imports
 import json
+import random
 import time
+from datetime import datetime, timezone
 
-from datetime import datetime, timezone, timedelta
+# Third-party imports
+# (None in this list)
 
+# Local application imports
+from app import create_app
+from app.services.charge_handler import (
+    failed_charge,
+    refunded_charge,
+    successful_charge,
+)
 from workers.redis_client import redis_access
 from workers.utils import backoff
 
-
-from app.services.charge_handler import (
-    successful_charge,
-    failed_charge,
-    refunded_charge,
-)
-from app import create_app
-
+# Constants
 CHARGE_DEAD_LETTER_QUEUE = "charge_dlq"
 CHARGE_RETRY_QUEUE = "charge_retry_queue"
 CHARGE_PROCESS_QUEUE = "charge_process_queue"
 RETRY_COUNTS = "retry_counts"
 DELAYED_QUEUE = "delayed_queue"
-
 
 app = create_app()
 

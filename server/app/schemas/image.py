@@ -1,5 +1,8 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+# Third-party imports
 from marshmallow import fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
+# Local application imports
 from app.models.image import Image
 
 

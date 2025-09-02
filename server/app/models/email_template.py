@@ -1,7 +1,6 @@
 import uuid
 
 from sqlalchemy.orm import mapped_column
-from datetime import timezone
 
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin

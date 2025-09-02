@@ -6,7 +6,6 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Loading from "src/components/Loading";
 import useCampaignStore from "src/pages/admin/campaigns/store.jsx";
 import ImageUpload from "src/pages/admin/components/ImageUpload";
-import useAuthStore from "src/pages/auth/store";
 import ErrorAlert from "src/components/ErrorAlert";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";

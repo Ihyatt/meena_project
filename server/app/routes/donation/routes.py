@@ -1,40 +1,29 @@
+# Standard library imports
+import json
 import uuid
+from datetime import datetime
+
+# Third-party imports
 import stripe
-from flask import jsonify, request, current_app
+from flask import current_app, jsonify, request
+from marshmallow import EXCLUDE
 from marshmallow.exceptions import ValidationError
+from sqlalchemy import func
+
+# Local application imports
 from app.database import db
-from app.routes.donation import donation_bp
 from app.models.campaign import Campaign
-from app.models.user import User
-from app.models.payment_transaction import PaymentTransaction
 from app.models.donation import Donation
+from app.models.payment_transaction import PaymentTransaction
+from app.routes.donation import donation_bp
 from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
 from app.services.checkout_session import checkout_session
-from werkzeug.exceptions import NotFound
-
-import json
+from app.utils.constants import DonationStatus
+from app.utils.donation import create_donation
 from app.utils.payment_transaction import create_payment_transaction
 from app.utils.user import get_or_create_donor, update_email_subscription
-from app.utils.donation import create_donation
-from marshmallow import EXCLUDE
-from datetime import datetime
-from app.utils.constants import CHARGE_PROCESS_QUEUE, DonationStatus
-from sqlalchemy import func
-from collections import defaultdict
-
-from app.services.charge_handler import (
-    successful_charge,
-    failed_charge,
-    refunded_charge,
-)
-
-from app.services.charge_handler import (
-    successful_charge,
-    failed_charge,
-    refunded_charge,
-)
 
 
 @donation_bp.route("/", methods=["GET"])
@@ -301,6 +290,7 @@ def stripe_webhook():
                 "data": data,
             }
 
+            CHARGE_PROCESS_QUEUE = "charge_process_queue"
             current_app.redis.lpush(CHARGE_PROCESS_QUEUE, json.dumps(message))
 
         current_app.logger.info(f"Webhook processed: {event_type}")

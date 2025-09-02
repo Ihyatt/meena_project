@@ -1,5 +1,4 @@
 import magic
-from flask import current_app, jsonify, request
 
 
 def allowed_mime_type(file):

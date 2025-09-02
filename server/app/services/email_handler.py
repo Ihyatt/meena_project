@@ -1,14 +1,13 @@
-from app.database import db
-from app.utils.constants import EmailStatus
-from app.models.email import Email
-from app.models.user import User
-from app.models.campaign import Campaign
-from app.models.email_template import EmailTemplate
+# Third-party imports
 from flask import current_app
 
-
-import asyncio
-from app.utils.constants import EmailType
+# Local application imports
+from app.database import db
+from app.models.campaign import Campaign
+from app.models.email import Email
+from app.models.email_template import EmailTemplate
+from app.models.user import User
+from app.utils.constants import EmailStatus, EmailType
 
 
 def send_receipt_email(donor_id, email_address, amount, email_id):

@@ -1,5 +1,8 @@
+# Third-party imports
 from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+
+# Local application imports
 from app.models.email_template import EmailTemplate
 from app.utils.constants import EmailType
 
