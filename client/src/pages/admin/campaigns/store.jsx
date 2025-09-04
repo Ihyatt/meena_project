@@ -1,11 +1,7 @@
-// Zustand and Middleware
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-// State Management
 import useAuthStore from "src/pages/auth/store";
 
-// Environment Variables
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 const useCampaignStore = create(
@@ -15,67 +11,6 @@ const useCampaignStore = create(
       isLoading: false,
       error: null,
 
-      fetchCampaignDraft: async () => {
-        set({ isLoading: true, error: null });
-        try {
-          const { jwtToken } = useAuthStore.getState();
-          const response = await fetch(
-            `${backednUrl}/admins/campaigns/drafts`,
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${jwtToken}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const data = await response.json();
-          if (!response.ok) {
-            set({ error: data.message });
-          }
-          set({
-            isLoading: false,
-          });
-          return data;
-        } catch (error) {
-          console.error("Error fetching campaign draft:", error);
-          set({ error: error.message, isLoading: false });
-        }
-      },
-
-      shareCampaignDraft: async (
-        campaignId,
-        title,
-        description,
-        goal,
-        closeoutDate
-      ) => {
-        set({ isLoading: true, error: null });
-        try {
-          const { jwtToken } = useAuthStore.getState();
-          const response = await fetch(
-            `${backednUrl}/admins/campaigns/${campaignId}/share`,
-            {
-              method: "PATCH",
-              headers: {
-                Authorization: `Bearer ${jwtToken}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ title, description, goal, closeoutDate }),
-            }
-          );
-          const data = await response.json();
-          if (!response.ok) {
-            set({ error: data.message });
-          }
-          set((state) => ({
-            campaigns: [data, ...state.campaigns],
-            isLoading: false,
-          }));
-        } catch (error) {
-          set({ error: error, isLoading: false });
-        }
-      },
       fetchCampaigns: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -125,24 +60,10 @@ const useCampaignStore = create(
           set({ error: error, isLoading: false });
         }
       },
-      saveCampaign: async (
-        campaignId,
-        title,
-        description,
-        goal,
-        closeoutDate
-      ) => {
+      saveCampaign: async (campaignId, title, description, goal) => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
-          console.log("Saving campaign...", {
-            campaignId,
-
-            title,
-            description,
-            goal,
-            closeoutDate,
-          });
 
           const response = await fetch(
             `${backednUrl}/admins/campaigns/${campaignId}/save`,
@@ -152,7 +73,7 @@ const useCampaignStore = create(
                 Authorization: `Bearer ${jwtToken}`,
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ title, description, goal, closeoutDate }),
+              body: JSON.stringify({ title, description, goal }),
             }
           );
           const data = await response.json();

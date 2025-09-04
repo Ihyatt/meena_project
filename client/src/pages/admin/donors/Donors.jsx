@@ -14,6 +14,8 @@ import {
 import useDonorStore from "src/pages/admin/donors/store";
 
 // Local components
+import Loading from "src/components/Loading";
+
 import Donor from "src/pages/admin/donors/Card";
 
 const Donors = () => {

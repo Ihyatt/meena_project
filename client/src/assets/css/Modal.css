@@ -42,7 +42,7 @@
 .modal {
   width: 100%;
   height: fit-content;
-  max-width: 600px;
+  max-width: 850px;
   background-color: #ffffff;
   position: relative;
   border: 5px;
@@ -50,22 +50,8 @@
   overflow-y: auto;
 }
 
-.manage-donor-modal {
-  width: 100%;
-  height: fit-content;
-  max-width: 850px;
-  background-color: #ffffff;
-  position: relative;
-  border: 5px;
-  box-shadow: 2px 4px 20px 0px rgba(0, 0, 0, 0.75);
-}
 
 
 
-.modal-content-scroll {
-  /* max-height: 80vh; */
-  /* Set a maximum height relative to the viewport */
-  /* overflow-y: auto; */
-  /* Enable vertical scrolling */
-}
+
 

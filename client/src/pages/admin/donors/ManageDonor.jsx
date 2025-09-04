@@ -122,7 +122,7 @@ export const ManageDonor = () => {
   return (
     <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}
-      <div className="manage-donor-modal rounded-lg">
+      <div className="modal rounded-lg">
         <form className=" mx-auto p-5">
           <div className="flex ">
             <div className="p-2">

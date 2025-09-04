@@ -135,7 +135,7 @@ const Donation = () => {
             </div>
 
             <div className="text-left md:px-6 lg:px-6 md:w-full">
-              <div className=" sm:w-full md:w-full  lg:py-6  lg:w-6/8">
+              <div className=" sm:w-full md:w-full  lg:py-6  lg:w-150">
                 <About description={description} />
               </div>
               <div>

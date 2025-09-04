@@ -21,9 +21,18 @@ import Dashboard from "src/pages/admin/Dashboard";
 import Campaigns from "src/pages/admin/campaigns/Campaigns";
 import Donors from "src/pages/admin/donors/Donors";
 import { EmailTemplate } from "src/pages/admin/emailTemplate/Template";
-import { CampaignDraft } from "src/pages/admin/campaigns/Draft";
-import { ManageCampaign } from "src/pages/admin/campaigns/ManageCampaign";
 import { ManageDonor } from "src/pages/admin/donors/ManageDonor";
+
+//Admin Capaign Pages
+import DraftLayout from "src/pages/draft/DraftLayout";
+import DraftTitle from "src/pages/draft/components/DraftTitle";
+import DraftDescription from "src/pages/draft/components/DraftDescription";
+import DraftGoal from "src/pages/draft/components/DraftGoal";
+import DraftCampaignImage from "src/pages/draft/components/DraftCampaignImage";
+import DraftDate from "src/pages/draft/components/DraftDate";
+import DraftReview from "src/pages/draft/components/DraftReview";
+
+import ManageCampaign from "src/pages/admin/campaigns/ManageCampaign";
 
 // Donor Pages
 import DonationLayout from "src/pages/donor/DonationLayout";
@@ -58,6 +67,27 @@ function App() {
             <Route path="donors" element={<Donors />} />
           </Route>
         </Route>
+
+        <Route
+          element={
+            <ProtectedRoute>
+              <DraftLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/campaigns/:campaignId" element={<ManageCampaign />} />
+          <Route element={<DraftLayout />}>
+            <Route path="draft/title" element={<DraftTitle />} />
+            <Route path="draft/description" element={<DraftDescription />} />
+            <Route
+              path="draft/campaign-image"
+              element={<DraftCampaignImage />}
+            />
+            <Route path="draft/goal" element={<DraftGoal />} />
+            <Route path="draft/date" element={<DraftDate />} />
+            <Route path="draft/review" element={<DraftReview />} />
+          </Route>
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
       {background && (
@@ -67,7 +97,6 @@ function App() {
             path="/admins/campaigns/:campaignId"
             element={<ManageCampaign />}
           />
-          <Route path="/admins/campaigns/drafts" element={<CampaignDraft />} />
           <Route
             path="/admins/emails/email-template/receipt"
             element={<EmailTemplate />}
