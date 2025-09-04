@@ -1,19 +1,11 @@
-import RightPanel from "src/pages/draft/components/RightPanel.jsx";
-import LeftPanel from "src/pages/draft/components/LeftPanel.jsx";
-import Footer from "src/pages/draft/components/Footer.jsx";
 import React, { useEffect, useState } from "react";
 
-import "src/assets/css/Modal.css";
-
-import { useNavigate } from "react-router-dom";
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import Loading from "src/components/Loading";
 import useDraftStore from "src/pages/draft/store";
-import ImageUpload from "src/components/ImageUpload";
-import ErrorAlert from "src/components/ErrorAlert";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+
+import { RiArrowLeftSLine } from "react-icons/ri";
+import { Link, Outlet } from "react-router-dom";
+
+import Progressbar from "src/components/Progressbar";
 
 import "src/assets/css/CampaignForm.css";
 
@@ -45,20 +37,22 @@ const DraftTitle = () => {
     event.preventDefault();
   };
 
-  const handleTitleChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= titlecharactersLimit) {
-      setTitle(value);
-    } else {
-      window.alert(`Title cannot exceed ${titlecharactersLimit} characters.`);
-    }
-  };
   const step = 1;
   const stepText = "Give your campaign a title";
+
+  const isButtonDisabled =
+    title.length < 5 || title.length > titlecharactersLimit || isLoading;
   return (
     <div className="flex col w-full h-screen  bg-[#f5f5f5]">
       <div className="sm:w-50/100  md:w-40/100  lg:w-34/100  h-screen ">
-        <LeftPanel step={step} text={stepText} />
+        <div className="pt-45 px-10 md:px-20 lg:px-20">
+          <div className=" font-normal text-md pb-4  mb-4 border-b-2 border-[#0fa347] transition-colors duration-300">
+            {" "}
+            {step} of 6
+          </div>
+
+          <div className=" font-light text-5xl">{stepText}</div>
+        </div>{" "}
       </div>
       <div class=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
         <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
@@ -68,9 +62,9 @@ const DraftTitle = () => {
                 <input
                   type="text"
                   id="title"
-                  placeholder="Give your campaign a title"
+                  placeholder="Save the Rainforest..."
                   value={title}
-                  onChange={handleTitleChange}
+                  onChange={(e) => setTitle(e.target.value)}
                   className="border-none w-full  focus:outline-none "
                 />
                 <div className=" ml-2">
@@ -80,7 +74,61 @@ const DraftTitle = () => {
             </div>
           </form>
         </div>
-        <Footer handleSave={handleSave} progress={(1 / 6) * 100} />
+
+        <footer className="w-full flex flex-col ">
+          <Progressbar progress={(1 / 6) * 100} />
+          <div className=" flex w-full p-10 justify-between items-center">
+            <div>
+              <Link
+                to={"/admins/campaigns"}
+                style={{ color: "black", fontSize: "15px" }}
+              >
+                <RiArrowLeftSLine size={40} />
+              </Link>
+            </div>
+            <div>
+              {!isButtonDisabled ? (
+                <Link
+                  to={"/draft/description"}
+                  style={{ color: "black", fontSize: "15px" }}
+                >
+                  <div
+                    className="
+                font-medium 
+                text-base 
+                flex-1 
+                px-7 py-4
+                border-none
+                rounded 
+                cursor-pointer
+                rounded-full
+                text-white bg-[#0fa347] hover:bg-[#2bbd62]
+              "
+                  >
+                    {" "}
+                    CONTINUE
+                  </div>
+                </Link>
+              ) : (
+                <div
+                  className="
+                font-semibold 
+                text-base 
+                flex-1 
+                px-7 py-4
+                border-none
+                rounded 
+                cursor-not-allowed
+                rounded-full
+                bg-[#d8d8d8] text-slate-700 "
+                >
+                  {" "}
+                  CONTINUE
+                </div>
+              )}
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );

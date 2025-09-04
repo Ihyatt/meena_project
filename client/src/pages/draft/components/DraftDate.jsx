@@ -1,6 +1,3 @@
-import RightPanel from "src/pages/draft/components/RightPanel.jsx";
-import LeftPanel from "src/pages/draft/components/LeftPanel.jsx";
-
 import "src/assets/css/CampaignForm.css";
 import "src/assets/css/Modal.css";
 
@@ -177,12 +174,8 @@ const DraftDate = () => {
   console.log("here");
   return (
     <div className="flex col w-full h-screen  bg-red-500">
-      <div className="w-1/3 h-screen ">
-        <LeftPanel />
-      </div>
-      <div class="w-2/3 rcorners bg-blue-500 h-screen ">
-        <RightPanel />
-      </div>
+      <div className="w-1/3 h-screen "></div>
+      <div class="w-2/3 rcorners bg-blue-500 h-screen "></div>
     </div>
   );
 };

@@ -1,187 +1,116 @@
-import RightPanel from "src/pages/draft/components/RightPanel.jsx";
-import LeftPanel from "src/pages/draft/components/LeftPanel.jsx";
+import React, { useEffect, useState } from "react";
+import useDraftStore from "src/pages/draft/store";
+
+import { RiArrowLeftSLine } from "react-icons/ri";
+import { Link, Outlet } from "react-router-dom";
+
+import Progressbar from "src/components/Progressbar";
 
 import "src/assets/css/CampaignForm.css";
-import "src/assets/css/Modal.css";
-
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import Loading from "src/components/Loading";
-import useCampaignStore from "src/pages/admin/campaigns/store.jsx";
-import ImageUpload from "src/components/ImageUpload";
-import ErrorAlert from "src/components/ErrorAlert";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 
 const DraftDescription = () => {
-  const [campaignId, setCampaignId] = useState(null);
-  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [goal, setGoal] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [file, setFile] = useState(null);
-  const [errors, setErrors] = useState([]);
-
-  const [closeoutDate, setCloseoutDate] = useState(null);
 
   const descriptioncharactersLimit = 2000;
-  const titlecharactersLimit = 100;
 
-  const modalRef = useRef();
-  const navigate = useNavigate();
-  const {
-    fetchCampaignDraft,
-    saveCampaign,
-    shareCampaignDraft,
-    upload,
-    isLoading,
-  } = useCampaignStore();
+  const { fetchDraft, isLoading } = useDraftStore();
 
   useEffect(() => {
-    fetchCampaignDraft().then((data) => {
-      setCampaignId(data.id);
-      setTitle(data.title);
+    fetchDraft().then((data) => {
       setDescription(data.description);
-      setGoal(data.goal || "");
-      setImageUrl(data.imageUrl);
     });
-  }, [fetchCampaignDraft]);
+  }, [fetchDraft]);
 
-  useEffect(() => {
-    const observerRefValue = modalRef.current;
-    disableBodyScroll(observerRefValue);
-
-    return () => {
-      if (observerRefValue) {
-        enableBodyScroll(observerRefValue);
-      }
-    };
-  }, []);
-
-  const handleClose = (event) => {
-    navigate(-1);
-    event.preventDefault();
-  };
-
-  const handleShare = (event) => {
-    if (!title || !description || !goal || !imageUrl) {
-      const errors = [];
-      if (!title) {
-        errors.push("Title is required.");
-      }
-      if (!description) {
-        errors.push("Description is required.");
-      }
-      if (goal <= 0) {
-        errors.push("Goal must be greater than 0.");
-      }
-      if (!imageUrl) {
-        errors.push("Image is required.");
-      }
-      if (!closeoutDate) {
-        errors.push("Closeout Date is required.");
-      }
-      setErrors(errors);
-      return;
-    }
-    shareCampaignDraft(campaignId, title, description, goal, closeoutDate.$d);
-    navigate(-1);
-    event.preventDefault();
-  };
-
-  const handleSave = (event) => {
-    if (
-      !title ||
-      !description ||
-      !goal ||
-      goal <= 0.01 ||
-      !imageUrl ||
-      !closeoutDate
-    ) {
-      const errors = [];
-      if (!title) {
-        errors.push("Title is required.");
-      }
-      if (!description) {
-        errors.push("Description is required.");
-      }
-      if (goal <= 0) {
-        errors.push("Goal must be greater than 0.01.");
-      }
-      if (!imageUrl) {
-        errors.push("Image is required.");
-      }
-      if (!closeoutDate) {
-        errors.push("Closeout Date is required.");
-      }
-      setErrors(errors);
-      return;
-    }
-
-    saveCampaign(campaignId, title, description, goal, closeoutDate.$d).then(
-      (data) => {
-        setTitle(data.title);
-        setDescription(data.description);
-        setGoal(data.goal);
-      }
-    );
-    event.preventDefault();
-  };
-
-  const handleGoalAmount = (e) => {
-    const value = e.target.value;
-    const cleanedValue = value.replace(/[^0-9]/g, "");
-    const amountValue = parseFloat(cleanedValue);
-    setGoal(amountValue);
-  };
-
-  const uploadFile = (file) => {
-    upload(campaignId, file).then((data) => {
-      setImageUrl(data.url);
-      setFile(null);
-    });
-  };
-  const handleDateChange = (newDate) => {
-    setCloseoutDate(newDate);
-    // You can now use the newDate variable here
-    console.log(newDate); // This will log the selected date object
-  };
-
-  const handleTitleChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= titlecharactersLimit) {
-      setTitle(value);
-    } else {
-      window.alert(`Title cannot exceed ${titlecharactersLimit} characters.`);
-    }
-  };
-
-  const handleDescriptionChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= descriptioncharactersLimit) {
-      setDescription(value);
-    } else {
-      window.alert(
-        `Description cannot exceed ${descriptioncharactersLimit} characters.`
-      );
-    }
-  };
-
-  const handleErrorClose = () => {
-    setErrors([]);
-  };
-  const blockInvalidChar = (e) =>
-    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
-  console.log("here");
+  const step = 2;
+  const stepText = "Describe your campaign";
+  const isButtonDisabled =
+    description.length < 5 ||
+    description.length > descriptioncharactersLimit ||
+    isLoading;
   return (
-    <div className="flex col w-full h-screen  bg-red-500">
-      <div className="w-1/3 h-screen ">
-        <LeftPanel />
+    <div className="flex col w-full h-screen  bg-[#f5f5f5]">
+      <div className="sm:w-50/100  md:w-40/100  lg:w-34/100  h-screen ">
+        <div className="pt-45 px-10 md:px-20 lg:px-20">
+          <div className=" font-normal text-md pb-4  mb-4 border-b-2 border-[#0fa347] transition-colors duration-300">
+            {" "}
+            {step} of 6
+          </div>
+
+          <div className=" font-light text-5xl">{stepText}</div>
+        </div>{" "}
       </div>
-      <div class="w-2/3 rcorners bg-blue-500 h-screen ">
-        <RightPanel />
+      <div class=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
+        <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
+          <form className="">
+            <div className="p-2">
+              <textarea
+                id="description"
+                placeholder="Description..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="min-w-75 
+                  resize-none w-full h-75 p-4 border rounded
+                  
+                  text-lg font-semibold w-full h-14 bg-transparent placeholder:text-slate-400 text-slate-700  border border-[#b7b7b6] rounded-lg px-3 py-2  focus:outline-none   "
+              ></textarea>
+            </div>
+          </form>
+        </div>
+
+        <footer className="w-full flex flex-col ">
+          <Progressbar progress={(2 / 6) * 100} />
+          <div className=" flex w-full p-10 justify-between items-center">
+            <div>
+              <Link
+                to={"/draft/title"}
+                style={{ color: "black", fontSize: "15px" }}
+              >
+                <RiArrowLeftSLine size={40} />
+              </Link>
+            </div>
+            <div>
+              {!isButtonDisabled ? (
+                <Link
+                  to={"/draft/goal"}
+                  style={{ color: "black", fontSize: "15px" }}
+                >
+                  <div
+                    className="
+                font-medium 
+                text-base 
+                flex-1 
+                px-7 py-4
+                border-none
+                rounded 
+                cursor-pointer
+                rounded-full
+                text-white bg-[#0fa347] hover:bg-[#2bbd62]
+              "
+                  >
+                    {" "}
+                    CONTINUE
+                  </div>
+                </Link>
+              ) : (
+                <div
+                  className="
+                font-semibold 
+                text-base 
+                flex-1 
+                px-7 py-4
+                border-none
+                rounded 
+                cursor-not-allowed
+                rounded-full
+                bg-[#d8d8d8] text-slate-700 "
+                >
+                  {" "}
+                  CONTINUE
+                </div>
+              )}
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );

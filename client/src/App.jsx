@@ -28,7 +28,7 @@ import DraftLayout from "src/pages/draft/DraftLayout";
 import DraftTitle from "src/pages/draft/components/DraftTitle";
 import DraftDescription from "src/pages/draft/components/DraftDescription";
 import DraftGoal from "src/pages/draft/components/DraftGoal";
-import DraftCampaignImage from "src/pages/draft/components/DraftCampaignImage";
+import DraftImage from "src/pages/draft/components/DraftImage";
 import DraftDate from "src/pages/draft/components/DraftDate";
 import DraftReview from "src/pages/draft/components/DraftReview";
 
@@ -79,10 +79,7 @@ function App() {
           <Route element={<DraftLayout />}>
             <Route path="draft/title" element={<DraftTitle />} />
             <Route path="draft/description" element={<DraftDescription />} />
-            <Route
-              path="draft/campaign-image"
-              element={<DraftCampaignImage />}
-            />
+            <Route path="draft/campaign-image" element={<DraftImage />} />
             <Route path="draft/goal" element={<DraftGoal />} />
             <Route path="draft/date" element={<DraftDate />} />
             <Route path="draft/review" element={<DraftReview />} />

@@ -16,29 +16,30 @@ import Progressbar from "src/components/Progressbar";
 import { RiArrowLeftSLine } from "react-icons/ri";
 import { Link, Outlet } from "react-router-dom";
 
-const DraftGoal = () => {
-  const [goal, setGoal] = useState("");
+const DraftImage = () => {
+  const [imageUrl, setImageUrl] = useState("");
+  const [file, setFile] = useState(null);
+  const [campaignId, setCampaignId] = useState(null);
 
   const { fetchDraft, saveDraft, isLoading } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {
-      setGoal(data.goal || "");
+      setImageUrl(data.imageUrl);
+      setCampaignId(data.id);
     });
   }, [fetchDraft]);
 
-  const handleGoalAmount = (e) => {
-    const value = e.target.value;
-    const cleanedValue = value.replace(/[^0-9]/g, "");
-    const amountValue = parseFloat(cleanedValue);
-    setGoal(amountValue);
+  const uploadFile = (file) => {
+    upload(campaignId, file).then((data) => {
+      setImageUrl(data.url);
+      setCampaignId(data.id);
+      setFile(null);
+    });
   };
-
-  const isButtonDisabled = !goal || goal <= 0.1 || goal > 1000000 || isLoading;
-  const blockInvalidChar = (e) =>
-    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
-  const step = 2;
-  const stepText = "How much would you like to raise?";
+  const step = 3;
+  const stepText = "Add a photo to your campaign";
+  const isButtonDisabled = !imageUrl || isLoading;
   return (
     <div className="flex col w-full h-screen  bg-[#f5f5f5]">
       <div className="sm:w-50/100  md:w-40/100  lg:w-34/100  h-screen ">
@@ -52,27 +53,12 @@ const DraftGoal = () => {
         </div>{" "}
       </div>
       <div class=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
-        <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
-          <form className="">
-            <div className=" border border-gray-400  p-2 rounded-sm  flex items-center justify-between mb-3 min-w-75 text-lg font-semibold w-full h-14 bg-transparent hover:bg-[#fafafa] placeholder:text-slate-400 text-slate-700  border border-[#b7b7b6] rounded-lg px-3 py-2 transition duration-300  focus:outline-none focus-within:border-[#232323] focus-within:border-2 ">
-              <div className="flex flex-col text-xs items-center">
-                <div>$</div>
-                <div>USD</div>
-              </div>
-              <div className="text-2xl">
-                <input
-                  type="number"
-                  pattern="[0-9]"
-                  title="only numbers"
-                  value={goal}
-                  onChange={handleGoalAmount}
-                  onKeyDown={blockInvalidChar}
-                  className="border-none rounded-sm focus:outline-none text-right"
-                />
-                <span className="">.00</span>
-              </div>
-            </div>
-          </form>
+        <div className="sm:px-10 md:px-20 lg:px-30 pt-60 ">
+          <ImageUpload
+            campaignId={campaignId}
+            imageUrl={imageUrl}
+            uploadFile={uploadFile}
+          />
         </div>
         <footer className="w-full flex flex-col ">
           <Progressbar progress={(3 / 6) * 100} />
@@ -132,4 +118,4 @@ const DraftGoal = () => {
     </div>
   );
 };
-export default DraftGoal;
+export default DraftImage;
