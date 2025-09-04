@@ -21,7 +21,7 @@ const DraftImage = () => {
   const [file, setFile] = useState(null);
   const [campaignId, setCampaignId] = useState(null);
 
-  const { fetchDraft, saveDraft, isLoading } = useDraftStore();
+  const { fetchDraft, saveDraft, isLoading, upload } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {
@@ -37,7 +37,7 @@ const DraftImage = () => {
       setFile(null);
     });
   };
-  const step = 3;
+  const step = 4;
   const stepText = "Add a photo to your campaign";
   const isButtonDisabled = !imageUrl || isLoading;
   return (
@@ -53,7 +53,7 @@ const DraftImage = () => {
         </div>{" "}
       </div>
       <div class=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
-        <div className="sm:px-10 md:px-20 lg:px-30 pt-60 ">
+        <div className="sm:px-10 md:px-20 lg:px-30 pt-50 ">
           <ImageUpload
             campaignId={campaignId}
             imageUrl={imageUrl}
@@ -61,7 +61,7 @@ const DraftImage = () => {
           />
         </div>
         <footer className="w-full flex flex-col ">
-          <Progressbar progress={(3 / 6) * 100} />
+          <Progressbar progress={(4 / 6) * 100} />
           <div className=" flex w-full p-10 justify-between items-center">
             <div>
               <Link

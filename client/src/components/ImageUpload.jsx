@@ -23,36 +23,23 @@ const ImageUpload = ({ imageUrl, uploadFile }) => {
   };
 
   return (
-    <div>
-      <div className="mt-2 ml-1 mr-1 flex flex-col items-center justify-center">
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-          accept="image/*"
-        />
+    <div className="mt-2 ml-1 mr-1 flex flex-col items-center justify-center">
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+        accept="image/*"
+      />
 
-        <label
-          htmlFor="hiddenFileInput"
-          onClick={handleIconClick}
-          className="cursor-pointer flex flex-col items-center justify-center text-gray-300"
-        >
-          <FiUploadCloud size={60} />
-          <div>Click to Upload</div>
-        </label>
-      </div>
-
-      {imageUrl && (
-        <a
-          href={imageUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 text-sm hover:underline"
-        >
-          view uploaded image
-        </a>
-      )}
+      <label
+        htmlFor="hiddenFileInput"
+        onClick={handleIconClick}
+        className="cursor-pointer flex flex-col items-center justify-center text-border text-[#b7b7b6] border-[#b7b7b6] border rounded-lg p-40 border-dashed"
+      >
+        <FiUploadCloud size={60} color={"#b7b7b6"} />
+        <div className="text-[#b7b7b6]">Click to Upload</div>
+      </label>
     </div>
   );
 };
