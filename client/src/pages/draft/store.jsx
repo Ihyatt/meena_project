@@ -19,16 +19,13 @@ const useDraftStore = create(
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
-          const response = await fetch(
-            `${backednUrl}/admins/campaigns/drafts`,
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${jwtToken}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const response = await fetch(`${backednUrl}/admins/campaigns/draft`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+              "Content-Type": "application/json",
+            },
+          });
           const data = await response.json();
           if (!response.ok) {
             set({ error: data.message });
@@ -36,6 +33,7 @@ const useDraftStore = create(
           set({
             isLoading: false,
           });
+          console.log("Fetched campaign draft:", data);
           return data;
         } catch (error) {
           console.error("Error fetching campaign draft:", error);
@@ -43,7 +41,7 @@ const useDraftStore = create(
         }
       },
 
-      saveDraft: async (title, description, goal, closeoutDate) => {
+      saveDraft: async (campaignId, title, description, goal, closeoutDate) => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -57,7 +55,7 @@ const useDraftStore = create(
           });
 
           const response = await fetch(
-            `${backednUrl}/admins/campaigns/${campaignId}/save`,
+            `${backednUrl}/admins/campaigns/${campaignId}/save-draft`,
             {
               method: "PATCH",
               headers: {
@@ -75,19 +73,7 @@ const useDraftStore = create(
             set({ isLoading: false });
             return data;
           }
-
-          set((state) => ({
-            campaigns: state.campaigns.map((campaign) =>
-              data.id == campaign.id
-                ? {
-                    ...data,
-                  }
-                : campaign
-            ),
-            isLoading: false,
-          }));
-
-          return data;
+          set({ isLoading: false });
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -113,19 +99,54 @@ const useDraftStore = create(
             set({ error: data.message });
           }
 
-          set((state) => ({
-            campaigns: state.campaigns.map((campaign) =>
-              campaign.id == data.campaignId
-                ? {
-                    ...campaign,
-                    imageUrl: data.url,
-                  }
-                : campaign
-            ),
-            isLoading: false,
-          }));
+          set({ isLoading: false });
 
           return data;
+        } catch (error) {
+          set({ error: error, isLoading: false });
+        }
+      },
+
+      shareDraft: async (
+        campaignId,
+        title,
+        description,
+        goal,
+        closeoutDate
+      ) => {
+        set({ isLoading: true, error: null });
+        try {
+          const { jwtToken } = useAuthStore.getState();
+          console.log("Saving campaign...", {
+            campaignId,
+
+            title,
+            description,
+            goal,
+            closeoutDate,
+          });
+
+          const response = await fetch(
+            `${backednUrl}/admins/campaigns/${campaignId}/share-draft`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${jwtToken}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ title, description, goal, closeoutDate }),
+            }
+          );
+          const data = await response.json();
+          if (!response.ok) {
+            set({ error: data.message });
+          }
+          if (data.draft == true) {
+            set({ isLoading: false });
+            return data;
+          }
+
+          set({ error: error, isLoading: false });
         } catch (error) {
           set({ error: error, isLoading: false });
         }

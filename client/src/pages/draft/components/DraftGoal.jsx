@@ -1,29 +1,28 @@
 import "src/assets/css/CampaignForm.css";
 
-import "src/assets/css/Modal.css";
+import { useEffect, useState } from "react";
 
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import Loading from "src/components/Loading";
 import useDraftStore from "src/pages/draft/store";
-import ImageUpload from "src/components/ImageUpload";
-import ErrorAlert from "src/components/ErrorAlert";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+
 import Progressbar from "src/components/Progressbar";
 import { RiArrowLeftSLine } from "react-icons/ri";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const DraftGoal = () => {
+  const navigate = useNavigate();
+
   const [goal, setGoal] = useState("");
 
   const { fetchDraft, saveDraft, isLoading } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {
-      setGoal(data.goal || "");
+      setTitle(data.title);
+      setCampaignId(data.id);
+      setDescription(data.description);
+      setGoal(data.goal);
+      setImageUrl(data.url);
     });
   }, [fetchDraft]);
 
@@ -33,11 +32,23 @@ const DraftGoal = () => {
     const amountValue = parseFloat(cleanedValue);
     setGoal(amountValue);
   };
+  const handleSave = (event) => {
+    event.preventDefault();
+    saveDraft(campaignId, title, description, goal, imageUrl, "")
+      .then((success) => {
+        if (success) {
+          navigate("/draft/campaign-image");
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to Save", error);
+      });
+  };
 
   const isButtonDisabled = !goal || goal <= 0.1 || goal > 1000000 || isLoading;
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
-  const step = 2;
+  const step = 3;
   const stepText = "How much would you like to raise?";
   return (
     <div className="flex col w-full h-screen  bg-[#f5f5f5]">
@@ -87,12 +98,9 @@ const DraftGoal = () => {
             </div>
             <div>
               {!isButtonDisabled ? (
-                <Link
-                  to={"/draft/campaign-image"}
-                  style={{ color: "black", fontSize: "15px" }}
-                >
-                  <div
-                    className="
+                <div
+                  onClick={handleSave}
+                  className="
                 font-medium 
                 text-base 
                 flex-1 
@@ -103,11 +111,10 @@ const DraftGoal = () => {
                 rounded-full
                 text-white bg-[#0fa347] hover:bg-[#2bbd62]
               "
-                  >
-                    {" "}
-                    CONTINUE
-                  </div>
-                </Link>
+                >
+                  {" "}
+                  CONTINUE
+                </div>
               ) : (
                 <div
                   className="

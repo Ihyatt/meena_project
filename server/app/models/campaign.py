@@ -37,14 +37,13 @@ class Campaign(db.Model, SoftDeleteMixin):
         nullable=False,
     )
 
-    title = mapped_column(db.String(100), default="", nullable=False)
-    description = mapped_column(db.String(2000), default="", nullable=False)
+    title = mapped_column(db.String(100), nullable=True)
+    description = mapped_column(db.String(2000), nullable=True)
     image_url = mapped_column(
         db.String(500),
-        default="",
         nullable=True,
     )
-    goal = mapped_column(db.Integer, default=0, nullable=False)
+    goal = mapped_column(db.Integer, nullable=True)
     raised = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
     total_donations = mapped_column(db.Integer, default=0, nullable=False)
     is_active = mapped_column(db.Boolean, default=False, nullable=False)

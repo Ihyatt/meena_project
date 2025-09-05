@@ -40,7 +40,7 @@ export function CampaignDropdown({ data }) {
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <Link
-              to={`/admins/campaigns/${data.id}`}
+              to={`campaigns/${data.id}`}
               state={{ background: location }}
               className="w-full h-full px-2 py-1.5 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
             >

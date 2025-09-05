@@ -16,17 +16,18 @@ class CampaignSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
     title = fields.String(
-        required=True,
+        allow_none=True,
         validate=validate.Length(min=3, max=100),
     )
     description = fields.String(
-        required=True,
+        allow_none=True,
         validate=validate.Length(min=3, max=2000),
     )
     image_url = fields.String(
         allow_none=True, validate=validate.Length(max=500), data_key="imageUrl"
     )
     goal = fields.Integer(
+        allow_none=True,
         strict=True,  # Ensures only integers are accepted
         validate=validate.Range(
             min=1, max=1_000_000

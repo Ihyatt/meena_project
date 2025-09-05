@@ -81,12 +81,10 @@ const DashboardLayout = () => {
               Campaigns
             </MenuItem>
             <MenuItem
-              active={location.pathname === "/admins/campaigns/drafts"}
               icon={<RiDraftLine />}
               component={
                 <Link
-                  to={"/admins/campaigns/drafts"}
-                  state={{ background: location.pathname }}
+                  to={"/draft/title"}
                   style={{ color: "black", fontSize: "15px" }}
                 />
               }

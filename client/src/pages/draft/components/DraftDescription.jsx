@@ -2,24 +2,44 @@ import React, { useEffect, useState } from "react";
 import useDraftStore from "src/pages/draft/store";
 
 import { RiArrowLeftSLine } from "react-icons/ri";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Progressbar from "src/components/Progressbar";
 
 import "src/assets/css/CampaignForm.css";
 
 const DraftDescription = () => {
+  const navigate = useNavigate();
+
   const [description, setDescription] = useState("");
 
   const descriptioncharactersLimit = 2000;
 
-  const { fetchDraft, isLoading } = useDraftStore();
+  const { fetchDraft, saveDraft, isLoading } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {
-      setDescription(data.description);
+      setTitle(data.title);
+      setCampaignId(data.id);
+      setDescription(data.description || "");
+      setGoal(data.goal);
+      setImageUrl(data.url);
     });
   }, [fetchDraft]);
+
+  const handleSave = (event) => {
+    event.preventDefault();
+    saveDraft(campaignId, title, description, goal, imageUrl, "")
+      .then((success) => {
+        if (success) {
+          navigate("/draft/goal");
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to Save", error);
+      });
+  };
 
   const step = 2;
   const stepText = "Describe your campaign";
@@ -70,12 +90,9 @@ const DraftDescription = () => {
             </div>
             <div>
               {!isButtonDisabled ? (
-                <Link
-                  to={"/draft/goal"}
-                  style={{ color: "black", fontSize: "15px" }}
-                >
-                  <div
-                    className="
+                <div
+                  onClick={handleSave}
+                  className="
                 font-medium 
                 text-base 
                 flex-1 
@@ -86,11 +103,10 @@ const DraftDescription = () => {
                 rounded-full
                 text-white bg-[#0fa347] hover:bg-[#2bbd62]
               "
-                  >
-                    {" "}
-                    CONTINUE
-                  </div>
-                </Link>
+                >
+                  {" "}
+                  CONTINUE
+                </div>
               ) : (
                 <div
                   className="

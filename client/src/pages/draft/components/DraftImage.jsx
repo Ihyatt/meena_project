@@ -1,22 +1,17 @@
 import "src/assets/css/CampaignForm.css";
 
-import "src/assets/css/Modal.css";
-
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import Loading from "src/components/Loading";
+import { useEffect, useState } from "react";
 import useDraftStore from "src/pages/draft/store";
 import ImageUpload from "src/components/ImageUpload";
-import ErrorAlert from "src/components/ErrorAlert";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+
 import Progressbar from "src/components/Progressbar";
 import { RiArrowLeftSLine } from "react-icons/ri";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const DraftImage = () => {
+  const navigate = useNavigate();
+
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
   const [campaignId, setCampaignId] = useState(null);
@@ -25,8 +20,11 @@ const DraftImage = () => {
 
   useEffect(() => {
     fetchDraft().then((data) => {
-      setImageUrl(data.imageUrl);
+      setTitle(data.title);
       setCampaignId(data.id);
+      setDescription(data.description);
+      setGoal(data.goal);
+      setImageUrl(data.url);
     });
   }, [fetchDraft]);
 
@@ -37,6 +35,19 @@ const DraftImage = () => {
       setFile(null);
     });
   };
+  const handleSave = (event) => {
+    event.preventDefault();
+    saveDraft(campaignId, title, description, goal, imageUrl, "")
+      .then((success) => {
+        if (success) {
+          navigate("/draft/date");
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to Save", error);
+      });
+  };
+
   const step = 4;
   const stepText = "Add a photo to your campaign";
   const isButtonDisabled = !imageUrl || isLoading;
@@ -65,7 +76,7 @@ const DraftImage = () => {
           <div className=" flex w-full p-10 justify-between items-center">
             <div>
               <Link
-                to={"/draft/description"}
+                to={"/draft/goal"}
                 style={{ color: "black", fontSize: "15px" }}
               >
                 <RiArrowLeftSLine size={40} />
@@ -73,12 +84,9 @@ const DraftImage = () => {
             </div>
             <div>
               {!isButtonDisabled ? (
-                <Link
-                  to={"/draft/campaign-image"}
-                  style={{ color: "black", fontSize: "15px" }}
-                >
-                  <div
-                    className="
+                <div
+                  onClick={handleSave}
+                  className="
                 font-medium 
                 text-base 
                 flex-1 
@@ -89,11 +97,10 @@ const DraftImage = () => {
                 rounded-full
                 text-white bg-[#0fa347] hover:bg-[#2bbd62]
               "
-                  >
-                    {" "}
-                    CONTINUE
-                  </div>
-                </Link>
+                >
+                  {" "}
+                  CONTINUE
+                </div>
               ) : (
                 <div
                   className="

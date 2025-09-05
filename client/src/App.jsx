@@ -75,7 +75,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="/campaigns/:campaignId" element={<ManageCampaign />} />
+          <Route path="campaigns/:campaignId" element={<ManageCampaign />} />
           <Route element={<DraftLayout />}>
             <Route path="draft/title" element={<DraftTitle />} />
             <Route path="draft/description" element={<DraftDescription />} />

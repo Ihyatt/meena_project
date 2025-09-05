@@ -377,7 +377,7 @@ def close_campaign(campaign_id):
         )
 
 
-@campaign_bp.route("/drafts", methods=["POST"])
+@campaign_bp.route("/draft", methods=["POST"])
 @jwt_required()
 @admin_required()
 def fetch_or_create_draft():
@@ -439,7 +439,91 @@ def fetch_or_create_draft():
         )
 
 
-@campaign_bp.route("/<int:campaign_id>/share", methods=["PATCH"])
+@campaign_bp.route("/<int:campaign_id>/save-draft", methods=["PATCH"])
+@jwt_required()
+@admin_required()
+def save_draft(campaign_id):
+    current_app.logger.info(f"Saving draft campaign '{campaign_id}'...")
+    try:
+        data = request.get_json()
+
+        campaign = Campaign.query.get_or_404(campaign_id)
+
+        campaign_schema = CampaignSchema(
+            unknown=EXCLUDE,
+            only=[
+                "id",
+                "title",
+                "description",
+                "goal",
+                "image_url",
+                "closeout_date",
+            ],
+        )
+        validated_data = campaign_schema.load(data)
+        if data.get("closeoutDate"):
+            date_string = data["closeoutDate"]
+            dt_pacific = parser.parse(date_string)
+            dt_utc = dt_pacific.astimezone(tzutc())
+            campaign.closeout_date = dt_utc
+
+        if validated_data["title"]:
+            campaign.title = validated_data["title"]
+
+        if validated_data["description"]:
+            campaign.description = validated_data["description"]
+
+        if validated_data["goal"]:
+            campaign.goal = validated_data["goal"]
+
+        db.session.commit()
+
+        current_app.logger.info(f"Draft campaign '{campaign_id}' saved successfully.")
+        return campaign_schema.dump(campaign), 200
+
+    except NotFound:
+        current_app.logger.warning(f"Draft campaign '{campaign_id}' not found.")
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Draft campaign with ID '{campaign_id}' not found.",
+                }
+            ),
+            404,
+        )
+    except ValidationError as ve:
+        current_app.logger.error(
+            f"Validation error while save draft campaign '{campaign_id}': {str(ve)}",
+            exc_info=True,
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Validation error: {str(ve)}",
+                }
+            ),
+            400,
+        )
+
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(
+            f"Error sharing draft campaign '{campaign_id}': {str(e)}", exc_info=True
+        )
+        return (
+            jsonify(
+                {
+                    "status": "failed",
+                    "message": f"Error sharing draft campaign '{campaign_id}': {str(e)}",
+                }
+            ),
+            500,
+        )
+
+
+@campaign_bp.route("/<int:campaign_id>/share-draft", methods=["PATCH"])
 @jwt_required()
 @admin_required()
 def share_draft(campaign_id):
@@ -449,25 +533,9 @@ def share_draft(campaign_id):
         current_app.logger.info(f"Sharing draft campaign '{data}'...")
 
         campaign = Campaign.query.get_or_404(campaign_id)
-        campaign.is_draft = False
 
-        campaign_schema = CampaignSchema(
-            unknown=EXCLUDE,
-            only=[
-                "id",
-                "title",
-                "description",
-                "goal",
-                "raised",
-                "image_url",
-                "is_active",
-                "is_draft",
-                "launched",
-                "closeout_date",
-                "total_donations",
-                "created_at",
-            ],
-        )
+        campaign_schema = CampaignSchema(unknown=EXCLUDE)
+
         validated_data = campaign_schema.load(data)
         date_string = data["closeoutDate"]
         dt_pacific = parser.parse(date_string)
@@ -477,11 +545,12 @@ def share_draft(campaign_id):
         campaign.description = validated_data["description"]
         campaign.goal = validated_data["goal"]
         campaign.closeout_date = dt_utc
+        campaign.is_draft = False
 
         db.session.commit()
 
         current_app.logger.info(f"Draft campaign '{campaign_id}' shared successfully.")
-        return campaign_schema.dump(campaign), 200
+        return jsonify({"status": "success", "message": "Draft campaign shared."}), 200
 
     except NotFound:
         current_app.logger.warning(f"Draft campaign '{campaign_id}' not found.")
@@ -508,20 +577,7 @@ def share_draft(campaign_id):
             ),
             400,
         )
-    except StaleDataError as sde:
-        current_app.logger.warning(
-            f"StaleDataError when sharing draft campaign '{campaign_id}': {str(sde)}"
-        )
-        db.session.rollback()
-        return (
-            jsonify(
-                {
-                    "status": "failed",
-                    "message": f"Stale data error, please retry: {str(sde)}",
-                }
-            ),
-            409,
-        )
+
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(

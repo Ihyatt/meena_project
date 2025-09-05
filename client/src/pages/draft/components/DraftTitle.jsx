@@ -3,43 +3,49 @@ import React, { useEffect, useState } from "react";
 import useDraftStore from "src/pages/draft/store";
 
 import { RiArrowLeftSLine } from "react-icons/ri";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Progressbar from "src/components/Progressbar";
 
 import "src/assets/css/CampaignForm.css";
 
 const DraftTitle = () => {
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [campaignId, setCampaignId] = useState("");
+  const [description, setDescription] = useState("");
+  const [goal, setGoal] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+
   const titlecharactersLimit = 100;
 
   const { fetchDraft, saveDraft, isLoading } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {
-      setTitle(data.title);
+      setTitle(data.title || "");
+      setCampaignId(data.id);
+      setDescription(data.description);
+      setGoal(data.goal);
+      setImageUrl(data.url);
     });
   }, [fetchDraft]);
 
   const handleSave = (event) => {
-    if (!title) {
-      const errors = [];
-      if (!title) {
-        errors.push("Title is required.");
-      }
-      setErrors(errors);
-      return;
-    }
-    saveDraft({ title: title }).then((data) => {
-      setTitle(data.title);
-    });
     event.preventDefault();
+    saveDraft(campaignId, title, description, goal, imageUrl, "")
+      .then(() => {
+        navigate("/draft/description");
+      })
+      .catch((error) => {
+        console.error("Failed to Save", error);
+      });
   };
 
   const step = 1;
   const stepText = "Give your campaign a title";
-
   const isButtonDisabled =
     title.length < 5 || title.length > titlecharactersLimit || isLoading;
   return (
@@ -88,12 +94,9 @@ const DraftTitle = () => {
             </div>
             <div>
               {!isButtonDisabled ? (
-                <Link
-                  to={"/draft/description"}
-                  style={{ color: "black", fontSize: "15px" }}
-                >
-                  <div
-                    className="
+                <div
+                  onClick={handleSave}
+                  className="
                 font-medium 
                 text-base 
                 flex-1 
@@ -104,11 +107,10 @@ const DraftTitle = () => {
                 rounded-full
                 text-white bg-[#0fa347] hover:bg-[#2bbd62]
               "
-                  >
-                    {" "}
-                    CONTINUE
-                  </div>
-                </Link>
+                >
+                  {" "}
+                  CONTINUE
+                </div>
               ) : (
                 <div
                   className="
