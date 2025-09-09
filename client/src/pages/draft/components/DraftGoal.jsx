@@ -40,17 +40,15 @@ const DraftGoal = () => {
   };
   const handleSave = (event) => {
     event.preventDefault();
-    saveDraft(campaignId, title, description, goal, imageUrl, "")
-      .then((data) => {
-        if (data.status === "success") {
+    saveDraft(campaignId, title, description, goal, closeoutDate).then(
+      (data) => {
+        if (!error) {
           navigate("/draft/campaign-image");
         } else {
           console.error("Error saving draft", data);
         }
-      })
-      .catch((error) => {
-        console.error("Failed to Save", error);
-      });
+      }
+    );
   };
 
   const isButtonDisabled = !goal || goal <= 0.1 || goal > 1000000 || isLoading;

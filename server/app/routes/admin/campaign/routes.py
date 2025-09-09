@@ -22,6 +22,7 @@ from app.schemas.campaign import CampaignSchema
 from app.schemas.image import ImageSchema
 from app.utils.decorators import admin_required
 from app.utils.image_validator import allowed_mime_type
+import pytz  # or use zoneinfo if on Python 3.9+
 
 
 @campaign_bp.route("/", methods=["GET"])
@@ -468,19 +469,23 @@ def save_draft(campaign_id):
                 "closeout_date",
             ],
         )
-        validated_data = campaign_schema.load(data)
+
         if data.get("closeoutDate") and data["closeoutDate"]:
             current_app.logger.info(
                 f"Setting draft campaign closeout date to '{data['closeoutDate']}'"
             )
 
             date_string = data["closeoutDate"]
-            dt = datetime.strptime(date_string, "%a %b %d %Y %H:%M:%S GMT%z (%Z)")
+            if date_string.endswith("Z"):
+                dt = datetime.fromisoformat(date_string.replace("Z", "+00:00"))
+            else:
+                dt = datetime.fromisoformat(date_string)
             dt_utc = dt.astimezone(timezone.utc)
-
             campaign.closeout_date = dt_utc
-            current_app.logger.info(f"Draft campaign closeout date set to '{dt_utc}'")
 
+            data["closeoutDate"] = dt_utc
+
+        validated_data = campaign_schema.load(data)
         if validated_data["title"]:
             campaign.title = validated_data["title"]
 
@@ -493,8 +498,21 @@ def save_draft(campaign_id):
         db.session.commit()
 
         current_app.logger.info(f"Draft campaign '{campaign_id}' saved successfully.")
+        campaign_data = campaign_schema.dump(campaign)
+        close_out_date = campaign_data["closeoutDate"]
 
-        return campaign_schema.dump(campaign), 200
+        # Parse ISO 8601 string
+        dt = datetime.fromisoformat(close_out_date)
+
+        # Convert to PDT (America/Los_Angeles)
+        la_tz = pytz.timezone("America/Los_Angeles")
+        dt_local = dt.astimezone(la_tz)
+
+        # Format to match browser's string
+        formatted = dt_local.strftime("%a %b %d %Y %H:%M:%S GMT%z (%Z)")
+        campaign_data["closeoutDate"] = formatted
+
+        return campaign_data, 200
 
     except NotFound:
         current_app.logger.warning(f"Draft campaign '{campaign_id}' not found.")

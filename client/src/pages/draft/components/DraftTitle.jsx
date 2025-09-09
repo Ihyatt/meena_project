@@ -37,18 +37,16 @@ const DraftTitle = () => {
 
   const handleSave = (event) => {
     event.preventDefault();
-    saveDraft(campaignId, title, description, goal, imageUrl, "")
-      .then((data) => {
+    saveDraft(campaignId, title, description, goal, closeoutDate).then(
+      (data) => {
         console.log("Saved", data);
-        if (data.status === "success") {
+        if (!error) {
           navigate("/draft/description");
         } else {
           console.error("Error saving draft", data);
         }
-      })
-      .catch((error) => {
-        console.error("Failed to Save", error);
-      });
+      }
+    );
   };
 
   const step = 1;

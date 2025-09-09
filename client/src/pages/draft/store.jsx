@@ -47,7 +47,6 @@ const useDraftStore = create(
           const { jwtToken } = useAuthStore.getState();
           console.log("Saving campaign...", {
             campaignId,
-
             title,
             description,
             goal,

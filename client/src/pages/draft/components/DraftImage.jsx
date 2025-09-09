@@ -46,14 +46,8 @@ const DraftImage = () => {
   };
   const handleSave = (event) => {
     event.preventDefault();
-    console.log("saving", campaignId);
-    saveDraft(campaignId, title, description, goal, imageUrl, closeoutDate)
-      .then(() => {
-        navigate("/draft/date");
-      })
-      .catch((error) => {
-        console.error("Failed to Save", error);
-      });
+
+    navigate("/draft/date");
   };
   console.log("imageUrl in draft image", imageUrl);
   console.log("camp id", campaignId);

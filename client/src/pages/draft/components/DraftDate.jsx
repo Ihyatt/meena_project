@@ -21,7 +21,7 @@ const DraftDate = () => {
   const [goal, setGoal] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [closeoutDate, setCloseoutDate] = useState(new Date());
-  const { fetchDraft, saveDraft, isLoading } = useDraftStore();
+  const { fetchDraft, saveDraft, isLoading, error } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {
@@ -36,17 +36,15 @@ const DraftDate = () => {
 
   const handleSave = (event) => {
     event.preventDefault();
-    saveDraft(campaignId, title, description, goal, imageUrl, closeoutDate)
-      .then((data) => {
-        if (data.status == "success") {
+    saveDraft(campaignId, title, description, goal, closeoutDate).then(
+      (data) => {
+        if (!error) {
           navigate("/draft/review");
         } else {
           console.error("Error saving draft", data);
         }
-      })
-      .catch((error) => {
-        console.error("Failed to Save", error);
-      });
+      }
+    );
   };
 
   const step = 5;
