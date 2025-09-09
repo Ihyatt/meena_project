@@ -18,6 +18,7 @@ const DraftTitle = () => {
   const [description, setDescription] = useState("");
   const [goal, setGoal] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [closeoutDate, setCloseoutDate] = useState(new Date());
 
   const titlecharactersLimit = 100;
 
@@ -29,15 +30,21 @@ const DraftTitle = () => {
       setCampaignId(data.id);
       setDescription(data.description);
       setGoal(data.goal);
-      setImageUrl(data.url);
+      setImageUrl(data.imageUrl);
+      setCloseoutDate(data.closeoutDate);
     });
   }, [fetchDraft]);
 
   const handleSave = (event) => {
     event.preventDefault();
     saveDraft(campaignId, title, description, goal, imageUrl, "")
-      .then(() => {
-        navigate("/draft/description");
+      .then((data) => {
+        console.log("Saved", data);
+        if (data.status === "success") {
+          navigate("/draft/description");
+        } else {
+          console.error("Error saving draft", data);
+        }
       })
       .catch((error) => {
         console.error("Failed to Save", error);
@@ -54,7 +61,7 @@ const DraftTitle = () => {
         <div className="pt-45 px-10 md:px-20 lg:px-20">
           <div className=" font-normal text-md pb-4  mb-4 border-b-2 border-[#0fa347] transition-colors duration-300">
             {" "}
-            {step} of 6
+            {step} of 5
           </div>
 
           <div className=" font-light text-5xl">{stepText}</div>

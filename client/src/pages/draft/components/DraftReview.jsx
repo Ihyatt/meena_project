@@ -13,11 +13,24 @@ import { RiArrowLeftSLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 const DraftReview = () => {
+  const [title, setTitle] = useState("");
+  const [campaignId, setCampaignId] = useState("");
+  const [description, setDescription] = useState("");
+  const [goal, setGoal] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [closeoutDate, setCloseoutDate] = useState(null);
+
   const { fetchDraft, saveDraft, isLoading } = useDraftStore();
 
   useEffect(() => {
-    fetchDraft();
+    fetchDraft().then((data) => {
+      setTitle(data.title);
+      setCampaignId(data.id);
+      setDescription(data.description);
+      setGoal(data.goal);
+      setImageUrl(data.imageUrl);
+      setCloseoutDate(data.closeoutDate);
+    });
   }, [fetchDraft]);
 
   const handleDateChange = (newDate) => {
@@ -35,7 +48,7 @@ const DraftReview = () => {
         <div className="pt-45 px-10 md:px-20 lg:px-20">
           <div className=" font-normal text-md pb-4  mb-4 border-b-2 border-[#0fa347] transition-colors duration-300">
             {" "}
-            {step} of 6
+            {step} of 5
           </div>
 
           <div className=" font-light text-5xl">{stepText}</div>
@@ -97,7 +110,7 @@ const DraftReview = () => {
           <div className=" flex w-full p-10 justify-between items-center">
             <div>
               <Link
-                to={"/draft/campaign-image"}
+                to={"/draft/date"}
                 style={{ color: "black", fontSize: "15px" }}
               >
                 <RiArrowLeftSLine size={40} />

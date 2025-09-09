@@ -151,9 +151,17 @@ def save_campaign(campaign_id):
             ],
         )
         validated_data = campaign_schema.load(data)
-        date_string = data["closeoutDate"]
-        dt_pacific = parser.parse(date_string)
-        dt_utc = dt_pacific.astimezone(tzutc())
+        if data.get("closeoutDate") and data["closeoutDate"]:
+            current_app.logger.info(
+                f"Setting draft campaign closeout date to '{data['closeoutDate']}'"
+            )
+
+            date_string = data["closeoutDate"]
+            dt = datetime.strptime(date_string, "%a %b %d %Y %H:%M:%S GMT%z (%Z)")
+            dt_utc = dt.astimezone(timezone.utc)
+
+            campaign.closeout_date = dt_utc
+            current_app.logger.info(f"Draft campaign closeout date set to '{dt_utc}'")
 
         campaign.title = validated_data["title"]
         campaign.description = validated_data["description"]
@@ -391,7 +399,7 @@ def fetch_or_create_draft():
         ).first()
 
         if draft_campaign is None:
-            draft_campaign = Campaign(admin_id=admin_id)
+            draft_campaign = Campaign(admin_id=admin_id, is_draft=True)
             db.session.add(draft_campaign)
             db.session.commit()
             current_app.logger.info(f"Draft campaign created for admin '{admin_id}'.")
@@ -461,11 +469,17 @@ def save_draft(campaign_id):
             ],
         )
         validated_data = campaign_schema.load(data)
-        if data.get("closeoutDate"):
+        if data.get("closeoutDate") and data["closeoutDate"]:
+            current_app.logger.info(
+                f"Setting draft campaign closeout date to '{data['closeoutDate']}'"
+            )
+
             date_string = data["closeoutDate"]
-            dt_pacific = parser.parse(date_string)
-            dt_utc = dt_pacific.astimezone(tzutc())
+            dt = datetime.strptime(date_string, "%a %b %d %Y %H:%M:%S GMT%z (%Z)")
+            dt_utc = dt.astimezone(timezone.utc)
+
             campaign.closeout_date = dt_utc
+            current_app.logger.info(f"Draft campaign closeout date set to '{dt_utc}'")
 
         if validated_data["title"]:
             campaign.title = validated_data["title"]
@@ -479,6 +493,7 @@ def save_draft(campaign_id):
         db.session.commit()
 
         current_app.logger.info(f"Draft campaign '{campaign_id}' saved successfully.")
+
         return campaign_schema.dump(campaign), 200
 
     except NotFound:
@@ -537,9 +552,17 @@ def share_draft(campaign_id):
         campaign_schema = CampaignSchema(unknown=EXCLUDE)
 
         validated_data = campaign_schema.load(data)
-        date_string = data["closeoutDate"]
-        dt_pacific = parser.parse(date_string)
-        dt_utc = dt_pacific.astimezone(tzutc())
+        if data.get("closeoutDate") and data["closeoutDate"]:
+            current_app.logger.info(
+                f"Setting draft campaign closeout date to '{data['closeoutDate']}'"
+            )
+
+            date_string = data["closeoutDate"]
+            dt = datetime.strptime(date_string, "%a %b %d %Y %H:%M:%S GMT%z (%Z)")
+            dt_utc = dt.astimezone(timezone.utc)
+
+            campaign.closeout_date = dt_utc
+            current_app.logger.info(f"Draft campaign closeout date set to '{dt_utc}'")
 
         campaign.title = validated_data["title"]
         campaign.description = validated_data["description"]

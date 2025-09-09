@@ -191,6 +191,7 @@ def create_checkout_session():
         payment_transaction = PaymentTransaction.query.filter_by(
             payment_intent_id=payment_intent_id
         ).first()
+        payment_transaction.payment_intent_id = None
 
         donation = payment_transaction.donation
         donor = donation.donor

@@ -102,7 +102,7 @@ const Donation = () => {
     <div>
       {isLoading && <Loading />}
 
-      <div className=" md:px-20 lg:px-20">
+      <div className=" ">
         <div className="text-5xl font-bold mb-6">{title || DefaultTitle}</div>
         <div className="flex justify-center">
           <div className=" w-210  flex flex-col justify-center ">

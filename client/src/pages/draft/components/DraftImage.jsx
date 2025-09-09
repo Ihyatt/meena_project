@@ -12,42 +12,51 @@ import { useNavigate } from "react-router-dom";
 const DraftImage = () => {
   const navigate = useNavigate();
 
+  const [title, setTitle] = useState("");
+  const [campaignId, setCampaignId] = useState("");
+  const [description, setDescription] = useState("");
+  const [goal, setGoal] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [closeoutDate, setCloseoutDate] = useState(new Date());
+
   const [file, setFile] = useState(null);
-  const [campaignId, setCampaignId] = useState(null);
 
   const { fetchDraft, saveDraft, isLoading, upload } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {
+      console.log(data);
       setTitle(data.title);
       setCampaignId(data.id);
       setDescription(data.description);
       setGoal(data.goal);
-      setImageUrl(data.url);
+      setImageUrl(data.imageUrl);
+      setCloseoutDate(data.closeoutDate);
     });
   }, [fetchDraft]);
 
   const uploadFile = (file) => {
+    console.log("***************************", campaignId);
+
+    console.log("saving", campaignId);
     upload(campaignId, file).then((data) => {
       setImageUrl(data.url);
-      setCampaignId(data.id);
       setFile(null);
     });
   };
   const handleSave = (event) => {
     event.preventDefault();
-    saveDraft(campaignId, title, description, goal, imageUrl, "")
-      .then((success) => {
-        if (success) {
-          navigate("/draft/date");
-        }
+    console.log("saving", campaignId);
+    saveDraft(campaignId, title, description, goal, imageUrl, closeoutDate)
+      .then(() => {
+        navigate("/draft/date");
       })
       .catch((error) => {
         console.error("Failed to Save", error);
       });
   };
-
+  console.log("imageUrl in draft image", imageUrl);
+  console.log("camp id", campaignId);
   const step = 4;
   const stepText = "Add a photo to your campaign";
   const isButtonDisabled = !imageUrl || isLoading;
@@ -57,7 +66,7 @@ const DraftImage = () => {
         <div className="pt-45 px-10 md:px-20 lg:px-20">
           <div className=" font-normal text-md pb-4  mb-4 border-b-2 border-[#0fa347] transition-colors duration-300">
             {" "}
-            {step} of 6
+            {step} of 5
           </div>
 
           <div className=" font-light text-5xl">{stepText}</div>

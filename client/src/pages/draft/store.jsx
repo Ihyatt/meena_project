@@ -69,10 +69,12 @@ const useDraftStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          if (data.draft == true) {
-            set({ isLoading: false });
-            return data;
-          }
+          console.log("****************");
+          console.log("data", data, data.status);
+          console.log("response", response);
+
+          return data;
+
           set({ isLoading: false });
         } catch (error) {
           set({ error: error, isLoading: false });
@@ -81,6 +83,7 @@ const useDraftStore = create(
       upload: async (campaignId, file) => {
         set({ isLoading: true, error: null });
         try {
+          console.log("Uploading file...", campaignId);
           const { jwtToken } = useAuthStore.getState();
           const fd = new FormData();
           fd.append("file", file);
