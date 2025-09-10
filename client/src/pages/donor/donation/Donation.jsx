@@ -109,7 +109,7 @@ const Donation = () => {
             <img
               src={imageUrl || defaultImg}
               alt="ui/ux review check"
-              className="rounded-sm shadow-md h-100 w-full object-cover"
+              className="rounded-lg shadow-md h-100 w-full object-cover"
             />
             <div className="block lg:hidden px-5 pt-5">
               {activeCampaign == true ? (

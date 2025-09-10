@@ -85,18 +85,28 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 
 DONOR FLOW
 
-<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/37499ac2-4c53-4827-a234-9864a8229044" />
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/89e963f9-8a2a-4298-b31a-209eab3c2e18" />
 
-<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/0ce5143a-4b92-4f90-a7dc-5e181b5661fa"  />
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/2f193828-f879-4329-bb68-73803cc5c6f5" />
 
 <img width="100" alt="Image" src="https://github.com/user-attachments/assets/20c4340e-c13f-4212-854e-59054a5c105a" />
 
 ADMIN FLOW
 
-<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/97b85d6f-b07f-43c8-9440-f05b0e0c9673" />
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/c6fd5dd0-7f83-4c04-b772-098d6ab9454e" />
 
-<img width="100" alt="Image" src="https://github.com/user-attachments/assets/957e7d2b-16cf-44dc-9ab2-1d0ef00aad50"  />
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/fc2f2915-0a57-4f16-a013-f55923ba0623" />
 
-<img width="100" alt="Image" src="https://github.com/user-attachments/assets/f50c0aa2-3aa7-489b-a539-878e20277561" />
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/cc150cd1-735d-43b1-9dfe-2cf840cbfa53" />
 
-<img width="100"  alt="Image" src="https://github.com/user-attachments/assets/6686a9b6-dd95-4a98-988c-5ff3666a15e8" />
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/751a608f-ee34-4b0c-b66a-781da9b200f0" />
+
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/c6213c53-1448-47d5-a195-8c07376ea2b5" />
+
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/8d61e086-689d-4db1-b6e3-1f92c47383bb" />
+
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/62c821d0-3a37-42c6-a4ed-62f474093583" />
+
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/058a1fde-1abc-4cd1-a53c-c939881f6efd" />
+
+<img width="100" alt="Image" src="https://github.com/user-attachments/assets/0ece0241-371e-4159-aec1-c53579b6f08e" />
