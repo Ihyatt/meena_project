@@ -54,12 +54,10 @@ const DraftImage = () => {
       <div className="sm:w-50/100  md:w-40/100  lg:w-34/100  h-screen ">
         <div className="pt-45 px-10 md:px-20 lg:px-20">
           <div className=" font-normal text-md pb-4  mb-4 border-b-2 border-[#0fa347] transition-colors duration-300">
-            {" "}
             {step} of 5
           </div>
-
           <div className=" font-light text-5xl">{stepText}</div>
-        </div>{" "}
+        </div>
       </div>
       <div className=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
         <div className="sm:px-10 md:px-20 lg:px-30 pt-50 ">

@@ -25,7 +25,7 @@ import Loading from "src/components/Loading";
 // State Management
 import useCampaignStore from "src/pages/admin/campaigns/store";
 
-export const ManageCampaign = () => {
+export const Description = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isModal = location.state?.isModal;
@@ -53,6 +53,11 @@ export const ManageCampaign = () => {
     };
   }, []);
 
-  return <div ref={modalRef} className="modal-wrapper"></div>;
+  return (
+    <div ref={modalRef} className="modal-wrapper">
+      {isLoading && <Loading />}
+      <div className="modal rounded-lg"> here</div>
+    </div>
+  );
 };
-export default ManageCampaign;
+export default Description;

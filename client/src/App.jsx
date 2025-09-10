@@ -25,12 +25,12 @@ import { ManageDonor } from "src/pages/admin/donors/ManageDonor";
 
 //Admin Capaign Pages
 import DraftLayout from "src/pages/draft/DraftLayout";
-import DraftTitle from "src/pages/draft/components/DraftTitle";
-import DraftDescription from "src/pages/draft/components/DraftDescription";
-import DraftGoal from "src/pages/draft/components/DraftGoal";
-import DraftImage from "src/pages/draft/components/DraftImage";
-import DraftDate from "src/pages/draft/components/DraftDate";
-import DraftReview from "src/pages/draft/components/DraftReview";
+import DraftTitle from "src/pages/draft/components/Title";
+import DraftDescription from "src/pages/draft/components/Description";
+import DraftGoal from "src/pages/draft/components/Goal";
+import DraftImage from "src/pages/draft/components/Image";
+import DraftDate from "src/pages/draft/components/Date";
+import DraftReview from "src/pages/draft/components/Review";
 
 import ManageCampaign from "src/pages/admin/campaigns/ManageCampaign";
 
