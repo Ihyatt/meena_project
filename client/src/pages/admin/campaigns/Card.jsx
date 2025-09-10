@@ -6,10 +6,20 @@ import EllipsisText from "react-ellipsis-text";
 import { Chip } from "@material-tailwind/react";
 
 // Local Components
-import { CampaignDropdown } from "src/pages/admin/campaigns/CardDropdown";
 import FormatDate from "src/components/FormatDate";
+import useCampaignStore from "src/pages/admin/campaigns/store.jsx";
 
 export const Campaign = ({ data }) => {
+  const { launchCampaign, closeCampaign } = useCampaignStore();
+
+  const handleLaunchClick = () => {
+    launchCampaign(data.id);
+  };
+
+  const handleCloseClick = () => {
+    closeCampaign(data.id);
+  };
+
   return (
     <tr key={data.id}>
       <td className="max-w-60 break-all p-4 border-b border-blue-gray-50">
@@ -59,16 +69,22 @@ export const Campaign = ({ data }) => {
 
       <td className="p-4 border-b border-blue-gray-50 text-xs ">
         <div className="w-max ">
-          <Chip
-            variant="ghost"
-            size="sm"
-            value={data.isActive ? "active" : "inactive"}
-            className={`font-normal ${data.isActive ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"}`}
-          />
+          {data.isActive ? (
+            <div
+              className="bg-green-100 text-green-600 px-3 py-2 rounded-full cursor-pointer"
+              onClick={handleCloseClick}
+            >
+              close
+            </div>
+          ) : (
+            <div
+              className="bg-red-100 text-red-600 px-3 py-2 rounded-full cursor-pointer"
+              onClick={handleLaunchClick}
+            >
+              launch
+            </div>
+          )}
         </div>
-      </td>
-      <td className="p-4 border-b border-blue-gray-50  ">
-        <CampaignDropdown key={data.id} data={data} />
       </td>
     </tr>
   );

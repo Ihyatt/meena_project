@@ -22,7 +22,7 @@ const DraftDescription = () => {
 
   const descriptioncharactersLimit = 2000;
 
-  const { fetchDraft, saveDraft, isLoading } = useDraftStore();
+  const { fetchDraft, saveDraft, isLoading, error } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {

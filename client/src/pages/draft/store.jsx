@@ -33,7 +33,6 @@ const useDraftStore = create(
           set({
             isLoading: false,
           });
-          console.log("Fetched campaign draft:", data);
           return data;
         } catch (error) {
           console.error("Error fetching campaign draft:", error);
@@ -45,13 +44,6 @@ const useDraftStore = create(
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
-          console.log("Saving campaign...", {
-            campaignId,
-            title,
-            description,
-            goal,
-            closeoutDate,
-          });
 
           const response = await fetch(
             `${backednUrl}/admins/campaigns/${campaignId}/save-draft`,
@@ -68,9 +60,6 @@ const useDraftStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          console.log("****************");
-          console.log("data", data, data.status);
-          console.log("response", response);
 
           return data;
 
@@ -82,7 +71,6 @@ const useDraftStore = create(
       upload: async (campaignId, file) => {
         set({ isLoading: true, error: null });
         try {
-          console.log("Uploading file...", campaignId);
           const { jwtToken } = useAuthStore.getState();
           const fd = new FormData();
           fd.append("file", file);
@@ -119,14 +107,6 @@ const useDraftStore = create(
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
-          console.log("Saving campaign...", {
-            campaignId,
-
-            title,
-            description,
-            goal,
-            closeoutDate,
-          });
 
           const response = await fetch(
             `${backednUrl}/admins/campaigns/${campaignId}/share-draft`,

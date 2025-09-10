@@ -52,7 +52,6 @@ const DonationForm = ({ targetRef }) => {
       newErrors.push("Email address is required");
     }
     if (!amount || amount <= 0.01 || amount >= 100000.01) {
-      console.log(amount);
       newErrors.push(
         "Amount must be greater than $0.01 and less than $1,000.01"
       );

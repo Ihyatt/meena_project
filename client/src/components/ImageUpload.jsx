@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { FiUploadCloud } from "react-icons/fi";
 
 const ImageUpload = ({ imageUrl, uploadFile }) => {
-  console.log("imageUrl in image upload", imageUrl);
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
 

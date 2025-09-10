@@ -27,7 +27,7 @@ const useCampaignStore = create(
             set({ error: data.message });
           }
           set({
-            campaigns: data,
+            campaigns: data || [],
             isLoading: false,
           });
         } catch (error) {

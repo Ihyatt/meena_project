@@ -19,7 +19,7 @@ const DraftGoal = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [closeoutDate, setCloseoutDate] = useState(new Date());
 
-  const { fetchDraft, saveDraft, isLoading } = useDraftStore();
+  const { fetchDraft, saveDraft, isLoading, error } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {

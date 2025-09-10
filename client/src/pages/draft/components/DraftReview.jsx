@@ -36,7 +36,6 @@ const DraftReview = () => {
   const handleDateChange = (newDate) => {
     setCloseoutDate(newDate);
     // You can now use the newDate variable here
-    console.log(newDate); // This will log the selected date object
   };
 
   const step = 5;

@@ -25,7 +25,6 @@ const DraftImage = () => {
 
   useEffect(() => {
     fetchDraft().then((data) => {
-      console.log(data);
       setTitle(data.title);
       setCampaignId(data.id);
       setDescription(data.description);
@@ -36,9 +35,6 @@ const DraftImage = () => {
   }, [fetchDraft]);
 
   const uploadFile = (file) => {
-    console.log("***************************", campaignId);
-
-    console.log("saving", campaignId);
     upload(campaignId, file).then((data) => {
       setImageUrl(data.url);
       setFile(null);
@@ -49,8 +45,7 @@ const DraftImage = () => {
 
     navigate("/draft/date");
   };
-  console.log("imageUrl in draft image", imageUrl);
-  console.log("camp id", campaignId);
+
   const step = 4;
   const stepText = "Add a photo to your campaign";
   const isButtonDisabled = !imageUrl || isLoading;

@@ -22,7 +22,7 @@ const DraftTitle = () => {
 
   const titlecharactersLimit = 100;
 
-  const { fetchDraft, saveDraft, isLoading } = useDraftStore();
+  const { fetchDraft, saveDraft, isLoading, error } = useDraftStore();
 
   useEffect(() => {
     fetchDraft().then((data) => {
@@ -39,7 +39,6 @@ const DraftTitle = () => {
     event.preventDefault();
     saveDraft(campaignId, title, description, goal, closeoutDate).then(
       (data) => {
-        console.log("Saved", data);
         if (!error) {
           navigate("/draft/description");
         } else {

@@ -50,7 +50,6 @@ const DraftDate = () => {
   const step = 5;
   const stepText = "Set closeout date for your campaign";
   const isButtonDisabled = !closeoutDate || isLoading;
-  console.log("closeoutDate", closeoutDate);
   return (
     <div className="flex col w-full h-screen  bg-[#f5f5f5]">
       <div className="sm:w-50/100  md:w-40/100  lg:w-34/100  h-screen ">
