@@ -27,9 +27,11 @@ const useCampaignStore = create(
             set({ error: data.message });
           }
           set({
-            campaigns: data || [],
+            campaigns: data.length ? data : [],
             isLoading: false,
           });
+          const campaigns = get().campaigns;
+          console.log(campaigns);
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -80,22 +82,9 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          if (data.draft == true) {
-            set({ isLoading: false });
-            return data;
-          }
-
-          set((state) => ({
-            campaigns: state.campaigns.map((campaign) =>
-              data.id == campaign.id
-                ? {
-                    ...data,
-                  }
-                : campaign
-            ),
+          set({
             isLoading: false,
-          }));
-
+          });
           return data;
         } catch (error) {
           set({ error: error, isLoading: false });
@@ -119,14 +108,13 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
+          console.log(data);
+
           set((state) => ({
             campaigns: state.campaigns.map((campaign) =>
               campaign.id == data.id
-                ? {
-                    ...campaign,
-                    isActive: data.isActive,
-                  }
-                : campaign
+                ? { ...campaign, isActive: data.isActive }
+                : { ...campaign, isActive: false }
             ),
             isLoading: false,
           }));
@@ -156,11 +144,8 @@ const useCampaignStore = create(
           set((state) => ({
             campaigns: state.campaigns.map((campaign) =>
               campaign.id == data.id
-                ? {
-                    ...data,
-                    isActive: data.isActive,
-                  }
-                : campaign
+                ? { ...campaign, isActive: data.isActive }
+                : { ...campaign, isActive: false }
             ),
             isLoading: false,
           }));

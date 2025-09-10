@@ -34,6 +34,7 @@ const Campaigns = () => {
   useEffect(() => {
     fetchCampaigns();
   }, [fetchCampaigns]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 20;
 
@@ -42,6 +43,9 @@ const Campaigns = () => {
   const currentCampaigns = useMemo(() => {
     const startIndex = (currentPage - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
+    if (campaigns.length === 0) {
+      return [];
+    }
     return campaigns.slice(startIndex, endIndex);
   }, [campaigns, currentPage, rowsPerPage]);
 
