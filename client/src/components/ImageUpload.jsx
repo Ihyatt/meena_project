@@ -29,7 +29,7 @@ const ImageUpload = ({ imageUrl, uploadFile }) => {
           <img
             src={imageUrl}
             alt="ui/ux review check"
-            className="rounded-sm shadow-md h-100 w-full object-cover"
+            className="rounded-lg  h-100 w-full object-cover"
           />
 
           <div className="mt-2 ml-1 mr-1 flex flex-col items-center justify-center">

@@ -46,7 +46,7 @@ const DraftDate = () => {
       }
     );
   };
-
+  console.log(closeoutDate);
   const step = 5;
   const stepText = "Set closeout date for your campaign";
   const isButtonDisabled = !closeoutDate || isLoading;
@@ -62,7 +62,7 @@ const DraftDate = () => {
           <div className=" font-light text-5xl">{stepText}</div>
         </div>{" "}
       </div>
-      <div class=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
+      <div className=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
         <div className="flex sm:px-5 md:px-20 lg:px-35 pt-46 items-center justify-center">
           <DatePicker
             selected={closeoutDate}

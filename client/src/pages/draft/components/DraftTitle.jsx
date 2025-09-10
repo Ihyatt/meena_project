@@ -64,7 +64,7 @@ const DraftTitle = () => {
           <div className=" font-light text-5xl">{stepText}</div>
         </div>{" "}
       </div>
-      <div class=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
+      <div className=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
         <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
           <form className="">
             <div className="p-2">

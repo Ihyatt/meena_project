@@ -406,13 +406,7 @@ def fetch_or_create_draft():
             current_app.logger.info(f"Draft campaign created for admin '{admin_id}'.")
 
         campaign_schema = CampaignSchema(
-            only=[
-                "id",
-                "title",
-                "description",
-                "goal",
-                "image_url",
-            ]
+            only=["id", "title", "description", "goal", "image_url", "closeout_date"]
         )
 
         current_app.logger.info(f"Draft campaign fetched for '{draft_campaign.id}'.")

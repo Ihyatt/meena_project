@@ -11,7 +11,6 @@ const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 const useDraftStore = create(
   persist(
     (set, get) => ({
-      campaigns: [],
       isLoading: false,
       error: null,
 

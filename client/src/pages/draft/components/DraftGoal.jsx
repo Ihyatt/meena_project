@@ -68,7 +68,7 @@ const DraftGoal = () => {
           <div className=" font-light text-5xl">{stepText}</div>
         </div>{" "}
       </div>
-      <div class=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
+      <div className=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
         <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
           <form className="">
             <div className=" border border-gray-400  p-2 rounded-sm  flex items-center justify-between mb-3 min-w-75 text-lg font-semibold w-full h-14 bg-transparent hover:bg-[#fafafa] placeholder:text-slate-400 text-slate-700  border border-[#b7b7b6] rounded-lg px-3 py-2 transition duration-300  focus:outline-none focus-within:border-[#232323] focus-within:border-2 ">

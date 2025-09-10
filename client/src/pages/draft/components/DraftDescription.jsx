@@ -26,6 +26,7 @@ const DraftDescription = () => {
 
   useEffect(() => {
     fetchDraft().then((data) => {
+      console.log(data);
       setTitle(data.title);
       setCampaignId(data.id);
       setDescription(data.description || "");
@@ -54,6 +55,8 @@ const DraftDescription = () => {
     description.length < 5 ||
     description.length > descriptioncharactersLimit ||
     isLoading;
+  console.log(closeoutDate);
+
   return (
     <div className="flex col w-full h-screen  bg-[#f5f5f5]">
       <div className="sm:w-50/100  md:w-40/100  lg:w-34/100  h-screen ">
@@ -66,7 +69,7 @@ const DraftDescription = () => {
           <div className=" font-light text-5xl">{stepText}</div>
         </div>{" "}
       </div>
-      <div class=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
+      <div className=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
         <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
           <form className="">
             <div className="p-2">
