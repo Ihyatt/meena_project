@@ -1,9 +1,11 @@
 // External Libraries
 import { NumericFormat } from "react-number-format";
 import EllipsisText from "react-ellipsis-text";
+import { Link, useLocation } from "react-router-dom";
 
 // UI Libraries (Material Tailwind)
 import { Chip } from "@material-tailwind/react";
+import { RiPencilLine } from "react-icons/ri";
 
 // Local Components
 import FormatDate from "src/components/FormatDate";
@@ -85,6 +87,14 @@ export const Campaign = ({ data }) => {
             </div>
           )}
         </div>
+      </td>
+      <td className="p-4 border-b border-blue-gray-50  ">
+        <Link
+          to={`/campaigns/${data.id}`}
+          className="w-full h-full px-2 py-1.5 text-sm  flex items-center"
+        >
+          <RiPencilLine />
+        </Link>
       </td>
     </tr>
   );

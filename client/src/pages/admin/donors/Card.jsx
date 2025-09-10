@@ -44,9 +44,9 @@ const Donor = ({ data }) => {
       </td>
       <td className="p-4 border-b border-blue-gray-50">
         <div
-          className={`py-1 px-2 rounded-md w-max text-xs  ${data.emailSubscription.status.toLowerCase() == "active" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
+          className={`px-3 py-2  w-max text-xs rounded-full  ${data.emailSubscription.status.toLowerCase() == "active" ? "bg-green-100 text-green-600 text-xs" : "bg-red-100 text-red-600 text-xs"}`}
         >
-          {data.emailSubscription.status == "active"
+          {data.emailSubscription.status.toLowerCase() == "active"
             ? "subscribed"
             : "unsubscribed"}
         </div>
@@ -55,7 +55,7 @@ const Donor = ({ data }) => {
         <Link
           to={`/admins/donors/${data.id}`}
           state={{ background: location }}
-          className="w-full h-full px-2 py-1.5 text-sm  flex items-center"
+          className="w-full  text-sm  flex items-center"
         >
           <RiPencilLine />
         </Link>
