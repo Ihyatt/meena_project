@@ -10,7 +10,6 @@ import Loading from "src/components/Loading";
 import DonationEvents from "src/components/Events";
 import About from "src/pages/donor/donation/components/About";
 import defaultImg from "src/assets/images/defaultImg.jpg";
-import temp from "src/assets/images/temp.png";
 import din from "src/assets/images/din.png";
 import DonationForm from "src/pages/donor/donation/components/DonationForm";
 import DonationData from "src/pages/donor/donation/components/DonationData";
@@ -20,7 +19,7 @@ import useDonateStore from "src/pages/donor/store";
 import DonationContext from "src/pages/donor/donation/components/DonationContext";
 
 // Constants and environment variables
-import { DefaultTitle } from "src/utils/constants";
+import { DEFAULT_TITLE } from "src/utils/constants";
 const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
 const Donation = () => {
@@ -47,7 +46,7 @@ const Donation = () => {
       setGoal(data.goal);
       setTotalDonations(data.totalDonations);
       setDonorsCount(data.donorsCount || 0);
-      setActiveCampaign(data.activeCampaign);
+      setActiveCampaign(false);
     });
   }, [fetchCampaign]);
 
@@ -101,61 +100,19 @@ const Donation = () => {
   return (
     <div>
       {isLoading && <Loading />}
-
-      <div className=" ">
-        <div className="text-5xl font-bold mb-6">{title || DefaultTitle}</div>
-        <div className="flex justify-center">
-          <div className=" w-210  flex flex-col justify-center ">
-            <img
-              src={imageUrl || defaultImg}
-              alt="ui/ux review check"
-              className="rounded-lg shadow-md h-100 w-full object-cover"
-            />
-            <div className="block lg:hidden px-5 pt-5">
-              {activeCampaign == true ? (
-                <DonationData
-                  goal={goal}
-                  raised={raised}
-                  totalDonations={totalDonations}
-                />
-              ) : (
-                <div className="flex w-58 flex-col mb-5">
-                  <div className="text-lg font-light">
-                    <NumericFormat
-                      value={raised || 0}
-                      thousandSeparator={true}
-                      prefix="$"
-                      decimalScale={2}
-                      displayType="text"
-                    />{" "}
-                    raised
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="text-left md:px-6 lg:px-6 md:w-full">
-              <div className=" sm:w-full md:w-full  lg:py-6  lg:w-150">
-                <About description={description} />
-              </div>
-              <div>
-                <DonationForm targetRef={targetRef} />
-              </div>
-            </div>
-          </div>
-
-          <div className="hidden lg:block ml-5  min-w-90  rounded-xl p-8 h-225">
-            <img
-              className="w-40 h-40 rounded-full object-cover"
-              src={din}
-              alt="sumayyah"
-            />
-            <div className="mt-5 mb-15">
-              <div className="text-sm">CEO & FOUNDER</div>
-
-              <div className="text-2xl">SUMAYYAH DIN</div>
-            </div>
-
+      <div className="grid grid-cols-12 ">
+        <div className="col-start-1 lg:col-start-2 col-span-6 lg:col-span-6  text-5xl font-bold ">
+          {title || DEFAULT_TITLE}
+        </div>
+      </div>
+      <div className="grid grid-cols-12 ">
+        <div className="col-start-1 lg:col-start-2 col-span-6 lg:col-span-6 ">
+          <img
+            src={imageUrl || defaultImg}
+            alt="ui/ux review check"
+            className="rounded-lg shadow-md h-100 w-full object-cover"
+          />
+          <div className="block lg:hidden">
             {activeCampaign == true ? (
               <DonationData
                 goal={goal}
@@ -163,31 +120,62 @@ const Donation = () => {
                 totalDonations={totalDonations}
               />
             ) : (
-              <div className="flex w-58 flex-col mb-5">
-                <div className="text-lg font-light">
-                  <NumericFormat
-                    value={raised || 0}
-                    thousandSeparator={true}
-                    prefix="$"
-                    decimalScale={2}
-                    displayType="text"
-                  />{" "}
-                  raised
-                </div>
+              <div className="text-lg font-light text-right">
+                <NumericFormat
+                  value={raised || 0}
+                  thousandSeparator={true}
+                  prefix="$"
+                  decimalScale={2}
+                  displayType="text"
+                />{" "}
+                raised
               </div>
             )}
+          </div>
+          <About description={description} />
+          <DonationForm targetRef={targetRef} />
+        </div>
+        <div className="hidden lg:block col-span-3 ">
+          <img
+            className="w-40 h-40 rounded-full object-cover"
+            src={din}
+            alt="sumayyah"
+          />
+          <div className="">
+            <div className="text-sm">CEO & FOUNDER</div>
+            <div className="text-2xl">SUMAYYAH DIN</div>
+          </div>
 
-            <div className="w-73">
-              <button
-                type="button"
-                className="
+          {activeCampaign == true ? (
+            <DonationData
+              goal={goal}
+              raised={raised}
+              totalDonations={totalDonations}
+            />
+          ) : (
+            <div className="text-lg font-light">
+              <NumericFormat
+                value={raised || 0}
+                thousandSeparator={true}
+                prefix="$"
+                decimalScale={2}
+                displayType="text"
+              />{" "}
+              raised
+            </div>
+          )}
+
+          <div className="">
+            <button
+              type="button"
+              className="
             text-white
             bg-[#0fa347] 
             hover:bg-[#2bbd62] 
             transition-colors 
             duration-300
             font-medium 
-            text-base 
+            text-sm 
             flex-1 
             px-5 
             py-2 
@@ -196,16 +184,16 @@ const Donation = () => {
             mr-1 
             text-md
             "
-                onClick={scrollToTarget}
-              >
-                DONATE NOW
-              </button>
-              <button
-                type="button"
-                className="
+              onClick={scrollToTarget}
+            >
+              DONATE NOW
+            </button>
+            <button
+              type="button"
+              className="
               text-[#0fa347]
               font-medium 
-              text-base flex-1 
+              text-sm flex-1 
               px-5 
               py-2
                border
@@ -217,29 +205,28 @@ const Donation = () => {
                 ml-1 
                 text-md
               "
-                onClick={handleCopy}
-              >
-                {copyText}
-              </button>
-              {donorsCount > 0 && (
-                <div className="flex justify-start items-center mt-5 mb-3">
-                  <FaArrowTrendUp
-                    size={35}
-                    color="#DB5758"
-                    className="inline bg-[#edafb0] rounded-full p-1"
-                  />{" "}
-                  <div className="text-sm font-bold  ml-3 text-[#DB5758]">
-                    {donorsCount} {donorsCount == 1 ? "person " : "people "}
-                    just donated
-                  </div>
+              onClick={handleCopy}
+            >
+              {copyText}
+            </button>
+            {donorsCount > 0 && (
+              <div className="flex justify-start items-center mt-5 mb-3">
+                <FaArrowTrendUp
+                  size={35}
+                  color="#DB5758"
+                  className="inline bg-[#edafb0] rounded-full p-1"
+                />{" "}
+                <div className="text-sm font-bold  ml-3 text-[#DB5758]">
+                  {donorsCount} {donorsCount == 1 ? "person " : "people "}
+                  just donated
                 </div>
-              )}
-              <div className="mt-5">
-                <div className="text-gray-400 ">RECENT DONATIONS</div>
-                <DonationContext.Provider value={donationContextValue}>
-                  <DonationEvents />
-                </DonationContext.Provider>
               </div>
+            )}
+            <div className="mt-5">
+              <div className="text-gray-400 ">RECENT DONATIONS</div>
+              <DonationContext.Provider value={donationContextValue}>
+                <DonationEvents />
+              </DonationContext.Provider>
             </div>
           </div>
         </div>
