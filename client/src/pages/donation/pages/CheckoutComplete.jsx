@@ -9,9 +9,9 @@ import Loading from "src/components/Loading";
 
 // 4. State Management
 import useDonateStore from "src/pages/donation/store";
-import Failed from "src/pages/donation/components/Failed";
-import Paid from "src/pages/donation/components/Paid";
-import Unknown from "src/pages/donation/components/Unknown";
+import FailedTransaction from "src/pages/donation/components/FailedTransaction";
+import SuccessTransaction from "src/pages/donation/components/SuccessTransaction";
+import UnknowTransaction from "src/pages/donation/components/UnknowTransaction";
 
 const CheckoutComplete = () => {
   const { fetchCheckout, isLoading, status } = useDonateStore();
@@ -29,7 +29,7 @@ const CheckoutComplete = () => {
     isLoading && <Loading />;
   }
   if (status == "paid") {
-    <Paid>
+    <SuccessTransaction>
       Success! Thank you for your donation.{" "}
       <Link
         to={"/"}
@@ -41,9 +41,9 @@ const CheckoutComplete = () => {
       >
         Return to home page.
       </Link>
-    </Paid>;
+    </SuccessTransaction>;
   } else if (status === "failed") {
-    <Failed>
+    <FailedTransaction>
       Your payment has failed. Please try again later or contact Stripe.com{" "}
       <Link
         to={"/"}
@@ -56,9 +56,9 @@ const CheckoutComplete = () => {
         {" "}
         Return to home page.
       </Link>
-    </Failed>;
+    </FailedTransaction>;
   } else {
-    <Unknown>
+    <UnknowTransaction>
       Something went wrong.{" "}
       <Link
         to={"/"}
@@ -71,7 +71,7 @@ const CheckoutComplete = () => {
         {" "}
         Return to home page.
       </Link>
-    </Unknown>;
+    </UnknowTransaction>;
   }
 };
 

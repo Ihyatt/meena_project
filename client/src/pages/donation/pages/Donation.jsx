@@ -1,10 +1,3 @@
-// React and hooks
-import React, { useRef, useEffect, useState, useMemo } from "react";
-
-// External libraries
-import { NumericFormat } from "react-number-format";
-import { FaArrowTrendUp } from "react-icons/fa6";
-
 // Local components and assets
 import Loading from "src/components/Loading";
 import DonationEvents from "src/components/Events";
@@ -21,10 +14,7 @@ import Button from "src/pages/donation/components/Button";
 import DonorActivity from "src/components/DonorActivity";
 import CampaignTitle from "src/pages/donation/components/CampaignTitle";
 
-import useDonation from "src/pages/donation/hooks.jsx/useDonation";
-
-// Constants and environment variables
-const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
+import useDonation from "src/pages/donation/hooks/useDonation";
 
 const Donation = () => {
   const {
