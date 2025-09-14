@@ -6,15 +6,12 @@ import { RiGift2Line } from "react-icons/ri";
 import TimeAgo from "src/utils/TimeAgo"; // This is likely an external or shared component
 
 // 3. Context/Utility imports
-import DonationContext from "src/components/DonationContext";
 
 // 4. Environment variables
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
-const DonationEvents = () => {
+const DonationEvents = ({ handleNewDonation, handleDonorUpdate }) => {
   const [notifications, setNotifications] = useState([]);
-
-  const { handleDonationUpdate } = useContext(DonationContext);
 
   // This useEffect for initial fetch is fine
   useEffect(() => {
@@ -47,7 +44,7 @@ const DonationEvents = () => {
             );
             return prevNotifications; // Return current state if duplicate
           }
-          handleDonationUpdate(data.amount);
+          handleNewDonation(data.amount);
           if (prevNotifications.length >= 5) {
             // Limit to last 5 notifications
             return [data, ...prevNotifications.slice(0, 4)];
@@ -83,31 +80,34 @@ const DonationEvents = () => {
     };
   }, []); // Empty dependency array is correct here for setting up the EventSource once
   return (
-    <div className="pt-2 h-80">
-      {notifications.length === 0 ? (
-        <p className="">No recent donations.</p>
-      ) : (
-        <ul className=" space-y-2">
-          {notifications.map((note) => (
-            <li
-              key={note.notification_id}
-              className="flex items-center rounded-xl pt-2 "
-            >
-              <div className="rounded-full bg-gray-200 p-2">
-                <RiGift2Line color="black" size={22} />
-              </div>
-              <div className="ml-4">
-                <div className="text-sm">{note.full_name}</div>
-                <div className="text-md">
-                  ${note.amount} ·{" "}
-                  <TimeAgo timestamp={note.donation_created_at} />
+    <>
+      <div className="text-gray-400 ">RECENT DONATIONS</div>
+      <div className="pt-2 h-80">
+        {notifications.length === 0 ? (
+          <p className="">No recent donations.</p>
+        ) : (
+          <ul className=" space-y-2">
+            {notifications.map((note) => (
+              <li
+                key={note.notification_id}
+                className="flex items-center rounded-xl pt-2 "
+              >
+                <div className="rounded-full bg-gray-200 p-2">
+                  <RiGift2Line color="black" size={22} />
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+                <div className="ml-4">
+                  <div className="text-sm">{note.full_name}</div>
+                  <div className="text-md">
+                    ${note.amount} ·{" "}
+                    <TimeAgo timestamp={note.donation_created_at} />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
   );
 };
 

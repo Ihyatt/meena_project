@@ -24,7 +24,6 @@ import Loading from "src/components/Loading";
 
 // Context and state management
 import useAdminStore from "src/pages/admin/store";
-import DonationContext from "src/components/DonationContext";
 
 const Dashboard = () => {
   const [donationsLocation, setDonationsLocation] = useState([]);
@@ -76,10 +75,11 @@ const Dashboard = () => {
     });
     setDonationsCount((prevCount) => prevCount + 1);
   };
-
-  const donationContextValue = {
-    handleDonationUpdate: handleNewDonation,
-    handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
+  const handleDonorUpdate = () => {
+    setCampaignData((prevData) => ({
+      ...prevData,
+      donorsCount: prevData.donorsCount + 1,
+    }));
   };
 
   return (
@@ -170,9 +170,10 @@ const Dashboard = () => {
             </div>
           )}
           <div className="text-gray-400 ">RECENT DONATIONS</div>
-          <DonationContext.Provider value={donationContextValue}>
-            <DonationEvents />
-          </DonationContext.Provider>
+          <DonationEvents
+            handleNewDonation={handleNewDonation}
+            handleDonorUpdate={handleDonorUpdate}
+          />
         </div>
       </div>
       <div className="  h-full">

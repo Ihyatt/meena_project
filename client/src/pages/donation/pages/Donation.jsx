@@ -1,5 +1,5 @@
 // React and hooks
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 
 // External libraries
 import { NumericFormat } from "react-number-format";
@@ -18,22 +18,25 @@ import CeoData from "src/pages/donation/components/CeoData";
 
 // Context and state management
 import useDonateStore from "src/pages/donation/store";
-import DonationContext from "src/components/DonationContext";
 import Button from "src/pages/donation/components/Button";
+import DonorActivity from "src/pages/donation/components/DonorActivity";
+import CampaignTitle from "src/pages/donation/components/CampaignTitle";
 
 // Constants and environment variables
-import { DEFAULT_TITLE } from "src/utils/constants";
 const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
 const Donation = () => {
-  const [imageUrl, setImageUrl] = useState(defaultImg);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [raised, setRaised] = useState(0);
-  const [goal, setGoal] = useState(0);
-  const [totalDonations, setTotalDonations] = useState(0);
+  const [campaignData, setCampaignData] = useState({
+    imageUrl: defaultImg,
+    title: "",
+    description: "",
+    raised: 0,
+    goal: 0,
+    totalDonations: 0,
+    activeCampaign: false,
+    donorsCount: 0,
+  });
   const [copyText, setCopyText] = useState("SHARE LINK");
-  const [activeCampaign, setActiveCampaign] = useState(true);
   const [donorsCount, setDonorsCount] = useState(0);
   const targetRef = useRef(null);
 
@@ -42,16 +45,14 @@ const Donation = () => {
   useEffect(() => {
     getUserLocation();
     fetchCampaign().then((data) => {
-      setImageUrl(data.imageUrl || defaultImg);
-      setTitle(data.title);
-      setDescription(data.description);
-      setRaised(data.raised);
-      setGoal(data.goal);
-      setTotalDonations(data.totalDonations);
-      setDonorsCount(data.donorsCount || 0);
-      setActiveCampaign(data.activeCampaign);
+      setCampaignData({ ...data });
     });
   }, [fetchCampaign]);
+
+  const percentage = useMemo(() => {
+    if (goal === 0) return 0; // Avoid division by zero
+    return Math.min(Math.floor((campaign.raised / campaign.goal) * 100), 100); // Cap at 100%
+  }, [campaign.raised, campaign.goal]); // Dependency array: the "anchor points"
 
   const handleCopy = async () => {
     try {
@@ -88,46 +89,50 @@ const Donation = () => {
     }
   };
   const handleNewDonation = (newAmount) => {
-    setRaised((prevRaised) => {
-      const amountAsNumber = Number(newAmount);
-      const prevRaisedAsNumber = Number(prevRaised);
-      return prevRaisedAsNumber + amountAsNumber;
-    });
+    const amountAsNumber = Number(newAmount);
+    setCampaignData((prevData) => ({
+      ...prevData,
+      raised: prevData.raised + amountAsNumber,
+      totalDonations: prevData.totalDonations + 1,
+    }));
   };
 
-  const donationContextValue = {
-    handleDonationUpdate: handleNewDonation,
-    handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
+  const handleDonorUpdate = () => {
+    setCampaignData((prevData) => ({
+      ...prevData,
+      donorsCount: prevData.donorsCount + 1,
+    }));
   };
+
   console.log(activeCampaign);
 
   return (
     <div>
       {isLoading && <Loading />}
-      <div className=" ">
-        <div className=" text-5xl font-bold ">{title || DEFAULT_TITLE}</div>
-      </div>
+      <CampaignTitle title={campaignData.title} />
       <div className="">
-        <CoverImage imageUrl={imageUrl} />
+        <CoverImage imageUrl={campaignData.imageUrl} />
         <div className=" ">
           <div className="block lg:hidden">
             <DonationData
-              activeCampaign={activeCampaign}
-              goal={goal}
-              raised={raised}
-              totalDonations={totalDonations}
+              percentage={percentage}
+              activeCampaign={campaignData.activeCampaign}
+              goal={campaignData.goal}
+              raised={campaignData.raised}
+              totalDonations={campaignData.totalDonations}
             />
           </div>
-          <About description={description} />
+          <About description={campaignData.description} />
           <DonationForm targetRef={targetRef} />
         </div>
         <div className="hidden lg:block col-span-3 ">
           <CeoData />
           <DonationData
-            activeCampaign={activeCampaign}
-            goal={goal}
-            raised={raised}
-            totalDonations={totalDonations}
+            percentage={percentage}
+            activeCampaign={campaignData.activeCampaign}
+            goal={campaignData.goal}
+            raised={campaignData.raised}
+            totalDonations={campaignData.totalDonations}
           />
 
           <div className="">
@@ -144,24 +149,12 @@ const Donation = () => {
               {copyText}
             </Button>
 
-            {donorsCount > 0 && (
-              <div className="flex justify-start items-center mt-5 mb-3">
-                <FaArrowTrendUp
-                  size={35}
-                  color="#DB5758"
-                  className="inline bg-[#edafb0] rounded-full p-1"
-                />{" "}
-                <div className="text-sm font-bold  ml-3 text-[#DB5758]">
-                  {donorsCount} {donorsCount == 1 ? "person " : "people "}
-                  just donated
-                </div>
-              </div>
-            )}
+            <DonorActivity donorsCount={campaignData.donorsCount} />
             <div className="mt-5">
-              <div className="text-gray-400 ">RECENT DONATIONS</div>
-              <DonationContext.Provider value={donationContextValue}>
-                <DonationEvents />
-              </DonationContext.Provider>
+              <DonationEvents
+                handleNewDonation={handleNewDonation}
+                handleDonorUpdate={handleDonorUpdate}
+              />
             </div>
           </div>
         </div>
