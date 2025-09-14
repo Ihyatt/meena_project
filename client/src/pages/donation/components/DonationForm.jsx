@@ -54,10 +54,11 @@ const DonationForm = ({ targetRef }) => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    console.log(form);
   };
   const handleCheckboxChange = (e) => {
+    console.log(e.target.name, e.target.checked);
     setForm({ ...form, [e.target.name]: e.target.checked });
+    console.log(form);
   };
 
   const handleDonateClick = (event) => {
@@ -94,7 +95,7 @@ const DonationForm = ({ targetRef }) => {
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
 
-  console.log(form);
+  console.log(form.isAnonymous);
   return (
     <div className="p-10 md:p-20 lg:p-20 bg-white rounded-lg shadow-lg mt-6 w-full lg:w-7/8 ">
       <div className="text-2xl font-bold">Select Gift Amount</div>
@@ -142,24 +143,25 @@ const DonationForm = ({ targetRef }) => {
 
           <FullName handleChange={handleChange} />
         </div>
-
         <CheckBox
-          checked={form.isEmailSubscription}
-          handleCheckboxChange={handleCheckboxChange}
-          message={
-            <>
-              <span className="font-bold">yes,</span> I would like to receive
-              email updates
-            </>
-          }
-        />
-        <CheckBox
+          name={"isAnonymous"}
           checked={form.isAnonymous}
           handleCheckboxChange={handleCheckboxChange}
           message={
             <>
               <span className="font-bold">yes,</span> I would like my donation
               to be anonymous
+            </>
+          }
+        />
+        <CheckBox
+          name={"isEmailSubscription"}
+          checked={form.isEmailSubscription}
+          handleCheckboxChange={handleCheckboxChange}
+          message={
+            <>
+              <span className="font-bold">yes,</span> I would like to receive
+              email updates
             </>
           }
         />

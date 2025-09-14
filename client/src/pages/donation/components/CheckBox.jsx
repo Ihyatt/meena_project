@@ -1,8 +1,9 @@
-export const CheckBox = ({ checked, handleCheckboxChange, message }) => {
+export const CheckBox = ({ name, checked, handleCheckboxChange, message }) => {
   return (
     <div className="inline-flex items-center text-sm mr-1 text-gray-400 font-light">
       <label className="flex items-center cursor-pointer relative mr-2">
         <input
+          name={name}
           checked={checked}
           onChange={handleCheckboxChange}
           type="checkbox"
