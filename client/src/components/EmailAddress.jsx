@@ -4,7 +4,7 @@ const EmailAddress = ({ handleChange }) => {
       <input
         required
         type="email"
-        id="email"
+        id="emailAddress"
         name="emailAddress"
         onChange={handleChange}
         placeholder="Email"

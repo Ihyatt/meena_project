@@ -4,7 +4,7 @@ const FullName = ({ handleChange }) => {
       <input
         required
         type="text"
-        id="name"
+        id="fullName"
         name="fullName"
         onChange={handleChange}
         placeholder="Name"

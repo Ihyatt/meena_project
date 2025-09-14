@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 import ErrorAlert from "src/components/ErrorAlert";
 import useDonateStore from "src/pages/donation/store";
 
-import TermsOfService from "src/pages/donation/components/TermsOfService";
-import CheckBox from "src/pages/donation/components/CheckBox";
-import CustomAmount from "src/pages/donation/components/CustomAmount";
+import TermsOfService from "src/pages/donation/components/DonationForm/TermsOfService";
+import CheckBox from "src/pages/donation/components/DonationForm/CheckBox";
+import CustomAmount from "src/pages/donation/components/DonationForm/CustomAmount";
 import EmailAddress from "src/components/EmailAddress";
 import FullName from "src/components/FullName";
-import AmountButton from "src/pages/donation/components/AmountButton";
-import DonateButton from "src/pages/donation/components/DonateButton";
+import AmountButton from "src/pages/donation/components/DonationForm/AmountButton";
+import DonateButton from "src/pages/donation/components/DonationForm/DonateButton";
 
 const DonationForm = ({ targetRef }) => {
   const navigate = useNavigate();
@@ -53,12 +53,11 @@ const DonationForm = ({ targetRef }) => {
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
   const handleCheckboxChange = (e) => {
-    console.log(e.target.name, e.target.checked);
-    setForm({ ...form, [e.target.name]: e.target.checked });
-    console.log(form);
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.checked }));
   };
 
   const handleDonateClick = (event) => {
@@ -95,7 +94,7 @@ const DonationForm = ({ targetRef }) => {
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
 
-  console.log(form.isAnonymous);
+  console.log(form);
   return (
     <div className="p-10 md:p-20 lg:p-20 bg-white rounded-lg shadow-lg mt-6 w-full lg:w-7/8 ">
       <div className="text-2xl font-bold">Select Gift Amount</div>
