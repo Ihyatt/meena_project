@@ -1,4 +1,4 @@
-import Logo from "src/pages/donation/components/Logo";
+import Logo from "src/components/Logo";
 import Login from "src/components/Login";
 
 export const Header = () => {

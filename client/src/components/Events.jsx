@@ -6,7 +6,7 @@ import { RiGift2Line } from "react-icons/ri";
 import TimeAgo from "src/utils/TimeAgo"; // This is likely an external or shared component
 
 // 3. Context/Utility imports
-import DonationContext from "src/pages/donation/components/DonationContext";
+import DonationContext from "src/components/DonationContext";
 
 // 4. Environment variables
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;

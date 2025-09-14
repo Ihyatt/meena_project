@@ -24,7 +24,7 @@ import Loading from "src/components/Loading";
 
 // Context and state management
 import useAdminStore from "src/pages/admin/store";
-import DonationContext from "src/pages/donation/components/DonationContext";
+import DonationContext from "src/components/DonationContext";
 
 const Dashboard = () => {
   const [donationsLocation, setDonationsLocation] = useState([]);

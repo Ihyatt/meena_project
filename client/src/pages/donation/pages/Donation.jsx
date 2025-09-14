@@ -10,13 +10,16 @@ import Loading from "src/components/Loading";
 import DonationEvents from "src/components/Events";
 import About from "src/pages/donation/components/About";
 import defaultImg from "src/assets/images/defaultImg.jpg";
-import din from "src/assets/images/din.png";
 import DonationForm from "src/pages/donation/components/DonationForm";
 import DonationData from "src/pages/donation/components/DonationData";
 
+import CoverImage from "src/pages/donation/components/CoverImage";
+import CeoData from "src/pages/donation/components/CeoData";
+
 // Context and state management
 import useDonateStore from "src/pages/donation/store";
-import DonationContext from "src/pages/donation/components/DonationContext";
+import DonationContext from "src/components/DonationContext";
+import Button from "src/pages/donation/components/Button";
 
 // Constants and environment variables
 import { DEFAULT_TITLE } from "src/utils/constants";
@@ -46,7 +49,7 @@ const Donation = () => {
       setGoal(data.goal);
       setTotalDonations(data.totalDonations);
       setDonorsCount(data.donorsCount || 0);
-      setActiveCampaign(false);
+      setActiveCampaign(data.activeCampaign);
     });
   }, [fetchCampaign]);
 
@@ -96,6 +99,7 @@ const Donation = () => {
     handleDonationUpdate: handleNewDonation,
     handleDonorUpdate: () => setDonorsCount((prev) => prev + 1),
   };
+  console.log(activeCampaign);
 
   return (
     <div>
@@ -104,109 +108,42 @@ const Donation = () => {
         <div className=" text-5xl font-bold ">{title || DEFAULT_TITLE}</div>
       </div>
       <div className="">
+        <CoverImage imageUrl={imageUrl} />
         <div className=" ">
-          <img
-            src={imageUrl || defaultImg}
-            alt="ui/ux review check"
-            className="rounded-lg shadow-md h-100 w-full object-cover"
-          />
           <div className="block lg:hidden">
-            {activeCampaign == true ? (
-              <DonationData
-                goal={goal}
-                raised={raised}
-                totalDonations={totalDonations}
-              />
-            ) : (
-              <div className="text-lg font-light text-right">
-                <NumericFormat
-                  value={raised || 0}
-                  thousandSeparator={true}
-                  prefix="$"
-                  decimalScale={2}
-                  displayType="text"
-                />{" "}
-                raised
-              </div>
-            )}
+            <DonationData
+              activeCampaign={activeCampaign}
+              goal={goal}
+              raised={raised}
+              totalDonations={totalDonations}
+            />
           </div>
           <About description={description} />
           <DonationForm targetRef={targetRef} />
         </div>
         <div className="hidden lg:block col-span-3 ">
-          <img
-            className="w-40 h-40 rounded-full object-cover"
-            src={din}
-            alt="sumayyah"
+          <CeoData />
+          <DonationData
+            activeCampaign={activeCampaign}
+            goal={goal}
+            raised={raised}
+            totalDonations={totalDonations}
           />
-          <div className="">
-            <div className="text-sm">CEO & FOUNDER</div>
-            <div className="text-2xl">SUMAYYAH DIN</div>
-          </div>
-
-          {activeCampaign == true ? (
-            <DonationData
-              goal={goal}
-              raised={raised}
-              totalDonations={totalDonations}
-            />
-          ) : (
-            <div className="text-lg font-light">
-              <NumericFormat
-                value={raised || 0}
-                thousandSeparator={true}
-                prefix="$"
-                decimalScale={2}
-                displayType="text"
-              />{" "}
-              raised
-            </div>
-          )}
 
           <div className="">
-            <button
-              type="button"
-              className="
-            text-white
-            bg-[#0fa347] 
-            hover:bg-[#2bbd62] 
-            transition-colors 
-            duration-300
-            font-medium 
-            text-sm 
-            flex-1 
-            px-5 
-            py-2 
-            rounded-sm  
-            cursor-pointer 
-            mr-1 
-            text-md
-            "
+            <Button
               onClick={scrollToTarget}
+              className=" mr-1 text-white bg-[#0fa347] hover:bg-[#2bbd62]"
             >
               DONATE NOW
-            </button>
-            <button
-              type="button"
-              className="
-              text-[#0fa347]
-              font-medium 
-              text-sm flex-1 
-              px-5 
-              py-2
-               border
-               border-[#0fa347] 
-                hover:border-[#2bbd62] 
-                hover:text-[#2bbd62] 
-               rounded-sm  
-               cursor-pointer
-                ml-1 
-                text-md
-              "
+            </Button>
+            <Button
               onClick={handleCopy}
+              className=" text-[#0fa347]  border border-[#0fa347] hover:border-[#2bbd62] hover:text-[#2bbd62]  ml-1 "
             >
               {copyText}
-            </button>
+            </Button>
+
             {donorsCount > 0 && (
               <div className="flex justify-start items-center mt-5 mb-3">
                 <FaArrowTrendUp
