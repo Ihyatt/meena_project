@@ -17,101 +17,33 @@ import CoverImage from "src/pages/donation/components/CoverImage";
 import CeoData from "src/pages/donation/components/CeoData";
 
 // Context and state management
-import useDonateStore from "src/pages/donation/store";
 import Button from "src/pages/donation/components/Button";
 import DonorActivity from "src/components/DonorActivity";
 import CampaignTitle from "src/pages/donation/components/CampaignTitle";
+
+import useDonation from "src/pages/donation/hooks.jsx/useDonation";
 
 // Constants and environment variables
 const frotendUrl = import.meta.env.VITE_FROTEND_API_URL;
 
 const Donation = () => {
-  const [campaignData, setCampaignData] = useState({
-    imageUrl: defaultImg,
-    title: "",
-    description: "",
-    raised: 0,
-    goal: 0,
-    totalDonations: 0,
-    activeCampaign: false,
-    donorsCount: 0,
-  });
-  const [copyText, setCopyText] = useState("SHARE LINK");
-  const targetRef = useRef(null);
-
-  const { setLat, setLng, fetchCampaign, isLoading } = useDonateStore();
-
-  useEffect(() => {
-    getUserLocation();
-    fetchCampaign().then((data) => {
-      setCampaignData({ ...data });
-    });
-  }, [fetchCampaign]);
-
-  const percentage = useMemo(() => {
-    if (campaignData.goal === 0) return 0; // Avoid division by zero
-    return Math.min(
-      Math.floor((campaignData.raised / campaignData.goal) * 100),
-      100
-    ); // Cap at 100%
-  }, [campaignData.raised, campaignData.goal]); // Dependency array: the "anchor points"
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(frotendUrl);
-      setCopyText("COPIED!");
-      setTimeout(() => {
-        setCopyText("SHARE LINK");
-      }, 5000); // 5000 milliseconds = 5 seconds
-    } catch (err) {
-      console.error("Failed to copy url: ", err);
-    }
-  };
-
-  const scrollToTarget = () => {
-    if (targetRef.current) {
-      targetRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLat(latitude);
-          setLng(longitude);
-        },
-        (error) => {
-          console.error("Error getting user location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
-  const handleNewDonation = (newAmount) => {
-    const amountAsNumber = Number(newAmount);
-    setCampaignData((prevData) => ({
-      ...prevData,
-      raised: prevData.raised + amountAsNumber,
-      totalDonations: prevData.totalDonations + 1,
-    }));
-  };
-
-  const handleDonorUpdate = () => {
-    setCampaignData((prevData) => ({
-      ...prevData,
-      donorsCount: prevData.donorsCount + 1,
-    }));
-  };
-
+  const {
+    campaignData,
+    copyText,
+    targetRef,
+    isLoading,
+    percentage,
+    handleCopy,
+    scrollToTarget,
+    handleNewDonation,
+    handleDonorUpdate,
+  } = useDonation();
   return (
     <div>
       {isLoading && <Loading />}
       <CampaignTitle title={campaignData.title} />
       <div className="">
-        <CoverImage imageUrl={campaignData.imageUrl} />
+        <CoverImage imageUrl={campaignData.imageUrl || defaultImg} />
         <div className=" ">
           <div className="block lg:hidden">
             <DonationData
