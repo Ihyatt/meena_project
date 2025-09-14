@@ -21,6 +21,7 @@ import LineChart from "src/pages/admin/charts/LineChart";
 import PieChart from "src/pages/admin/charts/PieChart";
 import DonationEvents from "src/components/Events";
 import Loading from "src/components/Loading";
+import DonorActivity from "src/components/DonorActivity";
 
 // Context and state management
 import useAdminStore from "src/pages/admin/store";
@@ -156,20 +157,8 @@ const Dashboard = () => {
           <DonationsHeatMap donations={donationsLocation} />
         </div>
         <div className="w-80 ml-4 rounded-lg shadow-md bg-white  p-8 h-120">
-          {donorsCount > 0 && (
-            <div className="flex justify-start  items-center mt-2 mb-4">
-              <FaArrowTrendUp
-                size={35}
-                color="#DB5758"
-                className="inline bg-[#edafb0] rounded-full p-1"
-              />{" "}
-              <div className="text-sm font-bold  ml-3 text-[#DB5758]">
-                {donorsCount} {donorsCount == 1 ? "person " : "people "}
-                just donated
-              </div>
-            </div>
-          )}
-          <div className="text-gray-400 ">RECENT DONATIONS</div>
+          <DonorActivity size={25} />
+
           <DonationEvents
             handleNewDonation={handleNewDonation}
             handleDonorUpdate={handleDonorUpdate}

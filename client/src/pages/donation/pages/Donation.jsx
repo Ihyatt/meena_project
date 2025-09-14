@@ -19,7 +19,7 @@ import CeoData from "src/pages/donation/components/CeoData";
 // Context and state management
 import useDonateStore from "src/pages/donation/store";
 import Button from "src/pages/donation/components/Button";
-import DonorActivity from "src/pages/donation/components/DonorActivity";
+import DonorActivity from "src/components/DonorActivity";
 import CampaignTitle from "src/pages/donation/components/CampaignTitle";
 
 // Constants and environment variables
@@ -37,7 +37,6 @@ const Donation = () => {
     donorsCount: 0,
   });
   const [copyText, setCopyText] = useState("SHARE LINK");
-  const [donorsCount, setDonorsCount] = useState(0);
   const targetRef = useRef(null);
 
   const { setLat, setLng, fetchCampaign, isLoading } = useDonateStore();
@@ -50,9 +49,12 @@ const Donation = () => {
   }, [fetchCampaign]);
 
   const percentage = useMemo(() => {
-    if (goal === 0) return 0; // Avoid division by zero
-    return Math.min(Math.floor((campaign.raised / campaign.goal) * 100), 100); // Cap at 100%
-  }, [campaign.raised, campaign.goal]); // Dependency array: the "anchor points"
+    if (campaignData.goal === 0) return 0; // Avoid division by zero
+    return Math.min(
+      Math.floor((campaignData.raised / campaignData.goal) * 100),
+      100
+    ); // Cap at 100%
+  }, [campaignData.raised, campaignData.goal]); // Dependency array: the "anchor points"
 
   const handleCopy = async () => {
     try {
@@ -104,8 +106,6 @@ const Donation = () => {
     }));
   };
 
-  console.log(activeCampaign);
-
   return (
     <div>
       {isLoading && <Loading />}
@@ -149,7 +149,7 @@ const Donation = () => {
               {copyText}
             </Button>
 
-            <DonorActivity donorsCount={campaignData.donorsCount} />
+            <DonorActivity donorsCount={campaignData.donorsCount} size={30} />
             <div className="mt-5">
               <DonationEvents
                 handleNewDonation={handleNewDonation}

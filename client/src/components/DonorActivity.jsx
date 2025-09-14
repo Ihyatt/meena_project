@@ -1,12 +1,12 @@
 import { FaArrowTrendUp } from "react-icons/fa6";
 
-const DonorActivity = ({ donorsCount }) => {
+const DonorActivity = ({ donorsCount, size }) => {
   return (
     <>
       {donorsCount > 0 && (
         <div className="flex justify-start items-center mt-5 mb-3">
           <FaArrowTrendUp
-            size={35}
+            size={size}
             color="#DB5758"
             className="inline bg-[#edafb0] rounded-full p-1"
           />{" "}
