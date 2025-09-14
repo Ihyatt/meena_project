@@ -21,25 +21,24 @@ import Dashboard from "src/pages/admin/Dashboard";
 import Campaigns from "src/pages/admin/campaigns/Campaigns";
 import Donors from "src/pages/admin/donors/Donors";
 import { EmailTemplate } from "src/pages/admin/emailTemplate/Template";
-import { ManageDonor } from "src/pages/admin/donors/ManageDonor";
+import { ManageDonor } from "src/pages/admin/donors/modals/ManageDonor";
 
 //Admin Capaign Pages
-import DraftLayout from "src/pages/draft/DraftLayout";
-import DraftTitle from "src/pages/draft/components/Title";
-import DraftDescription from "src/pages/draft/components/Description";
-import DraftGoal from "src/pages/draft/components/Goal";
-import DraftImage from "src/pages/draft/components/Image";
-import DraftDate from "src/pages/draft/components/Date";
-import DraftReview from "src/pages/draft/components/Review";
+import DraftTitle from "src/pages/campaign/pages/Title";
+import DraftDescription from "src/pages/campaign/pages/Description";
+import DraftGoal from "src/pages/campaign/pages/Goal";
+import DraftImage from "src/pages/campaign/pages/Image";
+import DraftDate from "src/pages/campaign/pages/Date";
+import DraftReview from "src/pages/campaign/pages/Review";
 
-import ManageCampaign from "src/pages/admin/campaigns/ManageCampaign";
+import CampaignLayout from "src/pages/campaign/CampaignLayout";
 
 // Donor Pages
-import DonationLayout from "src/pages/donor/DonationLayout";
-import Donation from "src/pages/donor/donation/Donation";
-import Checkout from "src/pages/donor/donation/Checkout";
-import CheckoutComplete from "src/pages/donor/donation/CheckoutComplete";
-import TermsOfService from "src/pages/donor/donation/TermsOfService";
+import DonationLayout from "src/pages/donation";
+import Donation from "src/pages/donation/pages/Donation";
+import Checkout from "src/pages/donation/pages/Checkout";
+import CheckoutComplete from "src/pages/donation/pages/CheckoutComplete";
+import TermsOfService from "src/pages/donation/pages/TermsOfService";
 
 function App() {
   const location = useLocation();
@@ -71,18 +70,17 @@ function App() {
         <Route
           element={
             <ProtectedRoute>
-              <DraftLayout />
+              <CampaignLayout />
             </ProtectedRoute>
           }
         >
-          <Route path="campaigns/:campaignId" element={<ManageCampaign />} />
-          <Route element={<DraftLayout />}>
+          <Route element={<CampaignLayout />}>
             <Route path="draft/title" element={<DraftTitle />} />
             <Route path="draft/description" element={<DraftDescription />} />
             <Route path="draft/campaign-image" element={<DraftImage />} />
             <Route path="draft/goal" element={<DraftGoal />} />
-            <Route path="draft/date" element={<DraftDate />} />
-            <Route path="draft/review" element={<DraftReview />} />
+            <Route path="draft/:campaignId/date" element={<DraftDate />} />
+            <Route path="review/:campaignId" element={<DraftReview />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
@@ -90,10 +88,6 @@ function App() {
       {background && (
         <Routes>
           <Route path="/admins/donors/:donorId" element={<ManageDonor />} />
-          <Route
-            path="/admins/campaigns/:campaignId"
-            element={<ManageCampaign />}
-          />
           <Route
             path="/admins/emails/email-template/receipt"
             element={<EmailTemplate />}

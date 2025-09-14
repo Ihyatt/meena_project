@@ -1,9 +1,15 @@
 # Third-party imports
 from marshmallow import fields
+from marshmallow import fields, validate
+
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from app.models.payment_transaction import PaymentTransaction
+
+from app.utils.constants import PaymentStatus
 
 # Local application imports
 from app.models.image import Image
+
 
 class PaymentTransactionSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -20,7 +26,7 @@ class PaymentTransactionSchema(SQLAlchemyAutoSchema):
         required=True,
         as_string=True,
         places=2,
-        validate=validate.Range(min=0.01,max=100_000)),
+        validate=validate.Range(min=0.01, max=100_000),
     )
 
     status = fields.Enum(PaymentStatus)
