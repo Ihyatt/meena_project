@@ -45,7 +45,7 @@ export const ManageDonor = () => {
       setEmailSubscription(data.emailSubscription);
       setEmailSubscriptionStatus(data.emailSubscription.status.toLowerCase());
     });
-  }, [fetchDonor]);
+  }, []);
 
   useEffect(() => {
     const observerRefValue = modalRef.current;

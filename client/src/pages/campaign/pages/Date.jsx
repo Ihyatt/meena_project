@@ -32,7 +32,7 @@ const DraftDate = () => {
       setImageUrl(data.imageUrl);
       setCloseoutDate(data.closeoutDate);
     });
-  }, [fetchDraft]);
+  }, []);
 
   const handleSave = (event) => {
     event.preventDefault();

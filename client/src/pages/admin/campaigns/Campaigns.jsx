@@ -33,7 +33,7 @@ const Campaigns = () => {
 
   useEffect(() => {
     fetchCampaigns();
-  }, [fetchCampaigns]);
+  }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 20;

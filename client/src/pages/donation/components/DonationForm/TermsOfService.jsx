@@ -12,7 +12,10 @@ export const TermsOfService = () => {
             "
     >
       <span> By clicking ‘Donate‘, you agree to Meena Projects’s </span>
-      <Link to={"terms"} className="ml-1 underline hover:no-underline">
+      <Link
+        to={"terms"}
+        className="ml-1 underline hover:no-underline text-gray-600"
+      >
         Terms of Service
       </Link>
       .

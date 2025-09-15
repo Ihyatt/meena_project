@@ -23,7 +23,7 @@ const Donors = () => {
 
   useEffect(() => {
     fetchDonors();
-  }, [fetchDonors]);
+  }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
 

@@ -30,7 +30,7 @@ const DraftGoal = () => {
       setImageUrl(data.imageUrl);
       setCloseoutDate(data.closeoutDate);
     });
-  }, [fetchDraft]);
+  }, []);
 
   const handleGoalAmount = (e) => {
     const value = e.target.value;

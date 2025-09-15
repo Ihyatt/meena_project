@@ -67,7 +67,7 @@ const Dashboard = () => {
         data.trackActiveCammpaignDonations || []
       );
     });
-  }, [fetchDashboardData]);
+  }, []);
 
   const handleNewDonation = (newAmount) => {
     setRaised((prevRaised) => {
@@ -87,7 +87,7 @@ const Dashboard = () => {
   return (
     <div className="m-2">
       {isLoading && <Loading />}
-      <div className="m-4  grid gap-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-4">
+      <div className="m-4 grid gap-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-4">
         <Header />
       </div>
       <div className="flex m-4 ">
@@ -103,34 +103,32 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      <div className="  h-full">
-        <div className="flex m-4 h-100">
-          <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
-            <BarChart
-              currYearByMonthDonationRetentionData={
-                currYearByMonthDonationRetentionData
-              }
-            />
-          </div>
-          <div className="w-1/2  ml-2 rounded-lg shadow-md bg-white flex items-center justify-center pt-8 px-8 pb-14">
-            <LineChart
-              trackActiveCammpaignDonations={trackActiveCammpaignDonations}
-            />
-          </div>
+      <div className="flex m-4 h-100">
+        <div className="w-1/2 mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
+          <BarChart
+            currYearByMonthDonationRetentionData={
+              currYearByMonthDonationRetentionData
+            }
+          />
         </div>
-        <div className="flex m-4 h-100">
-          <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
-            <PieChart
-              allTimeDonationRetentionData={allTimeDonationRetentionData}
-            />
-          </div>
-          <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
-            <ScatterChart
-              currYearIndividualDonationRetentionData={
-                currYearIndividualDonationRetentionData
-              }
-            />
-          </div>
+        <div className="w-1/2  ml-2 rounded-lg shadow-md bg-white flex items-center justify-center pt-8 px-8 pb-14">
+          <LineChart
+            trackActiveCammpaignDonations={trackActiveCammpaignDonations}
+          />
+        </div>
+      </div>
+      <div className="flex m-4 h-100">
+        <div className="w-1/2  mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
+          <PieChart
+            allTimeDonationRetentionData={allTimeDonationRetentionData}
+          />
+        </div>
+        <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
+          <ScatterChart
+            currYearIndividualDonationRetentionData={
+              currYearIndividualDonationRetentionData
+            }
+          />
         </div>
       </div>
     </div>

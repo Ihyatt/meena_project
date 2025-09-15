@@ -35,7 +35,7 @@ export const EmailTemplate = () => {
       setSubject(data.subject);
       setTemplateId(data.templateId);
     });
-  }, [fetchEmailTemplate]);
+  }, []);
 
   useEffect(() => {
     const observerRefValue = modalRef.current;

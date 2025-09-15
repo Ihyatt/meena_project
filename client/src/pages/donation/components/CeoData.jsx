@@ -9,8 +9,8 @@ const CeoData = () => {
         alt="sumayyah"
       />
       <div className="">
-        <div className="text-sm">CEO & FOUNDER</div>
-        <div className="text-2xl">SUMAYYAH DIN</div>
+        <div className="text-sm mt-10">CEO & FOUNDER</div>
+        <div className="text-2xl mb-15">SUMAYYAH DIN</div>
       </div>
     </>
   );

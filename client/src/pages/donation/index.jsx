@@ -4,7 +4,7 @@ import { Header } from "src/pages/donation/components/Header";
 
 const DonationLayout = () => {
   return (
-    <div className="p-20">
+    <div className="px-20 py-6">
       <Header />
       <Outlet />
       <Footer />

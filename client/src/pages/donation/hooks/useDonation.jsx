@@ -98,7 +98,6 @@ const useDonation = () => {
     campaignData,
     copyText,
     targetRef,
-    isLoading,
     percentage,
     handleCopy,
     scrollToTarget,

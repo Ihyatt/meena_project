@@ -1,6 +1,6 @@
 export const CheckBox = ({ name, checked, handleCheckboxChange, message }) => {
   return (
-    <div className="inline-flex items-center text-sm mr-1 text-gray-400 font-light">
+    <div className="inline-flex items-center text-sm mr-1 text-gray-400 font-light my-2">
       <label className="flex items-center cursor-pointer relative mr-2">
         <input
           name={name}

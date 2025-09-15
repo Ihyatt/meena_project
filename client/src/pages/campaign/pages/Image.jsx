@@ -32,7 +32,7 @@ const DraftImage = () => {
       setImageUrl(data.imageUrl);
       setCloseoutDate(data.closeoutDate);
     });
-  }, [fetchDraft]);
+  }, []);
 
   const uploadFile = (file) => {
     upload(campaignId, file).then((data) => {

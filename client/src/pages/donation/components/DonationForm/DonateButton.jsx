@@ -15,6 +15,7 @@ const DonateButton = () => {
             block
             mx-auto 
             hover:bg-[#2bbd62]
+            my-5
             
             "
         type="submit"

@@ -79,8 +79,8 @@ const DonationForm = ({ targetRef }) => {
           handleCheckboxChange={handleCheckboxChange}
           message={
             <>
-              <span className="font-bold">yes,</span> I would like my donation
-              to be anonymous
+              <span className="font-bold  text-gray-600">yes,</span> I would
+              like my donation to be anonymous
             </>
           }
         />
@@ -90,8 +90,8 @@ const DonationForm = ({ targetRef }) => {
           handleCheckboxChange={handleCheckboxChange}
           message={
             <>
-              <span className="font-bold">yes,</span> I would like to receive
-              email updates
+              <span className="font-bold text-gray-600">yes,</span> I would like
+              to receive email updates
             </>
           }
         />

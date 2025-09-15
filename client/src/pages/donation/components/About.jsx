@@ -9,7 +9,7 @@ const About = ({ description }) => {
   };
   return (
     <>
-      <div className="flex justify-start pb-6 ">
+      <div className="flex justify-start pb-6 px-4 ">
         <div
           onClick={() => handleClick("about")}
           className={`
@@ -45,7 +45,7 @@ const About = ({ description }) => {
           OUR GOAL
         </div>
       </div>
-      <div className="font-light whitespace-pre-wrap">
+      <div className="font-light whitespace-pre-wrap px-4">
         {toggleText == "about" ? ABOUT_MEENA : description}
       </div>
     </>

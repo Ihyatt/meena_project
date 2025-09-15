@@ -1,7 +1,3 @@
-// 1. React
-import React, { useState, useMemo } from "react";
-
-// 2. External Libraries
 import { NumericFormat } from "react-number-format";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -12,11 +8,12 @@ const DonationData = ({
   goal,
   raised,
   totalDonations,
+  className,
 }) => {
   return (
     <>
       {activeCampaign == false ? (
-        <div className="text-lg font-light text-right">
+        <div className={`text-lg font-light text-right ${className}`}>
           <NumericFormat
             value={raised || 0}
             thousandSeparator={true}
