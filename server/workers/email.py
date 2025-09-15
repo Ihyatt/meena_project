@@ -11,7 +11,7 @@ from app.services.email_handler import (
     send_impact_email,
     send_receipt_email,
 )
-from app.utils.constants import EmailType
+from app.utils.constants import EMAIL_TYPE
 from workers.redis_client import redis_access
 from workers.utils import backoff
 
@@ -33,7 +33,7 @@ def process_message(db, message_json: str):
         data = message["data"]
         print(message)
 
-        if message["value"] == EmailType.RECEIPT.value:
+        if message["value"] == EMAIL_TYPE.RECEIPT.value:
             send_receipt_email(
                 data["donor_id"],
                 data["email_address"],
@@ -41,7 +41,7 @@ def process_message(db, message_json: str):
                 data["email_id"],
             )
 
-        elif message["value"] == EmailType.IMPACT.value:
+        elif message["value"] == EMAIL_TYPE.IMPACT.value:
             send_impact_email(
                 data["donor_id"],
                 data["email_address"],
@@ -49,7 +49,7 @@ def process_message(db, message_json: str):
                 data["email_id"],
             )
 
-        elif message["value"] == EmailType.CLOSEOUT.value:
+        elif message["value"] == EMAIL_TYPE.CLOSEOUT.value:
             send_closeout_email(
                 data["donor_id"],
                 data["email_address"],

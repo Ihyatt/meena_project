@@ -7,14 +7,14 @@ from app.models.campaign import Campaign
 from app.models.email import Email
 from app.models.email_template import EmailTemplate
 from app.models.user import User
-from app.utils.constants import EMAIL_STATUS, EmailType
+from app.utils.constants import EMAIL_STATUS, EMAIL_TYPE
 
 
 def send_receipt_email(donor_id, email_address, amount, email_id):
     try:
         mailjet_client = current_app.mailjet
         email_template = EmailTemplate.query.filter_by(
-            email_type=EmailType.RECEIPT
+            email_type=EMAIL_TYPE.RECEIPT
         ).first()
 
         email = Email.query.get_or_404(email_id)
@@ -67,7 +67,7 @@ def send_impact_email(donor_id, email_address, campaign_id, email_id):
     try:
         mailjet_client = current_app.mailjet
         email_template = EmailTemplate.query.filter_by(
-            email_type=EmailType.IMPACT
+            email_type=EMAIL_TYPE.IMPACT
         ).first()
 
         email = Email.query.get_or_404(email_id)
@@ -125,7 +125,7 @@ def send_closeout_email(donor_id, email_address, campaign_id, email_id):
     try:
         mailjet_client = current_app.mailjet
         email_template = EmailTemplate.query.filter_by(
-            email_type=EmailType.CLOSEOUT
+            email_type=EMAIL_TYPE.CLOSEOUT
         ).first()
 
         email = Email.query.get_or_404(email_id)

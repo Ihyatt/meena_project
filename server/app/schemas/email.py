@@ -5,7 +5,7 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 # Local application imports
 from app.models.email import Email
-from app.utils.constants import EMAIL_STATUS, EmailType
+from app.utils.constants import EMAIL_STATUS, EMAIL_TYPE
 
 
 class EmailSchema(SQLAlchemyAutoSchema):
@@ -23,7 +23,7 @@ class EmailSchema(SQLAlchemyAutoSchema):
     )
     status = EnumField(EMAIL_STATUS, required=True, by_value=True)
     email_type = EnumField(
-        EmailType, required=True, by_value=True, data_key="emailType"
+        EMAIL_TYPE, required=True, by_value=True, data_key="emailType"
     )
     message_uuid = fields.String(dump_only=True, data_key="messageUuid")
     message_id = fields.Integer(dump_only=True, data_key="messageId")

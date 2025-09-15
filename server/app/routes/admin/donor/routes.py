@@ -133,7 +133,7 @@ def manage_donor(donor_id):
 
         donor.email_subscription.status = (
             SUBSCRIPTION_STATUS.ACTIVE
-            if data["emailSUBSCRIPTION_STATUS"] == SUBSCRIPTION_STATUS.ACTIVE.value
+            if data["emailSubscriptionStatus"] == SUBSCRIPTION_STATUS.ACTIVE.value
             else SUBSCRIPTION_STATUS.INACTIVE
         )
 

@@ -4,7 +4,7 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 # Local application imports
 from app.models.email_template import EmailTemplate
-from app.utils.constants import EmailType
+from app.utils.constants import EMAIL_TYPE
 
 
 class EmailTemplateSchema(SQLAlchemyAutoSchema):
@@ -15,7 +15,7 @@ class EmailTemplateSchema(SQLAlchemyAutoSchema):
 
     id = fields.Integer(dump_only=True)
     version_uuid = fields.String(allow_none=True, dump_only=True)
-    email_type = fields.Enum(EmailType, required=True, data_key="emailType")
+    email_type = fields.Enum(EMAIL_TYPE, required=True, data_key="emailType")
     subject = fields.String(validate=validate.Length(max=255), allow_none=True)
     template_id = fields.String(
         validate=validate.Length(max=255), data_key="templateId", allow_none=True

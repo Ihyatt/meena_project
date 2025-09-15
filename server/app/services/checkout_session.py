@@ -32,7 +32,7 @@ def checkout_session(
                             "name": "donation",
                             "description": "one-time donation",
                         },
-                        "CURRENCY": "USD",  # Change to your desired CURRENCY
+                        "currency": "USD",  # Change to your desired currency
                     },
                     "quantity": 1,
                 }

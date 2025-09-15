@@ -4,7 +4,7 @@ from sqlalchemy.orm import mapped_column
 
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
-from app.utils.constants import EmailType
+from app.utils.constants import EMAIL_TYPE
 
 
 class EmailTemplate(db.Model, SoftDeleteMixin):
@@ -14,7 +14,7 @@ class EmailTemplate(db.Model, SoftDeleteMixin):
     id = mapped_column(db.Integer, primary_key=True)
     version_uuid = mapped_column(db.String(32), nullable=False)
 
-    email_type = mapped_column(db.Enum(EmailType), unique=True, nullable=False)
+    email_type = mapped_column(db.Enum(EMAIL_TYPE), unique=True, nullable=False)
     subject = mapped_column(db.String(100), nullable=True)
     template_id = mapped_column(db.String(255), nullable=True)
 

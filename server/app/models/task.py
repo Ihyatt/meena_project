@@ -18,7 +18,7 @@ class Task(db.Model, SoftDeleteMixin):
     task_name = mapped_column(db.String(255), nullable=False)
     version_uuid = mapped_column(db.String(32), nullable=False)
     status = mapped_column(
-        db.Enum(JOB_STATUS), default=JobStatus.QUEUED, nullable=False
+        db.Enum(JOB_STATUS), default=JOB_STATUS.QUEUED, nullable=False
     )
     charge_id = mapped_column(db.String(255), nullable=True)
     refund_id = mapped_column(db.String(255), nullable=True)

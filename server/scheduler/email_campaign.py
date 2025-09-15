@@ -10,7 +10,7 @@ from flask import current_app
 from app.database import db
 from app.models.campaign import Campaign
 from app.models.email_subscription import EmailSubscription
-from app.utils.constants import EmailType, SUBSCRIPTION_STATUS
+from app.utils.constants import EMAIL_TYPE, SUBSCRIPTION_STATUS
 from app.utils.email import create_email
 
 
@@ -29,7 +29,7 @@ def impact_email():
         for subscription in email_subscriptions:
             donor = subscription.user
             email = create_email(
-                subscription.id, subscription.email_address, EmailType.IMPACT
+                subscription.id, subscription.email_address, EMAIL_TYPE.IMPACT
             )
             db.session.add(email)
             db.session.commit()
@@ -44,7 +44,7 @@ def impact_email():
             message = {
                 "id": str(uuid.uuid4()),
                 "timestamp": datetime.now().isoformat(),
-                "value": EmailType.IMPACT.value,
+                "value": EMAIL_TYPE.IMPACT.value,
                 "data": data,
             }
 
@@ -69,7 +69,7 @@ def closeout_email():
             for subscription in email_subscriptions:
                 donor = subscription.user
                 email = create_email(
-                    subscription.id, subscription.email_address, EmailType.CLOSEOUT
+                    subscription.id, subscription.email_address, EMAIL_TYPE.CLOSEOUT
                 )
                 db.session.add(email)
                 db.session.commit()
@@ -84,7 +84,7 @@ def closeout_email():
                 message = {
                     "id": str(uuid.uuid4()),
                     "timestamp": datetime.now().isoformat(),
-                    "value": EmailType.CLOSEOUT.value,
+                    "value": EMAIL_TYPE.CLOSEOUT.value,
                     "data": data,
                 }
 

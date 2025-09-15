@@ -119,7 +119,7 @@ const AdminSideBar = ({ children }) => {
                     to={"/admins/emails/email-template/receipt"}
                     state={{
                       background: location.pathname,
-                      EMAIL_TYPE: EMAIL_TYPE.RECEIPT,
+                      emailType: EMAIL_TYPE.RECEIPT,
                     }}
                     style={{ color: "black", fontSize: "15px" }}
                   />
@@ -136,7 +136,7 @@ const AdminSideBar = ({ children }) => {
                     to={"/admins/emails/email-template/impact"}
                     state={{
                       background: location.pathname,
-                      EMAIL_TYPE: EMAIL_TYPE.IMPACT,
+                      emailType: EMAIL_TYPE.IMPACT,
                     }}
                     style={{
                       color: "black",
@@ -157,7 +157,7 @@ const AdminSideBar = ({ children }) => {
                     to={"/admins/emails/email-template/closeout"}
                     state={{
                       background: location.pathname,
-                      EMAIL_TYPE: EMAIL_TYPE.CLOSEOUT,
+                      emailType: EMAIL_TYPE.CLOSEOUT,
                     }}
                     style={{
                       color: "black",

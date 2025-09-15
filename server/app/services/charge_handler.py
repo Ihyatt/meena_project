@@ -22,7 +22,7 @@ from app.utils.constants import (
     DONATION_NOTIFICATIONS,
     DONATION_NOTIFICATIONS_CHANNEL,
     DONATION_STATUS,
-    EmailType,
+    EMAIL_TYPE,
     MAX_DONATION_NOTIFICATIONS,
     PAYMENT_STATUS,
 )
@@ -110,7 +110,7 @@ def successful_charge(
         email = create_email(
             email_subscription_id=donor.email_subscription.id,
             recipient_email_address=email_address,
-            email_type=EmailType.RECEIPT,
+            email_type=EMAIL_TYPE.RECEIPT,
         )
         db.session.add(email)
         db.session.commit()
@@ -125,7 +125,7 @@ def successful_charge(
         message = {
             "id": str(uuid.uuid4()),
             "timestamp": datetime.now().isoformat(),
-            "value": EmailType.RECEIPT.value,
+            "value": EMAIL_TYPE.RECEIPT.value,
             "data": data,
         }
         EMAIL_PROCESS_QUEUE = "email_process_queue"
