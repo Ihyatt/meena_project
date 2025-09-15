@@ -10,7 +10,7 @@ from flask import current_app
 from app.database import db
 from app.models.campaign import Campaign
 from app.models.email_subscription import EmailSubscription
-from app.utils.constants import EmailType, SubscriptionStatus
+from app.utils.constants import EmailType, SUBSCRIPTION_STATUS
 from app.utils.email import create_email
 
 
@@ -23,7 +23,7 @@ def impact_email():
             return
 
         email_subscriptions = EmailSubscription.query.filter_by(
-            status=SubscriptionStatus.ACTIVE
+            status=SUBSCRIPTION_STATUS.ACTIVE
         ).all()
 
         for subscription in email_subscriptions:
@@ -63,7 +63,7 @@ def closeout_email():
         closeout_date = active_campaigns.closeout_date.date()
         if (closeout_date - now).days == 10:
             email_subscriptions = EmailSubscription.query.filter_by(
-                status=SubscriptionStatus.ACTIVE
+                status=SUBSCRIPTION_STATUS.ACTIVE
             ).all()
 
             for subscription in email_subscriptions:

@@ -7,7 +7,7 @@ from app.models.campaign import Campaign
 from app.models.email import Email
 from app.models.email_template import EmailTemplate
 from app.models.user import User
-from app.utils.constants import EmailStatus, EmailType
+from app.utils.constants import EMAIL_STATUS, EmailType
 
 
 def send_receipt_email(donor_id, email_address, amount, email_id):
@@ -49,13 +49,13 @@ def send_receipt_email(donor_id, email_address, amount, email_id):
             email.message_uuid = message_uuid
             email.message_id = message_id
             if result.status_code != 200:
-                email.status = EmailStatus.FAILED
+                email.status = EMAIL_STATUS.FAILED
             else:
                 email.email_subscription.queued += 1
             db.session.commit()
 
         except Exception as e:
-            email.status = EmailStatus.FAILED
+            email.status = EMAIL_STATUS.FAILED
             db.session.commit()
             raise ValueError(f"Failed to send email: {str(e)}")
     except Exception as e:
@@ -107,13 +107,13 @@ def send_impact_email(donor_id, email_address, campaign_id, email_id):
             email.message_uuid = message_uuid
             email.message_id = message_id
             if result.status_code != 200:
-                email.status = EmailStatus.FAILED
+                email.status = EMAIL_STATUS.FAILED
             else:
                 email.email_subscription.queued += 1
             db.session.commit()
 
         except Exception as e:
-            email.status = EmailStatus.FAILED
+            email.status = EMAIL_STATUS.FAILED
             db.session.commit()
             raise ValueError(f"Failed to send email: {str(e)}")
     except Exception as e:
@@ -165,13 +165,13 @@ def send_closeout_email(donor_id, email_address, campaign_id, email_id):
             email.message_uuid = message_uuid
             email.message_id = message_id
             if result.status_code != 200:
-                email.status = EmailStatus.FAILED
+                email.status = EMAIL_STATUS.FAILED
             else:
                 email.email_subscription.queued += 1
             db.session.commit()
 
         except Exception as e:
-            email.status = EmailStatus.FAILED
+            email.status = EMAIL_STATUS.FAILED
             db.session.commit()
             raise ValueError(f"Failed to send email: {str(e)}")
     except Exception as e:

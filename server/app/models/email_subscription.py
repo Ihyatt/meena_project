@@ -7,7 +7,7 @@ from sqlalchemy.orm import mapped_column, relationship
 # Local application imports
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
-from app.utils.constants import SubscriptionStatus
+from app.utils.constants import SUBSCRIPTION_STATUS
 
 
 class EmailSubscription(db.Model, SoftDeleteMixin):
@@ -32,7 +32,9 @@ class EmailSubscription(db.Model, SoftDeleteMixin):
     sent = mapped_column(db.Integer, default=0, nullable=False)
     queued = mapped_column(db.Integer, default=0, nullable=False)
     status = mapped_column(
-        db.Enum(SubscriptionStatus), default=SubscriptionStatus.PENDING, nullable=False
+        db.Enum(SUBSCRIPTION_STATUS),
+        default=SUBSCRIPTION_STATUS.PENDING,
+        nullable=False,
     )
 
     created_at = mapped_column(

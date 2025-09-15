@@ -21,10 +21,10 @@ from app.models.user import User
 from app.utils.constants import (
     DONATION_NOTIFICATIONS,
     DONATION_NOTIFICATIONS_CHANNEL,
-    DonationStatus,
+    DONATION_STATUS,
     EmailType,
     MAX_DONATION_NOTIFICATIONS,
-    PaymentStatus,
+    PAYMENT_STATUS,
 )
 from app.utils.email import create_email
 
@@ -51,7 +51,7 @@ def successful_charge(
 
         payment_transaction.charge_id = charge_id
 
-        if payment_transaction.status == PaymentStatus.SUCCEEDED:
+        if payment_transaction.status == PAYMENT_STATUS.SUCCEEDED:
             return
 
         new_donation_location = DonationLocation(lat=lat, lng=lng, amount=amount)
@@ -62,8 +62,8 @@ def successful_charge(
                 campaign.total_donations += 1
                 new_donation_location.campaign_id = campaign_id
 
-        donation.status = DonationStatus.SUCCEEDED
-        payment_transaction.status = PaymentStatus.SUCCEEDED
+        donation.status = DONATION_STATUS.SUCCEEDED
+        payment_transaction.status = PAYMENT_STATUS.SUCCEEDED
 
         db.session.add(new_donation_location)
 
@@ -150,13 +150,13 @@ def failed_charge(payment_transaction_id, idempotency_key, charge_id):
             raise ValueError(
                 f"Payment transaction with id '{payment_transaction_id}' not found."
             )
-        if payment_transaction.status == PaymentStatus.SUCCEEDED:
+        if payment_transaction.status == PAYMENT_STATUS.SUCCEEDED:
 
             raise ValueError(
                 f"Payment transaction '{payment_transaction.charge_id}' has already been recorded."
             )
         payment_transaction.charge_id = charge_id
-        payment_transaction.status = PaymentStatus.FAILED
+        payment_transaction.status = PAYMENT_STATUS.FAILED
         db.session.commit()
 
     except StaleDataError as e:
@@ -182,7 +182,7 @@ def refunded_charge(payment_transaction_id, idempotency_key, charge_id, campaign
             if campaign_id is not None:
                 campaign = Campaign.query.get_or_404(campaign_id)
                 campaign.raised -= payment_transaction.amount
-            payment_transaction.status = PaymentStatus.REFUNDED
+            payment_transaction.status = PAYMENT_STATUS.REFUNDED
             db.session.commit()
 
         except NotFound as e:

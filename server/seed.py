@@ -26,11 +26,11 @@ from app.models.task import Task
 
 # Import missing constants
 from app.utils.constants import (
-    SubscriptionStatus,
-    EmailType,
-    DonationStatus,
-    PaymentStatus,
-    EmailStatus,
+    SUBSCRIPTION_STATUS,
+    EMAIL_TYPE,
+    DONATION_STATUS,
+    PAYMENT_STATUS,
+    EMAIL_STATUS,
 )
 
 # Initialize Faker outside the function
@@ -52,7 +52,7 @@ def seed_all():
 
         email_subscription = EmailSubscription(
             email_address="admin@example.com",
-            status=SubscriptionStatus.ACTIVE,
+            status=SUBSCRIPTION_STATUS.ACTIVE,
             user_id=admin.id,
         )
         db.session.add(email_subscription)
@@ -60,7 +60,7 @@ def seed_all():
         print("Admin user and email subscription created.")
 
         # Create email templates
-        for email_type in EmailType:
+        for email_type in EMAIL_TYPE:
             email_template = EmailTemplate(email_type=email_type)
             db.session.add(email_template)
         db.session.commit()
@@ -107,9 +107,9 @@ def seed_all():
         #     email_subscription = EmailSubscription(
         #         email_address=donor.email_address,
         #         status=(
-        #             SubscriptionStatus.ACTIVE
+        #             SUBSCRIPTION_STATUS.ACTIVE
         #             if subscribed
-        #             else SubscriptionStatus.INACTIVE
+        #             else SUBSCRIPTION_STATUS.INACTIVE
         #         ),
         #         user_id=donor.id,
         #     )
@@ -243,7 +243,7 @@ def seed_all():
         #         campaign_id=campaign.id,
         #         lat=lat_lngs[i]["lat"],
         #         lng=lat_lngs[i]["lng"],
-        #         status=DonationStatus.SUCCEEDED,
+        #         status=DONATION_STATUS.SUCCEEDED,
         #         is_anonymous=random.choice([True, False]),
         #     )
         #     db.session.add(donation)
@@ -263,11 +263,11 @@ def seed_all():
         #         donation_id=donation.id,
         #         idempotency_key=str(uuid.uuid4()),
         #         charge_id=str(uuid.uuid4()),
-        #         status=random.choice([PaymentStatus.SUCCEEDED, PaymentStatus.FAILED]),
+        #         status=random.choice([PAYMENT_STATUS.SUCCEEDED, PAYMENT_STATUS.FAILED]),
         #     )
         #     db.session.add(payment_transaction)
 
-        #     if payment_transaction.status == PaymentStatus.SUCCEEDED:
+        #     if payment_transaction.status == PAYMENT_STATUS.SUCCEEDED:
         #         campaign.raised += donation.amount
         #         campaign.total_donations += 1
 
@@ -276,12 +276,12 @@ def seed_all():
         #         recipient_email_address=donor.email_address,
         #         email_type=EmailType.RECEIPT,
         #         status=random.choice(
-        #             [EmailStatus.FAILED, EmailStatus.SENT, EmailStatus.OPENED]
+        #             [EMAIL_STATUS.FAILED, EMAIL_STATUS.SENT, EMAIL_STATUS.OPENED]
         #         ),
         #     )
         #     db.session.add(email)
         #     donor.email_subscription.queued += 1
-        #     if email.status == EmailStatus.OPENED:
+        #     if email.status == EMAIL_STATUS.OPENED:
         #         donor.email_subscription.opened += 1
 
         # db.session.commit()  # Commit all changes at the end of the loop

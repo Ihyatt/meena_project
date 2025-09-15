@@ -10,7 +10,7 @@ from app.models.user import User
 from app.models.email_template import EmailTemplate
 from app.schemas.email_template import EmailTemplateSchema
 from app.utils.decorators import admin_required
-from app.utils.constants import EmailStatus, SubscriptionStatus
+from app.utils.constants import EMAIL_STATUS, SUBSCRIPTION_STATUS
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
@@ -165,7 +165,7 @@ def webhoook_sent():
             )
 
         email = Email.query.filter_by(id=int(CustomID)).first()
-        email.status = EmailStatus.SENT
+        email.status = EMAIL_STATUS.SENT
         email.email_subscription.sent += 1
         db.session.commit()
         current_app.logger.info(f"Email with ID {CustomID} has been sent.")
@@ -207,7 +207,7 @@ def webhoook_open():
                 200,
             )
         email = Email.query.filter_by(id=int(CustomID)).first()
-        email.status = EmailStatus.OPENED
+        email.status = EMAIL_STATUS.OPENED
         email.email_subscription.opened += 1
         db.session.commit()
         current_app.logger.info(f"Email with ID {CustomID} has been opened.")
@@ -247,7 +247,7 @@ def webhook_click():
                 400,
             )
         email = Email.query.filter_by(id=int(CustomID)).first()
-        email.status = EmailStatus.CLICKED
+        email.status = EMAIL_STATUS.CLICKED
         email.email_subscription.clicked += 1
         db.session.commit()
         current_app.logger.info(f"Email with ID {CustomID} has been clicked.")
@@ -287,7 +287,7 @@ def webhook_bounce():
                 400,
             )
         email = Email.query.filter_by(id=int(CustomID)).first()
-        email.status = EmailStatus.BOUNCED
+        email.status = EMAIL_STATUS.BOUNCED
         email.email_subscription.bounced += 1
         db.session.commit()
         current_app.logger.info(f"Email with ID {CustomID} has bounced.")
@@ -327,9 +327,9 @@ def webhook_spam():
                 400,
             )
         email = Email.query.filter_by(id=int(CustomID)).first()
-        email.status = EmailStatus.SPAM
+        email.status = EMAIL_STATUS.SPAM
         email.email_subscription.spam = True
-        email.email_subscription.status = SubscriptionStatus.INACTIVE
+        email.email_subscription.status = SUBSCRIPTION_STATUS.INACTIVE
         db.session.commit()
         current_app.logger.info(f"Email with ID {CustomID} has been marked as spam.")
         return jsonify({"status": "success", "message": "Webhook spam received"}), 200
@@ -368,9 +368,9 @@ def webhook_blocked():
                 400,
             )
         email = Email.query.filter_by(id=int(CustomID)).first()
-        email.status = EmailStatus.BLOCKED
+        email.status = EMAIL_STATUS.BLOCKED
         email.email_subscription.blocked = True
-        email.email_subscription.status = SubscriptionStatus.INACTIVE
+        email.email_subscription.status = SUBSCRIPTION_STATUS.INACTIVE
         db.session.commit()
         current_app.logger.info(f"Email with ID {CustomID} has been blocked.")
         return (
@@ -412,8 +412,8 @@ def unsubscribe():
                 400,
             )
         email = Email.query.filter_by(id=int(CustomID)).first()
-        email.status = EmailStatus.UNSUB
-        email.email_subscription.status = SubscriptionStatus.INACTIVE
+        email.status = EMAIL_STATUS.UNSUB
+        email.email_subscription.status = SUBSCRIPTION_STATUS.INACTIVE
         db.session.commit()
         current_app.logger.info(f"Email with ID {CustomID} has been unsubscribed.")
 

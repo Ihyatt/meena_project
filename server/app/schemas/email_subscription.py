@@ -4,7 +4,7 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 # Local application imports
 from app.models.email_subscription import EmailSubscription
-from app.utils.constants import SubscriptionStatus
+from app.utils.constants import SUBSCRIPTION_STATUS
 
 
 class EmailSubscriptionSchema(SQLAlchemyAutoSchema):
@@ -28,7 +28,7 @@ class EmailSubscriptionSchema(SQLAlchemyAutoSchema):
     bounced = fields.Integer(dump_only=True)
     opened = fields.Integer(dump_only=True)
     queued = fields.Integer(dump_only=True)
-    status = fields.Enum(SubscriptionStatus, dump_only=True)
+    status = fields.Enum(SUBSCRIPTION_STATUS, dump_only=True)
 
     created_at = fields.DateTime(dump_only=True, data_key="createdAt")
     updated_at = fields.DateTime(dump_only=True, data_key="updatedAt")

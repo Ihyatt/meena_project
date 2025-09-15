@@ -7,7 +7,7 @@ from sqlalchemy.orm import mapped_column, relationship
 # Local application imports
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
-from app.utils.constants import DonationStatus
+from app.utils.constants import DONATION_STATUS
 
 
 # this needs to be extracted so lat and long need to be on its own table
@@ -20,7 +20,7 @@ class Donation(db.Model, SoftDeleteMixin):
 
     amount = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
     status = mapped_column(
-        db.Enum(DonationStatus), default=DonationStatus.PENDING, nullable=False
+        db.Enum(DONATION_STATUS), default=DONATION_STATUS.PENDING, nullable=False
     )
 
     is_anonymous = mapped_column(db.Boolean, default=False, nullable=False)

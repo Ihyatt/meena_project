@@ -3,7 +3,7 @@ from sqlalchemy.orm import mapped_column, relationship
 
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
-from app.utils.constants import EmailStatus
+from app.utils.constants import EMAIL_STATUS
 from app.utils.constants import EmailType
 
 
@@ -16,7 +16,7 @@ class Email(db.Model, SoftDeleteMixin):
 
     recipient_email_address = mapped_column(db.String(255), nullable=False)
     status = mapped_column(
-        db.Enum(EmailStatus), default=EmailStatus.QUEUED, nullable=False
+        db.Enum(EMAIL_STATUS), default=EMAIL_STATUS.QUEUED, nullable=False
     )
     email_type = mapped_column(db.Enum(EmailType), nullable=False)
     message_uuid = mapped_column(db.String(255), nullable=True)

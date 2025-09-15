@@ -19,7 +19,7 @@ def checkout_session(
             f"Creating checkout session for amount: {amount}, donor_id: {donor_id}, donation_id: {donation_id}"
         )
         # Create a new Stripe Checkout Session
-        # Ensure amount is in the smallest currency unit (e.g., cents for USD)
+        # Ensure amount is in the smallest CURRENCY unit (e.g., cents for USD)
         # and convert to integer
         # Set up metadata to track the transaction
         session = stripe.checkout.Session.create(
@@ -32,7 +32,7 @@ def checkout_session(
                             "name": "donation",
                             "description": "one-time donation",
                         },
-                        "currency": "USD",  # Change to your desired currency
+                        "CURRENCY": "USD",  # Change to your desired CURRENCY
                     },
                     "quantity": 1,
                 }

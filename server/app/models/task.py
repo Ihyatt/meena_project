@@ -7,7 +7,7 @@ from sqlalchemy.orm import mapped_column
 # Local application imports
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
-from app.utils.constants import JobStatus
+from app.utils.constants import JOB_STATUS
 
 
 class Task(db.Model, SoftDeleteMixin):
@@ -17,7 +17,9 @@ class Task(db.Model, SoftDeleteMixin):
     id = mapped_column(db.Integer, primary_key=True)
     task_name = mapped_column(db.String(255), nullable=False)
     version_uuid = mapped_column(db.String(32), nullable=False)
-    status = mapped_column(db.Enum(JobStatus), default=JobStatus.QUEUED, nullable=False)
+    status = mapped_column(
+        db.Enum(JOB_STATUS), default=JobStatus.QUEUED, nullable=False
+    )
     charge_id = mapped_column(db.String(255), nullable=True)
     refund_id = mapped_column(db.String(255), nullable=True)
 

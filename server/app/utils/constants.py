@@ -1,37 +1,37 @@
 import enum
 
 
-class PaymentStatus(enum.Enum):
+class PAYMENT_STATUS(enum.Enum):
     PENDING = "pending"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
     REFUNDED = "refunded"
 
 
-class TaskName(enum.Enum):
+class TASK_NAME(enum.Enum):
     REFUND = "refund"
     PAYMENT = "payment"
 
 
-class DonationStatus(enum.Enum):
+class DONATION_STATUS(enum.Enum):
     PENDING = "pending"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
 
 
-class SubscriptionStatus(enum.Enum):
+class SUBSCRIPTION_STATUS(enum.Enum):
     PENDING = "pending"
     INACTIVE = "inactive"
     ACTIVE = "active"
 
 
-class JobStatus(enum.Enum):
+class JOB_STATUS(enum.Enum):
     QUEUED = "queued"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
 
 
-class EmailStatus(enum.Enum):
+class EMAIL_STATUS(enum.Enum):
     QUEUED = "queued"
     SENT = "sent"
     FAILED = "failed"
@@ -44,13 +44,13 @@ class EmailStatus(enum.Enum):
     UNSUB = "unsubscribed"
 
 
-class EmailType(enum.Enum):
+class EMAIL_TYPE(enum.Enum):
     RECEIPT = "receipt"
     IMPACT = "impact"
     CLOSEOUT = "closeout"
 
 
-class Currency(enum.Enum):
+class CURRENCY(enum.Enum):
     USD = "usd"
     AED = "aed"
     AFN = "afn"

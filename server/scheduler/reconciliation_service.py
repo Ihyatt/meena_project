@@ -16,10 +16,10 @@ from app.models.donation import Donation
 from app.models.payment_transaction import PaymentTransaction
 from app.models.task import Task
 from app.utils.constants import (
-    DonationStatus,
-    JobStatus,
-    PaymentStatus,
-    TaskName,
+    DONATION_STATUS,
+    JOB_STATUS,
+    PAYMENT_STATUS,
+    TASK_NAME,
 )
 
 
@@ -61,11 +61,11 @@ def reconcile_payments():
                         return False
 
                     if status == "succeeded":
-                        payment_transaction.status = PaymentStatus.SUCCEEDED
-                        payment_transaction.donation.status = DonationStatus.SUCCEEDED
+                        payment_transaction.status = PAYMENT_STATUS.SUCCEEDED
+                        payment_transaction.donation.status = DONATION_STATUS.SUCCEEDED
 
                     else:
-                        payment_transaction.status = PaymentStatus.FAILED
+                        payment_transaction.status = PAYMENT_STATUS.FAILED
 
                     payment_transaction.reconciled_at = datetime.now(timezone.utc)
                     payment_transaction.donation.reconciled_at = datetime.now(
@@ -90,19 +90,19 @@ def reconcile_payments():
         payments = call_stripe_for_payment()
         for payment in payments:
             new_task = Task()
-            new_task.task_name = TaskName.PAYMENT.value
+            new_task.task_name = TASK_NAME.PAYMENT.value
             new_task.charge_id = payment.id
             try:
                 status = reconcile(payment)
                 if status:
-                    new_task.status = JobStatus.SUCCEEDED
+                    new_task.status = JOB_STATUS.SUCCEEDED
                 else:
-                    new_task.status = JobStatus.FAILED
+                    new_task.status = JOB_STATUS.FAILED
                 new_task.ended_at = datetime.now(timezone.utc)
 
             except Exception as e:
                 current_app.logger.error(f"Error in payment reconciliation: {str(e)}")
-                new_task.status = JobStatus.FAILED
+                new_task.status = JOB_STATUS.FAILED
                 new_task.ended_at = datetime.now(timezone.utc)
 
             db.session.add(new_task)
@@ -145,14 +145,14 @@ def reconcile_refunds():
                         charge_id=charge_id
                     ).first()
 
-                    if payment_transaction.status == PaymentStatus.REFUNDED:
+                    if payment_transaction.status == PAYMENT_STATUS.REFUNDED:
                         current_app.logger.info(
                             f"Refund: {refund.id} already reconciled."
                         )
                         return True
 
                     if status == "succeeded":
-                        payment_transaction.status = PaymentStatus.REFUNDED
+                        payment_transaction.status = PAYMENT_STATUS.REFUNDED
 
                     payment_transaction.reconciled_at = datetime.now(timezone.utc)
                     payment_transaction.donation.reconciled_at = datetime.now(
@@ -179,18 +179,18 @@ def reconcile_refunds():
         refunds = call_stripe_for_refund()
         for refund in refunds:
             new_task = Task()
-            new_task.task_name = TaskName.REFUND.value
+            new_task.task_name = TASK_NAME.REFUND.value
             try:
                 status = reconcile(refund)
 
                 if status:
-                    new_task.status = JobStatus.SUCCEEDED
+                    new_task.status = JOB_STATUS.SUCCEEDED
                 else:
-                    new_task.status = JobStatus.FAILED
+                    new_task.status = JOB_STATUS.FAILED
             except Exception as e:
                 db.session.rollback()
                 current_app.logger.error(f"Error in refund reconciliation: {str(e)}")
-                new_task.status = JobStatus.FAILED
+                new_task.status = JOB_STATUS.FAILED
 
             new_task.ended_at = datetime.now(timezone.utc)
 
@@ -211,12 +211,12 @@ def reconcile_active_campaign():
             return
 
         reconciled_total_donations = Donation.query.filter_by(
-            campaign_id=active_campaign.id, status=DonationStatus.SUCCEEDED
+            campaign_id=active_campaign.id, status=DONATION_STATUS.SUCCEEDED
         ).count()
 
         reconciled_raised = (
             db.session.query(func.sum(Donation.amount))
-            .filter(Donation.payment_transaction.has(status=PaymentStatus.SUCCEEDED))
+            .filter(Donation.payment_transaction.has(status=PAYMENT_STATUS.SUCCEEDED))
             .scalar()
         )
 

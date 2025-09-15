@@ -20,7 +20,7 @@ from app.schemas.campaign import CampaignSchema
 from app.schemas.donation import DonationSchema
 from app.schemas.user import DonorSchema
 from app.services.checkout_session import checkout_session
-from app.utils.constants import DonationStatus
+from app.utils.constants import DONATION_STATUS
 from app.utils.donation import create_donation
 from app.utils.payment_transaction import create_payment_transaction
 from app.utils.user import get_or_create_donor, update_email_subscription
@@ -33,14 +33,14 @@ def fetch_campaign():
 
         donors = (
             db.session.query(func.count(Donation.donor_id.distinct()))
-            .filter_by(status=DonationStatus.SUCCEEDED)
+            .filter_by(status=DONATION_STATUS.SUCCEEDED)
             .scalar()
         )
 
         campaign = Campaign.query.filter_by(is_active=True).first()
         raised = (
             db.session.query(func.sum(Donation.amount))
-            .filter_by(status=DonationStatus.SUCCEEDED)
+            .filter_by(status=DONATION_STATUS.SUCCEEDED)
             .scalar()
         )
         campaign_schema = CampaignSchema(

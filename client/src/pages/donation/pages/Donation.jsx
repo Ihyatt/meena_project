@@ -8,6 +8,7 @@ import DonationData from "src/pages/donation/components/DonationData";
 
 import CoverImage from "src/pages/donation/components/CoverImage";
 import CeoData from "src/pages/donation/components/CeoData";
+import { DEFAULT_DESCRIPTION } from "src/utils/constants";
 
 // Context and state management
 import Button from "src/pages/donation/components/Button";
@@ -44,7 +45,9 @@ const Donation = () => {
               totalDonations={campaignData.totalDonations}
             />
           </div>
-          <About description={campaignData.description} />
+          <About
+            description={campaignData.description || DEFAULT_DESCRIPTION}
+          />
           <DonationForm targetRef={targetRef} />
         </div>
         <div className="hidden lg:block col-span-3 ">

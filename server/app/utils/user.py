@@ -1,5 +1,5 @@
 from app.models.user import User
-from app.utils.constants import SubscriptionStatus
+from app.utils.constants import SUBSCRIPTION_STATUS
 from app.database import db
 from werkzeug.exceptions import NotFound
 
@@ -25,9 +25,9 @@ def update_email_subscription(donor_id, is_email_subscription):
 
         donor.email_subscription.email_address = donor.email_address
         if is_email_subscription:
-            donor.email_subscription.status = SubscriptionStatus.ACTIVE
+            donor.email_subscription.status = SUBSCRIPTION_STATUS.ACTIVE
         else:
-            donor.email_subscription.status = SubscriptionStatus.INACTIVE
+            donor.email_subscription.status = SUBSCRIPTION_STATUS.INACTIVE
 
     except NotFound:
         raise ValueError("Donor not found")

@@ -17,7 +17,7 @@ import {
 import { Sidebar, SubMenu, Menu, MenuItem } from "react-pro-sidebar";
 
 // Local Constants and Utilities
-import { EmailType } from "src/utils/Constants";
+import { EMAIL_TYPE } from "src/utils/Constants";
 
 // State Management
 import useAuthStore from "src/pages/auth/store";
@@ -119,7 +119,7 @@ const AdminSideBar = ({ children }) => {
                     to={"/admins/emails/email-template/receipt"}
                     state={{
                       background: location.pathname,
-                      emailType: EmailType.RECEIPT,
+                      EMAIL_TYPE: EMAIL_TYPE.RECEIPT,
                     }}
                     style={{ color: "black", fontSize: "15px" }}
                   />
@@ -136,7 +136,7 @@ const AdminSideBar = ({ children }) => {
                     to={"/admins/emails/email-template/impact"}
                     state={{
                       background: location.pathname,
-                      emailType: EmailType.IMPACT,
+                      EMAIL_TYPE: EMAIL_TYPE.IMPACT,
                     }}
                     style={{
                       color: "black",
@@ -157,7 +157,7 @@ const AdminSideBar = ({ children }) => {
                     to={"/admins/emails/email-template/closeout"}
                     state={{
                       background: location.pathname,
-                      emailType: EmailType.CLOSEOUT,
+                      EMAIL_TYPE: EMAIL_TYPE.CLOSEOUT,
                     }}
                     style={{
                       color: "black",

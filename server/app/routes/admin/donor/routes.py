@@ -14,7 +14,7 @@ from app.database import db
 from app.models.user import User
 from app.routes.admin.donor import donor_bp
 from app.schemas.user import DonorSchema
-from app.utils.constants import SubscriptionStatus
+from app.utils.constants import SUBSCRIPTION_STATUS
 from app.utils.decorators import admin_required
 
 
@@ -132,9 +132,9 @@ def manage_donor(donor_id):
         validated_donor_data = donor_schema.load(data)
 
         donor.email_subscription.status = (
-            SubscriptionStatus.ACTIVE
-            if data["emailSubscriptionStatus"] == SubscriptionStatus.ACTIVE.value
-            else SubscriptionStatus.INACTIVE
+            SUBSCRIPTION_STATUS.ACTIVE
+            if data["emailSUBSCRIPTION_STATUS"] == SUBSCRIPTION_STATUS.ACTIVE.value
+            else SUBSCRIPTION_STATUS.INACTIVE
         )
 
         donor.full_name = validated_donor_data["full_name"]

@@ -7,7 +7,7 @@ from sqlalchemy.orm import mapped_column, relationship
 # Local application imports
 from app.database import db
 from app.models.mixins.soft_delete_mixin import SoftDeleteMixin
-from app.utils.constants import PaymentStatus, Currency
+from app.utils.constants import PAYMENT_STATUS, CURRENCY
 
 
 class PaymentTransaction(db.Model, SoftDeleteMixin):
@@ -25,9 +25,9 @@ class PaymentTransaction(db.Model, SoftDeleteMixin):
     charge_id = mapped_column(db.String(255), nullable=True)
     amount = mapped_column(db.Numeric(10, 2), default=0.0, nullable=False)
     status = mapped_column(
-        db.Enum(PaymentStatus), default=PaymentStatus.PENDING, nullable=False
+        db.Enum(PAYMENT_STATUS), default=PAYMENT_STATUS.PENDING, nullable=False
     )
-    currency = mapped_column(db.Enum(Currency), default=Currency.USD, nullable=True)
+    CURRENCY = mapped_column(db.Enum(CURRENCY), default=CURRENCY.USD, nullable=True)
     idempotency_key = mapped_column(
         db.String(255), unique=True, index=True, nullable=False
     )

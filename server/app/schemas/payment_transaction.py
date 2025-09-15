@@ -5,7 +5,7 @@ from marshmallow import fields, validate
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from app.models.payment_transaction import PaymentTransaction
 
-from app.utils.constants import PaymentStatus
+from app.utils.constants import PAYMENT_STATUS
 
 # Local application imports
 from app.models.image import Image
@@ -29,7 +29,7 @@ class PaymentTransactionSchema(SQLAlchemyAutoSchema):
         validate=validate.Range(min=0.01, max=100_000),
     )
 
-    status = fields.Enum(PaymentStatus)
+    status = fields.Enum(PAYMENT_STATUS)
     idempotency_key = fields.String(
         required=True, validate=validate.Length(max=255), data_key="idempotencyKey"
     )

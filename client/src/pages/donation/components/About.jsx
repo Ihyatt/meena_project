@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { DefaultDescription } from "src/utils/constants";
-import { AboutMeena } from "src/utils/constants";
+import { ABOUT_MEENA } from "src/utils/constants";
 
 const About = ({ description }) => {
   const [toggleText, setToggleText] = useState("about");
@@ -9,7 +8,7 @@ const About = ({ description }) => {
     setToggleText(type);
   };
   return (
-    <div>
+    <>
       <div className="flex justify-start pb-6 ">
         <div
           onClick={() => handleClick("about")}
@@ -47,9 +46,9 @@ const About = ({ description }) => {
         </div>
       </div>
       <div className="font-light whitespace-pre-wrap">
-        {toggleText == "about" ? AboutMeena : description || DefaultDescription}
+        {toggleText == "about" ? ABOUT_MEENA : description}
       </div>
-    </div>
+    </>
   );
 };
 export default About;

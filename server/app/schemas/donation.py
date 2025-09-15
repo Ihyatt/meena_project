@@ -7,7 +7,7 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 # Local application imports
 from app.models.donation import Donation
-from app.utils.constants import DonationStatus
+from app.utils.constants import DONATION_STATUS
 
 
 class DonationSchema(SQLAlchemyAutoSchema):
@@ -21,7 +21,7 @@ class DonationSchema(SQLAlchemyAutoSchema):
     campaign_id = fields.Integer(allow_none=True, data_key="campaignId")
 
     status = fields.Enum(
-        DonationStatus,
+        DONATION_STATUS,
         allow_none=True,
     )
     amount = fields.Decimal(

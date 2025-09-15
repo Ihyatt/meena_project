@@ -15,7 +15,7 @@ from app.models.donation_location import DonationLocation
 from app.routes.admin import admin_bp
 from app.schemas.campaign import CampaignSchema
 from app.schemas.donation_location import DonationLocationSchema
-from app.utils.constants import DonationStatus
+from app.utils.constants import DONATION_STATUS
 from app.utils.decorators import admin_required
 
 
@@ -41,7 +41,7 @@ def dashboard():
                 curr_year = now.year
                 if (
                     donation.created_at.year == curr_year
-                    and donation.status == DonationStatus.SUCCEEDED
+                    and donation.status == DONATION_STATUS.SUCCEEDED
                 ):
                     week_number_of_year = donation.created_at.strftime("%V")
 
@@ -50,7 +50,7 @@ def dashboard():
                     ] += donation.amount
 
         donations = (
-            Donation.query.filter(Donation.status == DonationStatus.SUCCEEDED)
+            Donation.query.filter(Donation.status == DONATION_STATUS.SUCCEEDED)
             .order_by(Donation.created_at.asc())
             .all()
         )
@@ -102,7 +102,7 @@ def dashboard():
 
         donors = (
             db.session.query(func.count(Donation.donor_id.distinct()))
-            .filter_by(status=DonationStatus.SUCCEEDED)
+            .filter_by(status=DONATION_STATUS.SUCCEEDED)
             .scalar()
         )
 
