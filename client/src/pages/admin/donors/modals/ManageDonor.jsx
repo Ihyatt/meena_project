@@ -1,135 +1,30 @@
 // External Stylesheets
 import "src/assets/css/Modal.css";
 
-// React Hooks and Router
-import { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-
-// External Libraries
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-
 // Local Components
 import ErrorAlert from "src/components/ErrorAlert";
 import EmailSubscription from "src/pages/admin/donors/components/EmailSubscription";
 import Loading from "src/components/Loading";
 import Donations from "src/pages/admin/donors/components/Donations.jsx";
 
-// Context
-import DonorContext from "src/pages/admin/donors/components/DonorContext";
-
 // State Management
-import useDonorStore from "src/pages/admin/donors/store";
+import useDonor from "src/pages/admin/donors/hooks/useDonor";
 
 export const ManageDonor = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isModal = location.state?.isModal;
-  const modalRef = useRef();
-  const { donorId } = useParams();
-
-  const [errors, setErrors] = useState([]);
-
-  const [donations, setDonations] = useState([]);
-  const [emailSubscription, setEmailSubscription] = useState({});
-  const [toggle, setToggle] = useState("donations");
-  const [fullName, setFullName] = useState("");
-  const [emailSubscriptionStatus, setEmailSubscriptionStatus] = useState("");
-  const { fetchDonor, manageDonorData, isLoading } = useDonorStore();
-  const [emailAddress, setEmailAddress] = useState("");
-  const [donorData, setDonorData] = useState({
-    donations: [],
-    fullName: "",
-    emailAddress: "",
-    emailSubscription: {},
-    emailSubscriptionStatus: "",
-  });
-
-  useEffect(() => {
-    fetchDonor(donorId).then((data) => {
-      setDonorData({
-        donations: data.donations,
-        fullName: data.fullName,
-        emailAddress: data.emailAddress,
-        emailSubscription: data.emailSubscription,
-        emailSubscriptionStatus: data.emailSubscription.status.toLowerCase(),
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    const observerRefValue = modalRef.current;
-    disableBodyScroll(observerRefValue);
-
-    return () => {
-      if (observerRefValue) {
-        enableBodyScroll(observerRefValue);
-      }
-    };
-  }, []);
-
-  const handleClose = (event) => {
-    navigate(-1);
-    event.preventDefault();
-  };
-
-  const handleSave = (event) => {
-    if (
-      !fullName ||
-      !emailAddress ||
-      !emailSubscriptionStatus ||
-      (emailSubscriptionStatus != "active" &&
-        emailSubscriptionStatus != "inactive")
-    ) {
-      const errors = [];
-      if (!fullName) {
-        errors.push("Full name is required.");
-      }
-      if (!emailSubscriptionStatus) {
-        errors.push("Email subscription status is required.");
-      }
-      if (
-        emailSubscriptionStatus != "active" &&
-        emailSubscriptionStatus != "inactive"
-      ) {
-        errors.push(
-          "Email subscription status should be either 'active' or 'inactive'."
-        );
-      }
-
-      setErrors(errors);
-      return;
-    }
-    manageDonorData(
-      donorId,
-      emailAddress,
-      fullName,
-      emailSubscriptionStatus
-    ).then((data) => {
-      setDonorData({
-        donations: data.donations,
-        fullName: data.fullName,
-        emailAddress: data.emailAddress,
-        emailSubscription: data.emailSubscription,
-        emailSubscriptionStatus: data.emailSubscription.status.toLowerCase(),
-      });
-    });
-    event.preventDefault();
-  };
-
-  const handleErrorClose = () => {
-    setErrors([]);
-  };
-
-  const handleTableDisplay = (table) => () => {
-    setToggle(table);
-  };
-  const handleSubscriptionChange = (status) => {
-    setEmailSubscriptionStatus(status);
-  };
-  const donorContextValue = {
-    handleSubscriptionChange: handleSubscriptionChange,
-    emailSubscriptionStatus: emailSubscriptionStatus,
-  };
+  const {
+    modalRef,
+    errors,
+    donations,
+    toggle,
+    fullName,
+    emailAddress,
+    isLoading,
+    setFullName,
+    handleClose,
+    handleSave,
+    handleErrorClose,
+    handleTableDisplay,
+  } = useDonor();
   return (
     <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}
@@ -182,10 +77,7 @@ export const ManageDonor = () => {
           {toggle == "donations" ? (
             <Donations donations={donations} />
           ) : (
-            <EmailSubscription
-              handleSubscriptionChange={handleSubscriptionChange}
-              emailSubscriptionStatus={emailSubscriptionStatus}
-            />
+            <EmailSubscription />
           )}
 
           <div className="flex  justify-end mt-4">

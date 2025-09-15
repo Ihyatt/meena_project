@@ -31,7 +31,6 @@ const DraftReview = () => {
 
   useEffect(() => {
     fetchDraft().then((data) => {
-      console.log(data);
       setTitle(data.title);
       setCampaignId(data.id);
       setDescription(data.description);
@@ -59,7 +58,6 @@ const DraftReview = () => {
   const step = 5;
   const stepText = "Review your campaign details";
   const isButtonDisabled = !closeoutDate || isLoading;
-  console.log(closeoutDate);
   return (
     <div className="flex w-full h-screen bg-[#f5f5f5]">
       {/* Left column */}

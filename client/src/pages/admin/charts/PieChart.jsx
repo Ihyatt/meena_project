@@ -12,7 +12,6 @@ const PieChart = ({ allTimeDonationRetentionData }) => {
   ) {
     return <div>Loading chart data...</div>;
   }
-  console.log(allTimeDonationRetentionData);
 
   const data = {
     labels: ["New Donations", "Retentioned Donations"],

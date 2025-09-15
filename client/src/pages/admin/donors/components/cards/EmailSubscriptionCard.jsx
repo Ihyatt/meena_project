@@ -1,11 +1,10 @@
 import { useContext } from "react";
-import DonorContext from "src/pages/admin/donors/components/DonorContext";
 
 import { RiPencilLine } from "react-icons/ri";
+import useDonor from "src/pages/admin/donors/hooks/useDonor";
 
 const EmailSubscriptionCard = ({ data }) => {
-  const { handleSubscriptionChange, emailSubscriptionStatus } =
-    useContext(DonorContext);
+  const { emailSubscriptionStatus, handleSubscriptionChange } = useDonor();
   return (
     <tr key={data.id}>
       <td className="p-4 border-b border-blue-gray-50">

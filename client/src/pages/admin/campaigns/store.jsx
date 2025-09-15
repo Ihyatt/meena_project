@@ -31,7 +31,6 @@ const useCampaignStore = create(
             isLoading: false,
           });
           const campaigns = get().campaigns;
-          console.log(campaigns);
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -108,7 +107,6 @@ const useCampaignStore = create(
           if (!response.ok) {
             set({ error: data.message });
           }
-          console.log(data);
 
           set((state) => ({
             campaigns: state.campaigns.map((campaign) =>

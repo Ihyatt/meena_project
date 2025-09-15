@@ -90,7 +90,6 @@ const BarChart = ({ currYearByMonthDonationRetentionData }) => {
       },
     ],
   };
-  console.log(currYearByMonthDonationRetentionData.length);
   return (
     <div className="w-1/2 mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
       {Object.keys(currYearByMonthDonationRetentionData).length == 0 ? (

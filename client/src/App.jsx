@@ -31,7 +31,7 @@ import DraftImage from "src/pages/campaign/pages/Image";
 import DraftDate from "src/pages/campaign/pages/Date";
 import DraftReview from "src/pages/campaign/pages/Review";
 
-import CampaignLayout from "src/pages/campaign/CampaignLayout";
+import CampaignLayout from "src/pages/campaign";
 
 // Donor Pages
 import DonationLayout from "src/pages/donation";

@@ -46,7 +46,6 @@ const DraftDate = () => {
       }
     );
   };
-  console.log(closeoutDate);
   const step = 5;
   const stepText = "Set closeout date for your campaign";
   const isButtonDisabled = !closeoutDate || isLoading;

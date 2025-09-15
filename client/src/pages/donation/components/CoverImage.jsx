@@ -1,5 +1,4 @@
 const CoverImage = ({ imageUrl }) => {
-  console.log(imageUrl);
   return (
     <div className="pb-5">
       <img

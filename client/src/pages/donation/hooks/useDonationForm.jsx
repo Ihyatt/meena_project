@@ -20,7 +20,6 @@ const useDonationForm = () => {
   });
 
   const handleClick = (buttonId, amount) => {
-    console.log(amount, buttonId);
     setActiveButton(buttonId);
     setForm({
       ...form,

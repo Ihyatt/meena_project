@@ -1,114 +1,32 @@
 // External Stylesheets
 import "src/assets/css/Modal.css";
 
-// React Hooks and Router
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-
-// External Libraries
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-
 // Local Components
 import Loading from "src/components/Loading";
 import ErrorAlert from "src/components/ErrorAlert";
 
+import useEmail from "src/pages/admin/emailTemplate/hooks/useEmail.jsx";
 // State Management
-import useEmailStore from "src/pages/admin/emailTemplate/store";
-
 export const EmailTemplate = () => {
-  const [subject, setSubject] = useState("");
-  const [templateId, setTemplateId] = useState("");
-  const [errors, setErrors] = useState([]);
-
-  const subjectCharactersLimit = 100;
-  const templateIdCharactersLimit = 255;
-
-  const modalRef = useRef();
-  const navigate = useNavigate();
-  const { fetchEmailTemplate, saveEmailTemplate, isLoading } = useEmailStore();
-
-  const location = useLocation();
-  const receivedState = location.state;
-
-  useEffect(() => {
-    fetchEmailTemplate(receivedState.emailType).then((data) => {
-      setSubject(data.subject);
-      setTemplateId(data.templateId);
-    });
-  }, []);
-
-  useEffect(() => {
-    const observerRefValue = modalRef.current;
-    disableBodyScroll(observerRefValue);
-
-    return () => {
-      if (observerRefValue) {
-        enableBodyScroll(observerRefValue);
-      }
-    };
-  }, []);
-
-  const handleClose = (event) => {
-    navigate(-1);
-    event.preventDefault();
-  };
-
-  const handleSave = (event) => {
-    const errors = [];
-    if (!subject) {
-      errors.push("Subject is required.");
-    }
-    if (!templateId) {
-      errors.push("Template ID is required.");
-    }
-    if (errors.length > 0) {
-      setErrors(errors);
-      return;
-    }
-    saveEmailTemplate(receivedState.emailType, subject, templateId).then(
-      (data) => {
-        setSubject(data.subject);
-        setTemplateId(data.templateId);
-      }
-    );
-    navigate(-1);
-    event.preventDefault();
-  };
-
-  const handleSubjectChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= subjectCharactersLimit) {
-      setSubject(value);
-    } else {
-      window.alert(
-        `Subject cannot exceed ${subjectCharactersLimit} characters.`
-      );
-    }
-  };
-
-  const handleTemplateIdChange = (e) => {
-    const value = e.target.value;
-    if (value.length <= templateIdCharactersLimit) {
-      setTemplateId(value);
-    } else {
-      window.alert(
-        `Template ID cannot exceed ${templateIdCharactersLimit} characters.`
-      );
-    }
-  };
-  const handleErrorClose = () => {
-    setErrors([]);
-  };
-
+  const {
+    subject,
+    templateId,
+    errors,
+    isLoading,
+    modalRef,
+    handleClose,
+    handleSave,
+    handleSubjectChange,
+    handleTemplateIdChange,
+    handleErrorClose,
+  } = useEmail();
   return (
     <div ref={modalRef} className="modal-wrapper">
       <div className="modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
           {isLoading && <Loading />}
-
           <div className="p-2">
             <label className="block mb-2 text-xl text-slate-600">Subject</label>
-
             <input
               type="text"
               id="subject"
@@ -119,12 +37,10 @@ export const EmailTemplate = () => {
               required
             />
           </div>
-
           <div className="p-2">
             <label className="block mb-2 text-xl text-slate-600">
               Template ID
             </label>
-
             <input
               type="text"
               id="templateId"
@@ -135,7 +51,6 @@ export const EmailTemplate = () => {
               required
             />
           </div>
-
           <div className="flex items-center mt-8 justify-between">
             <div></div>
             <div>

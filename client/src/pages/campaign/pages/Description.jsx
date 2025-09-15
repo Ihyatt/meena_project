@@ -54,7 +54,6 @@ const DraftDescription = () => {
     description.length < 5 ||
     description.length > descriptioncharactersLimit ||
     isLoading;
-  console.log(closeoutDate);
 
   return (
     <div className="flex col w-full h-screen  bg-[#f5f5f5]">

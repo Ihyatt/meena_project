@@ -11,8 +11,18 @@ const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 const useManageCampaignStore = create(
   persist(
     (set, get) => ({
+      title: "",
+      description: "",
+      goal: 0,
+      closeoutDate: null,
+      imageUrl: "",
       isLoading: false,
       error: null,
+      setTitle: (title) => set({ title }),
+      setDescription: (description) => set({ description }),
+      setGoal: (goal) => set({ goal }),
+      setCloseoutDate: (closeoutDate) => set({ closeoutDate }),
+      setImageUrl: (imageUrl) => set({ imageUrl }),
 
       fetchDraft: async () => {
         set({ isLoading: true, error: null });
@@ -30,19 +40,25 @@ const useManageCampaignStore = create(
             set({ error: data.message });
           }
           set({
+            title: data.title || "",
+            description: data.description || "",
+            goal: data.goal || 0,
+            closeoutDate: null,
+            imageUrl: "",
             isLoading: false,
           });
-          return data;
+          return data.id;
         } catch (error) {
           console.error("Error fetching campaign draft:", error);
           set({ error: error.message, isLoading: false });
         }
       },
 
-      saveDraft: async (campaignId, title, description, goal, closeoutDate) => {
+      saveDraft: async () => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
+          const { title, description, goal, closeoutDate } = get();
 
           const response = await fetch(
             `${backednUrl}/admins/campaigns/${campaignId}/save-draft`,
@@ -60,9 +76,14 @@ const useManageCampaignStore = create(
             set({ error: data.message });
           }
 
-          return data;
-
-          set({ isLoading: false });
+          set({
+            title: data.title || "",
+            description: data.description || "",
+            goal: data.goal || 0,
+            closeoutDate: null,
+            imageUrl: "",
+            isLoading: false,
+          });
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -96,13 +117,7 @@ const useManageCampaignStore = create(
         }
       },
 
-      shareDraft: async (
-        campaignId,
-        title,
-        description,
-        goal,
-        closeoutDate
-      ) => {
+      shareDraft: async () => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
@@ -121,10 +136,6 @@ const useManageCampaignStore = create(
           const data = await response.json();
           if (!response.ok) {
             set({ error: data.message });
-          }
-          if (data.draft == true) {
-            set({ isLoading: false });
-            return data;
           }
 
           set({ error: error, isLoading: false });
@@ -158,7 +169,7 @@ const useManageCampaignStore = create(
           set({ error: error, isLoading: false });
         }
       },
-      saveCampaign: async (campaignId, title, description, goal) => {
+      saveCampaign: async (campaignId) => {
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
