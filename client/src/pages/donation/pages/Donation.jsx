@@ -19,7 +19,14 @@ import useDonation from "src/pages/donation/hooks/useDonation";
 
 const Donation = () => {
   const {
-    campaignData,
+    raised,
+    goal,
+    totalDonations,
+    donorsCount,
+    activeCampaign,
+    imageUrl,
+    title,
+    description,
     copyText,
     targetRef,
     isLoading,
@@ -33,33 +40,31 @@ const Donation = () => {
     <>
       {isLoading && <Loading />}
       <div className="flex flex-col items-center mt-20">
-        <CampaignTitle title={campaignData.title} />
+        <CampaignTitle title={title} />
         <div className="flex justify-center mt-7">
           <div className="max-w-175  ">
-            <CoverImage imageUrl={campaignData.imageUrl || defaultImg} />
+            <CoverImage imageUrl={imageUrl || defaultImg} />
             <div className="block lg:hidden">
               <DonationData
                 percentage={percentage}
-                activeCampaign={campaignData.activeCampaign}
-                goal={campaignData.goal}
-                raised={campaignData.raised}
-                totalDonations={campaignData.totalDonations}
+                activeCampaign={activeCampaign}
+                goal={goal}
+                raised={raised}
+                totalDonations={totalDonations}
                 className=" px-4 pb-2"
               />
             </div>
-            <About
-              description={campaignData.description || DEFAULT_DESCRIPTION}
-            />
+            <About description={description || DEFAULT_DESCRIPTION} />
             <DonationForm targetRef={targetRef} />
           </div>
           <div className="hidden lg:block min-w-67 max-w-67 ml-8">
             <CeoData />
             <DonationData
               percentage={percentage}
-              activeCampaign={campaignData.activeCampaign}
-              goal={campaignData.goal}
-              raised={campaignData.raised}
-              totalDonations={campaignData.totalDonations}
+              activeCampaign={activeCampaign}
+              goal={goal}
+              raised={raised}
+              totalDonations={totalDonations}
               className=" pb-2"
             />
 
@@ -77,7 +82,7 @@ const Donation = () => {
                 {copyText}
               </Button>
 
-              <DonorActivity donorsCount={campaignData.donorsCount} size={30} />
+              <DonorActivity donorsCount={donorsCount} size={30} />
               <div className="mt-5">
                 <DonationEvents
                   handleNewDonation={handleNewDonation}

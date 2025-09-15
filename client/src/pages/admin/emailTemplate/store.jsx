@@ -7,13 +7,8 @@ const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 const useEmailStore = create(
   persist(
     (set, get) => ({
-      subject: "",
       isLoading: false,
-      templateId: "",
       error: null,
-
-      setSubject: (subject) => set({ subject }),
-      setTemplateId: (templateId) => set({ templateId }),
 
       fetchEmailTemplate: async (emailType) => {
         set({ isLoading: true, error: null });

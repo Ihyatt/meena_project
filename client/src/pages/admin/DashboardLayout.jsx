@@ -1,4 +1,5 @@
-import AdminSideBar from "./AdminSideBar";
+import AdminSideBar from "src/pages/admin/AdminSideBar";
+import { Link, Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
   return (

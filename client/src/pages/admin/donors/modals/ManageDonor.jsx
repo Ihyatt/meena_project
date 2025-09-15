@@ -36,14 +36,23 @@ export const ManageDonor = () => {
   const [emailSubscriptionStatus, setEmailSubscriptionStatus] = useState("");
   const { fetchDonor, manageDonorData, isLoading } = useDonorStore();
   const [emailAddress, setEmailAddress] = useState("");
+  const [donorData, setDonorData] = useState({
+    donations: [],
+    fullName: "",
+    emailAddress: "",
+    emailSubscription: {},
+    emailSubscriptionStatus: "",
+  });
 
   useEffect(() => {
     fetchDonor(donorId).then((data) => {
-      setDonations(data.donations);
-      setFullName(data.fullName);
-      setEmailAddress(data.emailAddress);
-      setEmailSubscription(data.emailSubscription);
-      setEmailSubscriptionStatus(data.emailSubscription.status.toLowerCase());
+      setDonorData({
+        donations: data.donations,
+        fullName: data.fullName,
+        emailAddress: data.emailAddress,
+        emailSubscription: data.emailSubscription,
+        emailSubscriptionStatus: data.emailSubscription.status.toLowerCase(),
+      });
     });
   }, []);
 
@@ -96,11 +105,13 @@ export const ManageDonor = () => {
       fullName,
       emailSubscriptionStatus
     ).then((data) => {
-      setDonations(data.donations);
-      setFullName(data.fullName);
-      setEmailAddress(data.emailAddress);
-      setEmailSubscription(data.emailSubscription);
-      setEmailSubscriptionStatus(data.emailSubscription.status.toLowerCase());
+      setDonorData({
+        donations: data.donations,
+        fullName: data.fullName,
+        emailAddress: data.emailAddress,
+        emailSubscription: data.emailSubscription,
+        emailSubscriptionStatus: data.emailSubscription.status.toLowerCase(),
+      });
     });
     event.preventDefault();
   };
@@ -171,9 +182,10 @@ export const ManageDonor = () => {
           {toggle == "donations" ? (
             <Donations donations={donations} />
           ) : (
-            <DonorContext.Provider value={donorContextValue}>
-              <EmailSubscription emailSubscription={emailSubscription} />
-            </DonorContext.Provider>
+            <EmailSubscription
+              handleSubscriptionChange={handleSubscriptionChange}
+              emailSubscriptionStatus={emailSubscriptionStatus}
+            />
           )}
 
           <div className="flex  justify-end mt-4">

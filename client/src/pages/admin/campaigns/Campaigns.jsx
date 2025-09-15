@@ -97,7 +97,7 @@ const Campaigns = () => {
                     ? "p-4"
                     : "p-4 border-b border-blue-gray-50";
 
-                  return <Campaign key={campaign.id} data={campaign} />;
+                  return <CampaignCard key={campaign.id} data={campaign} />;
                 })
               ) : (
                 <tr>

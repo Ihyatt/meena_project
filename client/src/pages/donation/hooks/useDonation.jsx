@@ -10,16 +10,15 @@ import defaultImg from "src/assets/images/defaultImg.jpg";
 import useDonateStore from "src/pages/donation/store";
 
 const useDonation = () => {
-  const [campaignData, setCampaignData] = useState({
-    imageUrl: defaultImg,
-    title: "",
-    description: "",
-    raised: 0,
-    goal: 0,
-    totalDonations: 0,
-    activeCampaign: false,
-    donorsCount: 0,
-  });
+  const [raised, setRaised] = useState(0);
+  const [goal, setGoal] = useState(0);
+  const [totalDonations, setTotalDonations] = useState(0);
+  const [donorsCount, setDonorsCount] = useState(0);
+  const [activeCampaign, setActiveCampaign] = useState(false);
+  const [imageUrl, setImageUrl] = useState(defaultImg);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   const [copyText, setCopyText] = useState("SHARE LINK");
   const targetRef = useRef(null);
 
@@ -27,7 +26,14 @@ const useDonation = () => {
 
   useEffect(() => {
     fetchCampaign().then((data) => {
-      setCampaignData({ ...data });
+      setRaised(data.raised);
+      setGoal(data.goal);
+      setTotalDonations(data.totalDonations);
+      setDonorsCount(data.donorsCount);
+      setActiveCampaign(true);
+      setImageUrl(data.imageUrl || defaultImg);
+      setTitle(data.title || "");
+      setDescription(data.description || "");
     });
   }, []);
 
@@ -36,12 +42,9 @@ const useDonation = () => {
   }, []);
 
   const percentage = useMemo(() => {
-    if (campaignData.goal === 0) return 0; // Avoid division by zero
-    return Math.min(
-      Math.floor((campaignData.raised / campaignData.goal) * 100),
-      100
-    ); // Cap at 100%
-  }, [campaignData.raised, campaignData.goal]); // Dependency array: the "anchor points"
+    if (goal === 0) return 0; // Avoid division by zero
+    return Math.min(Math.floor((raised / goal) * 100), 100); // Cap at 100%
+  }, [raised, goal]); // Dependency array: the "anchor points"
 
   const handleCopy = async () => {
     try {
@@ -80,22 +83,22 @@ const useDonation = () => {
 
   const handleNewDonation = useCallback((newAmount) => {
     const amountAsNumber = Number(newAmount);
-    setCampaignData((prevData) => ({
-      ...prevData,
-      raised: prevData.raised + amountAsNumber,
-      totalDonations: prevData.totalDonations + 1,
-    }));
+    setRaised((prev) => prev + amountAsNumber);
   }, []);
 
   const handleDonorUpdate = useCallback(() => {
-    setCampaignData((prevData) => ({
-      ...prevData,
-      donorsCount: prevData.donorsCount + 1,
-    }));
+    setDonorsCount((prev) => prev + 1);
   }, []);
 
   return {
-    campaignData,
+    raised,
+    goal,
+    totalDonations,
+    donorsCount,
+    activeCampaign,
+    imageUrl,
+    title,
+    description,
     copyText,
     targetRef,
     percentage,

@@ -31,7 +31,6 @@ from datetime import timedelta
 
 from app.database import db
 from sqlalchemy_continuum import make_versioned
-from flask_audit_logger import AuditLogger
 from flask_marshmallow import Marshmallow
 
 
@@ -111,9 +110,7 @@ def create_app():
     app.register_blueprint(admin_bp)
     app.register_blueprint(sse_bp)
 
-    make_versioned(user_cls=User)
-
-    audit_logger = AuditLogger(db)
+    make_versioned(user_cls=None)
 
     app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 

@@ -88,7 +88,12 @@ const Dashboard = () => {
     <div className="m-2">
       {isLoading && <Loading />}
       <div className="m-4 grid gap-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-4 grid-cols-4">
-        <Header />
+        <Header
+          launchedCampaigns={launchedCampaigns}
+          donationsCount={donationsCount}
+          raised={raised}
+          donorsCount={donorsCount}
+        />
       </div>
       <div className="flex m-4 ">
         <div className="h-120 flex-grow">

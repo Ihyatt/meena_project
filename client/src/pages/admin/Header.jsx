@@ -1,4 +1,14 @@
-const Header = () => {
+import { FaArrowTrendUp } from "react-icons/fa6";
+import {
+  RiHandHeartFill,
+  RiMegaphoneFill,
+  RiMoneyDollarCircleFill,
+  RiUserHeartFill,
+} from "react-icons/ri";
+
+import { NumericFormat } from "react-number-format";
+
+const Header = ({ launchedCampaigns, donationsCount, raised, donorsCount }) => {
   return (
     <>
       <div
