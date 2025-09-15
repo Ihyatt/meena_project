@@ -90,7 +90,15 @@ const BarChart = ({ currYearByMonthDonationRetentionData }) => {
       },
     ],
   };
-
-  return <Bar options={options} data={data} />;
+  console.log(currYearByMonthDonationRetentionData.length);
+  return (
+    <div className="w-1/2 mr-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
+      {Object.keys(currYearByMonthDonationRetentionData).length == 0 ? (
+        <p>No data found for the current year</p>
+      ) : (
+        <Bar options={options} data={data} />
+      )}
+    </div>
+  );
 };
 export default BarChart;

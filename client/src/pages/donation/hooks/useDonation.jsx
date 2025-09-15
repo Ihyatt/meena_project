@@ -82,8 +82,12 @@ const useDonation = () => {
   };
 
   const handleNewDonation = useCallback((newAmount) => {
-    const amountAsNumber = Number(newAmount);
-    setRaised((prev) => prev + amountAsNumber);
+    setRaised((prevRaised) => {
+      const amountAsNumber = Number(newAmount);
+      const prevRaisedAsNumber = Number(prevRaised);
+      return prevRaisedAsNumber + amountAsNumber;
+    });
+    setTotalDonations((prevCount) => prevCount + 1);
   }, []);
 
   const handleDonorUpdate = useCallback(() => {

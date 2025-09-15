@@ -44,16 +44,14 @@ const Donation = () => {
         <div className="flex justify-center mt-7">
           <div className="max-w-175  ">
             <CoverImage imageUrl={imageUrl || defaultImg} />
-            <div className="block lg:hidden">
-              <DonationData
-                percentage={percentage}
-                activeCampaign={activeCampaign}
-                goal={goal}
-                raised={raised}
-                totalDonations={totalDonations}
-                className=" px-4 pb-2"
-              />
-            </div>
+            <DonationData
+              percentage={percentage}
+              activeCampaign={activeCampaign}
+              goal={goal}
+              raised={raised}
+              totalDonations={totalDonations}
+              className=" px-4 pb-2 block lg:hidden"
+            />
             <About description={description || DEFAULT_DESCRIPTION} />
             <DonationForm targetRef={targetRef} />
           </div>

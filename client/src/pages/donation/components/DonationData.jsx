@@ -11,9 +11,9 @@ const DonationData = ({
   className,
 }) => {
   return (
-    <>
+    <div className={`text-lg font-light text-right ${className}`}>
       {activeCampaign == false ? (
-        <div className={`text-lg font-light text-right ${className}`}>
+        <div className="text-lg font-light text-right">
           <NumericFormat
             value={raised || 0}
             thousandSeparator={true}
@@ -101,7 +101,7 @@ const DonationData = ({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 export default DonationData;

@@ -14,6 +14,7 @@ import { Bubble } from "react-chartjs-2";
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend, TimeScale);
 
 const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
+  console.log(currYearIndividualDonationRetentionData);
   if (
     !currYearIndividualDonationRetentionData ||
     !currYearIndividualDonationRetentionData.new ||
@@ -92,7 +93,20 @@ const ScatterChart = ({ currYearIndividualDonationRetentionData }) => {
     ],
   };
 
-  return <Bubble options={options} data={data} />;
+  return (
+    <>
+      {!currYearIndividualDonationRetentionData.new.length &&
+      !currYearIndividualDonationRetentionData.repeat.length ? (
+        <div className=" w-1/2 ml-2 rounded-lg shadow-md bg-white flex items-center justify-center p-8">
+          No data found for the current year
+        </div>
+      ) : (
+        <div className="w-1/2 ml-2 rounded-lg shadow-md bg-white">
+          <Bubble options={options} data={data} />
+        </div>
+      )}
+    </>
+  );
 };
 
 export default ScatterChart;

@@ -7,8 +7,8 @@ import useDonationForm from "src/pages/donation/hooks/useDonationForm.jsx";
 import TermsOfService from "src/pages/donation/components/DonationForm/TermsOfService";
 import CheckBox from "src/pages/donation/components/DonationForm/CheckBox";
 import CustomAmount from "src/pages/donation/components/DonationForm/CustomAmount";
-import EmailAddress from "src/components/EmailAddress";
-import FullName from "src/components/FullName";
+import EmailAddress from "src/pages/donation/components/DonationForm/EmailAddress";
+import FullName from "src/pages/donation/components/DonationForm/FullName";
 import AmountButton from "src/pages/donation/components/DonationForm/AmountButton";
 import DonateButton from "src/pages/donation/components/DonationForm/DonateButton";
 

@@ -53,6 +53,14 @@ const LineChart = ({ trackActiveCammpaignDonations }) => {
       },
     ],
   };
-  return <Line options={options} data={data} />;
+  return (
+    <div className="w-1/2  ml-2 rounded-lg shadow-md bg-white flex items-center justify-center pt-8 px-8 pb-14">
+      {Object.keys(trackActiveCammpaignDonations).length == 0 ? (
+        <p>No data found for the current year</p>
+      ) : (
+        <Line options={options} data={data} />
+      )}
+    </div>
+  );
 };
 export default LineChart;
