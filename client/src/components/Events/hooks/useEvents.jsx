@@ -1,16 +1,8 @@
-// 1. React imports
 import React, { useState, useEffect, useContext } from "react";
 
-// 2. External library imports
-import { RiGift2Line } from "react-icons/ri";
-import TimeAgo from "src/utils/TimeAgo"; // This is likely an external or shared component
-
-// 3. Context/Utility imports
-
-// 4. Environment variables
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 
-const DonationEvents = ({ handleNewDonation, handleDonorUpdate }) => {
+const useEvents = () => {
   const [notifications, setNotifications] = useState([]);
 
   // This useEffect for initial fetch is fine
@@ -79,36 +71,9 @@ const DonationEvents = ({ handleNewDonation, handleDonorUpdate }) => {
       source.close();
     };
   }, []); // Empty dependency array is correct here for setting up the EventSource once
-  return (
-    <>
-      <div className="text-gray-400 ">RECENT DONATIONS</div>
-      <div className="pt-2 h-80">
-        {notifications.length === 0 ? (
-          <p className="">No recent donations.</p>
-        ) : (
-          <ul className=" space-y-2">
-            {notifications.map((note) => (
-              <li
-                key={note.notification_id}
-                className="flex items-center rounded-xl pt-2 "
-              >
-                <div className="rounded-full bg-gray-200 p-2">
-                  <RiGift2Line color="black" size={22} />
-                </div>
-                <div className="ml-4">
-                  <div className="text-sm">{note.full_name}</div>
-                  <div className="text-md">
-                    ${note.amount} ·{" "}
-                    <TimeAgo timestamp={note.donation_created_at} />
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </>
-  );
-};
 
-export default DonationEvents;
+  return {
+    notifications,
+  };
+};
+export default useEvents;

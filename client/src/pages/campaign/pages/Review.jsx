@@ -38,7 +38,7 @@ const DraftReview = () => {
       setImageUrl(data.imageUrl);
       setCloseoutDate(data.closeoutDate);
     });
-  }, [fetchDraft]);
+  }, []);
 
   const handleDateChange = (newDate) => {
     setCloseoutDate(newDate);

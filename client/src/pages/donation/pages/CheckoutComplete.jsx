@@ -23,7 +23,7 @@ const CheckoutComplete = () => {
     const sessionId = queryParams.get("session_id");
 
     fetchCheckout(sessionId);
-  }, [fetchCheckout]);
+  }, []);
 
   {
     isLoading && <Loading />;
