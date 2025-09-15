@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import DonationCard from "src/pages/admin/donors/components/cards/DonationCard";
+import DonationCard from "src/pages/admin/donors/cards/DonationCard";
 
 import {
   Card,

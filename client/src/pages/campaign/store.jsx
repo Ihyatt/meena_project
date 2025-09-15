@@ -73,7 +73,8 @@ const useManageCampaignStore = create(
           );
           const data = await response.json();
           if (!response.ok) {
-            set({ error: data.message });
+            set({ error: data.message, isLoading: false });
+            return false;
           }
 
           set({
@@ -84,8 +85,10 @@ const useManageCampaignStore = create(
             imageUrl: "",
             isLoading: false,
           });
+          return true;
         } catch (error) {
           set({ error: error, isLoading: false });
+          return false;
         }
       },
       upload: async (campaignId, file) => {

@@ -22,7 +22,7 @@ export const EmailTemplate = () => {
   } = useEmail();
   return (
     <div ref={modalRef} className="modal-wrapper">
-      <div className="modal rounded-lg">
+      <div className="email-template-modal rounded-lg">
         <form className="max-w-xl mx-auto p-5">
           {isLoading && <Loading />}
           <div className="p-2">

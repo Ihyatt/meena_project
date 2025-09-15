@@ -16,7 +16,7 @@ import useDonorStore from "src/pages/admin/donors/store";
 // Local components
 import Loading from "src/components/Loading";
 
-import Donor from "src/pages/admin/donors/components/cards/DonorCard";
+import Donor from "src/pages/admin/donors/cards/DonorCard";
 
 const Donors = () => {
   const { fetchDonors, donors, isLoading } = useDonorStore();

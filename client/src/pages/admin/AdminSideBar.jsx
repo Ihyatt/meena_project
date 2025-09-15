@@ -3,7 +3,7 @@ import "src/assets/css/Sidebar.css";
 
 // React and Router
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // External Libraries
 import {

@@ -3,9 +3,9 @@ import "src/assets/css/Modal.css";
 
 // Local Components
 import ErrorAlert from "src/components/ErrorAlert";
-import EmailSubscription from "src/pages/admin/donors/components/EmailSubscription";
+import EmailSubscription from "src/pages/admin/donors/ManageDonor/EmailSubscription";
 import Loading from "src/components/Loading";
-import Donations from "src/pages/admin/donors/components/Donations.jsx";
+import Donations from "src/pages/admin/donors/ManageDonor/Donations.jsx";
 
 // State Management
 import useDonor from "src/pages/admin/donors/hooks/useDonor";

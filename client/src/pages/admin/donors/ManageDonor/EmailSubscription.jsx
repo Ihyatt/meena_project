@@ -1,4 +1,4 @@
-import EmailSubscriptionCard from "src/pages/admin/donors/components/cards/EmailSubscriptionCard";
+import EmailSubscriptionCard from "src/pages/admin/donors/cards/EmailSubscriptionCard";
 
 import {
   Card,

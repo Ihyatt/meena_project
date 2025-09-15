@@ -13,7 +13,7 @@ import EllipsisText from "react-ellipsis-text";
 import Modal from "src/pages/campaign/pages/modals/Title";
 import FormatDate from "src/utils/FormatDate";
 
-const DraftReview = () => {
+const Review = () => {
   const [titleModal, setTitleModal] = useState("");
   const [descriptionModal, setDescriptionModal] = useState("");
   const [goalModal, setGoalModal] = useState("");
@@ -196,4 +196,4 @@ const DraftReview = () => {
     </div>
   );
 };
-export default DraftReview;
+export default Review;

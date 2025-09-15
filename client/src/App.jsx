@@ -16,12 +16,12 @@ import NotFound from "src/pages/NotFound";
 
 // Admin Pages
 import Login from "src/pages/auth/Login";
-import DashboardLayout from "src/pages/admin/DashboardLayout";
+import DashboardLayout from "src/pages/admin";
 import Dashboard from "src/pages/admin/Dashboard";
-import Campaigns from "src/pages/admin/campaigns/Campaigns";
-import Donors from "src/pages/admin/donors/Donors";
-import { EmailTemplate } from "src/pages/admin/emailTemplate/Template";
-import { ManageDonor } from "src/pages/admin/donors/modals/ManageDonor";
+import Campaigns from "src/pages/admin/campaigns";
+import Donors from "src/pages/admin/donors";
+import { EmailTemplate } from "src/pages/admin/emailTemplate";
+import { ManageDonor } from "src/pages/admin/donors/ManageDonor";
 
 //Admin Capaign Pages
 import DraftTitle from "src/pages/campaign/pages/Title";
@@ -29,7 +29,7 @@ import DraftDescription from "src/pages/campaign/pages/Description";
 import DraftGoal from "src/pages/campaign/pages/Goal";
 import DraftImage from "src/pages/campaign/pages/Image";
 import DraftDate from "src/pages/campaign/pages/Date";
-import DraftReview from "src/pages/campaign/pages/Review";
+import Review from "src/pages/campaign/pages/Review";
 
 import CampaignLayout from "src/pages/campaign";
 
@@ -77,10 +77,11 @@ function App() {
           <Route element={<CampaignLayout />}>
             <Route path="draft/title" element={<DraftTitle />} />
             <Route path="draft/description" element={<DraftDescription />} />
-            <Route path="draft/campaign-image" element={<DraftImage />} />
+            <Route path="draft/cover-image" element={<DraftImage />} />
             <Route path="draft/goal" element={<DraftGoal />} />
-            <Route path="draft/:campaignId/date" element={<DraftDate />} />
-            <Route path="review/:campaignId" element={<DraftReview />} />
+            <Route path="draft/date" element={<DraftDate />} />
+            <Route path="draft/review" element={<Review />} />
+            <Route path="campaigns/:campaignId" element={<Review />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
