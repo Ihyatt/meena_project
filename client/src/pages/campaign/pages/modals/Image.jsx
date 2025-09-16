@@ -48,16 +48,22 @@ export const ImageModal = ({ onClose }) => {
     <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}
       <div className="campaign-review-modal rounded-lg ">
-        <div> Edit Image</div>
-        <ImageForm />
-        <button
-          type="button"
-          className="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
-          onClick={handleSave}
-          disabled={isLoading}
-        >
-          Save
-        </button>
+        <div className=" mx-auto p-10">
+          <div className="font-light text-xl"> Edit Image</div>
+          <div className="py-5">
+            <ImageForm />
+          </div>
+          <div className="flex justify-end pt-2">
+            <button
+              type="button"
+              className="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
+              onClick={handleSave}
+              disabled={isLoading}
+            >
+              Save
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
