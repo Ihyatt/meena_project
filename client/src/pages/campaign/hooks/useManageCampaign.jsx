@@ -43,6 +43,13 @@ const useCampaign = () => {
       }
     });
   };
+
+  const uploadFile = (file) => {
+    upload(campaignId, file).then((data) => {
+      setImageUrl(data.url);
+      setFile(null);
+    });
+  };
   return {
     title,
     setTitle,
@@ -62,6 +69,7 @@ const useCampaign = () => {
     fetchCampaign,
     saveCampaign,
     shareDraft,
+    uploadFile,
   };
 };
 

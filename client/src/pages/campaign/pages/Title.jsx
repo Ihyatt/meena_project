@@ -9,6 +9,7 @@ import {
   TITLE_DESCRIPTION,
   TITLE_CHARACTER_MIN,
   TITLE_CHARACTERS_MAX,
+  FUNDING_STEP,
 } from "src/utils/Constants";
 
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
@@ -22,7 +23,7 @@ const DraftTitle = () => {
     isLoading;
 
   const links = {
-    prevLink: "/draft/title",
+    prevLink: "/admins/campaigns",
     nextLink: "/draft/description",
   };
   return (
