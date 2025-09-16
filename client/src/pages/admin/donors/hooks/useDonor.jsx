@@ -1,24 +1,10 @@
 // External Stylesheets
-import "src/assets/css/Modal.css";
-
-// React Hooks and Router
-import { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-
-// External Libraries
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 // State Management
 import useDonorStore from "src/pages/admin/donors/store";
-import { set } from "date-fns";
-
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 const useDonor = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const isModal = location.state?.isModal;
-  const modalRef = useRef();
-  const { donorId } = useParams();
-
   const [errors, setErrors] = useState([]);
 
   const [donations, setDonations] = useState([]);
@@ -28,6 +14,7 @@ const useDonor = () => {
   const [emailSubscriptionStatus, setEmailSubscriptionStatus] = useState("");
   const { fetchDonor, manageDonorData, isLoading } = useDonorStore();
   const [emailAddress, setEmailAddress] = useState("");
+  const { donorId } = useParams();
 
   useEffect(() => {
     fetchDonor(donorId).then((data) => {
@@ -37,24 +24,16 @@ const useDonor = () => {
       setEmailSubscription(data.emailSubscription);
     });
   }, []);
-
-  useEffect(() => {
-    const observerRefValue = modalRef.current;
-    disableBodyScroll(observerRefValue);
-
-    return () => {
-      if (observerRefValue) {
-        enableBodyScroll(observerRefValue);
-      }
-    };
-  }, []);
+  const navigate = useNavigate();
 
   const handleClose = (event) => {
-    navigate(-1);
     event.preventDefault();
+    navigate(-1);
   };
 
   const handleSave = (event) => {
+    event.preventDefault();
+
     if (
       !fullName ||
       !emailAddress ||
@@ -92,7 +71,6 @@ const useDonor = () => {
       setDonations(data.donations);
       setEmailSubscription(data.emailSubscription);
     });
-    event.preventDefault();
   };
 
   const handleErrorClose = () => {
@@ -106,10 +84,6 @@ const useDonor = () => {
     setEmailSubscriptionStatus(status);
   };
   return {
-    location,
-    navigate,
-    isModal,
-    modalRef,
     donorId,
     errors,
     donations,
@@ -118,7 +92,6 @@ const useDonor = () => {
     fullName,
     emailSubscriptionStatus,
     emailAddress,
-    donorData,
     isLoading,
     setFullName,
     setEmailAddress,

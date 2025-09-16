@@ -4,6 +4,7 @@ import "src/assets/css/Modal.css";
 // React Hooks and Router
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { CampaignContext } from "src/pages/campaign/context/campaignContext";
 
 // External Libraries
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
@@ -19,6 +20,7 @@ export const DateModal = ({ onClose }) => {
   const isModal = location.state?.isModal;
   const modalRef = useRef();
   const { isLoading, saveDraft } = useManageCampaign();
+  const { saveCampaign } = useManageCampaign();
 
   useEffect(() => {
     const observerRefValue = modalRef.current;
@@ -33,7 +35,7 @@ export const DateModal = ({ onClose }) => {
 
   const handleSave = (event) => {
     event.preventDefault();
-    saveDraft().then((success) => {
+    saveCampaign().then((success) => {
       if (success) {
         onClose();
       } else {

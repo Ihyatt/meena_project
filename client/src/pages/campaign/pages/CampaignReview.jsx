@@ -2,7 +2,6 @@ import "src/assets/css/CampaignForm.css";
 import React, { useState, useEffect, useContext } from "react";
 
 import EllipsisText from "react-ellipsis-text";
-import useManageCampaignStore from "src/pages/campaign/store";
 
 import TitleModal from "src/pages/campaign/pages/modals/Title";
 import DateModal from "src/pages/campaign/pages/modals/Date";
@@ -19,26 +18,29 @@ import SubSection from "src/pages/campaign/components/SubSection";
 import ImageSubSection from "src/pages/campaign/components/ImageSubSection";
 import ReviewDescription from "src/pages/campaign/components/ReviewDescription";
 import { REVIEW_DESCRIPTION } from "src/utils/Constants";
+import useManageCampaignStore from "src/pages/campaign/store";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import { CampaignContext } from "src/pages/campaign/context/campaignContext";
 
-const Review = () => {
-  const { fetchDraft } = useManageCampaignStore();
+const CampaignReview = () => {
+  const { campaignId } = useParams();
+
+  const { fetchCampaign } = useManageCampaignStore();
 
   useEffect(() => {
-    fetchDraft();
+    fetchCampaign(campaignId);
   }, []);
-
   const {
     goal,
     title,
     description,
     imageUrl,
     closeoutDate,
-    handleShareDraft,
+    handleSaveCampaign,
     isLoading,
-    handleSaveDraft,
   } = useManageCampaign();
+  console.log("HIJkdsncnwcw");
 
   const [openTitleModal, setOpenTitleModal] = useState(false);
 
@@ -63,8 +65,8 @@ const Review = () => {
   const closeImageModalHandler = () => setOpenImageModal(false);
 
   const complete = {
-    handleShare: handleShareDraft,
-    handleSave: handleSaveDraft,
+    shareCampaign: handleSaveCampaign,
+    saveCampaign: handleSaveCampaign,
   };
   return (
     <div className="flex w-full h-screen bg-[#f5f5f5]">
@@ -133,4 +135,4 @@ const Review = () => {
     </div>
   );
 };
-export default Review;
+export default CampaignReview;

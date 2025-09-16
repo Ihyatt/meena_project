@@ -24,13 +24,8 @@ const useCampaign = () => {
     error,
     upload,
     shareDraft,
-    fetchCampaign,
     saveCampaign,
   } = useManageCampaignStore();
-
-  useEffect(() => {
-    fetchDraft();
-  }, []);
 
   const handleSaveDraft = (nextDestination) => {
     saveDraft().then((success) => {
@@ -82,7 +77,6 @@ const useCampaign = () => {
     upload,
     isLoading,
     handleSaveDraft,
-    fetchCampaign,
     saveCampaign,
     shareDraft,
     uploadFile,

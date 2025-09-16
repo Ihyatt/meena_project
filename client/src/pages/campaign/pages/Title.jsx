@@ -2,6 +2,8 @@ import Directions from "src/pages/campaign/components/Directions";
 import TitleForm from "src/pages/campaign/components/TitleForm.jsx";
 import Footer from "src/pages/campaign/components/Footer.jsx";
 import { CampaignContext } from "src/pages/campaign/context/campaignContext";
+import useManageCampaignStore from "src/pages/campaign/store";
+import React, { useState, useEffect, useContext } from "react";
 
 import "src/assets/css/CampaignForm.css";
 import {
@@ -14,6 +16,11 @@ import {
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 
 const DraftTitle = () => {
+  const { fetchDraft } = useManageCampaignStore();
+
+  useEffect(() => {
+    fetchDraft();
+  }, []);
   const { title, isLoading } = useManageCampaign();
 
   const isButtonDisabled =

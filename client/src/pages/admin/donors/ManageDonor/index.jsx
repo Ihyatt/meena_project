@@ -1,6 +1,13 @@
 // External Stylesheets
 import "src/assets/css/Modal.css";
+import "src/assets/css/Modal.css";
 
+// React Hooks and Router
+import { useEffect, useRef, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+
+// External Libraries
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 // Local Components
 import ErrorAlert from "src/components/ErrorAlert";
 import EmailSubscription from "src/pages/admin/donors/ManageDonor/EmailSubscription";
@@ -11,8 +18,20 @@ import Donations from "src/pages/admin/donors/ManageDonor/Donations.jsx";
 import useDonor from "src/pages/admin/donors/hooks/useDonor";
 
 export const ManageDonor = () => {
+  const location = useLocation();
+  const isModal = location.state?.isModal;
+  const modalRef = useRef();
+  useEffect(() => {
+    const observerRefValue = modalRef.current;
+    disableBodyScroll(observerRefValue);
+
+    return () => {
+      if (observerRefValue) {
+        enableBodyScroll(observerRefValue);
+      }
+    };
+  }, []);
   const {
-    modalRef,
     errors,
     donations,
     toggle,

@@ -30,6 +30,7 @@ import DraftGoal from "src/pages/campaign/pages/Goal";
 import DraftImage from "src/pages/campaign/pages/Image";
 import DraftDate from "src/pages/campaign/pages/Date";
 import Review from "src/pages/campaign/pages/Review";
+import CampaignReview from "src/pages/campaign/pages/CampaignReview";
 
 import CampaignLayout from "src/pages/campaign";
 
@@ -81,7 +82,7 @@ function App() {
             <Route path="draft/goal" element={<DraftGoal />} />
             <Route path="draft/date" element={<DraftDate />} />
             <Route path="draft/review" element={<Review />} />
-            <Route path="campaigns/:campaignId" element={<Review />} />
+            <Route path="campaigns/:campaignId" element={<CampaignReview />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />

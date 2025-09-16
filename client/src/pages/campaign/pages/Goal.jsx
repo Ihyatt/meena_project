@@ -2,6 +2,8 @@ import Directions from "src/pages/campaign/components/Directions";
 import GoalForm from "src/pages/campaign/components/GoalForm";
 import Footer from "src/pages/campaign/components/Footer";
 import { CampaignContext } from "src/pages/campaign/context/campaignContext";
+import useManageCampaignStore from "src/pages/campaign/store";
+import React, { useState, useEffect, useContext } from "react";
 
 import "src/assets/css/CampaignForm.css";
 import {
@@ -14,6 +16,11 @@ import {
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 
 const DraftGoal = () => {
+  const { fetchDraft } = useManageCampaignStore();
+
+  useEffect(() => {
+    fetchDraft();
+  }, []);
   const { goal, isLoading } = useManageCampaign();
   const isButtonDisabled =
     !goal || goal < GOAL_MIN || goal > GOAL_MAX || isLoading;
