@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 const useCampaign = () => {
   const navigate = useNavigate();
 
-  const titlecharactersLimit = 100;
-
   const {
+    campaignId,
     fetchDraft,
     saveDraft,
     isLoading,
@@ -46,7 +45,6 @@ const useCampaign = () => {
   const uploadFile = (file) => {
     upload(campaignId, file).then((data) => {
       setImageUrl(data.url);
-      setFile(null);
     });
   };
   return {
@@ -63,12 +61,12 @@ const useCampaign = () => {
     error,
     upload,
     isLoading,
-    titlecharactersLimit,
     handleSave,
     fetchCampaign,
     saveCampaign,
     shareDraft,
     uploadFile,
+    campaignId,
   };
 };
 

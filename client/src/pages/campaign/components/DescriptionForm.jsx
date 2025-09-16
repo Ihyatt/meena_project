@@ -1,5 +1,3 @@
-import { TITLE_CHARACTERS_MAX } from "src/utils/Constants";
-
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 const DescriptionForm = () => {
   const { description, setDescription } = useManageCampaign();

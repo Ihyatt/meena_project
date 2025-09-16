@@ -1,7 +1,10 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 
 const DateForm = () => {
+  const { closeoutDate, setCloseoutDate } = useManageCampaign();
+
   return (
     <div className="flex sm:px-5 md:px-20 lg:px-35 pt-46 items-center justify-center">
       <DatePicker

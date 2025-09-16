@@ -64,7 +64,7 @@ const ImageUpload = ({ imageUrl, uploadFile }) => {
           <label
             htmlFor="hiddenFileInput"
             onClick={handleIconClick}
-            className="cursor-pointer flex flex-col items-center justify-center text-border text-[#b7b7b6] border-[#b7b7b6] border rounded-lg p-40 border-dashed"
+            className="cursor-pointer flex flex-col items-center justify-center text-border text-[#b7b7b6] border-[#b7b7b6] border rounded-3xl p-40 border-dashed"
           >
             <FiUploadCloud size={60} color={"#b7b7b6"} />
             <div className="text-[#b7b7b6]">Click to Upload</div>

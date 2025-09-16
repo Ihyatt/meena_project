@@ -1,12 +1,18 @@
+import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
+
 const GoalForm = () => {
+  const { goal, setGoal } = useManageCampaign();
+
   const handleGoalAmount = (e) => {
     const value = e.target.value;
     const cleanedValue = value.replace(/[^0-9]/g, "");
     const amountValue = parseFloat(cleanedValue);
     setGoal(amountValue);
   };
+
   const blockInvalidChar = (e) =>
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+
   return (
     <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
       <form className="">

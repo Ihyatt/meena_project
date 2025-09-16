@@ -481,6 +481,9 @@ def save_draft():
 
             data["closeoutDate"] = dt_utc
 
+        if not isinstance(data["goal"], int):
+            data["goal"] = 0
+
         validated_data = campaign_schema.load(data)
         if validated_data["title"]:
             campaign.title = validated_data["title"]

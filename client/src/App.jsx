@@ -77,7 +77,7 @@ function App() {
           <Route element={<CampaignLayout />}>
             <Route path="draft/title" element={<DraftTitle />} />
             <Route path="draft/description" element={<DraftDescription />} />
-            <Route path="draft/cover-image" element={<DraftImage />} />
+            <Route path="draft/image" element={<DraftImage />} />
             <Route path="draft/goal" element={<DraftGoal />} />
             <Route path="draft/date" element={<DraftDate />} />
             <Route path="draft/review" element={<Review />} />

@@ -14,7 +14,7 @@ import {
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 
 const DraftDescription = () => {
-  const { description } = useManageCampaign();
+  const { description, isLoading } = useManageCampaign();
 
   const isButtonDisabled =
     description.length < DESCRIPTION_CHARACTER_MIN ||
@@ -25,7 +25,7 @@ const DraftDescription = () => {
     prevLink: "/draft/title",
     nextLink: "/draft/goal",
   };
-
+  console.log(isButtonDisabled);
   return (
     <div className="flex col w-full h-screen bg-[#f5f5f5]">
       <Directions

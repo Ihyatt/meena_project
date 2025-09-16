@@ -12,13 +12,15 @@ const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
 const useManageCampaignStore = create(
   persist(
     (set, get) => ({
+      campaignId: null,
       title: "",
       description: "",
-      goal: 0,
+      goal: "",
       closeoutDate: "",
       imageUrl: "",
       isLoading: false,
       error: null,
+      setCampaignId: (campaignId) => set({ campaignId }),
       setTitle: (title) => set({ title }),
       setDescription: (description) => set({ description }),
       setGoal: (goal) => set({ goal }),
@@ -43,10 +45,11 @@ const useManageCampaignStore = create(
           set({
             title: data.title || "",
             description: data.description || "",
-            goal: data.goal || 0,
+            goal: data.goal || "",
             closeoutDate: null,
-            imageUrl: "",
             isLoading: false,
+            campaignId: data.id,
+            imageUrl: data.imageUrl || "",
           });
           return data.id;
         } catch (error) {
@@ -60,12 +63,7 @@ const useManageCampaignStore = create(
         try {
           const { jwtToken } = useAuthStore.getState();
           const { title, description, goal, closeoutDate } = get();
-          console.log("Saving draft with data:", {
-            title,
-            description,
-            goal,
-            closeoutDate,
-          });
+
           const response = await fetch(
             `${backednUrl}/admins/campaigns/draft/save`,
             {
@@ -89,8 +87,9 @@ const useManageCampaignStore = create(
             description: data.description || "",
             goal: data.goal || 0,
             closeoutDate: null,
-            imageUrl: "",
+            imageUrl: data.imageUrl || "",
             isLoading: false,
+            campaignId: data.id,
           });
           return true;
         } catch (error) {

@@ -14,8 +14,8 @@ const Footer = ({ progressStep, isButtonDisabled }) => {
           <div>
             {isButtonDisabled ? (
               <ContinueButton
-                className="  cursor-not-allowed
-                bg-[#d8d8d8] text-slate-700 "
+                className="  
+                bg-[#d8d8d8] text-slate-700  pointer-events-none cursor-not-allowed"
               >
                 CONTINUE
               </ContinueButton>

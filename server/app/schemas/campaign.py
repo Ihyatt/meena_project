@@ -24,7 +24,6 @@ class CampaignSchema(SQLAlchemyAutoSchema):
     image_url = fields.String(allow_none=True, data_key="imageUrl")
     goal = fields.Integer(
         allow_none=True,
-        strict=True,  # Ensures only integers are accepted
     )
     raised = fields.Decimal(
         places=2,

@@ -9,7 +9,6 @@ const ContinueButton = ({ className, children }) => {
     event.preventDefault();
     handleSave(nextLink);
   };
-
   return (
     <div
       onClick={handlClick}
