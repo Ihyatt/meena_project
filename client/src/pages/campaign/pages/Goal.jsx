@@ -26,7 +26,9 @@ const DraftGoal = () => {
     <div className="flex col w-full h-screen bg-[#f5f5f5]">
       <Directions step={GOAL_STEP} descriptionText={GOAL_DESCRIPTION} />
       <div className=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
-        <GoalForm />
+        <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
+          <GoalForm />
+        </div>
         <CampaignContext.Provider value={links}>
           <Footer
             progressStep={GOAL_STEP}

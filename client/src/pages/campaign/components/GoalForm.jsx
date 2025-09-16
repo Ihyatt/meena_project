@@ -14,8 +14,8 @@ const GoalForm = () => {
     ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
 
   return (
-    <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
-      <form className="">
+    <>
+      <form>
         <div className=" border border-gray-400  p-2 rounded-sm  flex items-center justify-between mb-3 min-w-75 text-lg font-semibold w-full h-14 bg-transparent hover:bg-[#fafafa] placeholder:text-slate-400 text-slate-700  border border-[#b7b7b6] rounded-lg px-3 py-2 transition duration-300  focus:outline-none focus-within:border-[#232323] focus-within:border-2 ">
           <div className="flex flex-col text-xs items-center">
             <div>$</div>
@@ -35,7 +35,7 @@ const GoalForm = () => {
           </div>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 export default GoalForm;

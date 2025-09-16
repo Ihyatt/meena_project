@@ -47,6 +47,7 @@ const useCampaign = () => {
       setImageUrl(data.url);
     });
   };
+
   return {
     title,
     setTitle,
@@ -67,6 +68,8 @@ const useCampaign = () => {
     shareDraft,
     uploadFile,
     campaignId,
+
+    saveDraft,
   };
 };
 

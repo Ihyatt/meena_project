@@ -2,7 +2,7 @@ import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 const DescriptionForm = () => {
   const { description, setDescription } = useManageCampaign();
   return (
-    <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
+    <>
       <form className="">
         <div className="p-2">
           <textarea
@@ -16,7 +16,7 @@ const DescriptionForm = () => {
           ></textarea>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 export default DescriptionForm;

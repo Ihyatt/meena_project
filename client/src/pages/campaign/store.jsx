@@ -86,7 +86,7 @@ const useManageCampaignStore = create(
             title: data.title || "",
             description: data.description || "",
             goal: data.goal || 0,
-            closeoutDate: null,
+            closeoutDate: data.closeoutDate || "",
             imageUrl: data.imageUrl || "",
             isLoading: false,
             campaignId: data.id,

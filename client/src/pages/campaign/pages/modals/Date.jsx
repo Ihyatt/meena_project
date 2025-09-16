@@ -2,45 +2,23 @@
 import "src/assets/css/Modal.css";
 
 // React Hooks and Router
-import { useEffect, useRef, useState, useMemo } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 
 // External Libraries
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 
-// Local Components
-import ImageUpload from "src/components/ImageUpload";
-import ErrorAlert from "src/components/ErrorAlert";
 import Loading from "src/components/Loading";
 
-// import Title from "src/pages/admin/campaigns/components/Title";
-// import Description from "src/pages/admin/campaigns/components/Description";
-// import CloseoutDate from "src/pages/admin/campaigns/components/CloseoutDate";
-// import Goal from "src/pages/admin/campaigns/components/Goal";
-// import CoverImage from "src/pages/admin/campaigns/components/CoverImage";
+import DateForm from "src/pages/campaign/components/DateForm";
 
-// State Management
-import useCampaignStore from "src/pages/admin/campaigns/store";
+import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 
-export const Date = () => {
+export const DateModal = ({ onClose }) => {
   const location = useLocation();
-  const navigate = useNavigate();
   const isModal = location.state?.isModal;
   const modalRef = useRef();
-  const { campaignId } = useParams();
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [goal, setGoal] = useState(0);
-  const [imageUrl, setImageUrl] = useState("");
-  const [file, setFile] = useState(null);
-  const [errors, setErrors] = useState([]);
-  const [closeoutDate, setCloseoutDate] = useState(null);
-
-  const { fetchCampaign, saveCampaign, isLoading, upload } = useCampaignStore();
+  const { isLoading, saveDraft } = useManageCampaign();
 
   useEffect(() => {
     const observerRefValue = modalRef.current;
@@ -53,11 +31,33 @@ export const Date = () => {
     };
   }, []);
 
+  const handleSave = (event) => {
+    event.preventDefault();
+    saveDraft().then((success) => {
+      if (success) {
+        onClose();
+      } else {
+        console.error("Error saving draft");
+      }
+    });
+  };
+
   return (
     <div ref={modalRef} className="modal-wrapper">
       {isLoading && <Loading />}
-      <div className="modal rounded-lg"> here</div>
+      <div className="campaign-review-modal rounded-lg ">
+        <div> Edit Date</div>
+        <DateForm />
+        <button
+          type="button"
+          className="text-white bg-[#0fa347]  focus:outline-none  focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  hover:bg-[#2bbd62] "
+          onClick={handleSave}
+          disabled={isLoading}
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 };
-export default Date;
+export default DateModal;

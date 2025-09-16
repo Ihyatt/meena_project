@@ -22,7 +22,9 @@ const DraftDate = () => {
     <div className="flex col w-full h-screen bg-[#f5f5f5]">
       <Directions step={DATE_STEP} descriptionText={DATE_DESCRIPTION} />
       <div className=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
-        <DateForm />
+        <div className="flex sm:px-5 md:px-20 lg:px-35 pt-46 items-center justify-center">
+          <DateForm />
+        </div>
         <CampaignContext.Provider value={links}>
           <Footer
             progressStep={DATE_STEP}

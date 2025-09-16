@@ -21,7 +21,9 @@ const DraftImage = () => {
     <div className="flex col w-full h-screen bg-[#f5f5f5]">
       <Directions step={IMAGE_STEP} descriptionText={IMAGE_DESCRIPTION} />
       <div className=" sm:w-50/100 md:w-60/100   lg:w-66/100 rcorners bg-white h-screen shadow-lg  min-h-screen flex flex-col justify-between">
-        <ImageForm />
+        <div className="sm:px-10 md:px-20 lg:px-30 pt-50 ">
+          <ImageForm />
+        </div>
         <CampaignContext.Provider value={links}>
           <Footer
             progressStep={IMAGE_STEP}
