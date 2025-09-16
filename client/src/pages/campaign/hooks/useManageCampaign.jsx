@@ -32,12 +32,31 @@ const useCampaign = () => {
     fetchDraft();
   }, []);
 
-  const handleSave = (nextDestination) => {
+  const handleSaveDraft = (nextDestination) => {
     saveDraft().then((success) => {
       if (success) {
         navigate(nextDestination);
       } else {
         console.error("Error saving draft");
+      }
+    });
+  };
+  const handleShareDraft = () => {
+    shareDraft().then((success) => {
+      if (success) {
+        navigate("/admins/campaigns");
+      } else {
+        console.error("Error sharing draft");
+      }
+    });
+  };
+
+  const handleSaveCampaign = () => {
+    saveCampaign().then((success) => {
+      if (success) {
+        navigate("/admins/campaigns");
+      } else {
+        console.error("Error saving campaign");
       }
     });
   };
@@ -62,14 +81,15 @@ const useCampaign = () => {
     error,
     upload,
     isLoading,
-    handleSave,
+    handleSaveDraft,
     fetchCampaign,
     saveCampaign,
     shareDraft,
     uploadFile,
     campaignId,
-
+    handleShareDraft,
     saveDraft,
+    handleSaveCampaign,
   };
 };
 

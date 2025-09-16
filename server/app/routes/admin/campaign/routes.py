@@ -449,6 +449,7 @@ def save_draft():
     current_app.logger.info("Saving draft campaign ...")
     try:
         data = request.get_json()
+        current_app.logger.info(f"Draft data received: {data}")
 
         campaign = Campaign.query.filter_by(
             is_draft=True,
@@ -466,11 +467,7 @@ def save_draft():
             ],
         )
 
-        if data.get("closeoutDate") and data["closeoutDate"]:
-            current_app.logger.info(
-                f"Setting draft campaign closeout date to '{data['closeoutDate']}'"
-            )
-
+        if data["closeoutDate"]:
             date_string = data["closeoutDate"]
             if date_string.endswith("Z"):
                 dt = datetime.fromisoformat(date_string.replace("Z", "+00:00"))
@@ -480,18 +477,20 @@ def save_draft():
             campaign.closeout_date = dt_utc
 
             data["closeoutDate"] = dt_utc
+        else:
+            data.pop("closeoutDate", None)
 
         if not isinstance(data["goal"], int):
-            data["goal"] = 0
+            data.pop("goal", None)
 
         validated_data = campaign_schema.load(data)
-        if validated_data["title"]:
+        if validated_data.get("title"):
             campaign.title = validated_data["title"]
 
-        if validated_data["description"]:
+        if validated_data.get("description"):
             campaign.description = validated_data["description"]
 
-        if validated_data["goal"]:
+        if validated_data.get("goal"):
             campaign.goal = validated_data["goal"]
 
         db.session.commit()
@@ -542,57 +541,68 @@ def save_draft():
         )
 
 
-@campaign_bp.route("/<int:campaign_id>/share-draft", methods=["PATCH"])
+@campaign_bp.route("/draft/share", methods=["PATCH"])
 @jwt_required()
 @admin_required()
-def share_draft(campaign_id):
-    current_app.logger.info(f"Sharing draft campaign '{campaign_id}'...")
+def share_draft():
+    current_app.logger.info(f"Sharing draft ...")
     try:
         data = request.get_json()
-        current_app.logger.info(f"Sharing draft campaign '{data}'...")
 
-        campaign = Campaign.query.get_or_404(campaign_id)
+        campaign = Campaign.query.filter_by(
+            is_draft=True,
+        ).first_or_404()
 
-        campaign_schema = CampaignSchema(unknown=EXCLUDE)
+        campaign_schema = CampaignSchema(
+            unknown=EXCLUDE,
+            only=[
+                "id",
+                "title",
+                "description",
+                "goal",
+                "image_url",
+                "closeout_date",
+            ],
+        )
+
+        date_string = data["closeoutDate"]
+        if date_string.endswith("Z"):
+            dt = datetime.fromisoformat(date_string.replace("Z", "+00:00"))
+        else:
+            dt = datetime.fromisoformat(date_string)
+        dt_utc = dt.astimezone(timezone.utc)
+        campaign.closeout_date = dt_utc
+
+        data["closeoutDate"] = dt_utc
 
         validated_data = campaign_schema.load(data)
-        if data.get("closeoutDate") and data["closeoutDate"]:
-            current_app.logger.info(
-                f"Setting draft campaign closeout date to '{data['closeoutDate']}'"
-            )
-
-            date_string = data["closeoutDate"]
-            dt = datetime.strptime(date_string, "%a %b %d %Y %H:%M:%S GMT%z (%Z)")
-            dt_utc = dt.astimezone(timezone.utc)
-
-            campaign.closeout_date = dt_utc
-            current_app.logger.info(f"Draft campaign closeout date set to '{dt_utc}'")
-
         campaign.title = validated_data["title"]
+
         campaign.description = validated_data["description"]
+
         campaign.goal = validated_data["goal"]
-        campaign.closeout_date = dt_utc
         campaign.is_draft = False
 
         db.session.commit()
 
-        current_app.logger.info(f"Draft campaign '{campaign_id}' shared successfully.")
+        current_app.logger.info("Draft campaign shared successfully.")
+
         return jsonify({"status": "success", "message": "Draft campaign shared."}), 200
 
     except NotFound:
-        current_app.logger.warning(f"Draft campaign '{campaign_id}' not found.")
+        current_app.logger.warning(f"Draft campaign  not found.")
         return (
             jsonify(
                 {
                     "status": "failed",
-                    "message": f"Draft campaign with ID '{campaign_id}' not found.",
+                    "message": "Draft campaign  not found.",
                 }
             ),
             404,
         )
     except ValidationError as ve:
         current_app.logger.error(
-            f"Validation error while sharing draft campaign '{campaign_id}': {str(ve)}",
+            f"Validation error while sharing draft campaign: {str(ve)}",
             exc_info=True,
         )
         return (
@@ -608,13 +618,13 @@ def share_draft(campaign_id):
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(
-            f"Error sharing draft campaign '{campaign_id}': {str(e)}", exc_info=True
+            f"Error sharing draft campaign : {str(e)}", exc_info=True
         )
         return (
             jsonify(
                 {
                     "status": "failed",
-                    "message": f"Error sharing draft campaign '{campaign_id}': {str(e)}",
+                    "message": f"Error sharing draft campaign : {str(e)}",
                 }
             ),
             500,

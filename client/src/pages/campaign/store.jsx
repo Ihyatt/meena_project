@@ -4,10 +4,9 @@ import { persist } from "zustand/middleware";
 
 // State Management
 import useAuthStore from "src/pages/auth/store";
-import { DATA_ATTRIBUTES } from "react-resizable-panels";
 
 // Environment Variables
-const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 const useManageCampaignStore = create(
   persist(
@@ -31,7 +30,7 @@ const useManageCampaignStore = create(
         set({ isLoading: true, error: null });
         try {
           const { jwtToken } = useAuthStore.getState();
-          const response = await fetch(`${backednUrl}/admins/campaigns/draft`, {
+          const response = await fetch(`${backendUrl}/admins/campaigns/draft`, {
             method: "POST",
             headers: {
               Authorization: `Bearer ${jwtToken}`,
@@ -51,7 +50,6 @@ const useManageCampaignStore = create(
             campaignId: data.id,
             imageUrl: data.imageUrl || "",
           });
-          return data.id;
         } catch (error) {
           console.error("Error fetching campaign draft:", error);
           set({ error: error.message, isLoading: false });
@@ -65,7 +63,7 @@ const useManageCampaignStore = create(
           const { title, description, goal, closeoutDate } = get();
 
           const response = await fetch(
-            `${backednUrl}/admins/campaigns/draft/save`,
+            `${backendUrl}/admins/campaigns/draft/save`,
             {
               method: "PATCH",
               headers: {
@@ -76,7 +74,6 @@ const useManageCampaignStore = create(
             }
           );
           const data = await response.json();
-          console.log("here", data);
           if (!response.ok) {
             set({ error: data.message, isLoading: false });
             return false;
@@ -104,7 +101,7 @@ const useManageCampaignStore = create(
           const fd = new FormData();
           fd.append("file", file);
           const response = await fetch(
-            `${backednUrl}/admins/campaigns/${campaignId}/upload`,
+            `${backendUrl}/admins/campaigns/${campaignId}/upload`,
             {
               method: "POST",
               headers: {
@@ -129,10 +126,10 @@ const useManageCampaignStore = create(
       shareDraft: async () => {
         set({ isLoading: true, error: null });
         try {
+          const { title, description, goal, closeoutDate } = get();
           const { jwtToken } = useAuthStore.getState();
-
           const response = await fetch(
-            `${backednUrl}/admins/campaigns/${campaignId}/share-draft`,
+            `${backendUrl}/admins/campaigns/draft/share`,
             {
               method: "PATCH",
               headers: {
@@ -143,8 +140,10 @@ const useManageCampaignStore = create(
             }
           );
           const data = await response.json();
+          console.log("data", data);
           if (!response.ok) {
             set({ error: data.message });
+            return false;
           }
 
           set({
@@ -156,6 +155,7 @@ const useManageCampaignStore = create(
             isLoading: false,
             campaignId: null,
           });
+          return true;
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -165,7 +165,7 @@ const useManageCampaignStore = create(
         try {
           const { jwtToken } = useAuthStore.getState();
           const response = await fetch(
-            `${backednUrl}/admins/campaigns/${campaignId}`,
+            `${backendUrl}/admins/campaigns/${campaignId}`,
             {
               method: "GET",
               headers: {
@@ -179,9 +179,14 @@ const useManageCampaignStore = create(
             set({ error: data.message });
           }
           set({
+            title: data.title || "",
+            description: data.description || "",
+            goal: data.goal || "",
+            closeoutDate: data.closeoutDate || "",
             isLoading: false,
+            campaignId: data.id,
+            imageUrl: data.imageUrl || "",
           });
-          return data;
         } catch (error) {
           set({ error: error, isLoading: false });
         }
@@ -192,7 +197,7 @@ const useManageCampaignStore = create(
           const { jwtToken } = useAuthStore.getState();
 
           const response = await fetch(
-            `${backednUrl}/admins/campaigns/${campaignId}/save`,
+            `${backendUrl}/admins/campaigns/${campaignId}/save`,
             {
               method: "PATCH",
               headers: {
@@ -205,11 +210,18 @@ const useManageCampaignStore = create(
           const data = await response.json();
           if (!response.ok) {
             set({ error: data.message });
+            return false;
           }
           set({
+            title: "",
+            description: "",
+            goal: "",
+            closeoutDate: "",
+            imageUrl: "",
             isLoading: false,
+            campaignId: null,
           });
-          return data;
+          return true;
         } catch (error) {
           set({ error: error, isLoading: false });
         }

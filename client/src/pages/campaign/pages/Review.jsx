@@ -13,7 +13,7 @@ import FormatDate from "src/utils/FormatDate";
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 import { FUNDING_STEP } from "src/utils/Constants";
 
-import Footer from "src/pages/campaign/components/Footer";
+import ReviewFooter from "src/pages/campaign/components/ReviewFooter";
 import SubSection from "src/pages/campaign/components/SubSection";
 import ImageSubSection from "src/pages/campaign/components/ImageSubSection";
 import ReviewDescription from "src/pages/campaign/components/ReviewDescription";
@@ -22,8 +22,15 @@ import { REVIEW_DESCRIPTION } from "src/utils/Constants";
 import { CampaignContext } from "src/pages/campaign/context/campaignContext";
 
 const Review = () => {
-  const { goal, title, description, imageUrl, closeoutDate, isLoading } =
-    useManageCampaign();
+  const {
+    goal,
+    title,
+    description,
+    imageUrl,
+    closeoutDate,
+    handleShareDraft,
+    isLoading,
+  } = useManageCampaign();
 
   const [openTitleModal, setOpenTitleModal] = useState(false);
 
@@ -47,11 +54,9 @@ const Review = () => {
   const openImageModalHandler = () => setOpenImageModal(true);
   const closeImageModalHandler = () => setOpenImageModal(false);
 
-  const links = {
-    prevLink: "/draft/date",
-    nextLink: "/draft/image",
+  const complete = {
+    handleShare: handleShareDraft,
   };
-  console.log(closeoutDate);
   return (
     <div className="flex w-full h-screen bg-[#f5f5f5]">
       <ReviewDescription descriptionText={REVIEW_DESCRIPTION} />
@@ -82,7 +87,7 @@ const Review = () => {
           {openGoalModal && <GoalModal onClose={closeGoalModalHandler} />}
           <SubSection
             sectionText="Goal"
-            section={goal}
+            section={`$${goal}`}
             openModal={openGoalModalHandler}
           />
           {openDateModal && <DateModal onClose={closeDateModalHandler} />}
@@ -94,8 +99,8 @@ const Review = () => {
           />
         </div>
 
-        <CampaignContext.Provider value={links}>
-          <Footer progressStep={FUNDING_STEP} isButtonDisabled={false} />
+        <CampaignContext.Provider value={complete}>
+          <ReviewFooter progressStep={FUNDING_STEP} isButtonDisabled={false} />
         </CampaignContext.Provider>
       </div>
     </div>

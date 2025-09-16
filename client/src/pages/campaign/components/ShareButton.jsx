@@ -2,17 +2,16 @@ import React, { useContext } from "react";
 import { CampaignContext } from "src/pages/campaign/context/campaignContext";
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 
-const ContinueButton = ({ className, children }) => {
-  const { nextLink } = useContext(CampaignContext);
-  const { handleSaveDraft } = useManageCampaign();
+const ContinueButton = ({ children }) => {
+  const { handleShare } = useContext(CampaignContext);
   const handlClick = (event) => {
     event.preventDefault();
-    handleSaveDraft(nextLink);
+    handleShare();
   };
   return (
     <div
       onClick={handlClick}
-      className={`
+      className="
                 font - medium 
                 text-base
             flex-1
@@ -20,8 +19,9 @@ const ContinueButton = ({ className, children }) => {
             border-none
             rounded
             rounded-full
-            ${className}  
-    `}
+           cursor-pointer
+                text-white bg-[#0fa347] hover:bg-[#2bbd62] 
+    "
     >
       {children}
     </div>
