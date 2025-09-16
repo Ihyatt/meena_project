@@ -46,7 +46,7 @@ const useManageCampaignStore = create(
             title: data.title || "",
             description: data.description || "",
             goal: data.goal || "",
-            closeoutDate: null,
+            closeoutDate: data.closeoutDate || "",
             isLoading: false,
             campaignId: data.id,
             imageUrl: data.imageUrl || "",
@@ -147,7 +147,15 @@ const useManageCampaignStore = create(
             set({ error: data.message });
           }
 
-          set({ error: error, isLoading: false });
+          set({
+            title: "",
+            description: "",
+            goal: "",
+            closeoutDate: "",
+            imageUrl: "",
+            isLoading: false,
+            campaignId: null,
+          });
         } catch (error) {
           set({ error: error, isLoading: false });
         }

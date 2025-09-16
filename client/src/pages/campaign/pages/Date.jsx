@@ -17,6 +17,7 @@ const DraftDate = () => {
     prevLink: "/draft/image",
     nextLink: "/draft/review",
   };
+  console.log(closeoutDate);
   return (
     <div className="flex col w-full h-screen bg-[#f5f5f5]">
       <Directions step={DATE_STEP} descriptionText={DATE_DESCRIPTION} />

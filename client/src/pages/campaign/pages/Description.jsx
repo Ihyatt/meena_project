@@ -25,7 +25,6 @@ const DraftDescription = () => {
     prevLink: "/draft/title",
     nextLink: "/draft/goal",
   };
-  console.log(isButtonDisabled);
   return (
     <div className="flex col w-full h-screen bg-[#f5f5f5]">
       <Directions

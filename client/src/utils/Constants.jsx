@@ -35,4 +35,6 @@ export const DATE_DESCRIPTION = "When should your campaign end?";
 export const DATE_MIN = 1;
 export const DATE_MAX = 365;
 
+export const REVIEW_DESCRIPTION = "Review your campaign details";
+
 export const FUNDING_STEP = 6;
