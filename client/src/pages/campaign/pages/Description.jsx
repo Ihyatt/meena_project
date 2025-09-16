@@ -107,8 +107,10 @@ const DraftDescription = () => {
                 px-7 py-4
                 border-none
                 rounded 
-                cursor-pointer
                 rounded-full
+
+
+                cursor-pointer
                 text-white bg-[#0fa347] hover:bg-[#2bbd62]
               "
                 >
@@ -124,8 +126,8 @@ const DraftDescription = () => {
                 px-7 py-4
                 border-none
                 rounded 
+
                 cursor-not-allowed
-                rounded-full
                 bg-[#d8d8d8] text-slate-700 "
                 >
                   {" "}

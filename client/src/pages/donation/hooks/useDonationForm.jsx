@@ -57,9 +57,9 @@ const useDonationForm = () => {
     if (!form.emailAddress) {
       newErrors.push("Email address is required");
     }
-    if (!form.amount || form.amount <= 0.01 || form.amount >= 100000.01) {
+    if (!form.amount || form.amount < 5 || form.amount > 10000) {
       newErrors.push(
-        "Amount must be greater than $0.01 and less than $1,000.01"
+        "Amount must be greater than or equal to $5 and less than or equalt to $10,000.0"
       );
     }
     if (newErrors.length > 0) {

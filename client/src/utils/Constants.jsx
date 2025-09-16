@@ -11,3 +11,28 @@ export const DEFAULT_DESCRIPTION =
 
 export const ABOUT_MEENA =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+export const TTILE_STEP = 1;
+export const TITLE_DESCRIPTION = "Give your campaign a title";
+export const TITLE_CHARACTER_MIN = 5;
+export const TITLE_CHARACTERS_MAX = 100;
+
+export const DESCRIPTION_STEP = 2;
+export const DESCRIPTION_DESCRIPTION = "Describe your campaign";
+export const DESCRIPTION_CHARACTER_MIN = 5;
+export const DESCRIPTION_CHARACTER_MAX = 2000;
+
+export const GOAL_STEP = 3;
+export const GOAL_DESCRIPTION = "How much would you like to raise?";
+export const GOAL_MIN = 5;
+export const GOAL_MAX = 10000;
+
+export const IMAGE_STEP = 4;
+export const IMAGE_DESCRIPTION = "Add a photo to your campaign";
+
+export const DATE_STEP = 5;
+export const DATE_DESCRIPTION = "When should your campaign end?";
+export const DATE_MIN = 1;
+export const DATE_MAX = 365;
+
+export const FUNDING_STEP = 6;

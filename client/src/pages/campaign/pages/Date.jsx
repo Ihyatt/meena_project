@@ -15,25 +15,6 @@ import "react-datepicker/dist/react-datepicker.css";
 const DraftDate = () => {
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState("");
-  const [campaignId, setCampaignId] = useState("");
-  const [description, setDescription] = useState("");
-  const [goal, setGoal] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [closeoutDate, setCloseoutDate] = useState(new Date());
-  const { fetchDraft, saveDraft, isLoading, error } = useDraftStore();
-
-  useEffect(() => {
-    fetchDraft().then((data) => {
-      setTitle(data.title);
-      setCampaignId(data.id);
-      setDescription(data.description);
-      setGoal(data.goal);
-      setImageUrl(data.imageUrl);
-      setCloseoutDate(data.closeoutDate);
-    });
-  }, []);
-
   const handleSave = (event) => {
     event.preventDefault();
     saveDraft(campaignId, title, description, goal, closeoutDate).then(
