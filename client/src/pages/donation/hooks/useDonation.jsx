@@ -30,7 +30,7 @@ const useDonation = () => {
       setGoal(data.goal);
       setTotalDonations(data.totalDonations);
       setDonorsCount(data.donorsCount);
-      setActiveCampaign(true);
+      setActiveCampaign(data.activeCampaign);
       setImageUrl(data.imageUrl || defaultImg);
       setTitle(data.title || "");
       setDescription(data.description || "");

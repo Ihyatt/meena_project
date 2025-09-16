@@ -3,6 +3,7 @@ import { TITLE_CHARACTERS_MAX } from "src/utils/Constants";
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 const TitleForm = () => {
   const { title, setTitle } = useManageCampaign();
+
   return (
     <div className="sm:px-5 md:px-20 lg:px-35 pt-52 ">
       <form>

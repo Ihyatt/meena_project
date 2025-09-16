@@ -33,8 +33,7 @@ const useCampaign = () => {
     fetchDraft();
   }, []);
 
-  const handleSave = (event, nextDestination) => {
-    event.preventDefault();
+  const handleSave = (nextDestination) => {
     saveDraft().then((success) => {
       if (success) {
         navigate(nextDestination);

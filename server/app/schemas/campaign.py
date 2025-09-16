@@ -17,22 +17,14 @@ class CampaignSchema(SQLAlchemyAutoSchema):
     id = fields.Integer(dump_only=True)
     title = fields.String(
         allow_none=True,
-        validate=validate.Length(min=5, max=100),
     )
     description = fields.String(
         allow_none=True,
-        validate=validate.Length(min=5, max=2000),
     )
-    image_url = fields.String(
-        allow_none=True, validate=validate.Length(max=500), data_key="imageUrl"
-    )
+    image_url = fields.String(allow_none=True, data_key="imageUrl")
     goal = fields.Integer(
         allow_none=True,
         strict=True,  # Ensures only integers are accepted
-        validate=validate.Range(
-            min=5, max=10_000
-        ),  # min=5 since it can't be 0 or decimal
-        required=True,
     )
     raised = fields.Decimal(
         places=2,

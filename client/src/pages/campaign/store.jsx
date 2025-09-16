@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 
 // State Management
 import useAuthStore from "src/pages/auth/store";
+import { DATA_ATTRIBUTES } from "react-resizable-panels";
 
 // Environment Variables
 const backednUrl = import.meta.env.VITE_BACKEND_API_URL;
@@ -14,7 +15,7 @@ const useManageCampaignStore = create(
       title: "",
       description: "",
       goal: 0,
-      closeoutDate: null,
+      closeoutDate: "",
       imageUrl: "",
       isLoading: false,
       error: null,
@@ -59,9 +60,14 @@ const useManageCampaignStore = create(
         try {
           const { jwtToken } = useAuthStore.getState();
           const { title, description, goal, closeoutDate } = get();
-
+          console.log("Saving draft with data:", {
+            title,
+            description,
+            goal,
+            closeoutDate,
+          });
           const response = await fetch(
-            `${backednUrl}/admins/campaigns/${campaignId}/save-draft`,
+            `${backednUrl}/admins/campaigns/draft/save`,
             {
               method: "PATCH",
               headers: {
@@ -72,6 +78,7 @@ const useManageCampaignStore = create(
             }
           );
           const data = await response.json();
+          console.log("here", data);
           if (!response.ok) {
             set({ error: data.message, isLoading: false });
             return false;

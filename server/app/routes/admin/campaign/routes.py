@@ -442,15 +442,17 @@ def fetch_or_create_draft():
         )
 
 
-@campaign_bp.route("/<int:campaign_id>/save-draft", methods=["PATCH"])
+@campaign_bp.route("/draft/save", methods=["PATCH"])
 @jwt_required()
 @admin_required()
-def save_draft(campaign_id):
-    current_app.logger.info(f"Saving draft campaign '{campaign_id}'...")
+def save_draft():
+    current_app.logger.info("Saving draft campaign ...")
     try:
         data = request.get_json()
 
-        campaign = Campaign.query.get_or_404(campaign_id)
+        campaign = Campaign.query.filter_by(
+            is_draft=True,
+        ).first_or_404()
 
         campaign_schema = CampaignSchema(
             unknown=EXCLUDE,
@@ -491,37 +493,24 @@ def save_draft(campaign_id):
 
         db.session.commit()
 
-        current_app.logger.info(f"Draft campaign '{campaign_id}' saved successfully.")
-        campaign_data = campaign_schema.dump(campaign)
-        close_out_date = campaign_data["closeoutDate"]
+        current_app.logger.info("Draft campaign  saved successfully.")
 
-        # Parse ISO 8601 string
-        dt = datetime.fromisoformat(close_out_date)
-
-        # Convert to PDT (America/Los_Angeles)
-        la_tz = pytz.timezone("America/Los_Angeles")
-        dt_local = dt.astimezone(la_tz)
-
-        # Format to match browser's string
-        formatted = dt_local.strftime("%a %b %d %Y %H:%M:%S GMT%z (%Z)")
-        campaign_data["closeoutDate"] = formatted
-
-        return campaign_data, 200
+        return campaign_schema.dump(campaign)
 
     except NotFound:
-        current_app.logger.warning(f"Draft campaign '{campaign_id}' not found.")
+        current_app.logger.warning("Draft campaign not found.")
         return (
             jsonify(
                 {
                     "status": "failed",
-                    "message": f"Draft campaign with ID '{campaign_id}' not found.",
+                    "message": "Draft campaign not found.",
                 }
             ),
             404,
         )
     except ValidationError as ve:
         current_app.logger.error(
-            f"Validation error while save draft campaign '{campaign_id}': {str(ve)}",
+            "Validation error while save draft campaign : {str(ve)}",
             exc_info=True,
         )
         return (
@@ -537,13 +526,13 @@ def save_draft(campaign_id):
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(
-            f"Error sharing draft campaign '{campaign_id}': {str(e)}", exc_info=True
+            f"Error sharing draft campaign : {str(e)}", exc_info=True
         )
         return (
             jsonify(
                 {
                     "status": "failed",
-                    "message": f"Error sharing draft campaign '{campaign_id}': {str(e)}",
+                    "message": f"Error sharing draft campaign : {str(e)}",
                 }
             ),
             500,

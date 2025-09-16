@@ -2,10 +2,11 @@ import React, { useContext } from "react";
 import { CampaignContext } from "src/pages/campaign/context/campaignContext";
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 
-const ContinueButton = ({ className }) => {
+const ContinueButton = ({ className, children }) => {
   const { nextLink } = useContext(CampaignContext);
   const { handleSave } = useManageCampaign();
-  const handlClick = () => {
+  const handlClick = (event) => {
+    event.preventDefault();
     handleSave(nextLink);
   };
 
@@ -23,7 +24,7 @@ const ContinueButton = ({ className }) => {
             ${className}  
     `}
     >
-      CONTINUE
+      {children}
     </div>
   );
 };

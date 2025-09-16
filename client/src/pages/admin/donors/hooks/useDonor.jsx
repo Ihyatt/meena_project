@@ -10,6 +10,7 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 // State Management
 import useDonorStore from "src/pages/admin/donors/store";
+import { set } from "date-fns";
 
 const useDonor = () => {
   const location = useLocation();
@@ -27,23 +28,13 @@ const useDonor = () => {
   const [emailSubscriptionStatus, setEmailSubscriptionStatus] = useState("");
   const { fetchDonor, manageDonorData, isLoading } = useDonorStore();
   const [emailAddress, setEmailAddress] = useState("");
-  const [donorData, setDonorData] = useState({
-    donations: [],
-    fullName: "",
-    emailAddress: "",
-    emailSubscription: {},
-    emailSubscriptionStatus: "",
-  });
 
   useEffect(() => {
     fetchDonor(donorId).then((data) => {
-      setDonorData({
-        donations: data.donations,
-        fullName: data.fullName,
-        emailAddress: data.emailAddress,
-        emailSubscription: data.emailSubscription,
-        emailSubscriptionStatus: data.emailSubscription.status.toLowerCase(),
-      });
+      setEmailAddress(data.emailAddress);
+      setFullName(data.fullName);
+      setDonations(data.donations);
+      setEmailSubscription(data.emailSubscription);
     });
   }, []);
 
@@ -96,13 +87,10 @@ const useDonor = () => {
       fullName,
       emailSubscriptionStatus
     ).then((data) => {
-      setDonorData({
-        donations: data.donations,
-        fullName: data.fullName,
-        emailAddress: data.emailAddress,
-        emailSubscription: data.emailSubscription,
-        emailSubscriptionStatus: data.emailSubscription.status.toLowerCase(),
-      });
+      setEmailAddress(data.emailAddress);
+      setFullName(data.fullName);
+      setDonations(data.donations);
+      setEmailSubscription(data.emailSubscription);
     });
     event.preventDefault();
   };

@@ -9,13 +9,12 @@ import {
   TITLE_DESCRIPTION,
   TITLE_CHARACTER_MIN,
   TITLE_CHARACTERS_MAX,
-  FUNDING_STEP,
 } from "src/utils/Constants";
 
 import useManageCampaign from "src/pages/campaign/hooks/useManageCampaign";
 
 const DraftTitle = () => {
-  const { title } = useManageCampaign();
+  const { title, isLoading } = useManageCampaign();
 
   const isButtonDisabled =
     title.length < TITLE_CHARACTER_MIN ||
@@ -26,6 +25,7 @@ const DraftTitle = () => {
     prevLink: "/admins/campaigns",
     nextLink: "/draft/description",
   };
+  console.log(title);
   return (
     <div className="flex col w-full h-screen bg-[#f5f5f5]">
       <Directions step={TTILE_STEP} descriptionText={TITLE_DESCRIPTION} />

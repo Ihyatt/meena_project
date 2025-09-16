@@ -16,12 +16,16 @@ const Footer = ({ progressStep, isButtonDisabled }) => {
               <ContinueButton
                 className="  cursor-not-allowed
                 bg-[#d8d8d8] text-slate-700 "
-              />
+              >
+                CONTINUE
+              </ContinueButton>
             ) : (
               <ContinueButton
                 className="cursor-pointer
                 text-white bg-[#0fa347] hover:bg-[#2bbd62]"
-              />
+              >
+                CONTINUE
+              </ContinueButton>
             )}
           </div>
         </div>
