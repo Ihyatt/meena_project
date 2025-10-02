@@ -81,7 +81,12 @@ A real-time donation platform with admin dashboards, payment processing, and aut
 - First-time use of several technologies (Redis, Stripe, SSE)
 - Current focus: Improving production readiness
 
-> **Note**: This project demonstrates rapid learning and implementation of complex systems. Several production-grade features are already implemented, with more enhancements planned.
+> **Note**: This project demonstrates rapid learning and implementation of complex systems. Several production-grade features are already implemented, with more enhancements planned. Current optomizations and rewrites
+- Front end refactor. Componentization and analaysis on when custom hooks, context api or store would be best suited
+- Backend refactorof apis that are too tightly coupled, rely more on role based access control.
+- Stripe payment security concerns with client side idempotency keys
+- JWT token security concerns with storing in local storage. fine for temp testing but needs to be more protected. 
+
 
 DONOR FLOW
 
